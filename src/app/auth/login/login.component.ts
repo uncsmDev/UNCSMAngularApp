@@ -1,10 +1,11 @@
-import { Component, Inject, inject, OnInit } from '@angular/core';
-import { LoginModel, LoginResult } from '../../Models/Acount';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+declare var google: any;
 import { AcountService } from '../../Services/acount.service';
+import { LoginResult, LoginModel } from '../../Models/Acount';
+import { Component, Inject, inject, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LowerCasePipe } from '@angular/common';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,8 +14,8 @@ import { Router, RouterOutlet } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent implements OnInit{
- 
+export default class LoginComponent implements OnInit{
+  
   acountServices=inject(AcountService);
   formU!:FormGroup;
   fg=inject(FormBuilder);
@@ -22,7 +23,7 @@ export class LoginComponent implements OnInit{
   logMin:loginMin;
 
   matSnackBar=inject(MatSnackBar);
-  router=Inject(Router);
+  private router = inject(Router);
 
   constructor()
   {
@@ -57,10 +58,40 @@ export class LoginComponent implements OnInit{
   }
 
   ngOnInit(): void {
+
+    google.accounts.id.initialize({
+      client_id: '696911734143-glg1l9idu915jdaggc6mmd2v15vc5slg.apps.googleusercontent.com',
+      callback: (resp: any) => this.handleLogin(resp)
+    });
+
+    google.accounts.id.renderButton(document.getElementById("google-btn"), {
+      theme: 'filled_blue',
+      size: 'large',
+      shape: 'rectangle',
+      width: 350
+    })
+    
+
     this.formU!=this.fg.group({
       username:['',[Validators.required,Validators.email]],
       password:['',[Validators.required]]
     })
+  }
+
+  private decodeToken(token: string)
+  {
+    return JSON.parse(atob(token.split(".")[1]));
+  }
+
+  handleLogin(response: any){
+    if(response){
+      //Decode the token
+      const payLoad = this.decodeToken(response.credential);
+      //store in session
+      sessionStorage.setItem("loggedInUser", JSON.stringify(payLoad));
+      //navigate to Dashboard
+      this.router.navigate(['modulos']);
+    }
   }
 
 }

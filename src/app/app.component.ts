@@ -1,3 +1,4 @@
+import LoginComponent  from './auth/login/login.component';
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
@@ -5,7 +6,7 @@ import { initFlowbite } from 'flowbite';
 
 import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
-import { LoginComponent } from './Pages/login/login.component';
+
 
 
 @Component({
@@ -16,7 +17,7 @@ import { LoginComponent } from './Pages/login/login.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit{
-  title = 'UNCSMAngularApp';
+  title = 'UNCSM App';
 
   ngOnInit(): void {
     initFlowbite();
