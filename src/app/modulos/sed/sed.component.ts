@@ -7,6 +7,6 @@ import { Component } from '@angular/core';
   templateUrl: './sed.component.html',
   styleUrl: './sed.component.css'
 })
-export class SedComponent {
+export default class SedComponent {
 
 }

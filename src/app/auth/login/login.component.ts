@@ -45,7 +45,8 @@ export default class LoginComponent implements OnInit{
     const email = this.logMin.username;
     const password = this.logMin.password;
 
-    this.authServices.login(email, password).subscribe({
+    this.authServices.login(email, password).subscribe( {
+      
       next:(resp)=>{
         sessionStorage.setItem("loggedInUser", JSON.stringify(resp));
         this.router.navigate(['modulos']);
@@ -63,13 +64,25 @@ export default class LoginComponent implements OnInit{
 
   onLoginGoogle(response: any){
     if(response){
+
+    this.authServices.googleLogin(response.credential).subscribe((resp) => {
+      if(resp)
+        {
+          sessionStorage.setItem("loggedInUser", JSON.stringify(resp));
+          this.router.navigate(['modulos']);
+        }
+        else{
+          this.matSnackBar.open("Credenciales Incorectas",'Close',{ duration:5000, horizontalPosition:'center'})
+        }
+    });
+
       //Decode the token
-      const payLoad = this.decodeToken(response.credential);
+     /*  const payLoad = this.decodeToken(response.credential);
       console.log(response.credential);
       //store in session
       sessionStorage.setItem("loggedInUser", JSON.stringify(payLoad));
       //navigate to Dashboard
-      this.router.navigate(['modulos']);
+      this.router.navigate(['modulos']); */
     }
   }
 }

@@ -31,9 +31,19 @@ export class AuthService {
 
   login(email: string, password: string)
   {
+    debugger
     return this.http.post<LoginResult>(this.apiUrl+ 'login',{
       "username": email,
       "password": password
     })
+  }
+
+  googleLogin(idToken: string) {
+    return this.http.post<{ token: string }>(
+      this.apiUrl + 'google-login',
+      {
+        idToken: idToken,
+      }
+    );
   }
 }
