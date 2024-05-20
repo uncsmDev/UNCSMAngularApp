@@ -1,14 +1,15 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { PaisService } from '../Services/pais.service';
 import { Pais } from '../interfaces/pais';
+import { SidemenuComponent } from '../shared/sidemenu/sidemenu.component';
 
 @Component({
-  selector: 'app-modulos',
+  selector: 'app-dashboard',
   standalone: true,
-  imports: [],
-  templateUrl: './modulos.component.html',
-  styleUrl: './modulos.component.css'
+  imports: [RouterModule, SidemenuComponent],
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.css'
 })
 export default class ModulosComponent {
 

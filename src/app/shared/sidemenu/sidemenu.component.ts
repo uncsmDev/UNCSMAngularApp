@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { routes } from '../../app.routes';
 import { RouterModule } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../Services/auth.service';
+
 
 @Component({
   selector: 'app-sidemenu',

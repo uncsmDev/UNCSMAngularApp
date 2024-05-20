@@ -1,13 +1,18 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [{
-    path: 'modulos',
-    loadComponent: () => import('./modulos/modulos.component'),
+    path: 'dashboard',
+    loadComponent: () => import('./dashboard/dashboard.component'),
     children: [
+        {
+            path: 'mod',
+            title: 'Modulos',
+            loadComponent: () => import('./dashboard/mod/mod.component')
+        },
         {
             path: 'sed',
             title: 'Sistema de Evaluación al Desempeño',
-            loadComponent: () => import('./modulos/sed/sed.component'),
+            loadComponent: () => import('./dashboard/sed/sed.component'),
         }
     ]
     },
@@ -17,11 +22,11 @@ export const routes: Routes = [{
     },
     {
         path: '',
-        redirectTo: '/modulos',
+        redirectTo: '/dashboard/mod',
         pathMatch: 'full'
     },
     {
         path: '**',
-        redirectTo: '/modulos'
+        redirectTo: '/dashboard/mod'
     }
 ];

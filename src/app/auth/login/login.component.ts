@@ -4,7 +4,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { LoginModel } from '../../Models/Login.Model';
+import { LoginModel } from '../../models/Login.Model';
 
 @Component({
   selector: 'app-login',
