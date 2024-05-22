@@ -1,13 +1,17 @@
 
 
-<footer class="bg-white shadow dark:bg-gray-900 ">
-    <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
-        <div class="sm:flex sm:items-center sm:justify-between">
-            <a href="https://flowbite.com/" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
-                <img src="assets/img/logo.png" class="h-8" alt="UNCSM Logo" />
-                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">UNCSM</span>
+<footer class="bg-white border-gray-400 shadow dark:bg-gray-700">
+    <div class="w-full max-w-screen-2xl mx-auto p-4 md:py-8">
+        <div class="sm:flex sm:items-center sm:justify-between ">
+            <a href="/mod" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
+                <picture>
+                    <!-- Imagen para modo oscuro -->
+                    <source srcset="assets/img/logo.png" media="(prefers-color-scheme: dark)">
+                    <!-- Imagen para modo claro -->
+                    <img src="assets/img/logo-claro.png" class="h-28 me-3" alt="FlowBite Logo">
+                  </picture>
             </a>
-            <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
+            <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-900 sm:mb-0 dark:text-white">
                 <li>
                     <a href="#" class="hover:underline me-4 md:me-6">Acerca de</a>
                 </li>
@@ -19,8 +23,8 @@
                 </li>
             </ul>
         </div>
-        <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-        <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="https://flowbite.com/" class="hover:underline">Flowbite™</a>. Todos los derechos reservados.</span>
+        <hr class="my-6 border-gray-400  sm:mx-auto dark:border-gray-600 lg:my-8" />
+        <span class="block text-sm text-gray-900 dark:text-white text-center dark:text-white-400">© 2024 <a href="https://flowbite.com/" class="hover:underline">Universidad Nacional Casimiro Sotelo Montenegro</a>. Todos los derechos reservados.</span>
     </div>
 </footer>
 

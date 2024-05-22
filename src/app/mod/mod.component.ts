@@ -7,11 +7,12 @@ import { FooterComponent } from '../shared/footer/footer.component';
 import { SpinnerComponent } from '../shared/spinner/spinner.component';
 import { delay } from 'rxjs';
 import { RouterLink } from '@angular/router';
+import { TitleComponent } from '../shared/title/title.component';
 
 @Component({
   selector: 'app-mod',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent, SpinnerComponent, RouterLink],
+  imports: [HeaderComponent, FooterComponent, SpinnerComponent, RouterLink, TitleComponent],
   templateUrl: './mod.component.html',
   styleUrl: './mod.component.css'
 })
