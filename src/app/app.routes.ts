@@ -4,17 +4,18 @@ export const routes: Routes = [{
     path: 'dashboard',
     loadComponent: () => import('./dashboard/dashboard.component'),
     children: [
-        {
-            path: 'mod',
-            title: 'Modulos',
-            loadComponent: () => import('./dashboard/mod/mod.component')
-        },
+        
         {
             path: 'sed',
             title: 'Sistema de Evaluación al Desempeño',
-            loadComponent: () => import('./dashboard/sed/sed.component'),
+            loadComponent: () => import('./dashboard/pages/sed/sed.component'),
         }
     ]
+    },
+    {
+        path: 'mod',
+        title: 'Modulos',
+        loadComponent: () => import('./mod/mod.component')
     },
     {
         path: 'login',
@@ -22,11 +23,11 @@ export const routes: Routes = [{
     },
     {
         path: '',
-        redirectTo: '/dashboard/mod',
+        redirectTo: '/mod',
         pathMatch: 'full'
     },
     {
         path: '**',
-        redirectTo: '/dashboard/mod'
+        redirectTo: '/mod'
     }
 ];

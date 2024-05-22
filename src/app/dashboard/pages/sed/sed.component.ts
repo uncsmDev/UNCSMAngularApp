@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-sed',
@@ -8,5 +8,8 @@ import { Component } from '@angular/core';
   styleUrl: './sed.component.css'
 })
 export default class SedComponent {
-
+  OnInit(){
+    debugger
+    console.log("Carga");
+  }
 }
