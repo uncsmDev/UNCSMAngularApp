@@ -64,12 +64,11 @@ export default class LoginComponent implements OnInit{
 
   onLoginGoogle(response: any){
     if(response){
-
     this.authServices.googleLogin(response.credential).subscribe((resp) => {
       if(resp)
         {
           sessionStorage.setItem("loggedInUser", JSON.stringify(resp));
-          this.router.navigate(['modulos']);
+          this.router.navigate(['mod']);
         }
         else{
           this.matSnackBar.open("Credenciales Incorectas",'Close',{ duration:5000, horizontalPosition:'center'})

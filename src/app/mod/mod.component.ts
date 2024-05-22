@@ -32,6 +32,7 @@ export default class ModComponent {
     
     .subscribe({
       next: (resp)=> {
+        debugger
         const mod = resp.map(item => ({
           id: item.id,
           titulo: item.titulo, // Transforma 'nombre' a 'titulo'
