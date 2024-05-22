@@ -5,6 +5,7 @@ export interface Login{
 
 export interface LoginResult
 {
+    IdUser: string;
     userName: string;
     email: string;
     token: string;

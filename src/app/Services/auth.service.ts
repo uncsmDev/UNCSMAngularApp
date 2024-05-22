@@ -22,11 +22,13 @@ export class AuthService {
   signOutGoogle(){
     google.accounts.id.disableAutoSelect();
     this.router.navigate(['login']);
+    sessionStorage.clear();
   }
 
   signOut(){
     google.accounts.id.disableAutoSelect();
     this.router.navigate(['login']);
+    sessionStorage.clear();
   }
 
   login(email: string, password: string)
@@ -45,5 +47,13 @@ export class AuthService {
         idToken: idToken,
       }
     );
+  }
+
+  isAuth(){
+    if(sessionStorage.getItem("isAuth")!== null && sessionStorage.getItem("isAuth"))
+      {
+        return true;
+      }
+    return false;
   }
 }

@@ -49,6 +49,7 @@ export default class LoginComponent implements OnInit{
       
       next:(resp)=>{
         sessionStorage.setItem("loggedInUser", JSON.stringify(resp));
+        sessionStorage.setItem("isAuth", "true");
         this.router.navigate(['modulos']);
       },
       error:(error)=>{
@@ -68,20 +69,13 @@ export default class LoginComponent implements OnInit{
       if(resp)
         {
           sessionStorage.setItem("loggedInUser", JSON.stringify(resp));
+          sessionStorage.setItem("isAuth", "true");
           this.router.navigate(['mod']);
         }
         else{
           this.matSnackBar.open("Credenciales Incorectas",'Close',{ duration:5000, horizontalPosition:'center'})
         }
     });
-
-      //Decode the token
-     /*  const payLoad = this.decodeToken(response.credential);
-      console.log(response.credential);
-      //store in session
-      sessionStorage.setItem("loggedInUser", JSON.stringify(payLoad));
-      //navigate to Dashboard
-      this.router.navigate(['modulos']); */
     }
   }
 }

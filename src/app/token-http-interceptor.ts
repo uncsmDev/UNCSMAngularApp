@@ -11,6 +11,7 @@ export const tokenHttpInterceptor: HttpInterceptorFn = (req, next) => {
                 'Authorization':'Bearer ' + token.token
             }
         });
+        sessionStorage.setItem("isAuth", "true");
     }else
     {
         req = req.clone({
@@ -18,6 +19,7 @@ export const tokenHttpInterceptor: HttpInterceptorFn = (req, next) => {
                'Authorization':'Bearer ' + "ninguno"
             }
         });
+        sessionStorage.setItem("isAuth", "false");
     }
     
     return next(req);
