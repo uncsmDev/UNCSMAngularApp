@@ -28,6 +28,6 @@ export const routes: Routes = [{
     },
     {
         path: '**',
-        redirectTo: '/mod'
+        loadComponent: ()=> import('./not-found/not-found.component')
     }
 ];
