@@ -8,12 +8,25 @@ export const routes: Routes = [{
     canActivate: [authGuard],
     canActivateChild: [authChildGuard],
     children: [
-        
         {
             path: 'sed',
             title: 'Sistema de Evaluación al Desempeño',
             loadComponent: () => import('./dashboard/pages/sed/sed.component'),
-        }
+            children: [
+                {
+                    
+                    path: 'escala',
+                    title: 'Escalas',
+                    loadComponent: () => import('./dashboard/pages/sed/escala/escala.component'),
+                },
+                {
+                    path: 'home',
+                    title: 'Home',
+                    loadComponent: () => import('./dashboard/pages/sed/home/home.component'),
+                }
+            ]
+        },
+        
     ]
     },
     {
