@@ -50,7 +50,7 @@ export default class LoginComponent implements OnInit{
       next:(resp)=>{
         sessionStorage.setItem("loggedInUser", JSON.stringify(resp));
         sessionStorage.setItem("isAuth", "true");
-        this.router.navigate(['modulos']);
+        this.router.navigate(['mod']);
       },
       error:(error)=>{
         this.matSnackBar.open("Credenciales Incorectas",'Close',{ duration:5000, horizontalPosition:'center'})

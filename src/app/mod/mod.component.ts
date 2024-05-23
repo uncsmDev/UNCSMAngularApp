@@ -1,18 +1,17 @@
 import { ModuloService } from '../Services/modulo.service';
 import { Modulo } from '../interfaces/modulo';
 import { Component, Signal, WritableSignal, computed, inject, signal } from '@angular/core';
-import { HeaderComponent } from '../shared/header/header.component';
 import { initFlowbite } from 'flowbite';
 import { FooterComponent } from '../shared/footer/footer.component';
 import { SpinnerComponent } from '../shared/spinner/spinner.component';
-import { delay } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { TitleComponent } from '../shared/title/title.component';
+import { HeaderDashboardComponent } from '../shared/header-dashboard/header-dashboard.component';
 
 @Component({
   selector: 'app-mod',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent, SpinnerComponent, RouterLink, TitleComponent],
+  imports: [HeaderDashboardComponent, FooterComponent, SpinnerComponent, RouterLink, TitleComponent],
   templateUrl: './mod.component.html',
   styleUrl: './mod.component.css'
 })
@@ -44,7 +43,6 @@ export default class ModComponent {
         }));
 
         this.modulos.set(mod);
-        console.log(this.modulos());
       },
       error: (error) =>{
         console.error("Error", error);

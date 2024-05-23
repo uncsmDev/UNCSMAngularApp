@@ -13,7 +13,7 @@ import { HeaderComponent } from '../shared/header/header.component';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export default class ModulosComponent {
+export default class DashboardComponent {
 
   router = inject(Router);
   pais = inject(PaisService);
@@ -22,21 +22,5 @@ export default class ModulosComponent {
 
   ngOnInit() {
     initFlowbite();
-    this.pais.get().subscribe({
-      next: (resp: Pais[]) => {
-        this.paises = resp;
-        //console.log(this.paises);
-      },
-      error: (error) => {
-        console.error("Error", error);
-      }
-    });
   }
-
-  ir(){
-    console.log('Entra');
-    this.router.navigate(['modulos/sed']);
-  }
-
-
 }

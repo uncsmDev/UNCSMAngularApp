@@ -15,7 +15,6 @@ export class ModuloService {
   constructor() { }
   
   get(): Observable<Modulo[]> {
-    debugger;
   
     const user = sessionStorage.getItem("loggedInUser");
   
@@ -23,9 +22,6 @@ export class ModuloService {
       try {
         // Intenta convertir la cadena en un objeto JSON
         const userObject = JSON.parse(user);
-  
-        // Ahora puedes trabajar con userObject como un objeto normal
-        console.log(userObject.Email); // Asumiendo que Email es una propiedad del objeto
   
         // Construye la URL completa incluyendo el Email del usuario
         const url = `${this.apiUrl}/GetModuloxUser?id=${userObject.idUser}`;

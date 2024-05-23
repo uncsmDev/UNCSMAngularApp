@@ -1,0 +1,17 @@
+.bg-blur {
+    position: relative;
+    overflow: hidden;
+  }
+  .bg-blur::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('http://localhost:4200/assets/img/fondo1.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: blur(5px);
+    z-index: -1;
+  }
