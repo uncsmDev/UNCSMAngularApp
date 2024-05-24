@@ -20,6 +20,10 @@ export const routes: Routes = [{
                     loadComponent: () => import('./dashboard/pages/sed/escala/escala.component'),
                 },
                 {
+                    path:'usuarios', 
+                    loadComponent:()=>import('./auth/usuarios/usuarios.component')
+                },
+                {
                     path: 'home',
                     title: 'Home',
                     loadComponent: () => import('./dashboard/pages/sed/home/home.component'),
@@ -39,11 +43,13 @@ export const routes: Routes = [{
         path: 'login',
         loadComponent: ()=> import('./auth/login/login.component')
     },
+   
     {
         path: '',
         redirectTo: '/mod',
         pathMatch: 'full'
     },
+   
     {
         path: '**',
         loadComponent: ()=> import('./not-found/not-found.component')
