@@ -1,8 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { Escala } from '../interfaces/escala';
+
 import { HttpClient } from '@angular/common/http';
-import { appsettings } from '../Settings/appsettings';
 import { Observable } from 'rxjs';
+import { Escala } from '../../interfaces/escala';
+import { appsettings } from '../../Settings/appsettings';
 
 @Injectable({
   providedIn: 'root'
@@ -15,5 +16,12 @@ export class EscalaService {
   get(): Observable<Escala[]> {
         const url = `${this.apiUrl}`;
         return this.http.get<Escala[]>(url);
+  }
+  post(escala:Escala): Observable<any> {
+    debugger
+    const headers = { 'content-type': 'application/json'}  
+    const body=JSON.stringify(escala);
+    console.log(body)
+    return this.http.post(this.apiUrl, body,{'headers':headers})
   }
 }

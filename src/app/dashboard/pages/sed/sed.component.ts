@@ -14,9 +14,6 @@ export default class SedComponent {
   router = inject(Router);
 
   ngOnInit(){
-    debugger
-    console.log(this.router.url);
-
     if (this.router.url === '/dashboard/sed') {
       this.router.navigate(['/dashboard/sed/home']);
     }

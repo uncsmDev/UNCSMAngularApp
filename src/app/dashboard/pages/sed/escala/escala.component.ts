@@ -1,28 +1,34 @@
 import { Component, Signal, WritableSignal, computed, inject, signal } from '@angular/core';
-import { EscalaService } from '../../../../Services/escala.service';
 import { Escala } from '../../../../interfaces/escala';
 import { Modal } from 'flowbite';
 import type { ModalOptions, ModalInterface } from 'flowbite';
 import type { InstanceOptions } from 'flowbite';
 import { TitleComponent } from '../../../../shared/title/title.component';
-
-
+import { EscalaService } from '../../../../Services/sed/escala.service';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-escala',
   standalone: true,
-  imports: [TitleComponent],
+  imports: [TitleComponent, ReactiveFormsModule],
   templateUrl: './escala.component.html',
   styleUrl: './escala.component.css'
 })
 export default class EscalaComponent {
-  
-  
   escalaService = inject(EscalaService);
 
   escalas: WritableSignal<Escala[]> = signal([]);
   escalasNotEdit: Signal<Escala[]> = computed(this.escalas);
   modalActivo!: ModalInterface;
+
+  escalaForm = new FormGroup({
+    nombre: new FormControl("Casi Nunca"), // Transforma 'nombre' a 'titulo'
+    simbologia: new FormControl("CN"),
+    valoracion: new FormControl("1"),
+    nivelcumplimiento: new FormControl("Desempeño entre 20 - 59 %")
+  });
+
+
 
   ngOnInit() {
 
@@ -40,12 +46,37 @@ export default class EscalaComponent {
         }));
 
         this.escalas.set(mod);
-        console.log(this.escalas())
       },
       error: (error) =>{
         console.error("Error", error);
       }
     })
+  }
+
+  convertirAGrupoAObjeto(escalaForm: FormGroup): Escala {
+    return {
+      id: 0,
+      nombre: escalaForm.get('nombre')?.value,
+      simbologia: escalaForm.get('simbologia')?.value,
+      valoracion: parseInt(escalaForm.get('valoracion')?.value),
+      nivelCumplimiento: escalaForm.get('nivelcumplimiento')?.value,
+      eliminado: false,
+      visible: true,
+    };
+  }
+
+  onSubmit(){
+    this.escalaService.post(this.convertirAGrupoAObjeto(this.escalaForm)).subscribe({
+      next: (response) => {
+        console.log('Petición exitosa:', response);
+        // Aquí puedes manejar la respuesta exitosa, por ejemplo, actualizar el estado de tu aplicación
+      },
+      error: (error) => {
+        console.error('Error en la petición:', error);
+        // Maneja el error, por ejemplo, mostrar un mensaje al usuario
+      }
+    });
+    console.log(this.escalaForm);
   }
 
   createModal(){
@@ -62,13 +93,13 @@ export default class EscalaComponent {
           'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40',
       closable: true,
       onHide: () => {
-          console.log('modal is hidden');
+          //console.log('modal is hidden');
       },
       onShow: () => {
-          console.log('modal is shown');
+          //console.log('modal is shown');
       },
       onToggle: () => {
-          console.log('modal has been toggled');
+          //console.log('modal has been toggled');
       },
   };
   
