@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 import { authChildGuard } from './guards/auth-child.guard';
+import { isAuthTrueGuard } from './guards/is-auth-true.guard';
 
 export const routes: Routes = [{
     path: 'dashboard',
@@ -37,7 +38,8 @@ export const routes: Routes = [{
     },
     {
         path: 'login',
-        loadComponent: ()=> import('./auth/login/login.component')
+        loadComponent: ()=> import('./auth/login/login.component'),
+        canActivate: [isAuthTrueGuard]
     },
     {
         path: '',

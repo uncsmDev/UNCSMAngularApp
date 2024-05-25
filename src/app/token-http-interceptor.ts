@@ -4,6 +4,7 @@ import { LoginResult } from "./interfaces/acount";
 export const tokenHttpInterceptor: HttpInterceptorFn = (req, next) => {
     const tokenString = sessionStorage.getItem("loggedInUser");
     const token: LoginResult = tokenString ? JSON.parse(tokenString) : null;
+
     if(token !== null)
     {
         req = req.clone({

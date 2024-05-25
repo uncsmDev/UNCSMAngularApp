@@ -16,10 +16,7 @@ import { Router, RouterModule } from '@angular/router';
 })
 export default class DashboardComponent {
 
-  router = inject(Router);
-  pais = inject(PaisService);
-
-  paises: Pais[] = [];
+ 
 
   ngOnInit() {
     initFlowbite();

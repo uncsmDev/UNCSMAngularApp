@@ -4,7 +4,7 @@ import { Component, Signal, WritableSignal, computed, inject, signal } from '@an
 import { initFlowbite } from 'flowbite';
 import { FooterComponent } from '../shared/footer/footer.component';
 import { SpinnerComponent } from '../shared/spinner/spinner.component';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TitleComponent } from '../shared/title/title.component';
 import { HeaderDashboardComponent } from '../shared/header-dashboard/header-dashboard.component';
 
@@ -18,6 +18,7 @@ import { HeaderDashboardComponent } from '../shared/header-dashboard/header-dash
 export default class ModComponent {
 
   moduloService = inject(ModuloService);
+  router = inject(Router);
 
   modulos: WritableSignal<Modulo[]> = signal([]);
   modulosNotEdit: Signal<Modulo[]> = computed(this.modulos);
@@ -43,11 +44,18 @@ export default class ModComponent {
         }));
 
         this.modulos.set(mod);
+        console.log(JSON.stringify(this.modulosNotEdit()));
       },
       error: (error) =>{
         console.error("Error", error);
       }
     })
+  }
+
+  link(path: string, id: number)
+  {
+    localStorage.setItem('moduloActual', JSON.stringify(id));
+    this.router.navigate([path]);
   }
 
 }

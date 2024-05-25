@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { TitleComponent } from '../../../shared/title/title.component';
+import { SubmoduloService } from '../../../Services/submodulo.service';
 
 @Component({
   selector: 'app-sed',

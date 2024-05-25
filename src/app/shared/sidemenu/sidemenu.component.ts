@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { routes } from '../../app.routes';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../Services/auth.service';
+import { SubmoduloService } from '../../Services/submodulo.service';
 
 
 @Component({
@@ -14,6 +15,9 @@ import { AuthService } from '../../Services/auth.service';
 export class SidemenuComponent {
 
   auth = inject(AuthService);
+  router = inject(Router);
+
+  SudModuloService = inject(SubmoduloService)
 
   public menuItems = routes.map(
     route => route.children ?? [] 
@@ -28,5 +32,31 @@ export class SidemenuComponent {
   signOut(){
     sessionStorage.removeItem("loggedInUser");
     this.auth.signOut();
+  }
+
+  ngOnInit() {
+    this.menuActual()
+  }
+
+  menuActual()
+  {
+    const id = localStorage.getItem("moduloActual");
+  
+    if (id!== null && id!== undefined) {
+
+      this.SudModuloService.getSubModulo(parseInt(id)).subscribe(
+        {
+          next: (resp) => 
+            {
+              console.log(resp);
+            },
+            error: (err) => {
+  
+            }
+        }
+      )
+    }
+
+    //this.menuItems = datos;
   }
 }
