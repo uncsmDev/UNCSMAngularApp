@@ -5,6 +5,7 @@ export interface SubModulo {
     titulo:            string;
     descripcion:       string;
     path:              string;
+    icon:              string;
     loadComponent:     string;
     moduloId:          number;
     eliminado:         boolean;
