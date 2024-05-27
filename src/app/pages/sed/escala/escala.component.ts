@@ -1,10 +1,10 @@
 import { Component, Signal, WritableSignal, computed, inject, signal } from '@angular/core';
-import { Escala } from '../../../../interfaces/escala';
+import { Escala } from '../../../interfaces/escala';
 import { Modal } from 'flowbite';
 import type { ModalOptions, ModalInterface } from 'flowbite';
 import type { InstanceOptions } from 'flowbite';
-import { TitleComponent } from '../../../../shared/title/title.component';
-import { EscalaService } from '../../../../Services/sed/escala.service';
+import { TitleComponent } from '../../../shared/title/title.component';
+import { EscalaService } from '../../../Services/sed/escala.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({

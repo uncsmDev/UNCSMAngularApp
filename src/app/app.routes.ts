@@ -8,17 +8,19 @@ export const routes: Routes = [{
     loadComponent: () => import('./dashboard/dashboard.component'),
     canActivate: [authGuard],
     canActivateChild: [authChildGuard],
-    children: [
-        {
-            path: 'sed',
-            title: 'Sistema de Evaluación al Desempeño',
-            loadComponent: () => import('./dashboard/pages/sed/sed.component'),
+    },
+    {
+    path: 'sed',
+    title: 'Sistema de Evaluación al Desempeño',
+    loadComponent: () => import('./pages/sed/sed.component'),
+    canActivate: [authGuard],
+    canActivateChild: [authChildGuard],
             children: [
                 {
                     
                     path: 'escala',
                     title: 'Escalas',
-                    loadComponent: () => import('./dashboard/pages/sed/escala/escala.component'),
+                    loadComponent: () => import('./pages/sed/escala/escala.component'),
                 },
                 {
                     path:'usuarios', 
@@ -27,17 +29,14 @@ export const routes: Routes = [{
                 {
                     path: 'home',
                     title: 'Home',
-                    loadComponent: () => import('./dashboard/pages/sed/home/home.component'),
+                    loadComponent: () => import('./pages/sed/home/home.component'),
                 }
             ]
         },
-        
-    ]
-    },
     {
         path: 'mod',
         title: 'Modulos',
-        loadComponent: () => import('./mod/mod.component'),
+        loadComponent: () => import('./pages/mod/mod.component'),
         canActivate: [authGuard]
     },
     {
