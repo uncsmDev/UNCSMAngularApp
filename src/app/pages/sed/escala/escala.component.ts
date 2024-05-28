@@ -5,7 +5,7 @@ import type { ModalOptions, ModalInterface } from 'flowbite';
 import type { InstanceOptions } from 'flowbite';
 import { TitleComponent } from '../../../shared/title/title.component';
 import { EscalaService } from '../../../Services/sed/escala.service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-escala',
@@ -16,16 +16,19 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export default class EscalaComponent {
   escalaService = inject(EscalaService);
+  PostType?:string;
+  text:string = 'Agregar'
 
   escalas: WritableSignal<Escala[]> = signal([]);
   escalasNotEdit: Signal<Escala[]> = computed(this.escalas);
   modalActivo!: ModalInterface;
 
   escalaForm = new FormGroup({
-    nombre: new FormControl("Casi Nunca"), // Transforma 'nombre' a 'titulo'
-    simbologia: new FormControl("CN"),
-    valoracion: new FormControl("1"),
-    nivelcumplimiento: new FormControl("Desempeño entre 20 - 59 %")
+    id: new FormControl(""), // Transforma 'nombre' a 'titulo'
+    nombre: new FormControl("", [Validators.required]), // Transforma 'nombre' a 'titulo'
+    simbologia: new FormControl("", [Validators.required]),
+    valoracion: new FormControl("", [Validators.required]),
+    nivelcumplimiento: new FormControl("", [Validators.required])
   });
 
 
@@ -54,6 +57,7 @@ export default class EscalaComponent {
   }
 
   convertirAGrupoAObjeto(escalaForm: FormGroup): Escala {
+    debugger
     return {
       id: 0,
       nombre: escalaForm.get('nombre')?.value,
@@ -66,7 +70,23 @@ export default class EscalaComponent {
   }
 
   onSubmit(){
+    debugger
+    console.log(this.PostType);
     this.escalaService.post(this.convertirAGrupoAObjeto(this.escalaForm)).subscribe({
+      next: (response) => {
+        console.log('Petición exitosa:', response);
+        // Aquí puedes manejar la respuesta exitosa, por ejemplo, actualizar el estado de tu aplicación
+      },
+      error: (error) => {
+        console.error('Error en la petición:', error);
+        // Maneja el error, por ejemplo, mostrar un mensaje al usuario
+      }
+    });
+    console.log(this.escalaForm);
+  }
+
+  onEdit(){
+    this.escalaService.put(this.convertirAGrupoAObjeto(this.escalaForm)).subscribe({
       next: (response) => {
         console.log('Petición exitosa:', response);
         // Aquí puedes manejar la respuesta exitosa, por ejemplo, actualizar el estado de tu aplicación
@@ -94,6 +114,7 @@ export default class EscalaComponent {
       closable: true,
       onHide: () => {
           //console.log('modal is hidden');
+          this.escalaForm.reset();
       },
       onShow: () => {
           //console.log('modal is shown');
@@ -115,8 +136,23 @@ export default class EscalaComponent {
 
   openModal()
   {
+    this.text = 'Agregar';
     this.createModal();
     this.modalActivo.show();
+    this.PostType = 'add';
+  }
+
+  openModalEdit(escala: Escala)
+  {
+    this.text = 'Editar';
+    this.escalaForm.controls['id'].setValue(''+escala.id);
+    this.escalaForm.controls['nombre'].setValue(''+escala.nombre);
+    this.escalaForm.controls['simbologia'].setValue(''+escala.simbologia);
+    this.escalaForm.controls['valoracion'].setValue(''+escala.valoracion);
+    this.escalaForm.controls['nivelcumplimiento'].setValue(''+escala.nivelCumplimiento);
+    this.createModal();
+    this.modalActivo.show();
+    this.PostType = 'edit';
   }
 
   closeModal(){
