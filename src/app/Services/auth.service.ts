@@ -50,7 +50,8 @@ export class AuthService {
   }
 
   isAuth(){
-    if(sessionStorage.getItem("isAuth")!== null && sessionStorage.getItem("isAuth"))
+    var bool_value = sessionStorage.getItem("isAuth") == "true" ? true : false
+    if(sessionStorage.getItem("isAuth")!== null && sessionStorage.getItem("isAuth") && bool_value)
       {
         return true;
       }

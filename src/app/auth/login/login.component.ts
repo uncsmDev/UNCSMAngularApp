@@ -65,7 +65,8 @@ export default class LoginComponent implements OnInit{
 
   onLoginGoogle(response: any){
     if(response){
-    this.authServices.googleLogin(response.credential).subscribe((resp) => {
+    this.authServices.googleLogin(response.credential).subscribe({
+      next: (resp) => {
       if(resp)
         {
           sessionStorage.setItem("loggedInUser", JSON.stringify(resp));
@@ -75,7 +76,11 @@ export default class LoginComponent implements OnInit{
         else{
           this.matSnackBar.open("Credenciales Incorectas",'Close',{ duration:5000, horizontalPosition:'center'})
         }
-    });
-    }
+    },
+    error: (err) => {
+      this.matSnackBar.open("Error en la aplicación ",'Close',{ duration:5000, horizontalPosition:'center'});
+    
+    }});
+  }
   }
 }

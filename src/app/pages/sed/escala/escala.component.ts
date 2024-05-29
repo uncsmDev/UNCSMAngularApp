@@ -72,31 +72,32 @@ export default class EscalaComponent {
   onSubmit(){
     debugger
     console.log(this.PostType);
-    this.escalaService.post(this.convertirAGrupoAObjeto(this.escalaForm)).subscribe({
-      next: (response) => {
-        console.log('Petición exitosa:', response);
-        // Aquí puedes manejar la respuesta exitosa, por ejemplo, actualizar el estado de tu aplicación
-      },
-      error: (error) => {
-        console.error('Error en la petición:', error);
-        // Maneja el error, por ejemplo, mostrar un mensaje al usuario
-      }
-    });
-    console.log(this.escalaForm);
-  }
 
-  onEdit(){
-    this.escalaService.put(this.convertirAGrupoAObjeto(this.escalaForm)).subscribe({
-      next: (response) => {
-        console.log('Petición exitosa:', response);
-        // Aquí puedes manejar la respuesta exitosa, por ejemplo, actualizar el estado de tu aplicación
-      },
-      error: (error) => {
-        console.error('Error en la petición:', error);
-        // Maneja el error, por ejemplo, mostrar un mensaje al usuario
+    if(this.PostType == 'add')
+      {
+        this.escalaService.post(this.convertirAGrupoAObjeto(this.escalaForm)).subscribe({
+          next: (response) => {
+            console.log('Petición exitosa:', response);
+            // Aquí puedes manejar la respuesta exitosa, por ejemplo, actualizar el estado de tu aplicación
+          },
+          error: (error) => {
+            console.error('Error en la petición:', error);
+            // Maneja el error, por ejemplo, mostrar un mensaje al usuario
+          }
+        });
       }
-    });
-    console.log(this.escalaForm);
+      else{
+        this.escalaService.put(this.convertirAGrupoAObjeto(this.escalaForm)).subscribe({
+          next: (response) => {
+            console.log('Petición exitosa:', response);
+            // Aquí puedes manejar la respuesta exitosa, por ejemplo, actualizar el estado de tu aplicación
+          },
+          error: (error) => {
+            console.error('Error en la petición:', error);
+            // Maneja el error, por ejemplo, mostrar un mensaje al usuario
+          }
+        });
+      }
   }
 
   createModal(){
