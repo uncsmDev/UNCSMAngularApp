@@ -3,6 +3,8 @@ import { routes } from '../../app.routes';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../Services/auth.service';
 import { SubmoduloService } from '../../Services/submodulo.service';
+import { SubModulo } from '../../interfaces/submodulo';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 
 @Component({
@@ -16,15 +18,11 @@ export class SidemenuComponent {
 
   auth = inject(AuthService);
   router = inject(Router);
+  private sanitizer = inject(DomSanitizer)
 
   SudModuloService = inject(SubmoduloService)
 
-  public menuItems = routes.map(
-    route => route.children ?? [] 
-  )
-  .flat()
-  .filter(route => route && route.path)
-  .filter(route => !route.path?.includes(':'))
+  public menuItems:SubModulo[] = []
 
   constructor(){
   }
@@ -48,7 +46,7 @@ export class SidemenuComponent {
         {
           next: (resp) => 
             {
-              console.log(resp);
+              this.menuItems = resp;
             },
             error: (err) => {
   
@@ -57,6 +55,10 @@ export class SidemenuComponent {
       )
     }
 
-    //this.menuItems = datos;
+    
+  }
+  getSafeSvg(icon:string): SafeHtml {
+    debugger
+    return this.sanitizer.bypassSecurityTrustHtml(icon);
   }
 }

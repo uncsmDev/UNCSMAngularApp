@@ -1,12 +1,13 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../Services/auth.service';
 
 export const isAuthTrueGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
-  debugger
-  if(sessionStorage.getItem("isAuth")!== null && sessionStorage.getItem("isAuth"))
+  const authService = inject(AuthService);
+  console.log(sessionStorage.getItem("isAuth"))
+  if(authService.isAuth())
     {
-      
       router.navigate(['mod']);
       return false;  
     }

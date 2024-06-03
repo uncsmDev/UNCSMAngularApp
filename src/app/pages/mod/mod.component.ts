@@ -1,12 +1,12 @@
-import { ModuloService } from '../Services/modulo.service';
-import { Modulo } from '../interfaces/modulo';
+import { ModuloService } from '../../Services/modulo.service';
+import { Modulo } from '../../interfaces/modulo';
 import { Component, Signal, WritableSignal, computed, inject, signal } from '@angular/core';
 import { initFlowbite } from 'flowbite';
-import { FooterComponent } from '../shared/footer/footer.component';
-import { SpinnerComponent } from '../shared/spinner/spinner.component';
+import { FooterComponent } from '../../shared/footer/footer.component';
+import { SpinnerComponent } from '../../shared/spinner/spinner.component';
 import { Router, RouterLink } from '@angular/router';
-import { TitleComponent } from '../shared/title/title.component';
-import { HeaderDashboardComponent } from '../shared/header-dashboard/header-dashboard.component';
+import { TitleComponent } from '../../shared/title/title.component';
+import { HeaderDashboardComponent } from '../../shared/header-dashboard/header-dashboard.component';
 
 @Component({
   selector: 'app-mod',
