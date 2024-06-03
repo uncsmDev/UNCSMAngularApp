@@ -44,7 +44,7 @@ export default class ModComponent {
         }));
 
         this.modulos.set(mod);
-        console.log(JSON.stringify(this.modulosNotEdit()));
+        //console.log(JSON.stringify(this.modulosNotEdit()));
       },
       error: (error) =>{
         console.error("Error", error);

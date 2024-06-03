@@ -19,8 +19,8 @@ export default class SedComponent {
 
   ngOnInit(){
     initFlowbite();
-    if (this.router.url === '/dashboard/sed') {
-      this.router.navigate(['/dashboard/sed/home']);
+    if (this.router.url === '/sed') {
+      this.router.navigate(['/sed/home']);
     }
   }
 }

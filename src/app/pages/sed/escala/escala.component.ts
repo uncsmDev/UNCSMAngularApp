@@ -5,7 +5,8 @@ import type { ModalOptions, ModalInterface } from 'flowbite';
 import type { InstanceOptions } from 'flowbite';
 import { TitleComponent } from '../../../shared/title/title.component';
 import { EscalaService } from '../../../Services/sed/escala.service';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-escala',
@@ -16,25 +17,31 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 })
 export default class EscalaComponent {
   escalaService = inject(EscalaService);
+
+  matSnackBar=inject(MatSnackBar);
+  escalas: WritableSignal<Escala[]> = signal([]);
+  escalasNotEdit = computed(this.escalas);
+  modalActivo!: ModalInterface;
   PostType?:string;
   text:string = 'Agregar'
 
-  escalas: WritableSignal<Escala[]> = signal([]);
-  escalasNotEdit: Signal<Escala[]> = computed(this.escalas);
-  modalActivo!: ModalInterface;
-
   escalaForm = new FormGroup({
-    id: new FormControl(""), // Transforma 'nombre' a 'titulo'
-    nombre: new FormControl("", [Validators.required]), // Transforma 'nombre' a 'titulo'
-    simbologia: new FormControl("", [Validators.required]),
-    valoracion: new FormControl("", [Validators.required]),
-    nivelcumplimiento: new FormControl("", [Validators.required])
+    id : new FormControl(""),
+    nombre: new FormControl(""), // Transforma 'nombre' a 'titulo'
+    simbologia: new FormControl(""),
+    valoracion: new FormControl(""),
+    nivelcumplimiento: new FormControl("")
   });
 
 
 
   ngOnInit() {
 
+    this.getDatos();
+  }
+
+  getDatos()
+  {
     this.escalaService.get()
     .subscribe({
       next: (resp)=> {
@@ -51,15 +58,14 @@ export default class EscalaComponent {
         this.escalas.set(mod);
       },
       error: (error) =>{
-        console.error("Error", error);
+        console.log("Error", error);
       }
     })
   }
-
   convertirAGrupoAObjeto(escalaForm: FormGroup): Escala {
     debugger
     return {
-      id: 0,
+      id: escalaForm.get('id')?.value == '' ? 0 : escalaForm.get('id')?.value,
       nombre: escalaForm.get('nombre')?.value,
       simbologia: escalaForm.get('simbologia')?.value,
       valoracion: parseInt(escalaForm.get('valoracion')?.value),
@@ -70,34 +76,36 @@ export default class EscalaComponent {
   }
 
   onSubmit(){
-    debugger
-    console.log(this.PostType);
+
+debugger;
+    console.log(this.escalaForm);
 
     if(this.PostType == 'add')
       {
-        this.escalaService.post(this.convertirAGrupoAObjeto(this.escalaForm)).subscribe({
-          next: (response) => {
-            console.log('Petición exitosa:', response);
-            // Aquí puedes manejar la respuesta exitosa, por ejemplo, actualizar el estado de tu aplicación
-          },
-          error: (error) => {
-            console.error('Error en la petición:', error);
-            // Maneja el error, por ejemplo, mostrar un mensaje al usuario
-          }
-        });
+
+    this.escalaService.post(this.convertirAGrupoAObjeto(this.escalaForm)).subscribe({
+      next: (response) => {
+        this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'})
+        this.getDatos()
+      },
+      error: (error) => {
+        console.log('Error en la petición:', error);
+        // Maneja el error, por ejemplo, mostrar un mensaje al usuario
       }
-      else{
-        this.escalaService.put(this.convertirAGrupoAObjeto(this.escalaForm)).subscribe({
-          next: (response) => {
-            console.log('Petición exitosa:', response);
-            // Aquí puedes manejar la respuesta exitosa, por ejemplo, actualizar el estado de tu aplicación
-          },
-          error: (error) => {
-            console.error('Error en la petición:', error);
-            // Maneja el error, por ejemplo, mostrar un mensaje al usuario
-          }
-        });
-      }
+    });
+  }
+    else{
+      this.escalaService.put(this.convertirAGrupoAObjeto(this.escalaForm)).subscribe({
+        next: (response) => {
+          this.matSnackBar.open("Dato modificado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'})
+          this.getDatos()
+        },
+        error: (error) => {
+          console.log('Error en la petición:', error);
+          // Maneja el error, por ejemplo, mostrar un mensaje al usuario
+        }
+      });
+    }
   }
 
   createModal(){
@@ -115,7 +123,6 @@ export default class EscalaComponent {
       closable: true,
       onHide: () => {
           //console.log('modal is hidden');
-          this.escalaForm.reset();
       },
       onShow: () => {
           //console.log('modal is shown');
@@ -137,10 +144,11 @@ export default class EscalaComponent {
 
   openModal()
   {
+    
     this.text = 'Agregar';
+    this.PostType = 'add';
     this.createModal();
     this.modalActivo.show();
-    this.PostType = 'add';
   }
 
   openModalEdit(escala: Escala)
