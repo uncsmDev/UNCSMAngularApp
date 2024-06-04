@@ -121,12 +121,7 @@ export default class EscalaComponent {
   {
     this.escalaService.delete(this.modelDelete).subscribe({
       next: (value) => {
-        this.matSnackBar.open("Dato eliminado correctamente!",'Cerrar',{ duration:5000, horizontalPosition:'center'}).afterDismissed().subscribe({
-          next:(s) =>{
-            
-            
-          }
-        })
+        this.matSnackBar.open("Dato eliminado correctamente!",'Cerrar',{ duration:5000, horizontalPosition:'center'});
       }
     })
     this.getDatos()
