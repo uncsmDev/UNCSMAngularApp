@@ -96,7 +96,7 @@ export default class EscalaComponent {
         console.log('Error en la petición:', error);
         // Maneja el error, por ejemplo, mostrar un mensaje al usuario
       }
-    }).closed;
+    });
   }
     else{
       this.escalaService.put(this.convertirAGrupoAObjeto(this.escalaForm)).subscribe({
