@@ -1,42 +1,59 @@
-import { Component, Signal, WritableSignal, computed, inject, signal } from '@angular/core';
+import { Component, ViewChild, WritableSignal, computed, inject, signal } from '@angular/core';
 import { Escala } from '../../../interfaces/escala';
-import { Modal } from 'flowbite';
-import type { ModalOptions, ModalInterface } from 'flowbite';
-import type { InstanceOptions } from 'flowbite';
 import { TitleComponent } from '../../../shared/title/title.component';
 import { EscalaService } from '../../../Services/sed/escala.service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ModalDeleteComponent } from '../../../components/modal-delete/modal-delete.component';
+import { ModalService } from '../../../Services/modal.service';
+import { ModalInterface } from 'flowbite';
 
 @Component({
   selector: 'app-escala',
   standalone: true,
-  imports: [TitleComponent, ReactiveFormsModule],
+  imports: [TitleComponent, ReactiveFormsModule, ModalDeleteComponent],
   templateUrl: './escala.component.html',
   styleUrl: './escala.component.css'
 })
 export default class EscalaComponent {
+  //Componentes Injectados
   escalaService = inject(EscalaService);
-
+  modalService = inject(ModalService);
   matSnackBar=inject(MatSnackBar);
+  fb = inject(FormBuilder);
+
+  //Escalas
   escalas: WritableSignal<Escala[]> = signal([]);
   escalasNotEdit = computed(this.escalas);
+  
+  //Instancia del Modal
   modalActivo!: ModalInterface;
-  PostType?:string;
-  text:string = 'Agregar'
 
-  escalaForm = new FormGroup({
-    id : new FormControl(""),
-    nombre: new FormControl(""), // Transforma 'nombre' a 'titulo'
-    simbologia: new FormControl(""),
-    valoracion: new FormControl(""),
-    nivelcumplimiento: new FormControl("")
+  PostType?:string;
+  text:string = 'Agregar';  
+
+  modeloEscala = signal<Escala|null>(null);
+
+  //Componente Modal de Eliminar
+  @ViewChild(ModalDeleteComponent) modal!: ModalDeleteComponent;
+
+  
+  escalaForm = this.fb.group({
+    id : [''],
+    nombre: [''], // Transforma 'nombre' a 'titulo'
+    simbologia: [''],
+    valoracion: [''],
+    nivelcumplimiento: ['']
   });
 
-
+  callChildMethod(modelo: Escala) {
+    if(this.modal){
+      this.modal.openModal(); // Llama al método doSomething del componente hijo
+    }
+    this.modeloEscala.set(modelo);
+  }
 
   ngOnInit() {
-
     this.getDatos();
   }
 
@@ -57,111 +74,72 @@ export default class EscalaComponent {
 
         this.escalas.set(mod);
       },
-      error: (error) =>{
-        console.log("Error", error);
-      }
+      error: (error) =>{ this.matSnackBar.open("Error al obtener los datos",'Cerrar',{ duration:5000, horizontalPosition:'center'}) }
     })
   }
-  convertirAGrupoAObjeto(escalaForm: FormGroup): Escala {
-    debugger
-    return {
-      id: escalaForm.get('id')?.value == '' ? 0 : escalaForm.get('id')?.value,
-      nombre: escalaForm.get('nombre')?.value,
-      simbologia: escalaForm.get('simbologia')?.value,
-      valoracion: parseInt(escalaForm.get('valoracion')?.value),
-      nivelCumplimiento: escalaForm.get('nivelcumplimiento')?.value,
-      eliminado: false,
-      visible: true,
-    };
-  }
-
+  
   onSubmit(){
-
-debugger;
-    console.log(this.escalaForm);
 
     if(this.PostType == 'add')
       {
 
-    this.escalaService.post(this.convertirAGrupoAObjeto(this.escalaForm)).subscribe({
+    this.escalaService.post(this.escalaService.convertirAGrupoAObjeto(this.escalaForm)).subscribe({
       next: (response) => {
-        this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'})
+        this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+        this.escalaForm.reset();
         this.getDatos()
       },
-      error: (error) => {
-        console.log('Error en la petición:', error);
-        // Maneja el error, por ejemplo, mostrar un mensaje al usuario
-      }
+      error: (error) => { this.matSnackBar.open("Error al guardar los datos",'Cerrar',{ duration:5000, horizontalPosition:'center'}) }
     });
   }
     else{
-      this.escalaService.put(this.convertirAGrupoAObjeto(this.escalaForm)).subscribe({
+      this.escalaService.put(this.escalaService.convertirAGrupoAObjeto(this.escalaForm)).subscribe({
         next: (response) => {
-          this.matSnackBar.open("Dato modificado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'})
+          this.matSnackBar.open("Dato modificado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'}).afterDismissed().subscribe({
+            next:(s) =>{
+              this.closeModal()
+            }
+          })
           this.getDatos()
         },
-        error: (error) => {
-          console.log('Error en la petición:', error);
-          // Maneja el error, por ejemplo, mostrar un mensaje al usuario
-        }
+        error: (error) => {this.matSnackBar.open("Error al modificar los datos",'Cerrar',{ duration:5000, horizontalPosition:'center'}) }
       });
     }
   }
 
-  createModal(){
-
-    const $modalElement: HTMLElement | null = document.getElementById('static-modal');
-    if (!$modalElement) {
-      throw new Error('Elemento modal no encontrado');
-    }
-
-    const modalOptions: ModalOptions = {
-      placement: 'bottom-right',
-      backdrop: 'dynamic',
-      backdropClasses:
-          'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40',
-      closable: true,
-      onHide: () => {
-          //console.log('modal is hidden');
+  onDelete(event: any)
+  {
+    this.escalaService.delete(this.modeloEscala()).subscribe({
+      next: (value) => {
+        this.matSnackBar.open("Dato eliminado correctamente!",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+        this.getDatos()
       },
-      onShow: () => {
-          //console.log('modal is shown');
+      error: (err) =>{
+        this.matSnackBar.open("Error al eliminar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'})
       },
-      onToggle: () => {
-          //console.log('modal has been toggled');
-      },
-  };
-  
-  // instance options object
-  const instanceOptions: InstanceOptions = {
-    id: 'modalEl',
-    override: true
-  };
-  
-  const modal: ModalInterface = new Modal($modalElement, modalOptions, instanceOptions);
-  this.modalActivo = modal;
+    })
+    
   }
 
   openModal()
   {
-    
     this.text = 'Agregar';
     this.PostType = 'add';
-    this.createModal();
+    this.modalActivo = this.modalService.createModal();
     this.modalActivo.show();
   }
 
-  openModalEdit(escala: Escala)
+  openModalEdit(escala: Escala, typeModal: string)
   {
     this.text = 'Editar';
+    this.PostType = 'edit';
     this.escalaForm.controls['id'].setValue(''+escala.id);
     this.escalaForm.controls['nombre'].setValue(''+escala.nombre);
     this.escalaForm.controls['simbologia'].setValue(''+escala.simbologia);
     this.escalaForm.controls['valoracion'].setValue(''+escala.valoracion);
     this.escalaForm.controls['nivelcumplimiento'].setValue(''+escala.nivelCumplimiento);
-    this.createModal();
+    this.modalActivo = this.modalService.createModal();
     this.modalActivo.show();
-    this.PostType = 'edit';
   }
 
   closeModal(){

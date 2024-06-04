@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Escala } from '../../interfaces/escala';
 import { appsettings } from '../../Settings/appsettings';
+import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -25,10 +26,25 @@ export class EscalaService {
   }
 
   put(escala:Escala): Observable<any> {
-    debugger
     const headers = { 'content-type': 'application/json'}  
     const body=JSON.stringify(escala);
     console.log(body)
     return this.http.put(this.apiUrl+'/'+escala.id, body,{'headers':headers})
+  }
+
+  delete(escala?:Escala | null): Observable<any> {
+    return this.http.delete(this.apiUrl+'/'+escala?.id)
+  }
+
+  convertirAGrupoAObjeto(escalaForm: FormGroup): Escala {
+    return {
+      id: escalaForm.get('id')?.value == '' || escalaForm.get('id')?.value == null ? 0 : escalaForm.get('id')?.value,
+      nombre: escalaForm.get('nombre')?.value,
+      simbologia: escalaForm.get('simbologia')?.value,
+      valoracion: parseInt(escalaForm.get('valoracion')?.value),
+      nivelCumplimiento: escalaForm.get('nivelcumplimiento')?.value,
+      eliminado: false,
+      visible: true,
+    };
   }
 }
