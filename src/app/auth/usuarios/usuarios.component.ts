@@ -17,7 +17,7 @@ import { Observable } from 'rxjs';
   styleUrl: './usuarios.component.css'
 })
 
-export default class UsuariosComponent implements AfterContentInit{
+export default class UsuariosComponent {
   userService =inject(UsuarioService);
 
   usuarios:WritableSignal<UsuarioViewModel[]>=signal([]);
@@ -30,27 +30,14 @@ export default class UsuariosComponent implements AfterContentInit{
    
    }
 
-
-
-   ngAfterContentInit() {
-   
-    this.userService.get(0)
+   GetListIndex(pag:number)
+   {
+    this.userService.get(pag)
     .subscribe({
       next: (res)=> {
+
         this.pag=res.paginacion;
-      },
-      error: (error) =>{
-        console.error("Error", error);
-      }
-    });
 
-   }
- 
-  ngOnInit(): void {
-    initFlowbite();
-    this.userService.get(0)
-    .subscribe({
-      next: (res)=> {
         const users=res.listModel.map(item=>({
           id:item.id,
           nombres:item.nombres,
@@ -66,71 +53,27 @@ export default class UsuariosComponent implements AfterContentInit{
         console.error("Error", error);
       }
     });
+   }
+ 
+  ngOnInit(): void {
+    initFlowbite();
+    this.GetListIndex(0);
   }
 
 
   previousPage()
   {
-    debugger;
-
     if(this.pag.paginasAnteriores==true)
       {
-        debugger;
-        
-        this.userService.get(this.pag.paginaInicio-1)
-        .subscribe({
-          next: (res)=> {
-            this.pag=res.paginacion;
-
-            const users=res.listModel.map(item=>({
-              id:item.id,
-              nombres:item.nombres,
-              apellidos:item.apellidos,
-              email:item.email,
-              cargo:item.cargo
-            }));
-          
-            this.usuarios.set(users);
-          },
-          error: (error) =>{
-            console.error("Error", error);
-          }
-        });
+        this.GetListIndex(this.pag.paginaInicio-1);
       }
   }
 
   nextPage()
   {
-    debugger;
-
     if(this.pag.paginasPosteriores==true)
       {
-        debugger;
-        
-        this.userService.get(this.pag.paginaInicio+1)
-        .subscribe({
-          next: (res)=> {
-            debugger;
-            this.pag=res.paginacion;
-
-
-            const users=res.listModel.map(item=>({
-              id:item.id,
-              nombres:item.nombres,
-              apellidos:item.apellidos,
-              email:item.email,
-              cargo:item.cargo
-            }));
-          
-            this.usuarios.set(users);
-
-
-          },
-          error: (error) =>{
-            console.error("Error", error);
-          }
-        });
+        this.GetListIndex(this.pag.paginaInicio+1);
       }
   }
-
 }

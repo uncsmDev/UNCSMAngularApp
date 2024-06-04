@@ -22,17 +22,14 @@ export const routes: Routes = [{
                     title: 'Escalas',
                     loadComponent: () => import('./pages/sed/escala/escala.component'),
                 },
-                {
-                    path:'usuarios', 
-                    loadComponent:()=>import('./auth/usuarios/usuarios.component')
-                },
+               
                 {
                     path: 'home',
                     title: 'Home',
                     loadComponent: () => import('./pages/sed/home/home.component'),
                 }
             ]
-        },
+    },
     {
         path: 'mod',
         title: 'Modulos',
@@ -49,6 +46,34 @@ export const routes: Routes = [{
         path: '',
         redirectTo: '/mod',
         pathMatch: 'full'
+    },
+
+    {
+        path: 'admin',
+        title: 'Administración',
+        loadComponent: () => import('./pages/admin/admin.component'),
+        canActivate: [authGuard],
+        canActivateChild: [authChildGuard],
+        children: [
+            {
+                
+                path: 'entidad',
+                title: 'Entidades',
+                loadComponent: () => import('./pages/admin/entidad/entidad.component'),
+            },
+            {
+                path:'usuarios', 
+                title: 'Usuarios',
+                loadComponent:()=>import('./auth/usuarios/usuarios.component')
+            },
+            {
+                path: 'home',
+                title: 'Home',
+                loadComponent: () => import('./pages/admin/home/home.component'),
+            }
+        ]
+    
+       
     },
    
     {
