@@ -19,11 +19,15 @@ export default class EscalaComponent {
   escalaService = inject(EscalaService);
 
   matSnackBar=inject(MatSnackBar);
+  
   escalas: WritableSignal<Escala[]> = signal([]);
   escalasNotEdit = computed(this.escalas);
   modalActivo!: ModalInterface;
   PostType?:string;
   text:string = 'Agregar'
+
+
+  modelDelete?: Escala;
 
   escalaForm = new FormGroup({
     id : new FormControl(""),
@@ -36,7 +40,6 @@ export default class EscalaComponent {
 
 
   ngOnInit() {
-
     this.getDatos();
   }
 
@@ -63,7 +66,6 @@ export default class EscalaComponent {
     })
   }
   convertirAGrupoAObjeto(escalaForm: FormGroup): Escala {
-    debugger
     return {
       id: escalaForm.get('id')?.value == '' ? 0 : escalaForm.get('id')?.value,
       nombre: escalaForm.get('nombre')?.value,
@@ -77,27 +79,33 @@ export default class EscalaComponent {
 
   onSubmit(){
 
-debugger;
-    console.log(this.escalaForm);
-
     if(this.PostType == 'add')
       {
 
     this.escalaService.post(this.convertirAGrupoAObjeto(this.escalaForm)).subscribe({
       next: (response) => {
-        this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'})
+        this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'}).afterDismissed().subscribe({
+          next:(s) =>{
+            //this.closeModal()
+          }
+        })
+        this.escalaForm.reset();
         this.getDatos()
       },
       error: (error) => {
         console.log('Error en la petición:', error);
         // Maneja el error, por ejemplo, mostrar un mensaje al usuario
       }
-    });
+    }).closed;
   }
     else{
       this.escalaService.put(this.convertirAGrupoAObjeto(this.escalaForm)).subscribe({
         next: (response) => {
-          this.matSnackBar.open("Dato modificado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'})
+          this.matSnackBar.open("Dato modificado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'}).afterDismissed().subscribe({
+            next:(s) =>{
+              this.closeModal()
+            }
+          })
           this.getDatos()
         },
         error: (error) => {
@@ -108,9 +116,23 @@ debugger;
     }
   }
 
-  createModal(){
+  onDelete()
+  {
+    this.escalaService.delete(this.modelDelete).subscribe({
+      next: (value) => {
+        this.matSnackBar.open("Dato eliminado correctamente!",'Cerrar',{ duration:5000, horizontalPosition:'center'}).afterDismissed().subscribe({
+          next:(s) =>{
+            this.closeModal()
+            this.getDatos()
+          }
+        })
+      }
+    })
+  }
 
-    const $modalElement: HTMLElement | null = document.getElementById('static-modal');
+  createModal(typeModal: string){
+
+    const $modalElement: HTMLElement | null = document.getElementById(typeModal);
     if (!$modalElement) {
       throw new Error('Elemento modal no encontrado');
     }
@@ -142,16 +164,22 @@ debugger;
   this.modalActivo = modal;
   }
 
-  openModal()
+  openModal(typeModal: string)
   {
-    
     this.text = 'Agregar';
     this.PostType = 'add';
-    this.createModal();
+    this.createModal(typeModal);
     this.modalActivo.show();
   }
 
-  openModalEdit(escala: Escala)
+  openModalDelete(typeModal: string, escala: Escala)
+  {
+    this.createModal(typeModal);
+    this.modelDelete = escala;
+    this.modalActivo.show();
+  }
+
+  openModalEdit(escala: Escala, typeModal: string)
   {
     this.text = 'Editar';
     this.escalaForm.controls['id'].setValue(''+escala.id);
@@ -159,7 +187,7 @@ debugger;
     this.escalaForm.controls['simbologia'].setValue(''+escala.simbologia);
     this.escalaForm.controls['valoracion'].setValue(''+escala.valoracion);
     this.escalaForm.controls['nivelcumplimiento'].setValue(''+escala.nivelCumplimiento);
-    this.createModal();
+    this.createModal(typeModal);
     this.modalActivo.show();
     this.PostType = 'edit';
   }
