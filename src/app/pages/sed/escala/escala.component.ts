@@ -66,8 +66,9 @@ export default class EscalaComponent {
     })
   }
   convertirAGrupoAObjeto(escalaForm: FormGroup): Escala {
+    debugger
     return {
-      id: escalaForm.get('id')?.value == '' ? 0 : escalaForm.get('id')?.value,
+      id: escalaForm.get('id')?.value == '' || escalaForm.get('id')?.value == null ? 0 : escalaForm.get('id')?.value,
       nombre: escalaForm.get('nombre')?.value,
       simbologia: escalaForm.get('simbologia')?.value,
       valoracion: parseInt(escalaForm.get('valoracion')?.value),
@@ -122,12 +123,14 @@ export default class EscalaComponent {
       next: (value) => {
         this.matSnackBar.open("Dato eliminado correctamente!",'Cerrar',{ duration:5000, horizontalPosition:'center'}).afterDismissed().subscribe({
           next:(s) =>{
-            this.closeModal()
-            this.getDatos()
+            
+            
           }
         })
       }
     })
+    this.getDatos()
+    this.closeModal()
   }
 
   createModal(typeModal: string){
