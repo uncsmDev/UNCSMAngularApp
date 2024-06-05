@@ -39,26 +39,33 @@ export class SidemenuComponent {
   menuActual()
   {
     const id = localStorage.getItem("moduloActual");
-  
     if (id!== null && id!== undefined) {
 
       this.SudModuloService.getSubModulo(parseInt(id)).subscribe(
         {
           next: (resp) => 
             {
+              debugger
               this.menuItems = resp;
+              console.log(this.router.url);
+              const valor = this.menuItems.find(p =>p.path === this.router.url);
+
+              if(valor == undefined || valor == null)
+                {
+                  this.router.navigate(['/mod']);
+                }
             },
             error: (err) => {
   
             }
         }
-      )
+      );
+      
     }
 
     
   }
   getSafeSvg(icon:string): SafeHtml {
-    debugger
     return this.sanitizer.bypassSecurityTrustHtml(icon);
   }
 }

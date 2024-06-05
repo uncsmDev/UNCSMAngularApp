@@ -5,6 +5,7 @@ import { SubmoduloService } from '../../Services/submodulo.service';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { SidemenuComponent } from '../../shared/sidemenu/sidemenu.component';
 import { initFlowbite } from 'flowbite';
+import { SubModulo } from '../../interfaces/submodulo';
 
 @Component({
   selector: 'app-sed',
@@ -14,13 +15,7 @@ import { initFlowbite } from 'flowbite';
   styleUrl: './sed.component.css'
 })
 export default class SedComponent {
-
-  router = inject(Router);
-
   ngOnInit(){
     initFlowbite();
-    if (this.router.url === '/sed') {
-      this.router.navigate(['/sed/home']);
-    }
   }
 }

@@ -12,7 +12,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withViewTransitions({skipInitialTransition: true})), 
     provideAnimationsAsync(),
 
-    provideHttpClient(withInterceptors([tokenHttpInterceptor])), provideAnimationsAsync(),
-    provideClientHydration()
+    provideHttpClient(withInterceptors([tokenHttpInterceptor])), provideAnimationsAsync()
   ]
 };

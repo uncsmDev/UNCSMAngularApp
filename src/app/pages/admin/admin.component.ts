@@ -5,6 +5,7 @@ import { SubmoduloService } from '../../Services/submodulo.service';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { SidemenuComponent } from '../../shared/sidemenu/sidemenu.component';
 import { initFlowbite } from 'flowbite';
+import { SubModulo } from '../../interfaces/submodulo';
 
 @Component({
   selector: 'app-admin',
@@ -14,12 +15,7 @@ import { initFlowbite } from 'flowbite';
   styleUrl: './admin.component.css'
 })
 export default class AdminComponent {
-
-  router = inject(Router);
   ngOnInit(){
     initFlowbite();
-    if (this.router.url === '/admin') {
-      this.router.navigate(['/admin/home']);
-    }
   }
 }
