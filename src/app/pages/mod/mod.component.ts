@@ -28,6 +28,7 @@ export default class ModComponent {
   }
 
   ngOnInit() {
+    
     initFlowbite();
     this.moduloService.get()
     
@@ -42,9 +43,8 @@ export default class ModComponent {
           imgLocation: item.imgLocation,
           subModulos: null,
         }));
-
         this.modulos.set(mod);
-        //console.log(JSON.stringify(this.modulosNotEdit()));
+        console.log(this.modulosNotEdit());
       },
       error: (error) =>{
         console.error("Error", error);

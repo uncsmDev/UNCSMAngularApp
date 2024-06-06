@@ -1,5 +1,5 @@
 import { Escala } from './../../interfaces/escala';
-import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, output, signal } from '@angular/core';
 import { InstanceOptions, Modal, ModalInterface, ModalOptions } from 'flowbite';
 
 @Component({
@@ -11,11 +11,10 @@ import { InstanceOptions, Modal, ModalInterface, ModalOptions } from 'flowbite';
 })
 export class ModalDeleteComponent {
   modalActivo!: ModalInterface;
-
-  @Output() outputEvent: EventEmitter<any> = new EventEmitter();
+  outputEvent = output();
 
   emitEvent(): void {
-    this.outputEvent.emit('Child button clicked');
+    this.outputEvent.emit();
     this.closeModalDelete();
   }
 

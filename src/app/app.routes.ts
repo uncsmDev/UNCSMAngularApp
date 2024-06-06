@@ -2,20 +2,21 @@ import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 import { authChildGuard } from './guards/auth-child.guard';
 import { isAuthTrueGuard } from './guards/is-auth-true.guard';
+import { routerPermisseGuard } from './guards/router-permisse.guard';
 
-export const routes: Routes = [{
-    path: 'dashboard',
-    loadComponent: () => import('./dashboard/dashboard.component'),
-    canActivate: [authGuard],
-    canActivateChild: [authChildGuard],
-    },
+export const routes: Routes = [
     {
     path: 'sed',
     title: 'Sistema de Evaluación al Desempeño',
     loadComponent: () => import('./pages/sed/sed.component'),
-    canActivate: [authGuard],
+    canActivate: [authGuard, routerPermisseGuard],
     canActivateChild: [authChildGuard],
             children: [
+                {
+                    path: '',
+                    redirectTo: 'sed/home',
+                    pathMatch: 'full'
+                  },
                 {
                     
                     path: 'escala',
@@ -27,32 +28,19 @@ export const routes: Routes = [{
                     path: 'home',
                     title: 'Home',
                     loadComponent: () => import('./pages/sed/home/home.component'),
+                },
+                {
+                    path: 'instrumento',
+                    title: 'Instrumentos',
+                    loadComponent: () => import('./pages/sed/instrumento/instrumento.component'),
                 }
             ]
     },
     {
-        path: 'mod',
-        title: 'Modulos',
-        loadComponent: () => import('./pages/mod/mod.component'),
-        canActivate: [authGuard]
-    },
-    {
-        path: 'login',
-        loadComponent: ()=> import('./auth/login/login.component'),
-        canActivate: [isAuthTrueGuard]
-    },
-   
-    {
-        path: '',
-        redirectTo: '/mod',
-        pathMatch: 'full'
-    },
-
-    {
         path: 'admin',
         title: 'Administración',
         loadComponent: () => import('./pages/admin/admin.component'),
-        canActivate: [authGuard],
+        canActivate: [authGuard, routerPermisseGuard],
         canActivateChild: [authChildGuard],
         children: [
             {
@@ -75,7 +63,22 @@ export const routes: Routes = [{
     
        
     },
-   
+    {
+        path: 'mod',
+        title: 'Modulos',
+        loadComponent: () => import('./pages/mod/mod.component'),
+        canActivate: [authGuard]
+    },
+    {
+        path: 'login',
+        loadComponent: ()=> import('./auth/login/login.component'),
+        canActivate: [isAuthTrueGuard]
+    },
+    {
+        path: '',
+        redirectTo: '/mod',
+        pathMatch: 'full'
+    },
     {
         path: '**',
         loadComponent: ()=> import('./pages/not-found/not-found.component')

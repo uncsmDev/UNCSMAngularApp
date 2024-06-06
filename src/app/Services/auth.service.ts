@@ -19,16 +19,11 @@ export class AuthService {
 
   constructor() { }
 
-  signOutGoogle(){
-    google.accounts.id.disableAutoSelect();
-    this.router.navigate(['login']);
-    sessionStorage.clear();
-  }
-
   signOut(){
     google.accounts.id.disableAutoSelect();
     this.router.navigate(['login']);
     sessionStorage.clear();
+    localStorage.clear();
   }
 
   login(email: string, password: string)
@@ -52,6 +47,17 @@ export class AuthService {
   isAuth(){
     var bool_value = sessionStorage.getItem("isAuth") == "true" ? true : false
     if(sessionStorage.getItem("isAuth")!== null && sessionStorage.getItem("isAuth") && bool_value)
+      {
+        return true;
+      }
+    return false;
+  }
+
+  isModuloPermisse(){
+
+    //debugger
+    var modulo = localStorage.getItem("moduloActual");
+    if(localStorage.getItem("moduloActual")!== null && localStorage.getItem("moduloActual")!.length > 0)
       {
         return true;
       }
