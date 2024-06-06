@@ -21,14 +21,12 @@ export class EscalaService {
   post(escala:Escala): Observable<any> {
     const headers = { 'content-type': 'application/json'}  
     const body=JSON.stringify(escala);
-    console.log(body)
     return this.http.post(this.apiUrl, body,{'headers':headers})
   }
 
   put(escala:Escala): Observable<any> {
     const headers = { 'content-type': 'application/json'}  
     const body=JSON.stringify(escala);
-    console.log(body)
     return this.http.put(this.apiUrl+'/'+escala.id, body,{'headers':headers})
   }
 

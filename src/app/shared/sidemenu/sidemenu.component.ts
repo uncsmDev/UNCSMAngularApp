@@ -46,7 +46,6 @@ export class SidemenuComponent {
           next: (resp) => 
             {
               this.menuItems = resp;
-              console.log(this.router.url);
               const valor = this.menuItems.find(p =>p.path === this.router.url);
 
               if(valor == undefined || valor == null)

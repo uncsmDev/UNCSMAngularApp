@@ -2,7 +2,7 @@ import { Component, ViewChild, WritableSignal, computed, inject, signal } from '
 import { Escala } from '../../../interfaces/escala';
 import { TitleComponent } from '../../../shared/title/title.component';
 import { EscalaService } from '../../../Services/sed/escala.service';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModalDeleteComponent } from '../../../components/modal-delete/modal-delete.component';
 import { ModalService } from '../../../Services/modal.service';
@@ -40,10 +40,10 @@ export default class EscalaComponent {
   
   escalaForm = this.fb.group({
     id : [''],
-    nombre: [''], // Transforma 'nombre' a 'titulo'
-    simbologia: [''],
-    valoracion: [''],
-    nivelcumplimiento: ['']
+    nombre: ['', Validators.required], // Transforma 'nombre' a 'titulo'
+    simbologia: ['', Validators.required],
+    valoracion: ['', Validators.required],
+    nivelcumplimiento: ['', Validators.required]
   });
 
   callChildMethod(modelo: Escala) {

@@ -44,7 +44,6 @@ export default class ModComponent {
           subModulos: null,
         }));
         this.modulos.set(mod);
-        console.log(this.modulosNotEdit());
       },
       error: (error) =>{
         console.error("Error", error);
