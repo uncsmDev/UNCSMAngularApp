@@ -32,7 +32,7 @@ export const routes: Routes = [
                 {
                     path: 'instrumento',
                     title: 'Instrumentos',
-                    loadComponent: () => import('./pages/sed/home/home.component'),
+                    loadComponent: () => import('./pages/sed/instrumento/instrumento.component'),
                 }
             ]
     },
