@@ -12,3 +12,16 @@ export interface Entidad {
     tipoEntidad?: TipoEntidad;
     dependencia?: Dependencia;
 }
+
+export interface EntidadDto {
+    id: number;
+    codigo: number;
+    dni:string;
+    nombres:string;
+    apellidos: string;
+    sexoId:number;
+    fechaIngreso: Date;
+    cargoId?: number;
+    tipoEntidadId?: number;
+    dependenciaId?: number;
+}
