@@ -80,7 +80,7 @@ export default class EntidadComponent {
   entidadForm=this.fb.group({
     id : [''],
     dni: [''],
-    codigo: [''],
+    codigo: ['000000'],
     nombres: [''],
     apellidos : [''],
     fechaIngreso : [''],
@@ -95,8 +95,6 @@ export default class EntidadComponent {
   {
     
   }
-
-
 
   GetListSexo()
   {
@@ -220,6 +218,34 @@ export default class EntidadComponent {
     this.modeloEntidad.set(modelo);
   }
 
+  openModalEdit(entidad: Entidad, typeModal: string)
+  {
+    this.GetListCargo();
+    this.GetListTipoEntidad();
+    this.GetListDependencia();
+    this.GetListSexo();
+    
+    this.text = 'Editar';
+    this.PostType = 'edit';
+    this.entidadForm.controls['id'].setValue(''+entidad.id);
+    this.entidadForm.controls['dni'].setValue(''+entidad.persona?.dni);
+    this.entidadForm.controls['codigo'].setValue(''+entidad.codigo);
+    this.entidadForm.controls['nombres'].setValue(''+entidad.persona?.nombres);
+    this.entidadForm.controls['apellidos'].setValue(''+entidad.persona?.apellidos);
+    this.entidadForm.controls['fechaIngreso'].setValue(''+entidad.fechaIngreso);
+    this.entidadForm.controls['sexoId'].setValue(''+entidad.persona?.sexoId);
+  
+   this.entidadForm.controls['cargoId'].setValue(''+entidad.cargo?.id);
+   console.log('-------------------------->>>>');
+   console.log(this.entidadForm);
+   console.log(entidad);
+   console.log('<<<-------------------------------');
+    this.entidadForm.controls['tipoEntidadId'].setValue(''+entidad.tipoEntidad?.id);
+    this.entidadForm.controls['dependenciaId'].setValue(''+entidad.dependencia?.id);
+    this.modalActivo = this.modalService.createModal();
+    this.modalActivo.show();
+  }
+
   openModal()
   {
     this.GetListCargo();
@@ -234,6 +260,8 @@ export default class EntidadComponent {
 
   
   closeModal(){
+    this.entidadForm.reset();
+
     this.modalActivo.hide();
   }
   
