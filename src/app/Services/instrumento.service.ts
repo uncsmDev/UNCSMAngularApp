@@ -13,14 +13,14 @@ export class InstrumentoService {
 
   private http = inject(HttpClient);
   private ruta:string = appsettings.apiApp + 'Instrumento';
-  private rutaTipoEntidad:string = appsettings.apiApp + 'TipoEntidad';
+  private rutaTipoEntidad:string = appsettings.apiApp + 'TipoEntidad/';
   private rutaTipoEvaluacion:string = appsettings.apiApp + 'TipoEvaluacion';
 
   constructor() { }
 
   getTipoEntidad(): Observable<TipoEntidad[]>
   {
-    return this.http.get<TipoEntidad[]>(this.rutaTipoEntidad);
+    return this.http.get<TipoEntidad[]>(this.rutaTipoEntidad + 'GetList');
   }
 
   getTipoEvaluacion(): Observable<TipoEvaluacion[]>
@@ -32,5 +32,9 @@ export class InstrumentoService {
     const headers = { 'content-type': 'application/json'}  
     const body=JSON.stringify(instrumento);
     return this.http.post(this.ruta, body, {headers});
+  }
+
+  get(): Observable<Instrumento[]>{
+    return this.http.get<Instrumento[]>(this.ruta)
   }
 }

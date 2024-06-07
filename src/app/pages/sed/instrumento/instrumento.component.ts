@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject, signal } from '@angular/core';
+import { Component, ViewChild, computed, inject, signal } from '@angular/core';
 import { TitleComponent } from '../../../shared/title/title.component';
 import { ModalService } from '../../../Services/modal.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -39,6 +39,8 @@ export default class InstrumentoComponent {
     visible: [true]  // Initialize with true or any default value
   });
 
+  private _instrumentos = signal<Instrumento[]>([]); 
+  instrumentos = computed(this._instrumentos);
   tipoEntidades = signal<TipoEntidad[]>([])
   tipoEvaluaciones = signal<TipoEvaluacion[]>([])
 
@@ -46,16 +48,21 @@ export default class InstrumentoComponent {
   @ViewChild(ModalDeleteComponent) modal!: ModalDeleteComponent;
 
   ngOnInit() {
-    
-  }
-  
-  openModal()
-  {
     this.instrumentoService.getTipoEntidad().subscribe({
       next: (result) => {
         this.tipoEntidades.set(result);
       }
     });
+  this.instrumentoService.get().subscribe({
+    next: (datos) => {
+      this._instrumentos.set(datos);
+    }
+  })
+  }
+  
+  openModal()
+  {
+    
     this.instrumentoService.getTipoEvaluacion().subscribe({
       next: (result) => {
         this.tipoEvaluaciones.set(result);
@@ -74,10 +81,15 @@ export default class InstrumentoComponent {
     if(this.instrumentoForm.valid)
       {
         const instrumento: Instrumento = this.instrumentoForm.value as Instrumento;
-        console.log(instrumento);
+        this.instrumentoService.post(instrumento).subscribe({
+          next: a => {
+            this.instrumentoForm.reset();
+            this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+          }
+        });
       }
 
-    console.log(this.instrumentoForm)
+    
   }
   onDelete(event: any){
 
