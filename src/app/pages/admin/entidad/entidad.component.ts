@@ -225,6 +225,8 @@ export default class EntidadComponent {
     this.GetListDependencia();
     this.GetListSexo();
     
+    console.log("Hola" + this.formatearFecha(new Date(entidad.fechaIngreso)));
+
     this.text = 'Editar';
     this.PostType = 'edit';
     this.entidadForm.controls['id'].setValue(''+entidad.id);
@@ -232,7 +234,7 @@ export default class EntidadComponent {
     this.entidadForm.controls['codigo'].setValue(''+entidad.codigo);
     this.entidadForm.controls['nombres'].setValue(''+entidad.persona?.nombres);
     this.entidadForm.controls['apellidos'].setValue(''+entidad.persona?.apellidos);
-    this.entidadForm.controls['fechaIngreso'].setValue(''+entidad.fechaIngreso);
+    this.entidadForm.controls['fechaIngreso'].setValue(''+this.formatearFecha(new Date(entidad.fechaIngreso)));
     this.entidadForm.controls['sexoId'].setValue(''+entidad.persona?.sexoId);
   
    this.entidadForm.controls['cargoId'].setValue(''+entidad.cargo?.id);
@@ -245,6 +247,15 @@ export default class EntidadComponent {
     this.modalActivo = this.modalService.createModal();
     this.modalActivo.show();
   }
+
+  formatearFecha(fechaString:Date) {
+    const fecha = new Date(fechaString);
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son base 0
+    const anio = fecha.getFullYear();
+
+    return `${anio}-${mes}-${dia}`;
+}
 
   openModal()
   {
