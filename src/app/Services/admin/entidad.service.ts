@@ -32,16 +32,17 @@ export class EntidadService {
 
   put(entidad:EntidadDto): Observable<any> {
     const headers = { 'content-type': 'application/json'}  
+    console.log('Editar Datos');
+    console.log(entidad);
     const body=JSON.stringify(entidad);
-    console.log(body)
     return this.http.put(this.apiUrl+'/'+entidad.id, body,{'headers':headers})
   }
 
   post(entidad:EntidadDto): Observable<any> {
     const headers = { 'content-type': 'application/json'} 
-    debugger; 
     const body=JSON.stringify(entidad);
-    console.log(body)
+    console.log(entidad);
+    console.log('-------------entidad--------------------');
     return this.http.post(this.apiUrl+'/PostMaster', body,{'headers':headers})
   }
  
