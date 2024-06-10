@@ -224,9 +224,6 @@ export default class EntidadComponent {
     this.GetListTipoEntidad();
     this.GetListDependencia();
     this.GetListSexo();
-    
-    console.log("Hola" + this.formatearFecha(new Date(entidad.fechaIngreso)));
-
     this.text = 'Editar';
     this.PostType = 'edit';
     this.entidadForm.controls['id'].setValue(''+entidad.id);
@@ -238,10 +235,6 @@ export default class EntidadComponent {
     this.entidadForm.controls['sexoId'].setValue(''+entidad.persona?.sexoId);
   
    this.entidadForm.controls['cargoId'].setValue(''+entidad.cargo?.id);
-   console.log('-------------------------->>>>');
-   console.log(this.entidadForm);
-   console.log(entidad);
-   console.log('<<<-------------------------------');
     this.entidadForm.controls['tipoEntidadId'].setValue(''+entidad.tipoEntidad?.id);
     this.entidadForm.controls['dependenciaId'].setValue(''+entidad.dependencia?.id);
     this.modalActivo = this.modalService.createModal();
@@ -291,10 +284,14 @@ export default class EntidadComponent {
     });
   }
     else{
+
+      console.log(this.PostType+' <<<PostType');
       this.entidadService.put(this.entidadService.convertirAGrupoAObjeto(this.entidadForm)).subscribe({
         next: (response) => {
           this.matSnackBar.open("Dato modificado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'}).afterDismissed().subscribe({
             next:(s) =>{
+              
+      console.log(' <<<OpenModal>>>');
               this.closeModal()
             }
           })
