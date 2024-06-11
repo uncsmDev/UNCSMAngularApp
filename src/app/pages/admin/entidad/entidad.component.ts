@@ -67,6 +67,7 @@ export default class EntidadComponent {
   pag!:Paginacion;
 
   modalActivo!: ModalInterface;
+  modalCreateUser!: ModalInterface;
   PostType?:string;
   text:string = 'Agregar';  
 
@@ -211,9 +212,16 @@ export default class EntidadComponent {
   //---------------Paginacion fin --------------------------------
   
  
+  openCreateUser(model: Entidad,modalNombre:string)
+  {
+    //this.modalCreateUser = this.modalService.createModalDinamic(modalNombre);
+    this.modalCreateUser.show();
+  }
+
   callChildMethod(modelo: Entidad) {
+
     if(this.modal){
-      this.modal.openModal(); // Llama al método doSomething del componente hijo
+      this.modal.openModal();
     }
     this.modeloEntidad.set(modelo);
   }
@@ -290,8 +298,6 @@ export default class EntidadComponent {
         next: (response) => {
           this.matSnackBar.open("Dato modificado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'}).afterDismissed().subscribe({
             next:(s) =>{
-              
-      console.log(' <<<OpenModal>>>');
               this.closeModal()
             }
           })
@@ -301,6 +307,21 @@ export default class EntidadComponent {
       });
     }
   }
+
+  onDelete(event: any)
+  {
+    this.entidadService.eliminar(this.modeloEntidad()).subscribe({
+      next: (value) => {
+        this.matSnackBar.open("Dato eliminado correctamente!",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+        this.GetListIndex(1);
+      },
+      error: (err) =>{
+        this.matSnackBar.open("Error al eliminar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'})
+      },
+    })
+    
+  }
+
 
 }
 

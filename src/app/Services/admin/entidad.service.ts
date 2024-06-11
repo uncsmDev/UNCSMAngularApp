@@ -30,10 +30,9 @@ export class EntidadService {
     );
   }
 
+
   put(entidad:EntidadDto): Observable<any> {
     const headers = { 'content-type': 'application/json'}  
-    console.log('Editar Datos');
-    console.log(entidad);
     const body=JSON.stringify(entidad);
     return this.http.put(this.apiUrl+'/'+entidad.id, body,{'headers':headers})
   }
@@ -41,11 +40,14 @@ export class EntidadService {
   post(entidad:EntidadDto): Observable<any> {
     const headers = { 'content-type': 'application/json'} 
     const body=JSON.stringify(entidad);
-    console.log(entidad);
-    console.log('-------------entidad--------------------');
     return this.http.post(this.apiUrl+'/PostMaster', body,{'headers':headers})
   }
  
+  
+  eliminar(entidad?:Entidad|null): Observable<any> {
+    return this.http.delete(this.apiUrl+'/Delete/'+entidad?.id)
+  }
+
   convertirAGrupoAObjeto(entidadForm: FormGroup): EntidadDto {
     return {
       id: entidadForm.get('id')?.value == '' || entidadForm.get('id')?.value == null ? 0 : entidadForm.get('id')?.value,
