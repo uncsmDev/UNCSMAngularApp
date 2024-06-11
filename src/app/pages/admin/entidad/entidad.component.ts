@@ -237,7 +237,7 @@ export default class EntidadComponent {
    this.entidadForm.controls['cargoId'].setValue(''+entidad.cargo?.id);
     this.entidadForm.controls['tipoEntidadId'].setValue(''+entidad.tipoEntidad?.id);
     this.entidadForm.controls['dependenciaId'].setValue(''+entidad.dependencia?.id);
-    this.modalActivo = this.modalService.createModal();
+    this.modalActivo = this.modalService.createModal('static-modal');
     this.modalActivo.show();
   }
 
@@ -258,7 +258,7 @@ export default class EntidadComponent {
     this.GetListSexo();
     this.text = 'Agregar';
     this.PostType = 'add';
-    this.modalActivo = this.modalService.createModal();
+    this.modalActivo = this.modalService.createModal('static-modal');
     this.modalActivo.show();
   }
 

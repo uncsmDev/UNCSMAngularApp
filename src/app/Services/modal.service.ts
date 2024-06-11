@@ -8,9 +8,9 @@ export class ModalService {
 
   constructor() { }
 
-  createModal(){
+  createModal(nameModal:string){
 
-    const $modalElement: HTMLElement | null = document.getElementById('static-modal');
+    const $modalElement: HTMLElement | null = document.getElementById(nameModal);
     if (!$modalElement) {
       throw new Error('Elemento modal no encontrado');
     }
