@@ -71,7 +71,7 @@ export default class InstrumentoComponent {
 
     this.text = 'Agregar';
     this.PostType = 'add';
-    this.modalActivo = this.modalService.createModal();
+    this.modalActivo = this.modalService.createModal('static-modal');
     this.modalActivo.show();
   }
 
@@ -96,5 +96,14 @@ export default class InstrumentoComponent {
   }
   closeModal(){
     this.modalActivo.hide();
+  }
+
+  openModalAddQuestion()
+  {
+
+    this.text = 'Agregar';
+    this.PostType = 'add';
+    this.modalActivo = this.modalService.createModal('modalAdd');
+    this.modalActivo.show();
   }
 }

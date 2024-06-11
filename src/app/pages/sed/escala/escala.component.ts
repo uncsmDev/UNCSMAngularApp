@@ -125,7 +125,7 @@ export default class EscalaComponent {
   {
     this.text = 'Agregar';
     this.PostType = 'add';
-    this.modalActivo = this.modalService.createModal();
+    this.modalActivo = this.modalService.createModal('static-modal');
     this.modalActivo.show();
   }
 
@@ -138,7 +138,7 @@ export default class EscalaComponent {
     this.escalaForm.controls['simbologia'].setValue(''+escala.simbologia);
     this.escalaForm.controls['valoracion'].setValue(''+escala.valoracion);
     this.escalaForm.controls['nivelcumplimiento'].setValue(''+escala.nivelCumplimiento);
-    this.modalActivo = this.modalService.createModal();
+    this.modalActivo = this.modalService.createModal('static-modal');
     this.modalActivo.show();
   }
 
