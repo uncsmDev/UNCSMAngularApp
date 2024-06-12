@@ -106,7 +106,6 @@ export default class EscalaComponent {
       });
     }
   }
-
   onDelete(event: any)
   {
     this.escalaService.delete(this.modeloEscala()).subscribe({

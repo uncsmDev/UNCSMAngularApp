@@ -9,6 +9,7 @@ import { ModalInterface } from 'flowbite';
 import { TipoEntidad } from '../../../interfaces/tipoEntidad';
 import { TipoEvaluacion } from '../../../interfaces/tipo_evaluacion';
 import { Instrumento } from '../../../interfaces/instrumento';
+import { DatosInstrumentos } from '../../../interfaces/datos_instrumentos';
 
 @Component({
   selector: 'app-instrumento',
@@ -42,13 +43,29 @@ export default class InstrumentoComponent {
     id: [0, [Validators.required]],
     nombre: ['', [Validators.required]],
     tipoEntidadId: [0, [Validators.required]],
-    tipoEvaluacionId: [0, [Validators.required]],
-    eliminado: [false], 
-    visible: [true]
+    tipoEvaluacionId: [0, [Validators.required]]
   });
 
-  private _instrumentos = signal<Instrumento[]>([]); 
-  instrumentos = computed(this._instrumentos);
+  _instrumentos = signal<Instrumento[]>([]); 
+  instrumentos = computed(()=>{
+    debugger
+    const inst = this._instrumentos();
+    const tipo = this.tipoEntidades();
+
+    const dato:DatosInstrumentos | any = []
+
+    tipo.forEach((a) => {
+      dato.push(
+        {
+          tipo: a,
+          instrumentos: inst.filter((c) => c.tipoEntidadId == a.id)
+        }
+      )
+    })
+    debugger
+
+    return dato;
+  });
   tipoEntidades = signal<TipoEntidad[]>([])
   tipoEvaluaciones = signal<TipoEvaluacion[]>([])
   modeloInstrumento = signal<Instrumento|null>(null);
@@ -88,25 +105,54 @@ export default class InstrumentoComponent {
     this.modalActivo.show();
   }
 
-  
+  openModalEdit(instrumento: Instrumento)
+  {
+    this.instrumentoService.getTipoEvaluacion().subscribe({
+      next: (result) => {
+        this.tipoEvaluaciones.set(result);
+      }
+    });
+    this.text = 'Editar';
+    this.PostType = 'edit';
+    this.instrumentoForm.controls['id'].setValue(instrumento.id);
+    this.instrumentoForm.controls['nombre'].setValue(''+instrumento.nombre);
+    this.instrumentoForm.controls['tipoEntidadId'].setValue(instrumento.tipoEntidadId);
+    this.instrumentoForm.controls['tipoEvaluacionId'].setValue(instrumento.tipoEvaluacionId);
+    this.modalActivo = this.modalService.createModal('static-modal');
+    this.modalActivo.show();
+  }
 
   onSubmit(){
-
    if(this.instrumentoForm.valid)
       {
         const instrumento: Instrumento = this.instrumentoForm.value as Instrumento;
         this.instrumentoService.post(instrumento).subscribe({
           next: a => {
-            this.reset()
-            console.log(this.instrumentoForm)
-            this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+            if(a)
+              {
+                this.reset()
+                this._instrumentos.update((prev) => {
+                  debugger
+                  return [...prev, {...instrumento, id: a}]
+                })
+                debugger
+                this.tipoEntidades();
+                this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+              }
+              else{
+                this.matSnackBar.open("Error al intentar eliminar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+              }
+            
+          },
+          error: (e) => {
+            this.matSnackBar.open("Error al intentar eliminar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
           }
         });
       }
 
     
   }
-  
+
   callChildMethod(modelo: Instrumento) {
     if(this.modal){
       this.modal.openModal(); // Llama al método doSomething del componente hijo
@@ -115,15 +161,22 @@ export default class InstrumentoComponent {
   }
 
   onDelete(){
-    debugger
     this.instrumentoService.delete(this.modeloInstrumento()).subscribe(
       {
         next: (res) => {
-          this.matSnackBar.open("Dato eliminado correctamente!",'Cerrar',{ duration:5000, horizontalPosition:'center'});
-          this._instrumentos.update((valor) => {
-            return valor.filter((dato) => dato.id !== this.modeloInstrumento()!.id);
-          })
-        }
+          if(res){
+            this.matSnackBar.open("Dato eliminado correctamente!",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+            this._instrumentos.update((valor) => {
+              return valor.filter((dato) => dato.id !== this.modeloInstrumento()!.id);
+            })
+          }else{
+            this.matSnackBar.open("Error al intentar eliminar el dato!",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+          }
+          
+        },
+        error: (a) =>{
+          this.matSnackBar.open("Error al intentar eliminar el dato!",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+        } 
       }
     )
   }
@@ -147,9 +200,7 @@ export default class InstrumentoComponent {
         id: 0,
         nombre: '',
         tipoEntidadId: 0,
-        tipoEvaluacionId: 0,
-        eliminado: false,
-        visible: true
+        tipoEvaluacionId: 0
       }
     );
   }

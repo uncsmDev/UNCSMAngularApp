@@ -5,6 +5,4 @@ export interface Instrumento {
     nombre:               string;
     tipoEntidadId:        number;
     tipoEvaluacionId:     number;
-    eliminado:            boolean;
-    visible:              boolean;
 }
