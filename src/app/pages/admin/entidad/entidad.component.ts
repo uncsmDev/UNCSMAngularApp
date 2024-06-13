@@ -1,6 +1,7 @@
 import { Component, Signal, WritableSignal, computed, inject, signal,AfterViewInit, ViewChild, AfterContentInit } from '@angular/core';
 import { initFlowbite } from 'flowbite';
 import {PackPage, Paginacion} from '../../../interfaces/packPage'
+import {InsertUsuario} from '../../../interfaces/usuario'
 import type { InstanceOptions } from 'flowbite';
 
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
@@ -28,6 +29,7 @@ import { Dependencia } from '../../../interfaces/dependencia';
 import { DependenciaService } from '../../../Services/admin/dependencia.service';
 import { Sexo } from '../../../interfaces/sexo';
 import { SexoService } from '../../../Services/admin/sexo.service';
+import { UsuarioService } from '../../../Services/usuario.service';
 
 
 @Component({
@@ -45,6 +47,7 @@ export default class EntidadComponent {
   tipoEntidadService=inject(TipoEntidadService);
   dependenciaService=inject(DependenciaService);
   sexoService=inject(SexoService);
+  usuarioService=inject(UsuarioService)
 
   matSnackBar=inject(MatSnackBar);
   fb = inject(FormBuilder);
@@ -90,6 +93,16 @@ export default class EntidadComponent {
     tipoEntidadId : [''],
     dependenciaId: [''],
      
+  });
+
+  userForm=this.fb.group({
+    entidadId : 0,
+    email: [''],
+    password: [''],
+    confirmPassword: [''],
+    nombres : [''],
+    apellidos : [''],
+    telefono : [''],
   });
 
   constructor()
@@ -214,7 +227,14 @@ export default class EntidadComponent {
  
   openCreateUser(model: Entidad,modalNombre:string)
   {
-    //this.modalCreateUser = this.modalService.createModalDinamic(modalNombre);
+    this.userForm.controls['nombres'].setValue(''+model.persona?.nombres);
+    this.userForm.controls['apellidos'].setValue(''+model.persona?.apellidos);
+    this.userForm.controls['entidadId'].setValue(model.id);
+    this.userForm.get('nombres')?.disable();
+    this.userForm.get('apellidos')?.disable();
+    this.userForm.get('id')?.disable();
+
+    this.modalCreateUser = this.modalService.createModal(modalNombre);
     this.modalCreateUser.show();
   }
 
@@ -277,7 +297,50 @@ export default class EntidadComponent {
     this.modalActivo.hide();
   }
   
+
+  closeUserModal(){
+    this.entidadForm.reset();
+
+    this.modalCreateUser.hide();
+  }
  
+
+  onSubmitUser()
+  {
+    if(this.userForm.valid)
+      {
+       
+
+        const usuarioNet: InsertUsuario = this.userForm.value as InsertUsuario;
+       
+        this.usuarioService.registerUser(usuarioNet).subscribe({
+          next: u=>{
+            this.userForm.reset();
+            this.closeUserModal();
+            this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+
+          },
+          error: (error) => { 
+
+            if(error.error.errors.ConfirmPassword!=null)
+              this.matSnackBar.open(error.error.errors.ConfirmPassword,'Cerrar',{ duration:5000, horizontalPosition:'center'})
+
+            if(error.error.errors.Password!=null)
+              this.matSnackBar.open(error.error.errors.Password,'Cerrar',{ duration:5000, horizontalPosition:'center'})
+
+            if(error.error.errors.Email!=null)
+             this.matSnackBar.open(error.error.errors.Email,'Cerrar',{ duration:5000, horizontalPosition:'center'})
+
+           
+            if(error.error=!null)
+              this.matSnackBar.open('Puede que el correo ya este registrado','Cerrar',{ duration:5000, horizontalPosition:'center'})
+           }
+          
+
+        });
+      }
+  }
+
   onSubmit(){
 
     if(this.PostType == 'add')

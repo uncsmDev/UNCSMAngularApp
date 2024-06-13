@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { appsettings } from '../Settings/appsettings';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UsuarioViewModel } from '../interfaces/usuario';
+import { InsertUsuario, UsuarioViewModel } from '../interfaces/usuario';
 import { PackPage } from '../interfaces/packPage';
 
 @Injectable({
@@ -13,6 +13,7 @@ export class UsuarioService {
   private http = inject(HttpClient);
 
   private apiUrl:string = appsettings.apiApp + "Usuario";
+  private api:string=appsettings.apiUrl+'Account/';
 
   constructor() { }
 
@@ -24,6 +25,15 @@ export class UsuarioService {
     return this.http.get<PackPage< UsuarioViewModel>>(this.apiUrl+'/GetList?pagina='+iPag);
   }
 
+
+  registerUser(insert:InsertUsuario):Observable<any>
+  {
+    console.log(insert);
+    console.log('-----------------registerUser --------------')
+    const headers = { 'content-type': 'application/json'}  
+    const body=JSON.stringify(insert);
+    return this.http.post(this.api+'register', body,{'headers':headers})
+  }
 
   googleLogin(idToken: string) {
     return this.http.post<{ token: string }>(

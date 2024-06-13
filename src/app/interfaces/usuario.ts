@@ -18,12 +18,11 @@ interface DetalleUsuarioViewModel extends UsuarioViewModel {
     dependencia: string;
 }
 
-interface InsertUsuarioViewModel extends UsuarioViewModel {
-    entidadId: number;
-    codigo: number;
-    sexoId: number;
-    dni: string;
-    tipoEntidadId: number;
-    dependenciaId: number;
-    cargoId: number;
+export interface InsertUsuario {
+  entidadId: number,
+  email: string,
+  password: string,
+  confirmPassword:string,
+
+  telefono:string,
 }
