@@ -18,33 +18,37 @@
             
         </div>
     </div>
-    @for (t of tipoEntidades(); track t.id) {
-        <div>
-        <h2 class="text-2xl mb-1 text-black dark:text-white font-bold mx-2">{{t.nombre}}</h2>
-        <hr class="mb-1 text-black dark:text-white font-bold mx-2 mb-5 h-1 border-0 bg-white dark:bg-white bg-gray-400"/>
+<div>
+            
+ 
+    @for (instrumento of instrumentos(); track instrumento.id; let index = $index) {
+        @if(instrumento.instrumentos.length > 0)
+        {
+            <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:bg-gray-800 dark:border-gray-700 mb-2">
+        
+            <h2 class="text-2xl mb-1 text-black dark:text-white font-bold mx-2">{{instrumento.tipo.nombre}}</h2>
+            <hr class="mb-1 text-black dark:text-white font-bold mx-2 mb-5 h-1 border-0 bg-white dark:bg-white bg-gray-400"/>
+        
+        
     <div class="grid md:grid-cols-3">
-      
+        @for (ins of instrumento.instrumentos; track ins.id) {
           
-       
-        @for (instrumento of instrumentos(); track instrumento.id) {
-          
-       @if(instrumento.tipoEntidadId == t.id){
-
-
-<div class="max-w-sm p-6 mb-2 mx-1 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        
+    <div class="max-w-sm p-6 mb-2 mx-1 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-700 dark:border-gray-700">
+    
     <div class="flex justify-between mb-3 pb-3">
         <div class="w-full ">
             <!-- <input type="text" class="w-full"> -->
-            <h2 class="text-xl mb-1 text-black dark:text-white font-bold mx-2">{{instrumento.nombre}}</h2>
+            <h2 class="text-xl mb-1 text-black dark:text-white font-bold mx-2">{{ins.nombre}}</h2>
         </div>
         
         <div class="flex justify-between ml-2 items-center">
-            <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+            <a (click)="openModalEdit(ins)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
                   </svg>
             </a>
-            <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+            <a (click)="callChildMethod(ins)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
                   </svg>
@@ -71,11 +75,16 @@
     
 </div>
 }
-}
 
+<!-- } -->
+        
     </div>
+
 </div>
-}   
+}
+}
+</div>
+
 </div>
 
 @defer () {
@@ -114,7 +123,7 @@
                                     <select id="tipoEntidadId" formControlName="tipoEntidadId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
                             focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
                             dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option value=""> --- Seleccione --- </option>
+                                        <option value="0"> --- Seleccione --- </option>
                                      @if(tipoEntidades().length > 0)
                                      {
                                         @for (tipoEntidad of tipoEntidades(); track tipoEntidad.id) {
@@ -128,7 +137,7 @@
                                 <div class="w-full">
                                     <label for="tipoEvaluacionId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo de evaluación</label>
                                     <select id="tipoEvaluacionId" formControlName="tipoEvaluacionId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option value="" selected>--- Seleccione ---</option>
+                                        <option value="0" selected>--- Seleccione ---</option>
                                         @if(tipoEvaluaciones().length > 0)
                                      {
                                             @for (tipoEvaluacion of tipoEvaluaciones(); track tipoEvaluacion.id) {
@@ -194,8 +203,12 @@
                                                 <input type="radio" id="hosting-small" name="hosting" value="hosting-small" class="hidden peer" required />
                                                 <label for="hosting-small" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-600">                           
                                                     <div class="block">
-                                                        <div class="w-full text-lg font-semibold">Abierta</div>
-                                                        <div class="w-full">Este tipo de preguntas no tiene una respuesta fija, lo que permite obtener una amplia variedad de respuestas.</div>
+                                                        <div class="w-full text-lg font-semibold">{{ 
+                                                        
+                                                        getTipoPregunta(0)!.nombre
+                                                            
+                                                            }}</div>
+                                                        <div class="w-full">{{getTipoPregunta(0)!.descripcion}}</div>
                                                     </div>
                                                 </label>
                                             </li>
@@ -203,8 +216,16 @@
                                                 <input type="radio" id="hosting-big" name="hosting" value="hosting-big" class="hidden peer">
                                                 <label for="hosting-big" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-600">
                                                     <div class="block">
-                                                        <div class="w-full text-lg font-semibold">Cerrada</div>
-                                                        <div class="w-full">Este tipo de preguntas facilita la recopilación de datos cuantitativos y permite una comparación más fácil.</div>
+                                                        <div class="w-full text-lg font-semibold">{{ 
+                                                        
+                                                            getTipoPregunta(1)!.nombre
+                                                                
+                                                                }}</div>
+                                                        <div class="w-full">{{ 
+                                                        
+                                                            getTipoPregunta(1)!.descripcion
+                                                                
+                                                                }}</div>
                                                     </div>
                                                     
                                                 </label>
@@ -228,7 +249,7 @@
       </div>
     }
     
-    <app-modal-delete #childRef (outputEvent)="onDelete($event)"></app-modal-delete>
+    <app-modal-delete #childRef (outputEvent)="onDelete()"></app-modal-delete>
 
 
     
