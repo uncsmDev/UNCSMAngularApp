@@ -100,6 +100,7 @@ export default class EscalaComponent {
               this.closeModal()
             }
           })
+          this.escalaForm.reset();
           this.getDatos()
         },
         error: (error) => {this.matSnackBar.open("Error al modificar los datos",'Cerrar',{ duration:5000, horizontalPosition:'center'}) }
@@ -122,6 +123,7 @@ export default class EscalaComponent {
 
   openModal()
   {
+    this.escalaForm.reset();
     this.text = 'Agregar';
     this.PostType = 'add';
     this.modalActivo = this.modalService.createModal('static-modal');
@@ -130,6 +132,7 @@ export default class EscalaComponent {
 
   openModalEdit(escala: Escala, typeModal: string)
   {
+    this.escalaForm.reset();
     this.text = 'Editar';
     this.PostType = 'edit';
     this.escalaForm.controls['id'].setValue(''+escala.id);
