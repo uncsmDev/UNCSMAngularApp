@@ -10,6 +10,6 @@ export interface Instrumento {
 }
 
 export enum tipoPregunta {
-    open = "Abierta",
-    closed = "Cerrada"
+    Abierta,
+    Cerrarda
 }

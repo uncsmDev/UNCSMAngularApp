@@ -6,6 +6,7 @@ import { TipoEntidad } from '../interfaces/tipoEntidad';
 import { TipoEvaluacion } from '../interfaces/tipo_evaluacion';
 import { Instrumento } from '../interfaces/instrumento';
 import { Dimension } from '../interfaces/dimension';
+import { Pregunta } from '../interfaces/pregunta';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class InstrumentoService {
 
   private http = inject(HttpClient);
   private ruta:string = appsettings.apiApp + 'Instrumento';
+  private rutaQuestion:string = appsettings.apiApp + 'Pregunta';
   private rutaTipoEntidad:string = appsettings.apiApp + 'TipoEntidad/';
   private rutaTipoEvaluacion:string = appsettings.apiApp + 'TipoEvaluacion';
   private rutaDimension:string = appsettings.apiApp + 'Dimension';
@@ -40,11 +42,22 @@ export class InstrumentoService {
     return this.http.post(this.ruta, body, {headers});
   }
 
+  postQuestion(pregunta: Pregunta): Observable<any>{
+    const headers = { 'content-type': 'application/json'}  
+    const body=JSON.stringify(pregunta);
+    return this.http.post(this.rutaQuestion, body, {headers});
+  }
+
   put(ins: Instrumento): Observable<any>{
-    debugger
     const headers = {'content-type': 'application/json'}
     const body = JSON.stringify(ins);
-    return this.http.put(`${this.ruta}/${ins.id}`, body, {headers});
+    return this.http.put(`${this.rutaQuestion}/${ins.id}`, body, {headers});
+  }
+
+  putQuestion(pregunta: Pregunta): Observable<any>{
+    const headers = {'content-type': 'application/json'}
+    const body = JSON.stringify(pregunta);
+    return this.http.put(`${this.rutaQuestion}/${pregunta.id}`, body, {headers});
   }
 
   get(): Observable<Instrumento[]>{

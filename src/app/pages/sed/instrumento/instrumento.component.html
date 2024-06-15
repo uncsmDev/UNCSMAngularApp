@@ -58,7 +58,7 @@
         
     
     <div class="flex justify-between">
-        <a (click)="openModalAddQuestion()" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer ">
+        <a (click)="openModalAddQuestion(ins)" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer ">
             Agregar preguntas
             <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
@@ -170,7 +170,7 @@
 
     <!-- Modal Add Question -->
       <div id="modalAdd" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-          <div class="relative p-4 w-full max-w-6xl max-h-full">
+          <div class="relative p-4 w-full max-w-4xl max-h-full">
               <!-- Modal content -->
               <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                   <!-- Modal header -->
@@ -187,55 +187,55 @@
                   </div>
                   <!-- Modal body --> 
                   
-                  <form novalidate [formGroup]="instrumentoForm" (ngSubmit)="onSubmit()">
+                  <form  [formGroup]="preguntaForm" (ngSubmit)="onSubmitQuestion()">
                   <div class="p-2 md:p-2 space-y-4">
                     <section class="bg-white dark:bg-gray-700">
-                        <div class="py-2 px-4 mx-auto max-w-2xl lg:py-8">
+                        <div class="py-2 px-2 mx-auto max-w-3xl lg:py-8">
                                 <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
-                                    <div class="sm:col-span-2">
+                                    <div class="w-full">
                                         <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pregunta</label>
                                         <input type="text" formControlName="nombre" name="nombre" id="nombre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Ingrese el nombre de la Escala" required />
                                     </div>
-                                    <div class="sm:col-span-2">
-                                        <!-- <ng-select [items]="simpleItems"
-                                                [(ngModel)]="selectedSimpleItem">
-                                        </ng-select> -->
+                                    <div class="w-full">
+                                        <label for="DimesionId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dimensión</label>
+                                        <select id="dimesionId" formControlName="dimesionId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            <option value="0" selected>--- Seleccione ---</option>
+                                            @if(dimensiones().length > 0)
+                                         {
+                                                @for (dimension of dimensiones(); track dimension.id) {
+                                                    <option value="{{dimension.id}}">{{dimension.nombre}}</option>
+                                                }
+                                         }
+                                            
+                                        </select>
                                     </div>
                                     <div class="sm:col-span-2">
                                         <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo de Pregunta</label>
                                         <ul class="grid w-full gap-6 md:grid-cols-2">
                                             <li>
                                                 <div class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-500">
-                                                    <input id="bordered-radio-1" type="radio" value="" name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                    <label for="bordered-radio-1" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ tipoPregunta.open }}</label>
+                                                    <input id="bordered-radio-1" type="radio" value="{{ tipoPregunta.Abierta }}" name="tipoPregunta" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" formControlName="tipoPregunta">
+                                                    <label for="bordered-radio-1" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ tipoPregunta.Abierta }}</label>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-500">
-                                                    <input id="bordered-radio-2" type="radio" value="" name="bordered-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                    <label for="bordered-radio-2" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ tipoPregunta.closed }}</label>
+                                                    <input id="bordered-radio-2" type="radio" value="{{ tipoPregunta.Cerrarda }}" name="tipoPregunta" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" formControlName="tipoPregunta">
+                                                    <label for="bordered-radio-2" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ tipoPregunta.Cerrarda }}</label>
                                                 </div>
                                             </li>
                                         </ul>
                                     </div>
                                    
                                 </div>
+                                
                         </div>
-                        <div class="flex justify-center content-center items-center">
-                            <div class="flex flex-col justify-center content-center items-center w-full">
-                                <p class="text-center dark:text-white">Preguntas Cerradas</p>
-                                <hr class="w-1/2">
-                            </div>
-                            <div class="flex flex-col justify-center content-center items-center w-full">
-                                <p class="text-center dark:text-white">Preguntas Cerradas</p>
-                                <hr class="w-1/2">
-                            </div>
-                        </div>
+                        
                       </section>
                   </div>
                   <!-- Modal footer -->
                   <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                      <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" [disabled]="instrumentoForm.invalid">Guardar</button>
+                      <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >Guardar</button>
     
                       <button (click)="closeModal()" data-modal-hide="static-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cerrar</button>
                   </div>
@@ -246,6 +246,15 @@
     }
     
     <app-modal-delete #childRef (outputEvent)="onDelete()"></app-modal-delete>
+<!-- 
 
-
-    
+    <div class="flex justify-center content-center items-center">
+        <div class="flex flex-col justify-center content-center items-center w-full">
+            <p class="text-center dark:text-white">Preguntas Cerradas</p>
+            <hr class="w-1/2">
+        </div>
+        <div class="flex flex-col justify-center content-center items-center w-full">
+            <p class="text-center dark:text-white">Preguntas Cerradas</p>
+            <hr class="w-1/2">
+        </div>
+    </div> -->

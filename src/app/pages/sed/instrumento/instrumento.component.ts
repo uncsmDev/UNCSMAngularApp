@@ -12,6 +12,7 @@ import { Instrumento, tipoPregunta } from '../../../interfaces/instrumento';
 import { DatosInstrumentos } from '../../../interfaces/datos_instrumentos';
 import { Dimension } from '../../../interfaces/dimension';
 import { CommonModule } from '@angular/common';
+import { Pregunta } from '../../../interfaces/pregunta';
 
 @Component({
   selector: 'app-instrumento',
@@ -47,13 +48,14 @@ export default class InstrumentoComponent {
   
   preguntaForm = this.fb.group({
     id: [0, [Validators.required]],
-    Nombre: ['', [Validators.required]],
-    InstrumentoId: [0, [Validators.required]],
-    DimesionId: [0, [Validators.required]],
+    nombre: ['', [Validators.required]],
+    instrumentoId: [0, [Validators.required]],
+    dimesionId: [0, [Validators.required]],
     tipoPregunta: [0, [Validators.required]]
   });
 
   _instrumentos = signal<Instrumento[]>([]); 
+  preguntas = signal<Pregunta[]>([]); 
   dimensiones = signal<Dimension[]>([]);
   instrumentos = computed(()=>{
     const inst = this._instrumentos();
@@ -187,6 +189,71 @@ export default class InstrumentoComponent {
     
   }
 
+  onSubmitQuestion(){
+    if(this.preguntaForm.valid)
+       {
+        debugger
+         const pregunta: Pregunta = this.preguntaForm.value as Pregunta;
+         pregunta.instrumentoId = this.modeloInstrumento()!.id;
+
+         if(this.PostType == 'add')
+         {
+           this.instrumentoService.postQuestion(pregunta).subscribe({
+             next: a => {
+               if(a)
+                 {
+                   this.reset()
+                   this.preguntas.update((prev) => {
+                     return [...prev, {...pregunta, id: a}]
+                   })
+                   
+                   this.tipoEntidades();
+                   this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+                 }
+                 else{
+                   this.matSnackBar.open("Error al intentar guardar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+                 }
+               
+             },
+             error: (e) => {
+               this.matSnackBar.open("Error al intentar guardar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+             }
+           });
+       }
+       else{
+         this.instrumentoService.putQuestion(pregunta).subscribe({
+           next: (res) =>{
+             debugger
+             if(res){
+               this._instrumentos.update((arr) => {
+                 return arr.map((dato)=>{
+                   debugger
+                   return pregunta.id == dato.id ? 
+                   {...dato, nombre: pregunta.nombre, tipoPregunta: pregunta.tipoPregunta,
+                    instrumentoId: pregunta.instrumentoId, dimesionId: pregunta.dimesionId} 
+                   : 
+                   dato
+                 })
+               })
+               this.closeModal()
+               this.matSnackBar.open("Dato modificado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+             }
+             else{
+               this.matSnackBar.open("Error al intentar editar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+             }
+           },
+           error: (err)=>{
+             debugger
+             this.matSnackBar.open("Error al intentar editar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+           }
+         })
+       }
+ 
+       }
+ 
+     
+   }
+
   callChildMethod(modelo: Instrumento) {
     if(this.modal){
       this.modal.openModal(); // Llama al método doSomething del componente hijo
@@ -218,7 +285,7 @@ export default class InstrumentoComponent {
     this.modalActivo.hide();
   }
 
-  openModalAddQuestion()
+  openModalAddQuestion(instrumento: Instrumento)
   {
     this.modalActivo = this.modalService.createModal('modalAdd');
     this.instrumentoService.getDimensiones().subscribe({
@@ -226,6 +293,7 @@ export default class InstrumentoComponent {
         this.dimensiones.set(res);
       }
     })
+    this.modeloInstrumento.update((a) => instrumento);
     this.modalActivo.show();
   }
 
