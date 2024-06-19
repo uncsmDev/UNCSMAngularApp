@@ -187,7 +187,7 @@
                   </div>
                   <!-- Modal body --> 
                   
-                  <form  [formGroup]="preguntaForm" (ngSubmit)="onSubmitQuestion()">
+                  <form novalidate  [formGroup]="preguntaForm" (ngSubmit)="onSubmitQuestion()">
                   <div class="p-2 md:p-2 space-y-4">
                     <section class="bg-white dark:bg-gray-700">
                         <div class="py-2 px-2 mx-auto max-w-3xl lg:py-8">
@@ -212,18 +212,18 @@
                                     <div class="sm:col-span-2">
                                         <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo de Pregunta</label>
                                         <ul class="grid w-full gap-6 md:grid-cols-2">
+                                            @if(tipoPregunta().length > 0)
+                                            {
+
+                                            @for (tp of tipoPregunta(); track tp.id) {
                                             <li>
                                                 <div class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-500">
-                                                    <input id="bordered-radio-1" type="radio" value="{{ tipoPregunta.Abierta }}" name="tipoPregunta" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" formControlName="tipoPregunta">
-                                                    <label for="bordered-radio-1" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ tipoPregunta.Abierta }}</label>
+                                                    <input id="bordered-radio-{{tp.id}}" type="radio" value="{{ tp.id }}" name="tipoPreguntaId" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" formControlName="tipoPreguntaId">
+                                                    <label for="bordered-radio-{{tp.id}}" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ tp.name }}</label>
                                                 </div>
                                             </li>
-                                            <li>
-                                                <div class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-500">
-                                                    <input id="bordered-radio-2" type="radio" value="{{ tipoPregunta.Cerrarda }}" name="tipoPregunta" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" formControlName="tipoPregunta">
-                                                    <label for="bordered-radio-2" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ tipoPregunta.Cerrarda }}</label>
-                                                </div>
-                                            </li>
+                                        }
+                                        }
                                         </ul>
                                     </div>
                                    
@@ -235,7 +235,7 @@
                   </div>
                   <!-- Modal footer -->
                   <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                      <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >Guardar</button>
+                      <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" [disabled]="preguntaForm.invalid">Guardar</button>
     
                       <button (click)="closeModal()" data-modal-hide="static-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cerrar</button>
                   </div>
@@ -245,16 +245,4 @@
       </div>
     }
     
-    <app-modal-delete #childRef (outputEvent)="onDelete()"></app-modal-delete>
-<!-- 
-
-    <div class="flex justify-center content-center items-center">
-        <div class="flex flex-col justify-center content-center items-center w-full">
-            <p class="text-center dark:text-white">Preguntas Cerradas</p>
-            <hr class="w-1/2">
-        </div>
-        <div class="flex flex-col justify-center content-center items-center w-full">
-            <p class="text-center dark:text-white">Preguntas Cerradas</p>
-            <hr class="w-1/2">
-        </div>
-    </div> -->
+    <app-modal-delete (outputEvent)="onDelete()"></app-modal-delete>

@@ -8,8 +8,4 @@ export interface Instrumento {
     tipoEntidadId:        number;
     tipoEvaluacionId:     number;
 }
-
-export enum tipoPregunta {
-    Abierta,
-    Cerrarda
-}
+export type tipoModal =  'add' | 'edit'
