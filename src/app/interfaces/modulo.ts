@@ -8,4 +8,16 @@ export interface Modulo {
     loadComponent:     string;
     imgLocation:       string;
     subModulos:        null;
+  
+}
+
+
+export interface ModuloView
+{
+    id:                number;
+    titulo:            string;
+    descripcion:       string;
+    path:              string;
+    loadComponent:     string;
+   // fileId:      number;
 }

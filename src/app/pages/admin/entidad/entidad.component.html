@@ -80,18 +80,18 @@
                             {{item.dependencia?.nombre}}
                         </td>
                         <td class="px-6 py-4">
-                            <a (click)="openModalEdit(item, 'static-modal')" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+                            <a (click)="openModalEdit(item, 'static-modal')" title="Editar" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
                                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
                                   </svg>
                             </a>
-                            <a (click)="callChildMethod(item)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+                            <a (click)="callChildMethod(item)" title="Eliminar" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
                                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
                                   </svg>
                             </a>
 
-                            <a (click)="openCreateUser(item,'createUser-modal')" data-modal-target="createUser-modal" data-modal-toggle="createUser-modal" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer    focus:ring-4 focus:outline-none focus:ring-blue-300">
+                            <a (click)="openCreateUser(item,'createUser-modal')" title="Crear una Cuenta de Usuario" data-modal-target="createUser-modal" data-modal-toggle="createUser-modal" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer    focus:ring-4 focus:outline-none focus:ring-blue-300">
                                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                     <path fill-rule="evenodd" d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
                                   </svg>
@@ -332,10 +332,6 @@
                             <label for="floating_phone" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Teléfono/Celular</label>
                         </div>
     
-                      <!--div class="relative z-0 w-full mb-5 group">
-                          <input type="text" name="floating_company" id="floating_company" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                          <label for="floating_company" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Company (Ex. Google)</label>
-                      </div-->
                     </div>
                
                   

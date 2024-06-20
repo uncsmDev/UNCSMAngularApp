@@ -22,5 +22,12 @@ export class SubmoduloService {
     return this.http.get<SubModulo[]>(url + `/GetListUser?id=${id}&userID=${token.idUser}`);
   }
 
-  
+  getListByModulo(id:number)
+  {
+    return this.http.get<SubModulo[]>(this.apiUrl+'/GetListByModulo?id='+id);
+  }
+  getList()
+  {
+    return this.http.get<SubModulo[]>(this.apiUrl+'/GetList');
+  }
 }

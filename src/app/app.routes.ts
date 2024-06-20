@@ -44,7 +44,11 @@ export const routes: Routes = [
         canActivateChild: [authChildGuard],
         children: [
             {
-                
+                path: '',
+                redirectTo: 'admin/home',
+                pathMatch: 'full'
+              },
+            {
                 path: 'entidad',
                 title: 'Entidades',
                 loadComponent: () => import('./pages/admin/entidad/entidad.component'),
@@ -58,6 +62,17 @@ export const routes: Routes = [
                 path: 'home',
                 title: 'Home',
                 loadComponent: () => import('./pages/admin/home/home.component'),
+            },
+            {
+                path: 'modulo',
+                title: 'Catalogo Modulo',
+                loadComponent: () => import('./pages/admin/modulo/modulo.component'),
+            },
+            
+            {
+                path: 'submodulo',
+                title: 'Catalogo SubModulos',
+                loadComponent: () => import('./pages/admin/submodulo/submodulo.component'),
             }
         ]
     
