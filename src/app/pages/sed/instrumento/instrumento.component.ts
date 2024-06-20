@@ -1,20 +1,24 @@
-import { InstrumentoService } from './../../../Services/instrumento.service';
+import { InstrumentoService } from '@services/sed/instrumento.service';
 import { Component, ViewChild, computed, inject, signal } from '@angular/core';
 import { TitleComponent } from '../../../shared/title/title.component';
-import { ModalService } from '../../../Services/modal.service';
+import { ModalService } from '@services/modal.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ModalDeleteComponent } from '../../../components/modal-delete/modal-delete.component';
 import { ModalInterface } from 'flowbite';
-import { TipoEntidad } from '../../../interfaces/tipoEntidad';
-import { TipoEvaluacion } from '../../../interfaces/tipo_evaluacion';
-import { Instrumento } from '../../../interfaces/instrumento';
-import { DatosInstrumentos } from '../../../interfaces/datos_instrumentos';
+import { TipoEntidad } from '@interfaces/tipoEntidad';
+import { TipoEvaluacion } from '@interfaces/tipo_evaluacion';
+import { Instrumento, tipoModal} from '@interfaces/instrumento';
+import { DatosInstrumentos } from '@interfaces/datos_instrumentos';
+import { Dimension } from '@interfaces/dimension';
+import { CommonModule } from '@angular/common';
+import { Pregunta } from '@interfaces/pregunta';
+import { TipoPregunta } from '@interfaces/tipo_pregunta';
 
 @Component({
   selector: 'app-instrumento',
   standalone: true,
-  imports: [TitleComponent, ModalDeleteComponent, ReactiveFormsModule],
+  imports: [TitleComponent, ModalDeleteComponent, ReactiveFormsModule, CommonModule],
   templateUrl: './instrumento.component.html',
   styleUrl: './instrumento.component.css'
 })
@@ -28,16 +32,10 @@ export default class InstrumentoComponent {
   //Instancia del Modal
   modalActivo!: ModalInterface;
 
-  PostType?:string;
+  PostType:tipoModal = 'add';
   text:string = 'Agregar';
   
-  tipoPregunta = [{
-    id: 0,
-    nombre: 'Abierta', 
-    descripcion: 'Este tipo de preguntas no tiene una respuesta fija, lo que permite obtener una amplia variedad de respuestas.'
-  },
-  {id: 1,
-    nombre: 'Cerrada',descripcion:  'Este tipo de preguntas facilita la recopilación de datos cuantitativos y permite una comparación más fácil.'}];
+  tipoPregunta = signal<TipoPregunta[]>([]);
 
   instrumentoForm = this.fb.group({
     id: [0, [Validators.required]],
@@ -46,9 +44,22 @@ export default class InstrumentoComponent {
     tipoEvaluacionId: [0, [Validators.required]]
   });
 
+  simpleItems =[true, 'Two', 3];
+  selectedSimpleItem = 'Two';
+  
+  preguntaForm = this.fb.group({
+    id: [0, [Validators.required]],
+    nombre: ['', [Validators.required]],
+    instrumentoId: [0, [Validators.required]],
+    dimesionId: [0, [Validators.required]],
+    tipoPreguntaId: [0, [Validators.required]]
+  });
+
   _instrumentos = signal<Instrumento[]>([]); 
+  preguntas = signal<Pregunta[]>([]); 
+  dimensiones = signal<Dimension[]>([]);
+  
   instrumentos = computed(()=>{
-    debugger
     const inst = this._instrumentos();
     const tipo = this.tipoEntidades();
 
@@ -62,8 +73,6 @@ export default class InstrumentoComponent {
         }
       )
     })
-    debugger
-
     return dato;
   });
   tipoEntidades = signal<TipoEntidad[]>([])
@@ -85,14 +94,10 @@ export default class InstrumentoComponent {
   })
   }
   
-  getTipoPregunta(id:number)
-  {
-    return this.tipoPregunta.find((a) =>a.id === id)
-  }
 
   openModal()
   {
-    
+    this.reset()
     this.instrumentoService.getTipoEvaluacion().subscribe({
       next: (result) => {
         this.tipoEvaluaciones.set(result);
@@ -104,9 +109,11 @@ export default class InstrumentoComponent {
     this.modalActivo = this.modalService.createModal('static-modal');
     this.modalActivo.show();
   }
+  
 
   openModalEdit(instrumento: Instrumento)
   {
+    this.reset()
     this.instrumentoService.getTipoEvaluacion().subscribe({
       next: (result) => {
         this.tipoEvaluaciones.set(result);
@@ -126,32 +133,130 @@ export default class InstrumentoComponent {
    if(this.instrumentoForm.valid)
       {
         const instrumento: Instrumento = this.instrumentoForm.value as Instrumento;
-        this.instrumentoService.post(instrumento).subscribe({
-          next: a => {
-            if(a)
-              {
-                this.reset()
-                this._instrumentos.update((prev) => {
-                  debugger
-                  return [...prev, {...instrumento, id: a}]
+        if(this.PostType == 'add')
+        {
+          this.instrumentoService.post(instrumento).subscribe({
+            next: a => {
+              if(a)
+                {
+                  this.reset()
+                  this._instrumentos.update((prev) => {
+                    return [...prev, {...instrumento, id: a}]
+                  })
+                  
+                  this.tipoEntidades();
+                  this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+                }
+                else{
+                  this.matSnackBar.open("Error al intentar guardar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+                }
+              
+            },
+            error: (e) => {
+              this.matSnackBar.open("Error al intentar guardar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+            }
+          });
+      }
+      else{
+        this.instrumentoService.put(instrumento).subscribe({
+          next: (res) =>{
+            if(res){
+              this._instrumentos.update((arr) => {
+                return arr.map((dato)=>{
+                  return instrumento.id == dato.id ? 
+                  {...dato, nombre: instrumento.nombre, tipoEntidadId: instrumento.tipoEntidadId,
+                    tipoEvaluacionId: instrumento.tipoEvaluacionId} 
+                  : 
+                  dato
                 })
-                debugger
-                this.tipoEntidades();
-                this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
-              }
-              else{
-                this.matSnackBar.open("Error al intentar eliminar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
-              }
-            
+              })
+              this.closeModal()
+              this.matSnackBar.open("Dato modificado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+            }
+            else{
+              this.matSnackBar.open("Error al intentar editar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+            }
           },
-          error: (e) => {
-            this.matSnackBar.open("Error al intentar eliminar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+          error: (err)=>{
+            this.matSnackBar.open("Error al intentar editar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
           }
-        });
+        })
+      }
+
       }
 
     
   }
+
+  onSubmitQuestion(){
+    if(this.preguntaForm.valid)
+       {
+        debugger
+         const pregunta: Pregunta = this.preguntaForm.value as Pregunta;
+         pregunta.instrumentoId = this.modeloInstrumento()!.id;
+         pregunta.dimesionId = Number(pregunta.dimesionId);
+         pregunta.instrumentoId = Number(pregunta.instrumentoId);
+         pregunta.tipoPreguntaId = Number(pregunta.tipoPreguntaId);
+
+         if(this.PostType == 'add')
+         {
+           this.instrumentoService.postQuestion(pregunta).subscribe({
+             next: a => {
+              debugger
+               if(a)
+                 {
+                   this.reset()
+                   this.preguntas.update((prev) => {
+                     return [...prev, {...pregunta, id: a}]
+                   })
+                   
+                   this.tipoEntidades();
+                   this.getTipoPregunta();
+                   this.resetPregunta();
+                   this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+                 }
+                 else{
+                   this.matSnackBar.open("Error al intentar guardar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+                 }
+               
+             },
+             error: (e) => {
+              debugger
+               this.matSnackBar.open("Error al intentar guardar el dato ",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+               console.log(e);
+             }
+           });
+       }
+       else{
+         this.instrumentoService.putQuestion(pregunta).subscribe({
+           next: (res) =>{
+             if(res){
+               this._instrumentos.update((arr) => {
+                 return arr.map((dato)=>{
+                   return pregunta.id == dato.id ? 
+                   {...dato, nombre: pregunta.nombre, tipoPregunta: pregunta.tipoPreguntaId,
+                    instrumentoId: pregunta.instrumentoId, dimesionId: pregunta.dimesionId} 
+                   : 
+                   dato
+                 })
+               })
+               this.closeModal()
+               this.matSnackBar.open("Dato modificado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+             }
+             else{
+               this.matSnackBar.open("Error al intentar editar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+             }
+           },
+           error: (err)=>{
+             this.matSnackBar.open("Error al intentar editar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+           }
+         })
+       }
+ 
+       }
+ 
+     
+   }
 
   callChildMethod(modelo: Instrumento) {
     if(this.modal){
@@ -184,13 +289,46 @@ export default class InstrumentoComponent {
     this.modalActivo.hide();
   }
 
-  openModalAddQuestion()
+  openModalAddQuestion(instrumento: Instrumento)
   {
-
-    this.text = 'Agregar';
-    this.PostType = 'add';
     this.modalActivo = this.modalService.createModal('modalAdd');
+    this.PostType = 'add';
+    this.getDimension()
+    this.getTipoPregunta()
+    this.getPregunta()
+    this.modeloInstrumento.update((a) => instrumento);
     this.modalActivo.show();
+  }
+
+  getDimension(){
+    this.instrumentoService.getDimensiones().subscribe({
+      next: (res) => {
+        this.dimensiones.set(res);
+      }
+    })
+  }
+
+  getTipoPregunta(){
+    this.instrumentoService.getTipoPregunta().subscribe({
+      next: (res) => {
+        this.tipoPregunta.set(res);
+      },
+      error: (e) => {
+
+      }
+    })
+  }
+
+  getPregunta(){
+    this.instrumentoService.getPreguntas().subscribe({
+      next: (res) => {
+        this.preguntas.set(res);
+        console.log(this.preguntas());
+      },
+      error: (e) => {
+
+      }
+    })
   }
 
   reset()
@@ -201,6 +339,19 @@ export default class InstrumentoComponent {
         nombre: '',
         tipoEntidadId: 0,
         tipoEvaluacionId: 0
+      }
+    );
+  }
+
+  resetPregunta()
+  {
+    this.preguntaForm.reset(
+      {
+        id: 0,
+        nombre: '',
+        dimesionId: 0,
+        instrumentoId: 0,
+        tipoPreguntaId: 0
       }
     );
   }
