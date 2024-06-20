@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { routes } from '../../app.routes';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { AuthService } from '../../Services/auth.service';
 import { SubmoduloService } from '../../Services/submodulo.service';
 import { SubModulo } from '../../interfaces/submodulo';
@@ -10,7 +9,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 @Component({
   selector: 'app-sidemenu',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, RouterLink],
   templateUrl: './sidemenu.component.html',
   styleUrl: './sidemenu.component.css'
 })
