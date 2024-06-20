@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { appsettings } from '../Settings/appsettings';
-import { Modulo } from '../interfaces/modulo';
+import { Modulo, ModuloView } from '../interfaces/modulo';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -40,4 +40,18 @@ export class ModuloService {
     }
   }
   
+  getList()
+  {
+    return this.http.get<Modulo[]>(this.apiUrl+'/GetList');
+  }
+
+
+  post(modulo:ModuloView): Observable<Modulo> {
+    const headers = { 'content-type': 'application/json'}  
+    const body=JSON.stringify(modulo);
+    console.log(this.apiUrl+'/Insert');
+
+    return this.http.post<Modulo>(this.apiUrl+'/Insert', body,{headers});
+  }
+ 
 }

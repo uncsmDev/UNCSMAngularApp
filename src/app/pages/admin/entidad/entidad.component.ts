@@ -6,7 +6,7 @@ import type { InstanceOptions } from 'flowbite';
 
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {FormsModule} from '@angular/forms';
+import {FormsModule,FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -17,7 +17,7 @@ import { Cargo } from '../../../interfaces/cargo';
 import { EntidadService } from '../../../Services/admin/entidad.service';
 import { TitleComponent } from '../../../shared/title/title.component';
 
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModalDeleteComponent } from '../../../components/modal-delete/modal-delete.component';
 import { ModalService } from '../../../Services/modal.service';
