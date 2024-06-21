@@ -1,9 +1,7 @@
 import { Component, Signal, WritableSignal, computed, inject, signal,AfterViewInit, ViewChild, AfterContentInit } from '@angular/core';
 import { initFlowbite } from 'flowbite';
 import {FormsModule,FormBuilder, ReactiveFormsModule, FormGroup} from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
+
 import type { InstanceOptions, ModalInterface } from 'flowbite';
 import { TitleComponent } from '../../../shared/title/title.component';
 
@@ -86,8 +84,6 @@ export default class ModuloComponent {
   {
     
   }
-
-
   ///---------------------modals
 
   openModal()

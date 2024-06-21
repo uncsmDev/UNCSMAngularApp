@@ -3,6 +3,9 @@ import { Injectable, inject } from '@angular/core';
 import { appsettings } from '../Settings/appsettings';
 import { SubModulo } from '../interfaces/submodulo';
 import { LoginResult } from '../interfaces/acount';
+import { PackPage } from '@interfaces/packPage';
+import { Observable } from 'rxjs';
+import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -22,12 +25,39 @@ export class SubmoduloService {
     return this.http.get<SubModulo[]>(url + `/GetListUser?id=${id}&userID=${token.idUser}`);
   }
 
+  googleLogin(idToken: string) {
+    return this.http.post<{ token: string }>(
+      this.apiUrl + 'google-login',
+      {
+        idToken: idToken,
+      }
+    );
+  }
+
+
   getListByModulo(id:number)
   {
     return this.http.get<SubModulo[]>(this.apiUrl+'/GetListByModulo?id='+id);
   }
-  getList()
+ /* getList(pag:number)
   {
     return this.http.get<SubModulo[]>(this.apiUrl+'/GetList');
+  }*/
+
+  getList(iPag:number): Observable<PackPage<SubModulo>> {
+    return this.http.get<PackPage<SubModulo>>(this.apiUrl+'/GetList?pagina='+iPag);
+  }
+
+
+  post(subModulo:SubModulo): Observable<SubModulo> {
+    const headers = { 'content-type': 'application/json'} 
+    const body=JSON.stringify(subModulo);
+    return this.http.post<SubModulo>(this.apiUrl+'/Insert', body,{'headers':headers})
+  }
+
+  put(subModulo:SubModulo): Observable<any> {
+    const headers = { 'content-type': 'application/json'}  
+    const body=JSON.stringify(subModulo);
+    return this.http.put(this.apiUrl+'/Update/'+subModulo.id, body,{'headers':headers})
   }
 }
