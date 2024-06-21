@@ -1,4 +1,4 @@
-import { ModalPreguntaComponent } from './../modal-pregunta/modal-pregunta.component';
+import { ModalPreguntaComponent } from './modal-pregunta/modal-pregunta.component';
 import { InstrumentoService } from '@services/sed/instrumento.service';
 import { Component, ViewChild, computed, inject, signal, viewChild } from '@angular/core';
 import { TitleComponent } from '../../../shared/title/title.component';
@@ -16,7 +16,8 @@ import { CommonModule } from '@angular/common';
 import { Pregunta } from '@interfaces/pregunta';
 import { TipoPregunta } from '@interfaces/tipo_pregunta';
 import { ModalInstrumentoComponent } from './modal-instrumento/modal-instrumento.component';
-import { EmiterResult } from '@interfaces/EmiterResult';
+import { EmiterResult, TipoFormulario } from '@interfaces/EmiterResult';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-instrumento',
@@ -27,24 +28,13 @@ import { EmiterResult } from '@interfaces/EmiterResult';
 })
 export default class InstrumentoComponent {
   matSnackBar=inject(MatSnackBar);
+  router = inject(Router);
   fb = inject(FormBuilder);
   instrumentoService = inject(InstrumentoService);
-  
   modalService = inject(ModalService);
-  //Instancia del Modal
-  modalActivo!: ModalInterface;
 
   PostType:tipoModal = 'add';
-  text:string = 'Agregar';
-  
   tipoPregunta = signal<TipoPregunta[]>([]);
-
-
-  simpleItems =[true, 'Two', 3];
-  selectedSimpleItem = 'Two';
-  
-  
-
   _instrumentos = signal<Instrumento[]>([]); 
   preguntas = signal<Pregunta[]>([]); 
   dimensiones = signal<Dimension[]>([]);
@@ -66,6 +56,14 @@ export default class InstrumentoComponent {
     return dato;
   });
 
+  preguntaForm = this.fb.group({
+    id: [0, [Validators.required]],
+    nombre: ['', [Validators.required]],
+    instrumentoId: [0, [Validators.required]],
+    dimesionId: [0, [Validators.required]],
+    tipoPreguntaId: [0, [Validators.required]]
+  });
+
   tipoEntidades = signal<TipoEntidad[]>([])
   tipoEvaluaciones = signal<TipoEvaluacion[]>([])
   modeloInstrumento = signal<Instrumento|null>(null);
@@ -73,6 +71,7 @@ export default class InstrumentoComponent {
   modalInstrumento = viewChild.required(ModalInstrumentoComponent);
   modalPreguntas = viewChild.required(ModalPreguntaComponent);
   modalDelete = viewChild.required(ModalDeleteComponent);
+  tipoFormulario: TipoFormulario = 'instrumento';
 
   ngOnInit() {
     this.instrumentoService.getTipoEntidad().subscribe({
@@ -88,7 +87,15 @@ export default class InstrumentoComponent {
       }
     })
   }
-  
+  onSubmitQuestion2(){
+    if(this.preguntaForm.valid)
+      {
+        const pregunta: Pregunta = this.preguntaForm.value as Pregunta;
+        pregunta.dimesionId = Number(pregunta.dimesionId);
+        pregunta.instrumentoId = this.modeloInstrumento()!.id;
+        pregunta.tipoPreguntaId = Number(pregunta.tipoPreguntaId);
+    }     
+  }
   openModal()
   {
     this.PostType = 'add';
@@ -235,11 +242,13 @@ export default class InstrumentoComponent {
 
   openModalAddQuestion(ins: Instrumento)
   {
-    this.PostType = 'add'
+    this.router
+    this.tipoFormulario = 'add-pregunta';
+    /* this.PostType = 'add'
     this.getDimension();
     this.getTipoPregunta();
     this.modeloInstrumento.set(ins);
-    this.modalPreguntas().openModalAddQuestion();
+    this.modalPreguntas().openModalAddQuestion();*/
   }
 
   getDimension(){

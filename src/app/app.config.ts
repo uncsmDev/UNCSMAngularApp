@@ -1,6 +1,6 @@
 import { tokenHttpInterceptor } from './interceptors/token-http-interceptor';
 import { ApplicationConfig, provideExperimentalZonelessChangeDetection } from '@angular/core';
-import { provideRouter, withViewTransitions } from '@angular/router';
+import { provideRouter, withComponentInputBinding, withViewTransitions } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -10,7 +10,8 @@ import { ErrorResponseInterceptor } from './interceptors/error-response.intercep
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes, withViewTransitions({skipInitialTransition: true})), 
+    provideRouter(routes, 
+      withComponentInputBinding(), withViewTransitions({skipInitialTransition: true})), 
     provideAnimationsAsync(),
     provideHttpClient(withInterceptors([tokenHttpInterceptor, ErrorResponseInterceptor])), provideAnimationsAsync(),
     {

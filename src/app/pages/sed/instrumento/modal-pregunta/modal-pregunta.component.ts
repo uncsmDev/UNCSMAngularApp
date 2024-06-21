@@ -51,8 +51,8 @@ export class ModalPreguntaComponent {
         pregunta.instrumentoId = this.instrumento()!.id;
         pregunta.tipoPreguntaId = Number(pregunta.tipoPreguntaId);
 
-         this.outputPostType.emit({typeModal: this.PostType(), data: pregunta})
-    }     
+        this.outputPostType.emit({typeModal: this.PostType(), data: pregunta})
+    }
   }
 
   resetPregunta()
