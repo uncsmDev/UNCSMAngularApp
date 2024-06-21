@@ -1,5 +1,5 @@
 import { HttpInterceptorFn } from "@angular/common/http";
-import { LoginResult } from "./interfaces/acount";
+import { LoginResult } from "@interfaces/acount";
 
 export const tokenHttpInterceptor: HttpInterceptorFn = (req, next) => {
     const tokenString = sessionStorage.getItem("loggedInUser");
