@@ -21,3 +21,10 @@ export interface ModuloView
     loadComponent:     string;
    // fileId:      number;
 }
+
+
+export interface ModuloSelectView
+{
+    id:                number;
+    titulo:            string;
+}

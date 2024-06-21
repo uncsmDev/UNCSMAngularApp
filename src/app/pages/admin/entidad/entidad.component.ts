@@ -356,7 +356,6 @@ export default class EntidadComponent {
   }
     else{
 
-      console.log(this.PostType+' <<<PostType');
       this.entidadService.put(this.entidadService.convertirAGrupoAObjeto(this.entidadForm)).subscribe({
         next: (response) => {
           this.matSnackBar.open("Dato modificado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'}).afterDismissed().subscribe({
