@@ -49,6 +49,9 @@ export class InstrumentoService {
     return this.http.get<Instrumento[]>(this.ruta)
   }
 
+  getOne(id:number): Observable<Instrumento>{
+    return this.http.get<Instrumento>(`${this.ruta}/Get/${id}`)
+  }
 
   delete(instrumento: Instrumento | null): Observable<any>{
     const id = instrumento!.id;
