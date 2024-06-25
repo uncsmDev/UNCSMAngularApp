@@ -1,8 +1,4 @@
 
-
-
-
-   
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div class="flex justify-between">
             <div class="pb-4 bg-white dark:bg-gray-900">
@@ -73,7 +69,14 @@
                                 {{item.cargo}}
                             </td>
                             <td class="px-6 py-4">
-                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                <a (click)="openModalSubModulosUser(item, 'static-modal')" title="SubModulos" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.857 3A1.857 1.857 0 0 0 3 4.857v4.286C3 10.169 3.831 11 
+                                        4.857 11h4.286A1.857 1.857 0 0 0 11 9.143V4.857A1.857 1.857 0 0 0 9.143 3H4.857Zm10 0A1.857 1.857 0 0 0 13 4.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 
+                                        1.857 0 0 0 21 9.143V4.857A1.857 1.857 0 0 0 19.143 3h-4.286Zm-10 10A1.857 1.857 0 0 0 3 14.857v4.286C3 20.169 3.831 21 4.857 21h4.286A1.857 1.857 0 0 0 11 
+                                        19.143v-4.286A1.857 1.857 0 0 0 9.143 13H4.857ZM18 14a1 1 0 1 0-2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 1 0 2 0v-2h2a1 1 0 1 0 0-2h-2v-2Z"/>
+                                    </svg>
+                                </a>
                             </td>
                         </tr>
                     }
@@ -84,11 +87,13 @@
 
 
         <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation" >
-            <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Mostrando <span class="font-semibold text-gray-900 dark:text-white">1-10</span> de <span class="font-semibold text-gray-900 dark:text-white">1000</span></span>
+            <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Mostrando 
+                <span class="font-semibold text-gray-900 dark:text-white">1-10</span> de <span class="font-semibold text-gray-900 dark:text-white">1000</span></span>
             <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
                 <li>
                     <button (click)="previousPage()">
-                        <a class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                        <a class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg 
+                        hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                             <span class="sr-only">Previous</span>
                             <svg class="w-2.5 h-2.5 rtl:rotate-180"  aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
@@ -98,13 +103,15 @@
                 </li>
                 <span>
                     <li>
-                        <a class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{pag.paginaInicio}} de {{pag.paginaTotal}} </a>
+                        <a class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 
+                        hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{pag.paginaInicio}} de {{pag.paginaTotal}} </a>
                     </li>
                 </span>
             
                 <li>
                     <button  (click)="nextPage()" >
-                        <a [ariaDisabled]="" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                        <a [ariaDisabled]="" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 
+                        rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                             <span class="sr-only">Next</span>
                             <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
@@ -118,3 +125,196 @@
 
         <br/>
     </div>
+
+
+
+
+
+
+
+
+
+
+  <!-- Main modal -->
+  <div id="static-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+      <div class="relative p-4 w-full max-w-2xl max-h-full">
+          <!-- Modal content -->
+          <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <!-- Modal header -->
+              <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                  <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                      SubModulos Usuario
+                  </h3>
+                  <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex 
+                  justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="static-modal" (click)="closeModal()">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+
+              </div>
+              <!-- Modal body -->
+              <div class="p-4 md:p-5 space-y-4">
+                <div  class="py-2 px-4 mx-auto max-w-2xl lg:py-8">
+                    <form novalidate [formGroup]="SBMxUForm">
+                        <div class="grid md:grid-cols-2 md:gap-6" >
+                            <div class="relative">
+                                <label for="nombres" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombres</label>
+                                <input type="text" formControlName="nombres" name="nombres" id="nombres" class="bg-gray-50 
+                                border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 
+                                focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 
+                                dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Nombres" required />
+                            </div>
+            
+                            <div class="relative">
+                                <label for="descripcion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Apellidos</label>
+                                <input type="text" formControlName="apellidos" name="apellidos" id="apellidos" class="bg-gray-50 
+                                border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 
+                                focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 
+                                dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Apellidos" required />
+                            </div>
+                            
+                            <form [formGroup]="SBMxUForm">
+                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Selecione un Modulo</label>
+                                <select  id="moduloId" formControlName="moduloId" (change)="onSelectedModulo($event)" name="moduloId" class="bg-gray-50 border 
+                                border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
+                                focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
+                                dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="">--- Seleccione ---</option>
+                                  @for (item of moduloList(); track item.id) {
+                                    <option [value]="item.id">{{item.titulo}}</option>
+                                  }
+                                </select>
+                            </form>
+                           
+                            <mat-form-field class="">
+                                <mat-label>Selecione un SubModulo</mat-label>
+                                <!--input  type="text" matInput [formControl]="control" value="{{control.value}}" (input)="filterSubModulos($event)" [matAutocomplete]="auto"  id="subModuloId" formControlName="subModuloId"  name="subModuloId"-->
+                                <input (input)="filterSubModulos($event)" type="text" matInput aria-label="Titulo" required  [matAutocomplete]="auto">
+                                <mat-autocomplete [displayWith]="displayFn" #auto="matAutocomplete" id="subModuloId" 
+                                formControlName="subModuloId" name="subModuloId" (optionSelected)="onSelectSubModulo($event)">
+                                    @for (item of filteredSubModulos; track item.id) 
+                                    {
+                                        <mat-option [value]="item">
+                                            <span>{{item.titulo}}</span>
+                                        </mat-option>
+                                    }
+                                </mat-autocomplete>
+                            </mat-form-field>
+
+                        
+                            <!---form [formGroup]="SBMxUForm">
+                             
+                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Selecione un SubModulo</label>
+                                <select  id="subModuloId" formControlName="subModuloId"  name="subModuloId" class="bg-gray-50 border 
+                                border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
+                                focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
+                                dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="">--- Seleccione ---</option>
+                                  @for (item of subModuloList(); track item.id) {
+                                    <option [value]="item.id">{{item.titulo}}</option>
+                                  }
+                                </select>
+                            </form---> 
+                    
+                        
+                        </div>
+                       
+                    </form>
+                </div>
+                
+
+
+                <div class="relative overflow-x-auto">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                
+                                <th scope="col" class="px-6 py-3">
+                                    SubModulo
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Acción
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (item of subModuloByUserList(); track item.id) 
+                            {
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                               
+                                    <td class="px-6 py-4"  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{item.titulo}} (<i>{{item.modulo.titulo}}</i> )
+                                    </td>
+                               
+                                    <td class="px-6 py-4">
+                                        <a  title="Eliminar" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                                              </svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                                   
+                        </tbody>
+                    </table>
+                   
+                    <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation modal" >
+                        <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+                            <li>
+                                <button (click)="previousPageModal()">
+                                    <a class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg 
+                                    hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        <span class="sr-only">Previous</span>
+                                        <svg class="w-2.5 h-2.5 rtl:rotate-180"  aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+                                        </svg>
+                                    </a>
+                                </button>
+                            </li>
+                            <!--span>
+                                <li>
+                                    <a class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 
+                                    hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{pagSM.paginaInicio}} de {{pagSM.paginaTotal}} </a>
+                                </li>
+                            </span-->
+                        
+                            <li>
+                                <button  (click)="nextPageModal()" >
+                                    <a [ariaDisabled]="" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 
+                                    rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        <span class="sr-only">Next</span>
+                                        <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                                        </svg>
+                                      </a>
+                                </button>
+            
+                              </li>
+                        </ul>
+                    </nav>
+            
+
+                </div>
+                
+
+
+            
+              </div>
+                <!-- Modal body Fin -->
+              <!-- Modal footer -->
+           <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+               
+                <button (click)="closeModal()" data-modal-hide="static-modal" type="button" class="py-2.5 px-5 ms-3 text-sm 
+                font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 
+                hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 
+                dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cerrar</button>
+            </div>
+
+          </div>
+      </div>
+  </div>
+  
+  

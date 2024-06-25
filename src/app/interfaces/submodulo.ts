@@ -12,3 +12,9 @@ export interface SubModulo {
     moduloId:          number;
     modulo: Modulo;
 }
+
+export interface SubModuloViewer {
+    id:                number;
+    titulo:            string;
+}
+

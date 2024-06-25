@@ -49,7 +49,6 @@ export class ModuloService {
   post(modulo:ModuloView): Observable<Modulo> {
     const headers = { 'content-type': 'application/json'}  
     const body=JSON.stringify(modulo);
-    console.log(this.apiUrl+'/Insert');
 
     return this.http.post<Modulo>(this.apiUrl+'/Insert', body,{headers});
   }

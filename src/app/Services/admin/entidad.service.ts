@@ -30,7 +30,6 @@ export class EntidadService {
     );
   }
 
-
   put(entidad:EntidadDto): Observable<any> {
     const headers = { 'content-type': 'application/json'}  
     const body=JSON.stringify(entidad);

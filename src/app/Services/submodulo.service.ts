@@ -35,9 +35,9 @@ export class SubmoduloService {
   }
 
 
-  getListByModulo(id:number)
+  getListByModulo(id:number,filtro:string) //id: id Modulo.// Obtiene lista de submodulo que contienen un id de modulo
   {
-    return this.http.get<SubModulo[]>(this.apiUrl+'/GetListByModulo?id='+id);
+    return this.http.get<SubModulo[]>(this.apiUrl+'/GetListByModulo?id='+id+'&filter='+filtro);
   }
  /* getList(pag:number)
   {
@@ -60,4 +60,16 @@ export class SubmoduloService {
     const body=JSON.stringify(subModulo);
     return this.http.put(this.apiUrl+'/Update/'+subModulo.id, body,{'headers':headers})
   }
+
+  eliminar(sbm?:SubModulo|null): Observable<any> {
+    return this.http.delete(this.apiUrl+'/Delete/'+sbm?.id)
+  }
+
+  getSubModuloListByUser(idUser:string,pag:number):Observable<PackPage<SubModulo>>
+  {
+    const url = `${this.apiUrl}`;
+    return this.http.get<PackPage<SubModulo>>(this.apiUrl+'/GetListByUserView?id='+idUser+'&pagina='+pag);
+   // return this.http.get<PackPage<SubModulo>>(url + `/GetListByUserView?id=${idUser}`);
+  }
+
 }

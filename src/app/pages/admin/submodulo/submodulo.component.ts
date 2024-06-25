@@ -139,6 +139,7 @@ export default class SubmoduloComponent {
  
    onDelete(event: any)
    {
+    this.subModuloService.eliminar().subscribe();
     /* this.entidadService.eliminar(this.modeloEntidad()).subscribe({
        next: (value) => {
          this.matSnackBar.open("Dato eliminado correctamente!",'Cerrar',{ duration:5000, horizontalPosition:'center'});
