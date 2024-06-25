@@ -44,8 +44,15 @@ export class SidemenuComponent {
         {
           next: (resp) => 
             {
+              debugger
               this.menuItems = resp;
               const valor = this.menuItems.find(p =>p.path === this.router.url);
+
+              const valor2 = this.menuItems.find(p => {
+debugger
+                 p.path === this.router.url
+                 return p.path;
+              });
 
               if(valor == undefined || valor == null)
                 {
