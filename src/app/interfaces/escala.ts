@@ -9,3 +9,5 @@ export interface Escala {
     eliminado:                     boolean;
     visible:                       boolean;
 }
+
+export type post = 'post' | 'update';

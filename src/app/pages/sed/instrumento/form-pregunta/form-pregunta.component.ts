@@ -2,8 +2,10 @@ import { JsonPipe } from '@angular/common';
 import { Component, inject, output, input, signal, Input } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { EmiterResult } from '@interfaces/EmiterResult';
 import { Dimension, DimensionView } from '@interfaces/dimension';
+import { post } from '@interfaces/escala';
 import { Instrumento, tipoModal } from '@interfaces/instrumento';
 import { Pregunta } from '@interfaces/pregunta';
 import { TipoPregunta } from '@interfaces/tipo_pregunta';
@@ -29,6 +31,7 @@ export default class FormPreguntaComponent {
   tipoPreguntaService = inject(TipoPreguntaService);
   dimensionService = inject(DimensionService);
   matSnackBar=inject(MatSnackBar);
+  router = inject(Router);
 
   preguntaForm = this.fb.group({
     id: [0, [Validators.required]],
@@ -37,15 +40,19 @@ export default class FormPreguntaComponent {
     dimesionId: [0, [Validators.required]],
     tipoPreguntaId: [0, [Validators.required]]
   });
-
+  i = 1;
   outputPostType = output<EmiterResult<Pregunta>>();
   dimensiones = signal<Dimension[]>([]);
   tipoPregunta = signal<TipoPregunta[]>([]);
   instrumento = signal<Instrumento>({id: 0, nombre: '', tipoEntidadId: 0, tipoEvaluacionId: 0});
   dataView = signal<DimensionView[]>([]);
+  
+  typePost: post = 'post';
+
   @Input() id!: number;
   
   preguntas = signal<Pregunta[]>([]); 
+  pregunta = signal<Pregunta>({id: 0, dimesionId: 0, instrumentoId:0, nombre: '', tipoPreguntaId: 0})
   ngOnInit() {
     this.getTipoPregunta();
     this.get();
@@ -55,24 +62,64 @@ export default class FormPreguntaComponent {
   onSubmit(){
     if(this.preguntaForm.valid)
       {
-        debugger
         const pregunta: Pregunta = this.preguntaForm.value as Pregunta;
         pregunta.dimesionId = Number(pregunta.dimesionId);
         pregunta.instrumentoId = this.id;
         pregunta.tipoPreguntaId = Number(pregunta.tipoPreguntaId);
-    
-   
-      this.preguntaService.post(pregunta).subscribe({
+
+        if(this.typePost == 'post'){
+          this.preguntaService.post(pregunta).subscribe({
+            next: a => {
+              if(a)
+                {
+                  this.pregunta.set(a);
+                // 
+                this.dataView.update((prev) => {
+                  return prev.map((c) => 
+                    {
+                      debugger
+                      if(c.id ==  this.pregunta().dimesionId)
+                        {
+                          c.preguntas?.push(this.pregunta());
+                        }
+                      return c;
+                    }
+                  )
+                })
+                  this.getTipoPregunta();
+                  this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+                }
+                else{
+                  this.matSnackBar.open("Error al intentar guardar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+                }
+              
+            },
+            error: (e) => {
+              this.matSnackBar.open("Error al intentar guardar el dato ",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+              console.log(e);
+            }
+          });
+    }
+    else{
+      this.preguntaService.update(pregunta).subscribe({
         next: a => {
-         debugger
+          debugger
           if(a)
             {
-             // this.reset()
-              this.preguntas.update((prev) => {
-                return [...prev, {...pregunta, id: a}]
-              })
-              
-              //this.tipoEntidades();
+            this.dataView.update((prev) => {
+              debugger
+              return prev.map((c) => 
+                {
+                  debugger
+                 c.preguntas = c.preguntas?.map((p) =>
+                    {
+                      return p.id === pregunta.id ? {...p,nombre:pregunta.nombre, dimesionId:pregunta.dimesionId, tipoPreguntaId:pregunta.tipoPreguntaId} : p
+                    }
+                  )
+                return c;
+                }
+              )
+            })
               this.getTipoPregunta();
               this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
             }
@@ -82,11 +129,12 @@ export default class FormPreguntaComponent {
           
         },
         error: (e) => {
-         debugger
           this.matSnackBar.open("Error al intentar guardar el dato ",'Cerrar',{ duration:5000, horizontalPosition:'center'});
-          console.log(e);
         }
       });
+      this.typePost = 'post'
+    }
+    this.reset();
   }
   else{
   }
@@ -100,25 +148,34 @@ get(){
       this.instrumentoService.getOne(this.id).subscribe(
         {
           next: (value) => {
-            this.instrumento.set(value);
-            this.dimensionService.getTE(this.instrumento().tipoEntidadId).subscribe({
-              next: (a) =>{
-                this.dimensiones.set(a);
-                this.dataView.set( this.dimensiones().map(
-                  (value)=>{
+            if(value.data)
+              {
+                this.instrumento.set(value.data);
+                debugger
+                this.dimensionService.getTE(this.instrumento().tipoEntidadId).subscribe({
+                  next: (a) =>{
+                    this.dimensiones.set(a);
+                    this.dataView.set( this.dimensiones().map(
+                      (value)=>{
+                        
+                        /* const data = this.preguntas().filter(select => select.instrumentoId == this.id); */
+                        return {...value, preguntas: this.preguntas()};
+                      }
+                  ))
+                  },
+                  error: (b) =>{
                     
-                    const data = this.preguntas().filter(select => select.instrumentoId == this.id);
-                    return {...value, preguntas: data};
                   }
-              ))
-              },
-              error: (b) =>{
-                
+                })
               }
-            })
+            else{
+              this.matSnackBar.open("Error al intentar obtener los dato ",'Cerrar',{ duration:5000, horizontalPosition:'center'}).afterOpened().subscribe({
+                next: a => this.router.navigate(["sed/instrumento"])
+              });;
+            }
           },
           error: (err) => {
-
+            this.matSnackBar.open("Error al intentar obtener el dato ",'Cerrar',{ duration:5000, horizontalPosition:'center'})
           }
         }
       )
@@ -133,7 +190,30 @@ get(){
   })
 }
 
-  resetPregunta()
+  save(){
+    this.typePost = 'post';
+  }
+  edit(pregunta: Pregunta)
+  {
+    
+    this.preguntaForm.setValue(
+      {
+        id: pregunta.id,
+        nombre: pregunta.nombre,
+        dimesionId: pregunta.dimesionId,
+        instrumentoId: pregunta.instrumentoId,
+        tipoPreguntaId: pregunta.tipoPreguntaId
+      }
+    )
+    this.typePost = 'update';
+  }
+
+  modelDelete(pregunta: Pregunta)
+  {
+    
+    console.log(pregunta);
+  }
+  reset()
   {
     this.preguntaForm.reset(
       {
@@ -162,5 +242,12 @@ get(){
         this.dimensiones.set(res);
       }
     })
+  }
+  increment(value: number){
+    this.i += value;
+  }
+  resetIncrement()
+  {
+    this.i = 1;
   }
 }
