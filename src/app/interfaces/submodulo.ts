@@ -13,3 +13,9 @@ export interface SubModulo {
     visible?:           boolean;
     modulo: Modulo;
 }
+
+export interface SubModuloViewer {
+    id:                number;
+    titulo:            string;
+}
+

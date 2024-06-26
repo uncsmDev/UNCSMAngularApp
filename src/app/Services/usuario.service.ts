@@ -28,8 +28,6 @@ export class UsuarioService {
 
   registerUser(insert:InsertUsuario):Observable<any>
   {
-    console.log(insert);
-    console.log('-----------------registerUser --------------')
     const headers = { 'content-type': 'application/json'}  
     const body=JSON.stringify(insert);
     return this.http.post(this.api+'register', body,{'headers':headers})
