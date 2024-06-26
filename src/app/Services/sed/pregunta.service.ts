@@ -18,9 +18,15 @@ export class PreguntaService {
   }
 
   post(pregunta: Pregunta): Observable<any>{
-    debugger
     const headers = { 'content-type': 'application/json'}  
     const body=JSON.stringify(pregunta);
     return this.http.post(this.ruta, body, {headers});
+  }
+
+  update(pregunta: Pregunta):Observable<any> {
+    debugger
+    const headers = {'content-type': 'application/json'}
+    const body = JSON.stringify(pregunta);
+    return this.http.put(`${this.ruta}/${pregunta.id}`, body, {headers});
   }
 }

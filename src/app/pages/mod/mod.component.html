@@ -13,11 +13,11 @@
        
       
 <div class="max-w-sm bg-white border border-gray-400 rounded-lg shadow dark:bg-gray-700 dark:border-gray-500 ">
-    <a routerLink="{{ modulo.path }}" class="cursor-pointer relative block h-48 overflow-hidden rounded">
+    <a (click)="link(modulo.path, modulo.id)" class="cursor-pointer relative block h-48 overflow-hidden rounded">
         <img class="w-full rounded-t-lg transition duration-500 transform hover:scale-105" src="{{ modulo.imgLocation }}" alt="" />
     </a>
     <div class="p-5">
-        <a routerLink="{{ modulo.path }}">
+        <a (click)="link(modulo.path, modulo.id)">
             <h5 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
                 {{modulo.titulo}}
             </h5>

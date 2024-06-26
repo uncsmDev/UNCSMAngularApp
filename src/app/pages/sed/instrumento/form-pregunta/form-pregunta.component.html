@@ -10,12 +10,15 @@
             <p class="font-medium">Coordinación Gestión del Talento Humano</p> 
             <p class="font-medium">Selección y Contratación de Personal</p>
             <p class="font-medium">Evaluación al Desempeño</p>
-            <p class="font-medium">Categoría: {{"Categoría"}}</p>
+            <p class="font-medium">Categoría: {{"Administrativo"}}</p>
           </div>
           <div class="mt-5">
             
 
 <div class="relative overflow-x-auto">
+  @if(preguntas().length > 0)
+  {
+    <!--  <pre>{{dataView() | json}}</pre> -->
   <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-200">
       <thead class="text-xs text-gray-800 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
           <tr>
@@ -40,22 +43,30 @@
           <tr class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-600 dark:text-gray-100">
             <td></td>
             <td>
+              {{resetIncrement()}}
                 @for (p of dv.preguntas; track p.id;let indexp = $index) {
                   
                 @if(dv.id == p.dimesionId)
                 {
-
-                
                 <tr class="text-xs w-full text-gray-700 bg-gray-50 dark:bg-gray-500 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white w-px">
-                    {{ (index+1) + '.' +(indexp+1) }}
+                    {{ (index+1) + '.' + i }}
+                    {{increment(1)}}
                 </th>
                 <td class="px-6 py-4 w-full">
                     {{ p.nombre }}
                 </td>
-                <td class="px-6 py-4 w-full">
-                    opciones
-                </td>
+                <td class="px-6 py-4 flex">
+                  <a (click)="edit(p)"  class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+                      <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                        </svg>
+                  </a>
+                  <a (click)="modelDelete(p)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+                      <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                        </svg>
+                  </a>
             </tr>
         }
         }
@@ -63,11 +74,18 @@
           </tr>
         }
         @empty {
-          <p>Nada</p>
+          <div class="p-4 m-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-700 dark:text-yellow-300" role="alert">
+            <span class="font-medium">Alerta!</span> No hay datos que mostrar.
+          </div>
         }
       </tbody>
   </table>
- 
+}
+@else {
+  <div class="p-4 m-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-700 dark:text-yellow-300" role="alert">
+    <span class="font-medium">Alerta!</span> No hay datos que mostrar.
+  </div>
+}
 </div>
 
           </div>
@@ -93,7 +111,7 @@
                 @for (tp of tipoPregunta(); track tp.id) {
                 <li>
                     <div class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-500">
-                        <input id="bordered-radio-{{tp.id}}" type="radio" value="{{ tp.id }}" name="tipoPreguntaId" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" formControlName="tipoPreguntaId">
+                        <input id="bordered-radio-{{tp.id}}" type="radio" [value]="tp.id" name="tipoPreguntaId" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" formControlName="tipoPreguntaId">
                         <label for="bordered-radio-{{tp.id}}" class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ tp.name }}</label>
                     </div>
                 </li>

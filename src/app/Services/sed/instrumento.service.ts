@@ -1,3 +1,4 @@
+import { Result } from './../../interfaces/Result.interface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { appsettings } from '../../Settings/appsettings';
@@ -49,8 +50,8 @@ export class InstrumentoService {
     return this.http.get<Instrumento[]>(this.ruta)
   }
 
-  getOne(id:number): Observable<Instrumento>{
-    return this.http.get<Instrumento>(`${this.ruta}/Get/${id}`)
+  getOne(id:number): Observable<Result<Instrumento>>{
+    return this.http.get<Result<Instrumento>>(`${this.ruta}/Get/${id}`)
   }
 
   delete(instrumento: Instrumento | null): Observable<any>{
