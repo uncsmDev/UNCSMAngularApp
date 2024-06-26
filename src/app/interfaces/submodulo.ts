@@ -10,6 +10,7 @@ export interface SubModulo {
     icon:              string;
     loadComponent:     string;
     moduloId:          number;
+    visible?:           boolean;
     modulo: Modulo;
 }
 

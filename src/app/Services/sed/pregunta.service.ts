@@ -14,7 +14,7 @@ export class PreguntaService {
   constructor() { }
 
   get(id:number): Observable<Pregunta[]>{
-    return this.http.get<Pregunta[]>(this.ruta)
+    return this.http.get<Pregunta[]>(`${this.ruta}/${id}`)
   }
 
   post(pregunta: Pregunta): Observable<any>{

@@ -3,12 +3,13 @@ import { Component, inject, output, input, signal, Input } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EmiterResult } from '@interfaces/EmiterResult';
-import { Dimension } from '@interfaces/dimension';
+import { Dimension, DimensionView } from '@interfaces/dimension';
 import { Instrumento, tipoModal } from '@interfaces/instrumento';
 import { Pregunta } from '@interfaces/pregunta';
 import { TipoPregunta } from '@interfaces/tipo_pregunta';
 import { ModalService } from '@services/modal.service';
 import { DimensionService } from '@services/sed/dimension.service';
+import { InstrumentoService } from '@services/sed/instrumento.service';
 import { PreguntaService } from '@services/sed/pregunta.service';
 import { TipoPreguntaService } from '@services/sed/tipo-pregunta.service';
 import { ModalInterface } from 'flowbite';
@@ -20,10 +21,11 @@ import { ModalInterface } from 'flowbite';
   templateUrl: './form-pregunta.component.html',
   styleUrl: './form-pregunta.component.css'
 })
-export default class ModalPreguntaComponent {
+export default class FormPreguntaComponent {
   modalActivo!: ModalInterface;
   fb = inject(FormBuilder);
   preguntaService = inject(PreguntaService);
+  instrumentoService = inject(InstrumentoService);
   tipoPreguntaService = inject(TipoPreguntaService);
   dimensionService = inject(DimensionService);
   matSnackBar=inject(MatSnackBar);
@@ -39,22 +41,24 @@ export default class ModalPreguntaComponent {
   outputPostType = output<EmiterResult<Pregunta>>();
   dimensiones = signal<Dimension[]>([]);
   tipoPregunta = signal<TipoPregunta[]>([]);
-  instrumento = input<Instrumento|null>();
+  instrumento = signal<Instrumento>({id: 0, nombre: '', tipoEntidadId: 0, tipoEvaluacionId: 0});
+  dataView = signal<DimensionView[]>([]);
   @Input() id!: number;
   
   preguntas = signal<Pregunta[]>([]); 
   ngOnInit() {
-    this.get();
     this.getTipoPregunta();
-    this.getDimension();
+    this.get();
+    
   }
 
   onSubmit(){
     if(this.preguntaForm.valid)
       {
+        debugger
         const pregunta: Pregunta = this.preguntaForm.value as Pregunta;
         pregunta.dimesionId = Number(pregunta.dimesionId);
-        pregunta.instrumentoId = this.instrumento()!.id;
+        pregunta.instrumentoId = this.id;
         pregunta.tipoPreguntaId = Number(pregunta.tipoPreguntaId);
     
    
@@ -93,10 +97,38 @@ get(){
   this.preguntaService.get(this.id).subscribe({
     next: (res) => {
       this.preguntas.set(res);
-      console.log(this.preguntas());
+      this.instrumentoService.getOne(this.id).subscribe(
+        {
+          next: (value) => {
+            this.instrumento.set(value);
+            this.dimensionService.getTE(this.instrumento().tipoEntidadId).subscribe({
+              next: (a) =>{
+                this.dimensiones.set(a);
+                this.dataView.set( this.dimensiones().map(
+                  (value)=>{
+                    
+                    const data = this.preguntas().filter(select => select.instrumentoId == this.id);
+                    return {...value, preguntas: data};
+                  }
+              ))
+              },
+              error: (b) =>{
+                
+              }
+            })
+          },
+          error: (err) => {
+
+          }
+        }
+      )
+
     },
     error: (e) => {
-
+      console.log(`error: ${e.message}`)
+    },
+    complete:() => {
+      console.log('completado');
     }
   })
 }

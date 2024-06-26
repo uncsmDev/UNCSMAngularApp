@@ -2,6 +2,7 @@
      <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
         <ul class="space-y-2 font-medium">
             @for (menuItem of menuItems; track menuItem.id) {
+               @if(menuItem.visible === true){
            <li>
               <a routerLink="{{menuItem.path}}" routerLinkActive="dark:bg-blue-800 bg-blue-800 text-white" class="flex items-center p-2 text-gray-900 dark:hover:text-white-900 rounded-lg dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 group">
                <svg routerLinkActive="text-white dark:text-white" class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -11,6 +12,7 @@
                  <span class="ms-3">{{menuItem.titulo}}</span>
               </a>
            </li>
+         }
         }
            <!-- <li>
             <button type="button" class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">

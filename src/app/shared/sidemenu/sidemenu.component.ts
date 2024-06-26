@@ -18,6 +18,8 @@ export class SidemenuComponent {
   auth = inject(AuthService);
   router = inject(Router);
   private sanitizer = inject(DomSanitizer)
+  rutaBD:string = '';
+  rutaWeb:string = '';
 
   SudModuloService = inject(SubmoduloService)
 
@@ -38,20 +40,31 @@ export class SidemenuComponent {
   menuActual()
   {
     const id = localStorage.getItem("moduloActual");
+    
     if (id!== null && id!== undefined) {
 
       this.SudModuloService.getSubModulo(parseInt(id)).subscribe(
         {
           next: (resp) => 
             {
-              debugger
               this.menuItems = resp;
-              const valor = this.menuItems.find(p =>p.path === this.router.url);
+              const valor = this.menuItems.find(p => {
+                if(p.path === this.router.url){
+                  return p.path;
+                }
+                const id = p.path.split('/');
+                                 
+                if(id[id.length-1] === '?')
+                {
+                  const id_ruta = this.router.url.split('/');
+                  id[id.length-1] = id_ruta[id_ruta.length-1];
 
-              const valor2 = this.menuItems.find(p => {
-debugger
-                 p.path === this.router.url
-                 return p.path;
+                  for (let i = 0; i < id.length; i++) {
+                    this.rutaBD += id[i] + (i < id.length-1 ? '/' : '');
+                  }
+                }
+                                 
+                return this.rutaBD == this.router.url ? p : undefined
               });
 
               if(valor == undefined || valor == null)
