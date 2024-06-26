@@ -48,6 +48,10 @@ export class SubmoduloService {
     return this.http.get<PackPage<SubModulo>>(this.apiUrl+'/GetList?pagina='+iPag);
   }
 
+  insertSubModuloToUser()
+  {
+    
+  }
 
   post(subModulo:SubModulo): Observable<SubModulo> {
     const headers = { 'content-type': 'application/json'} 
