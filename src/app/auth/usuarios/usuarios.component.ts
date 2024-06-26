@@ -5,8 +5,6 @@ import { UsuarioViewModel, Usuario } from '../../interfaces/usuario';
 import {PackPage, Paginacion} from '../../interfaces/packPage'
 import type { InstanceOptions, ModalInterface } from 'flowbite';
 
-import { Select2Data, Select2Module } from 'ng-select2-component';
-
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { every, map, Observable, startWith } from 'rxjs';
@@ -16,17 +14,19 @@ import { FormsModule,FormBuilder, ReactiveFormsModule, FormControl } from '@angu
 import { ModuloService } from '@services/modulo.service';
 import { SubmoduloService } from '@services/submodulo.service';
 import { Modulo, ModuloSelectView } from '@interfaces/modulo';
-import { SubModulo, SubModuloViewer } from '@interfaces/submodulo';
+import { SubModulo, SubModuloViewer, SubModuloXUser } from '@interfaces/submodulo';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { ModalDeleteComponent } from 'app/components/modal-delete/modal-delete.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { AsyncPipe } from '@angular/common';
+import { Repuesta } from '@interfaces/Repuesta';
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule,ReactiveFormsModule,Select2Module,MatAutocompleteModule,MatFormFieldModule,ModalDeleteComponent,FormsModule,MatInputModule,AsyncPipe],
+  imports: [MatTableModule, MatPaginatorModule,ReactiveFormsModule,MatAutocompleteModule,MatFormFieldModule,
+    ModalDeleteComponent,FormsModule,MatInputModule,AsyncPipe],
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.css'
 })
@@ -70,6 +70,9 @@ export default class UsuariosComponent {
   
   pag!:Paginacion;
   pagSM!:Paginacion;
+
+
+  @ViewChild('inputRef') inputElement: any;
   
   userInModal!:UsuarioViewModel;
   titulo!: ((value: any) => string)|null;
@@ -87,15 +90,38 @@ export default class UsuariosComponent {
 
   onSelectSubModulo(event:any)
   {
-   console.log('onSelectSubModulo Evento::: '+JSON.stringify(event.option.value.id));
-  // this.idSubModuloSelct=parseInt(event.target.value);
-  //this.SBMxUForm.get('subModuloId')?.value=parseInt(event.option.value);   //.control('subModuloId').set(event.option.value);
-  /*  this.userForm.controls['apellidos'].setValue(''+model.persona?.apellidos);
-    this.userForm.controls['entidadId'].setValue(model.id);
-    this.userForm.get('nombres')?.disable();*/ 
     this.SBMxUForm.controls['subModuloId'].setValue(parseInt(event.option.value.id));
     this.SBMxUForm.controls['ApsNetUserId'].setValue( this.userInModal.id);
-    console.log('Control::::  '+JSON.stringify(this.SBMxUForm.value));
+  
+    const subModuloUserInsert: SubModuloXUser=this.SBMxUForm.value as SubModuloXUser;
+    this.SubmoduloService.insertSubModuloXUsuario(subModuloUserInsert).subscribe({
+      next:(res)=>{
+     
+        if(res.status=Repuesta.Created)
+          {
+            this.inputElement.nativeElement.value = '';
+            this.matSnackBar.open('Guardado exitoso: ' + res.message,'Cerrar',{ duration:5000, horizontalPosition:'center'});
+
+            this.GetListSubModuloByUserId(this.userInModal.id,this.pagSM.paginaInicio);
+          
+          }
+        else {
+          this.GetListSubModuloByUserId(this.userInModal.id,this.pagSM.paginaInicio);
+          this.matSnackBar.open(res.message) ;
+          this.inputElement.nativeElement.value = '';
+        } 
+      },
+      error: (error) => { 
+
+        if(error.error.errors.ConfirmPassword!=null)
+          this.matSnackBar.open('Algo salio mal','Cerrar',{ duration:5000, horizontalPosition:'center'})}
+    });
+
+  }
+
+  deleteSubModuloUsuario(idSMU:number)
+  {
+    var idUser=this.userInModal.id;
   }
 
   displayFn(subject:any)
@@ -135,6 +161,28 @@ export default class UsuariosComponent {
           modulo: item.modulo,
         }));
         this.subModulosByUser.set(listSMU);
+      }
+    });
+  }
+
+  GetListSubModuloByUserIdFilterIdModulo(idUser:string,PagSubM:number,idModuloF:number)
+  {
+    this.SubmoduloService.getSubModuloListByUser(idUser,PagSubM).subscribe({
+      next:(rsmu)=>{
+
+        this.pagSM=rsmu.paginacion;
+
+        const listSMU=rsmu.listModel.map(item=>({
+          id:item.id,
+          titulo:item.titulo,
+          descripcion: item.descripcion,
+          path: item.path,
+          icon:    item.icon,
+          loadComponent:  item.loadComponent,
+          moduloId:      item.moduloId,
+          modulo: item.modulo,
+        }));
+        this.subModulosByUser.set(listSMU.filter(lsmu=>lsmu.moduloId==idModuloF));
       }
     });
   }
@@ -211,7 +259,7 @@ export default class UsuariosComponent {
     //this.userForm.get('id')?.disable();
     this.userInModal=user;
     this.GetListModulos();
-    this.GetListSubModuloByUserId(user.id,1);
+    this.GetListSubModuloByUserId( this.userInModal.id,1);
     this.SBMxUForm.get('nombres')?.disable();
     this.SBMxUForm.get('apellidos')?.disable();
     this.SBMxUForm.get('subModuloId')?.disable();
@@ -233,6 +281,7 @@ export default class UsuariosComponent {
 
     console.log(this.valIdModuloSelect);
     this.GetListSubModuloByIdMoulo(parseInt(this.valIdModuloSelect),'');
+   // this.GetListSubModuloByUserIdFilterIdModulo(this.userInModal.id,1,parseInt(this.valIdModuloSelect));
   }
 
   onSubmitSM()

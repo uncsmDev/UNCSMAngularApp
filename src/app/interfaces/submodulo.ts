@@ -19,3 +19,10 @@ export interface SubModuloViewer {
     titulo:            string;
 }
 
+export interface SubModuloXUser {
+    id:                number;
+    subModuloId : number,
+    ApsNetUserId: string,
+    moduloId: number,
+  
+}

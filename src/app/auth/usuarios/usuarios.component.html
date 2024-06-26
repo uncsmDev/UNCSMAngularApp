@@ -191,7 +191,7 @@
                             <mat-form-field class="">
                                 <mat-label>Selecione un SubModulo</mat-label>
                                 <!--input  type="text" matInput [formControl]="control" value="{{control.value}}" (input)="filterSubModulos($event)" [matAutocomplete]="auto"  id="subModuloId" formControlName="subModuloId"  name="subModuloId"-->
-                                <input (input)="filterSubModulos($event)" type="text" matInput aria-label="Titulo" required  [matAutocomplete]="auto">
+                                <input (input)="filterSubModulos($event)" type="text" matInput aria-label="Titulo" required  [matAutocomplete]="auto" #inputRef>
                                 <mat-autocomplete [displayWith]="displayFn" #auto="matAutocomplete" id="subModuloId" 
                                 formControlName="subModuloId" name="subModuloId" (optionSelected)="onSelectSubModulo($event)">
                                     @for (item of filteredSubModulos; track item.id) 
@@ -202,22 +202,6 @@
                                     }
                                 </mat-autocomplete>
                             </mat-form-field>
-
-                        
-                            <!---form [formGroup]="SBMxUForm">
-                             
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Selecione un SubModulo</label>
-                                <select  id="subModuloId" formControlName="subModuloId"  name="subModuloId" class="bg-gray-50 border 
-                                border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
-                                focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
-                                dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="">--- Seleccione ---</option>
-                                  @for (item of subModuloList(); track item.id) {
-                                    <option [value]="item.id">{{item.titulo}}</option>
-                                  }
-                                </select>
-                            </form---> 
-                    
                         
                         </div>
                        

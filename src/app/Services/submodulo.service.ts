@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { appsettings } from '../Settings/appsettings';
-import { SubModulo } from '../interfaces/submodulo';
+import { SubModulo, SubModuloXUser } from '../interfaces/submodulo';
 import { LoginResult } from '../interfaces/acount';
 import { PackPage } from '@interfaces/packPage';
 import { Observable } from 'rxjs';
 import { FormGroup } from '@angular/forms';
+import { Result } from '@interfaces/Repuesta';
 
 @Injectable({
   providedIn: 'root'
@@ -39,18 +40,9 @@ export class SubmoduloService {
   {
     return this.http.get<SubModulo[]>(this.apiUrl+'/GetListByModulo?id='+id+'&filter='+filtro);
   }
- /* getList(pag:number)
-  {
-    return this.http.get<SubModulo[]>(this.apiUrl+'/GetList');
-  }*/
 
   getList(iPag:number): Observable<PackPage<SubModulo>> {
     return this.http.get<PackPage<SubModulo>>(this.apiUrl+'/GetList?pagina='+iPag);
-  }
-
-  insertSubModuloToUser()
-  {
-    
   }
 
   post(subModulo:SubModulo): Observable<SubModulo> {
@@ -74,6 +66,13 @@ export class SubmoduloService {
     const url = `${this.apiUrl}`;
     return this.http.get<PackPage<SubModulo>>(this.apiUrl+'/GetListByUserView?id='+idUser+'&pagina='+pag);
    // return this.http.get<PackPage<SubModulo>>(url + `/GetListByUserView?id=${idUser}`);
+  }
+
+  insertSubModuloXUsuario(smxu:SubModuloXUser):Observable<Result<SubModuloXUser>>
+  {
+    const headers = { 'content-type': 'application/json'}  
+    const body=JSON.stringify(smxu);
+    return this.http.post<Result<SubModuloXUser>>(this.apiUrl+'/InsertXUser',body,{'headers':headers})
   }
 
 }
