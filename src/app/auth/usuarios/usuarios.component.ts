@@ -119,11 +119,6 @@ export default class UsuariosComponent {
 
   }
 
-  deleteSubModuloUsuario(idSMU:number)
-  {
-    var idUser=this.userInModal.id;
-  }
-
   displayFn(subject:any)
   {
     return subject? subject.titulo:undefined;
@@ -282,6 +277,18 @@ export default class UsuariosComponent {
   {
   }
 
+  deleteSubModuloXUsuario(SMU:SubModuloXUserView)
+  {
+    this.SubmoduloService.deleteSubModuloXUsuario(SMU.id).subscribe({
+      next:(rs)=>{
+        this.matSnackBar.open( rs.message,'Cerrar',{ duration:5000, horizontalPosition:'center'});
+
+        this.GetListSubModuloByUserId(this.userInModal.id,this.pagSM.paginaInicio);
+      }, 
+      error: (error) =>{ console.error("Error", error);
+      }
+    });
+  }
   closeModal()
   {
     this.modalSubModulo.hide();

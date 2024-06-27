@@ -75,4 +75,8 @@ export class SubmoduloService {
     return this.http.post<Result<SubModuloXUser>>(this.apiUrl+'/InsertXUser',body,{'headers':headers})
   }
 
+  deleteSubModuloXUsuario(id:number):Observable<Result<boolean>>
+  {    
+    return this.http.delete<Result<boolean>>(this.apiUrl+'/DeleteByIdSBMU/'+id);
+  }
 }
