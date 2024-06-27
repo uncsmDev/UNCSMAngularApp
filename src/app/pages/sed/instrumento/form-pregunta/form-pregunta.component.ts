@@ -1,5 +1,5 @@
 import { JsonPipe } from '@angular/common';
-import { Component, inject, output, input, signal, Input } from '@angular/core';
+import { Component, inject, output, input, signal, Input, viewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -14,12 +14,13 @@ import { DimensionService } from '@services/sed/dimension.service';
 import { InstrumentoService } from '@services/sed/instrumento.service';
 import { PreguntaService } from '@services/sed/pregunta.service';
 import { TipoPreguntaService } from '@services/sed/tipo-pregunta.service';
+import { ModalDeleteComponent } from 'app/components/modal-delete/modal-delete.component';
 import { ModalInterface } from 'flowbite';
 
 @Component({
   selector: 'app-form-pregunta',
   standalone: true,
-  imports: [ReactiveFormsModule, JsonPipe],
+  imports: [ReactiveFormsModule, JsonPipe, ModalDeleteComponent],
   templateUrl: './form-pregunta.component.html',
   styleUrl: './form-pregunta.component.css'
 })
@@ -53,6 +54,9 @@ export default class FormPreguntaComponent {
   
   preguntas = signal<Pregunta[]>([]); 
   pregunta = signal<Pregunta>({id: 0, dimesionId: 0, instrumentoId:0, nombre: '', tipoPreguntaId: 0})
+  
+  modalDeleteComponent = viewChild.required(ModalDeleteComponent)
+
   ngOnInit() {
     this.getTipoPregunta();
     this.get();
@@ -210,8 +214,17 @@ get(){
 
   modelDelete(pregunta: Pregunta)
   {
-    
-    console.log(pregunta);
+    this.pregunta.set(pregunta);
+    this.modalDeleteComponent().openModal();
+  }
+
+  delete(){
+    this.preguntaService.delete(this.pregunta()).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.get()
+      }
+    })
   }
   reset()
   {
