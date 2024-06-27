@@ -14,7 +14,7 @@ import { FormsModule,FormBuilder, ReactiveFormsModule, FormControl } from '@angu
 import { ModuloService } from '@services/modulo.service';
 import { SubmoduloService } from '@services/submodulo.service';
 import { Modulo, ModuloSelectView } from '@interfaces/modulo';
-import { SubModulo, SubModuloViewer, SubModuloXUser } from '@interfaces/submodulo';
+import { SubModulo, SubModuloViewer, SubModuloXUser, SubModuloXUserView } from '@interfaces/submodulo';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { ModalDeleteComponent } from 'app/components/modal-delete/modal-delete.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
@@ -53,8 +53,8 @@ export default class UsuariosComponent {
   subModulosV!: SubModuloViewer[];
   searchValue!: string;
 
-  subModulosByUser:WritableSignal<SubModulo[]>=signal([]);
-  subModuloByUserList:Signal<SubModulo[]>=computed(this.subModulosByUser);
+  subModulosByUser:WritableSignal<SubModuloXUserView[]>=signal([]);
+  subModuloByUserList:Signal<SubModuloXUserView[]>=computed(this.subModulosByUser);
   
   selectedSubModulo!: SubModuloViewer;
   filteredSubModulos!: SubModuloViewer[];
@@ -152,13 +152,10 @@ export default class UsuariosComponent {
 
         const listSMU=rsmu.listModel.map(item=>({
           id:item.id,
-          titulo:item.titulo,
-          descripcion: item.descripcion,
-          path: item.path,
-          icon:    item.icon,
-          loadComponent:  item.loadComponent,
-          moduloId:      item.moduloId,
-          modulo: item.modulo,
+          subModuloId:item.subModuloId,
+          ApsNetUserId:item.ApsNetUserId,
+          moduloId:item.moduloId,
+          subModulo:item.subModulo
         }));
         this.subModulosByUser.set(listSMU);
       }
@@ -174,13 +171,10 @@ export default class UsuariosComponent {
 
         const listSMU=rsmu.listModel.map(item=>({
           id:item.id,
-          titulo:item.titulo,
-          descripcion: item.descripcion,
-          path: item.path,
-          icon:    item.icon,
-          loadComponent:  item.loadComponent,
-          moduloId:      item.moduloId,
-          modulo: item.modulo,
+          subModuloId:item.subModuloId,
+          ApsNetUserId:item.ApsNetUserId,
+          moduloId:item.moduloId,
+          subModulo:item.subModulo
         }));
         this.subModulosByUser.set(listSMU.filter(lsmu=>lsmu.moduloId==idModuloF));
       }

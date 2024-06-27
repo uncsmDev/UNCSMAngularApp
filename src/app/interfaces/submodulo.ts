@@ -26,3 +26,12 @@ export interface SubModuloXUser {
     moduloId: number,
   
 }
+
+export interface SubModuloXUserView {
+    id:                number;
+    subModuloId : number,
+    ApsNetUserId: string,
+    moduloId: number,
+    subModulo:SubModulo,
+
+}

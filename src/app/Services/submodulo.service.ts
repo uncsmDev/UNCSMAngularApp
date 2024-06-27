@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { appsettings } from '../Settings/appsettings';
-import { SubModulo, SubModuloXUser } from '../interfaces/submodulo';
+import { SubModulo, SubModuloXUser, SubModuloXUserView } from '../interfaces/submodulo';
 import { LoginResult } from '../interfaces/acount';
 import { PackPage } from '@interfaces/packPage';
 import { Observable } from 'rxjs';
@@ -61,10 +61,10 @@ export class SubmoduloService {
     return this.http.delete(this.apiUrl+'/Delete/'+sbm?.id)
   }
 
-  getSubModuloListByUser(idUser:string,pag:number):Observable<PackPage<SubModulo>>
+  getSubModuloListByUser(idUser:string,pag:number):Observable<PackPage<SubModuloXUserView>>
   {
     const url = `${this.apiUrl}`;
-    return this.http.get<PackPage<SubModulo>>(this.apiUrl+'/GetListByUserView?id='+idUser+'&pagina='+pag);
+    return this.http.get<PackPage<SubModuloXUserView>>(this.apiUrl+'/GetListByUserView?id='+idUser+'&pagina='+pag);
    // return this.http.get<PackPage<SubModulo>>(url + `/GetListByUserView?id=${idUser}`);
   }
 
