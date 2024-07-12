@@ -12,11 +12,11 @@ import { DatosInstrumentos } from '@interfaces/datos_instrumentos';
 import { Dimension } from '@interfaces/dimension';
 import { CommonModule } from '@angular/common';
 import { Pregunta } from '@interfaces/pregunta';
-import { TipoPregunta } from '@interfaces/tipo_pregunta';
 import { ModalInstrumentoComponent } from './modal-instrumento/modal-instrumento.component';
 import { EmiterResult, TipoFormulario } from '@interfaces/EmiterResult';
 import { Router, RouterLink } from '@angular/router';
 import { DimensionService } from '@services/sed/dimension.service';
+import { FlowbitSharedService } from '@services/flowbit-shared.service';
 
 @Component({
   selector: 'app-instrumento',
@@ -32,13 +32,19 @@ export default class InstrumentoComponent {
   instrumentoService = inject(InstrumentoService);
   dimensionService = inject(DimensionService);
   modalService = inject(ModalService);
+  flowbitSharedService = inject(FlowbitSharedService);
+
+  poperData = {
+    titulo: '',
+    msg: ''
+  }
 
   PostType:tipoModal = 'add';
   _instrumentos = signal<Instrumento[]>([]); 
   dimensiones = signal<Dimension[]>([]);
   
   instrumentos = computed(()=>{
-    const inst = this._instrumentos();
+    const inst = this._instrumentos().sort((a, b) => a.tipoEvaluacionId - b.tipoEvaluacionId);
     const tipo = this.tipoEntidades();
 
     const dato:DatosInstrumentos | any = []
@@ -208,6 +214,11 @@ export default class InstrumentoComponent {
     });
   }
 
+  /* popper(title: string, msg:string, buttonName:string, placement: "top"|"right"|"bottom"|"left"){
+    this.poperData.titulo = title;
+    this.poperData.msg = msg;
+    this.flowbitSharedService.popper(buttonName, placement);
+  } */
   
 }
 
