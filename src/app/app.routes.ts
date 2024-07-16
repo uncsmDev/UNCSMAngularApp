@@ -30,13 +30,18 @@ export const routes: Routes = [
                     loadComponent: () => import('./pages/sed/home/home.component'),
                 },
                 {
-                    path: 'instrumento',
+                    path: 'tipo',
+                    title: 'Tipo',
+                    loadComponent: () => import('./pages/sed/instrumento/tipo/tipo.component'),
+                },
+                {
+                    path: 'instrumentos',
                     title: 'Instrumentos',
                     loadComponent: () => import('./pages/sed/instrumento/instrumento.component'),
                 }
                 ,{
                     path: 'instrumento/:id',
-                    title: 'Instrumentos',
+                    title: 'Instrumento',
                     loadComponent: () => import('./pages/sed/instrumento/form-pregunta/form-pregunta.component'),
                 }
             ]

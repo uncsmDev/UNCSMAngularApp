@@ -1,5 +1,5 @@
 import { InstrumentoService } from '@services/sed/instrumento.service';
-import { Component, computed, inject, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, input, signal, viewChild } from '@angular/core';
 import { TitleComponent } from '../../../shared/title/title.component';
 import { ModalService } from '@services/modal.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -34,6 +34,8 @@ export default class InstrumentoComponent {
   modalService = inject(ModalService);
   flowbitSharedService = inject(FlowbitSharedService);
 
+  idTipoEvaluacion = input<number>(0, {alias: 'id'})
+
   poperData = {
     titulo: '',
     msg: ''
@@ -44,20 +46,15 @@ export default class InstrumentoComponent {
   dimensiones = signal<Dimension[]>([]);
   
   instrumentos = computed(()=>{
-    const inst = this._instrumentos().sort((a, b) => a.tipoEvaluacionId - b.tipoEvaluacionId);
+    const inst = this._instrumentos().filter((values) => values.tipoEvaluacionId === this.idTipoEvaluacion()).sort((a, b) => a.tipoEvaluacionId - b.tipoEvaluacionId);
     const tipo = this.tipoEntidades();
-
-    const dato:DatosInstrumentos | any = []
-
-    tipo.forEach((a) => {
-      dato.push(
-        {
-          tipo: a,
-          instrumentos: inst.filter((c) => c.tipoEntidadId == a.id)
-        }
-      )
+    const valuesData = tipo.map((valores) => {
+      const instrumento = inst.filter((f) =>{
+        return f.tipoEntidadId === valores.id
+      })
+      return {...valores, instrumento}
     })
-    return dato;
+    return valuesData;
   });
 
   preguntaForm = this.fb.group({
