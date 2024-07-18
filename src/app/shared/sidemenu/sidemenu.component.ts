@@ -58,7 +58,7 @@ export class SidemenuComponent {
                 {
                   const id_ruta = this.router.url.split('/');
                   id[id.length-1] = id_ruta[id_ruta.length-1];
-
+                  this.rutaBD = '';
                   for (let i = 0; i < id.length; i++) {
                     this.rutaBD += id[i] + (i < id.length-1 ? '/' : '');
                   }

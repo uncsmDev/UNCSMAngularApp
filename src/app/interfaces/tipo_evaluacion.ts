@@ -3,6 +3,7 @@
 export interface TipoEvaluacion {
     id:                number;
     nombre:            string;
+    descripcion:       string;
     eliminado:         boolean;
     visible:           boolean;
 }

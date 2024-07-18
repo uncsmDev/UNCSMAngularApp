@@ -46,11 +46,16 @@ export default class InstrumentoComponent {
   dimensiones = signal<Dimension[]>([]);
   
   instrumentos = computed(()=>{
-    const inst = this._instrumentos().filter((values) => values.tipoEvaluacionId === this.idTipoEvaluacion()).sort((a, b) => a.tipoEvaluacionId - b.tipoEvaluacionId);
-    const tipo = this.tipoEntidades();
+    const inst = this._instrumentos().filter((values) => 
+      {
+        //const valor:number = parseInt(this.idTipoEvaluacion()+'', 10)
+        return values.tipoEvaluacionId == this.idTipoEvaluacion()
+      })
+    const tipo = this.tipoEntidades()
+
     const valuesData = tipo.map((valores) => {
       const instrumento = inst.filter((f) =>{
-        return f.tipoEntidadId === valores.id
+        return f.tipoEntidadId == valores.id
       })
       return {...valores, instrumento}
     })
@@ -107,10 +112,11 @@ export default class InstrumentoComponent {
   {
     this.PostType = 'edit';
     this.modeloInstrumento.set(instrumento);
-    this.modalInstrumento().openModalEdit();
+    this.modalInstrumento().openModalEdit(this.modeloInstrumento());
   }
 
   onSubmit(valores:EmiterResult<Instrumento>){
+    valores.data.tipoEvaluacionId = this.idTipoEvaluacion();
     if(valores.typeModal == 'add')
     {
       this.instrumentoService.post(valores.data).subscribe({
@@ -118,7 +124,7 @@ export default class InstrumentoComponent {
           if(a)
             {
               this._instrumentos.update((prev) => {
-                return [...prev, {...valores.data, id: a}]
+                return [...prev, {...valores.data, id: a, tipoEvaluacionId: this.idTipoEvaluacion()}]
               })
               this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
             }
@@ -140,7 +146,7 @@ export default class InstrumentoComponent {
             return arr.map((dato)=>{
               return valores.data.id == dato.id ? 
               {...dato, nombre: valores.data.nombre, tipoEntidadId: valores.data.tipoEntidadId,
-                tipoEvaluacionId: valores.data.tipoEvaluacionId} 
+                tipoEvaluacionId: this.idTipoEvaluacion()} 
               : 
               dato
             })
@@ -198,10 +204,6 @@ export default class InstrumentoComponent {
       }
     })
   }
-
-  
-
-  
 
   getTipoEvaluacion(){
     this.instrumentoService.getTipoEvaluacion().subscribe({

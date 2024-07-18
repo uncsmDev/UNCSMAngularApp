@@ -4,7 +4,6 @@ import { LoginResult } from "@interfaces/acount";
 export const tokenHttpInterceptor: HttpInterceptorFn = (req, next) => {
     const tokenString = sessionStorage.getItem("loggedInUser");
     const token: LoginResult = tokenString ? JSON.parse(tokenString) : null;
-    console.log(req)
     if(token !== null)
     {
         req = req.clone({setHeaders:{'Authorization':'Bearer ' + token.token}});
@@ -13,6 +12,5 @@ export const tokenHttpInterceptor: HttpInterceptorFn = (req, next) => {
     {
         sessionStorage.setItem("isAuth", "false");
     }
-    console.log(req)
     return next(req);
 }

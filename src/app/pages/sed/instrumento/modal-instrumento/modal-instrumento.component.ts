@@ -24,7 +24,6 @@ export class ModalInstrumentoComponent {
 
   tipoEntidades = input.required<TipoEntidad[]>();
   tipoEvaluaciones = input.required<TipoEvaluacion[]>();
-  instrumento = input<Instrumento|null>();
 
   instrumentoForm = this.fb.group({
     id: [0, [Validators.required]],
@@ -71,14 +70,13 @@ export class ModalInstrumentoComponent {
     this.modalActivo.show();
   }
 
-  openModalEdit()
+  openModalEdit(inst: Instrumento | null)
   {
     this.text = 'Editar';
-    console.log(this.instrumento())
-    this.instrumentoForm.controls['id'].setValue(this.instrumento()!.id);
-    this.instrumentoForm.controls['nombre'].setValue(''+this.instrumento()!.nombre);
-    this.instrumentoForm.controls['tipoEntidadId'].setValue(this.instrumento()!.tipoEntidadId);
-    this.instrumentoForm.controls['tipoEvaluacionId'].setValue(this.instrumento()!.tipoEvaluacionId);
+    this.instrumentoForm.controls['id'].setValue(inst!.id);
+    this.instrumentoForm.controls['nombre'].setValue(inst!.nombre);
+    this.instrumentoForm.controls['tipoEntidadId'].setValue(inst!.tipoEntidadId);
+    this.instrumentoForm.controls['tipoEvaluacionId'].setValue(inst!.tipoEvaluacionId);
     this.modalActivo = this.modalService.createModal('static-modal');
     this.modalActivo.show();
   }

@@ -32,8 +32,6 @@ export class InstrumentoService {
     return this.http.get<TipoEvaluacion[]>(this.rutaTipoEvaluacion)
   }
 
-  
-
   post(instrumento: Instrumento): Observable<any>{
     const headers = { 'content-type': 'application/json'}  
     const body=JSON.stringify(instrumento);
@@ -56,7 +54,7 @@ export class InstrumentoService {
 
   delete(instrumento: Instrumento | null): Observable<any>{
     const id = instrumento!.id;
-    return this.http.get(`${this.ruta}/${id}`);
+    return this.http.get(`${this.ruta}/DeleteVisible/${id}`);
   }
 
   deleteAdmin(instrumento: Instrumento | null): Observable<any>{
