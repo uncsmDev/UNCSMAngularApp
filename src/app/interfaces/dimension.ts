@@ -5,9 +5,8 @@ import { Pregunta } from "./pregunta";
 export interface Dimension {
     id:                number;
     nombre:            string;
-    tipoEntidadId:     number;
-    tipoEntidad:       null;
-    preguntas:         null;
+    instrumentoId:      number;
+    preguntas?:         Pregunta[];
 }
 
 export interface DimensionView {

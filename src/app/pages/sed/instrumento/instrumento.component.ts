@@ -17,11 +17,12 @@ import { EmiterResult, TipoFormulario } from '@interfaces/EmiterResult';
 import { Router, RouterLink } from '@angular/router';
 import { DimensionService } from '@services/sed/dimension.service';
 import { FlowbitSharedService } from '@services/flowbit-shared.service';
+import { ModalDimensionesComponent } from "./modal-dimensiones/modal-dimensiones.component";
 
 @Component({
   selector: 'app-instrumento',
   standalone: true,
-  imports: [TitleComponent, ModalDeleteComponent, ReactiveFormsModule, CommonModule, ModalInstrumentoComponent, RouterLink],
+  imports: [TitleComponent, ModalDeleteComponent, ReactiveFormsModule, CommonModule, ModalInstrumentoComponent, RouterLink, ModalDimensionesComponent],
   templateUrl: './instrumento.component.html',
   styleUrl: './instrumento.component.css'
 })
@@ -75,6 +76,7 @@ export default class InstrumentoComponent {
   modeloInstrumento = signal<Instrumento|null>(null);
 
   modalInstrumento = viewChild.required(ModalInstrumentoComponent);
+  modalDimension = viewChild.required(ModalDimensionesComponent);
   modalDelete = viewChild.required(ModalDeleteComponent);
   tipoFormulario: TipoFormulario = 'instrumento';
 
@@ -106,6 +108,12 @@ export default class InstrumentoComponent {
   {
     this.PostType = 'add';
     this.modalInstrumento().openModal();
+  }
+
+  openModalDimensiones(idInstrumento: number)
+  {
+    this.PostType = 'add';
+    this.modalDimension().openModal(idInstrumento);
   }
   
   openModalEdit(instrumento: Instrumento)
@@ -163,6 +171,66 @@ export default class InstrumentoComponent {
       }
     })
   }
+}     
+
+
+onSubmitDimension(valores:EmiterResult<Dimension>){
+  if(valores.typeModal == 'add')
+  {
+    this.instrumentoService.postDimension(valores.data).subscribe({
+      next: a => {
+        if(a)
+          {
+            this._instrumentos.update((prev) => {
+              return prev.map((data) => {
+                if (data.id === valores.data.instrumentoId) {
+                  // Crea una nueva copia del objeto con la propiedad 'dimensiones' actualizada
+                  return {
+                    ...data,
+                    dimensiones: data.dimensiones ? [...data.dimensiones, valores.data] : [valores.data]
+                  };
+                }
+                return data;
+              });
+            });
+
+            this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+          }
+          else{
+            this.matSnackBar.open("Error al intentar guardar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+          }
+        
+      },
+      error: (e) => {
+        this.matSnackBar.open("Error al intentar guardar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+      }
+    });
+}
+else{
+  /* this.instrumentoService.put(valores.data).subscribe({
+    next: (res) =>{
+      if(res){
+        this._instrumentos.update((arr) => {
+          return arr.map((dato)=>{
+            return valores.data.id == dato.id ? 
+            {...dato, nombre: valores.data.nombre, tipoEntidadId: valores.data.tipoEntidadId,
+              tipoEvaluacionId: this.idTipoEvaluacion()} 
+            : 
+            dato
+          })
+        })
+        this.modalInstrumento().closeModal();
+        this.matSnackBar.open("Dato modificado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+      }
+      else{
+        this.matSnackBar.open("Error al intentar editar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+      }
+    },
+    error: (err)=>{
+      this.matSnackBar.open("Error al intentar editar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+    } 
+  })*/
+}
 }     
   callChildMethod(modelo: Instrumento) {
     if(this.modalDelete()){

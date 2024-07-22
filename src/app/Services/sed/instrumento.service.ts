@@ -9,6 +9,7 @@ import { Instrumento } from '../../interfaces/instrumento';
 import { Dimension } from '../../interfaces/dimension';
 import { Pregunta } from '../../interfaces/pregunta';
 import { TipoPregunta } from '../../interfaces/tipo_pregunta';
+import { Repuesta } from '@interfaces/Repuesta';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class InstrumentoService {
 
   private http = inject(HttpClient);
   private ruta:string = appsettings.apiApp + 'Instrumento';
+  private rutaDimension:string = appsettings.apiApp + 'Dimension';
   private rutaTipoEntidad:string = appsettings.apiApp + 'TipoEntidad/';
   private rutaTipoEvaluacion:string = appsettings.apiApp + 'TipoEvaluacion';
 
@@ -36,6 +38,12 @@ export class InstrumentoService {
     const headers = { 'content-type': 'application/json'}  
     const body=JSON.stringify(instrumento);
     return this.http.post(this.ruta, body, {headers});
+  }
+
+  postDimension(dimension: Dimension): Observable<Result<Dimension>>{
+    const headers = { 'content-type': 'application/json'}  
+    const body=JSON.stringify(dimension);
+    return this.http.post<Result<Dimension>>(this.rutaDimension, body, {headers});
   }
   
   put(ins: Instrumento): Observable<any>{

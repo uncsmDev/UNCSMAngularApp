@@ -21,11 +21,10 @@ import { ModalInterface } from 'flowbite';
   selector: 'app-form-pregunta',
   standalone: true,
   imports: [ReactiveFormsModule, JsonPipe, ModalDeleteComponent],
-  templateUrl: './form-pregunta.component.html',
-  styleUrl: './form-pregunta.component.css'
+  templateUrl: './preguntas.component.html',
+  styleUrl: './preguntas.component.css'
 })
 export default class FormPreguntaComponent {
-  modalActivo!: ModalInterface;
   fb = inject(FormBuilder);
   preguntaService = inject(PreguntaService);
   instrumentoService = inject(InstrumentoService);
@@ -42,15 +41,13 @@ export default class FormPreguntaComponent {
     tipoPreguntaId: [0, [Validators.required]]
   });
   i = 1;
-  outputPostType = output<EmiterResult<Pregunta>>();
   dimensiones = signal<Dimension[]>([]);
   tipoPregunta = signal<TipoPregunta[]>([]);
   instrumento = signal<Instrumento>({id: 0, nombre: '', tipoEntidadId: 0, tipoEvaluacionId: 0});
-  dataView = signal<DimensionView[]>([]);
   
   typePost: post = 'post';
 
-  @Input() id!: number;
+  instrumentoId = input<number>(0, {alias: 'id'})
   
   preguntas = signal<Pregunta[]>([]); 
   pregunta = signal<Pregunta>({id: 0, dimesionId: 0, instrumentoId:0, nombre: '', tipoPreguntaId: 0})
@@ -59,8 +56,7 @@ export default class FormPreguntaComponent {
 
   ngOnInit() {
     this.getTipoPregunta();
-    this.get();
-    
+    this.getDimension()
   }
 
   onSubmit(){
@@ -68,7 +64,7 @@ export default class FormPreguntaComponent {
       {
         const pregunta: Pregunta = this.preguntaForm.value as Pregunta;
         pregunta.dimesionId = Number(pregunta.dimesionId);
-        pregunta.instrumentoId = this.id;
+        pregunta.instrumentoId = this.instrumentoId();
         pregunta.tipoPreguntaId = Number(pregunta.tipoPreguntaId);
 
         if(this.typePost == 'post'){
@@ -78,7 +74,7 @@ export default class FormPreguntaComponent {
                 {
                   this.pregunta.set(a);
                 // 
-                this.dataView.update((prev) => {
+                this.dimensiones.update((prev) => {
                   return prev.map((c) => 
                     {
                       debugger
@@ -90,7 +86,6 @@ export default class FormPreguntaComponent {
                     }
                   )
                 })
-                  this.getTipoPregunta();
                   this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
                 }
                 else{
@@ -110,7 +105,7 @@ export default class FormPreguntaComponent {
           debugger
           if(a)
             {
-            this.dataView.update((prev) => {
+            this.dimensiones.update((prev) => {
               debugger
               return prev.map((c) => 
                 {
@@ -144,56 +139,7 @@ export default class FormPreguntaComponent {
   }
   
 }
-
-get(){
-  this.preguntaService.get(this.id).subscribe({
-    next: (res) => {
-      this.preguntas.set(res);
-      this.instrumentoService.getOne(this.id).subscribe(
-        {
-          next: (value) => {
-            if(value.data)
-              {
-                this.instrumento.set(value.data);
-                debugger
-                this.dimensionService.getTE(this.instrumento().tipoEntidadId).subscribe({
-                  next: (a) =>{
-                    this.dimensiones.set(a);
-                    this.dataView.set( this.dimensiones().map(
-                      (value)=>{
-                        
-                        /* const data = this.preguntas().filter(select => select.instrumentoId == this.id); */
-                        return {...value, preguntas: this.preguntas()};
-                      }
-                  ))
-                  },
-                  error: (b) =>{
-                    
-                  }
-                })
-              }
-            else{
-              this.matSnackBar.open("Error al intentar obtener los dato ",'Cerrar',{ duration:5000, horizontalPosition:'center'}).afterOpened().subscribe({
-                next: a => this.router.navigate(["sed/instrumento"])
-              });;
-            }
-          },
-          error: (err) => {
-            this.matSnackBar.open("Error al intentar obtener el dato ",'Cerrar',{ duration:5000, horizontalPosition:'center'})
-          }
-        }
-      )
-
-    },
-    error: (e) => {
-      console.log(`error: ${e.message}`)
-    },
-    complete:() => {
-      console.log('completado');
-    }
-  })
-}
-
+ 
   save(){
     this.typePost = 'post';
   }
@@ -222,7 +168,7 @@ get(){
     this.preguntaService.delete(this.pregunta()).subscribe({
       next: (res) => {
         console.log(res);
-        this.get()
+       // this.get()
       }
     })
   }
@@ -250,7 +196,7 @@ get(){
     })
   }
   getDimension(){
-    this.dimensionService.get().subscribe({
+    this.dimensionService.getTE(this.instrumentoId()).subscribe({
       next: (res) => {
         this.dimensiones.set(res);
       }
