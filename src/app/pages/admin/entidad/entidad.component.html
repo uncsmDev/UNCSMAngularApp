@@ -42,9 +42,7 @@
                 <th scope="col" class="px-6 py-3">
                     Cargo
                 </th>
-                <th scope="col" class="px-6 py-3">
-                    Tipo Entidad
-                </th>
+              
                 <th scope="col" class="px-6 py-3">
                     Dependencia
                 </th>
@@ -73,9 +71,7 @@
                         <td class="px-6 py-4">
                             {{item.cargo?.nombre}}
                         </td>
-                        <td class="px-6 py-4">
-                            {{item.tipoEntidad?.nombre}}
-                        </td>
+                  
                         <td class="px-6 py-4">
                             {{item.dependencia?.nombre}}
                         </td>
@@ -143,10 +139,6 @@
 </div>
 
 
-
-
-
-
 <!-- Main modal Entidad-->
 <div id="static-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
@@ -202,9 +194,9 @@
                               border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block 
                               w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 
                               dark:focus:border-primary-500" placeholder="Apellidos" required />
-                          </div>
+                            </div>
                           
-                          <form [formGroup]="entidadForm">
+                            <form [formGroup]="entidadForm">
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Selecione un tipo de Sexo</label>
                             <select  id="sexoId" formControlName="sexoId"  name="sexoId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
                             focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
@@ -214,9 +206,9 @@
                                 <option [value]="item.id">{{item.nombre}}</option>
                               }
                             </select>
-                          </form>
+                            </form>
 
-                          <form [formGroup]="entidadForm">
+                            <form [formGroup]="entidadForm">
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Selecione un Cargo</label>
                             <select id="cargoId" formControlName="cargoId"  name="cargoId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
                             focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
@@ -227,22 +219,54 @@
                                 <option [value]="item.id">{{item.nombre}}</option>
                               }
                             </select>
-                          </form>
+                            </form>
 
-                          <form [formGroup]="entidadForm">
-                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Selecione una Entidad</label>
-                            <select id="tipoEntidadId" formControlName="tipoEntidadId"  name="tipoEntidadId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
-                            focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
-                            dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="">--- Seleccione ---</option>
-                            
-                              @for (item of tipoEntidadList(); track item.id) {
-                                <option [value]="item.id">{{item.nombre}}</option>
-                              }
-                            </select>
-                          </form>
+                            <form [formGroup]="entidadForm">
+                            <mat-form-field appearance="outline" class="full-width-form-field">
+                              <mat-label>Tipos de Entidades</mat-label>
+                              <mat-chip-grid #chipGrid aria-label="Tipos de Entidades">
+                                @for (item of _tiposEntidades; track item.id) {
+                                    
+                                    <mat-chip-row (removed)="remove(item)">
+                                        {{item.nombre}}
+                                        <button matChipRemove [attr.aria-label]="'remove ' + item.id">
+                                          <mat-icon>cancel</mat-icon>
+                                        </button>
+                                    </mat-chip-row>
 
-                          <form [formGroup]="entidadForm">
+                                   <!--mat-chip-row (removed)="remove(item)" id="badge-dismiss-default" class="inline-flex items-center px-2 py-1 me-2 text-sm font-medium text-blue-800 bg-blue-100 rounded dark:bg-blue-900 dark:text-blue-300">
+                                    {{item.nombre}}
+                                    <button matChipRemove  class="inline-flex items-center p-1 ms-2 text-sm text-blue-400 bg-transparent rounded-sm hover:bg-blue-200 hover:text-blue-900 dark:hover:bg-blue-800 dark:hover:text-blue-300" data-dismiss-target="#badge-dismiss-default" aria-label="remove">
+                                        <svg class="w-2 h-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                        </svg>
+                                        <span class="sr-only">Remove badge</span>
+                                    </button>
+                                  </mat-chip-row-->
+                                }
+                              </mat-chip-grid>
+                              <input
+                                name="tipoEntidad"
+                                placeholder="Tipo Entidad..."
+                                #inputRef
+                                [(ngModel)]="_tiposEntidades"
+                                [matChipInputFor]="chipGrid"
+                                [matAutocomplete]="auto"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                (matChipInputTokenEnd)="addTEToEntidad($event)"
+                                (input)="filterTipoEntidad($event)"
+                                type="text"
+                              />
+                              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" >
+                                @for (fruit of tipoEntidadList(); track fruit) {
+                                  <mat-option [value]="fruit">{{fruit.nombre}}</mat-option>
+                                }
+                              </mat-autocomplete>
+                            </mat-form-field>
+                            </form>
+
+
+                            <form [formGroup]="entidadForm">
                             <label for="dependenciaId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una Dependencia</label>
                             <select id="dependenciaId" formControlName="dependenciaId"  name="dependenciaId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
                             focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
@@ -252,13 +276,14 @@
                                     <option [value]="item.id">{{item.nombre}}</option>
                                   }
                             </select>
-                          </form>
-                          <div class="relative max-w-sm">
+                            </form>
+
+                            <div class="relative max-w-sm">
                             <label for="fechaIngreso" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha de Ingreso</label>
                             <input datepicker datepicker-autohide type="date" formControlName="fechaIngreso"  name="fechaIngreso"   class="bg-gray-50 border border-gray-300 text-gray-900 
                             text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600
                             dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Indique una Fecha">
-                          </div>
+                            </div>
 
                         </div>
                   </div>
@@ -352,3 +377,5 @@
         </div>
     </div>
 </div>
+
+

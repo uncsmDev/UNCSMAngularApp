@@ -3,10 +3,18 @@ import { initFlowbite } from 'flowbite';
 import {PackPage, Paginacion} from '../../../interfaces/packPage'
 import {InsertUsuario} from '../../../interfaces/usuario'
 import type { InstanceOptions } from 'flowbite';
+import { map, startWith } from 'rxjs/operators';
+
+
+import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
+import {LiveAnnouncer} from '@angular/cdk/a11y';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatIconModule} from '@angular/material/icon';
 
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {FormsModule,FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {FormsModule,FormBuilder, ReactiveFormsModule, FormGroup, FormControl} from '@angular/forms';
+
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -30,6 +38,7 @@ import { DependenciaService } from '../../../Services/admin/dependencia.service'
 import { Sexo } from '../../../interfaces/sexo';
 import { SexoService } from '../../../Services/admin/sexo.service';
 import { UsuarioService } from '../../../Services/usuario.service';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 
 @Component({
@@ -37,7 +46,8 @@ import { UsuarioService } from '../../../Services/usuario.service';
     standalone: true,
     templateUrl: './entidad.component.html',
     styleUrl: './entidad.component.css',
-    imports: [MatTableModule, MatPaginatorModule, TitleComponent, ReactiveFormsModule, ModalDeleteComponent,MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule]
+    imports: [MatTableModule, MatPaginatorModule, TitleComponent, ReactiveFormsModule, ModalDeleteComponent,MatAutocompleteModule,
+          MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule,MatChipsModule, MatIconModule]
 })
 export default class EntidadComponent {
 
@@ -58,8 +68,9 @@ export default class EntidadComponent {
   cargos:WritableSignal<Cargo[]>=signal([]);
   cargoList:Signal<Cargo[]>=computed(this.cargos);
 
-  tiposEntidades:WritableSignal<TipoEntidad[]>=signal([]);
+  tiposEntidades:WritableSignal<TipoEntidad[]|any>=signal([]);
   tipoEntidadList:Signal<TipoEntidad[]>=computed(this.tiposEntidades);
+  _tiposEntidades:TipoEntidad[]=[];
 
   dependencias:WritableSignal<Dependencia[]>=signal([]);
   dependenciasList:Signal<Dependencia[]>=computed(this.dependencias);
@@ -78,9 +89,21 @@ export default class EntidadComponent {
 
   sexoIdF!:number;
 
+  countryControl = new FormControl();
+
+  teForm!:FormGroup;
+  dropdownSettings: any = {};
+  disabled = false;
+  ShowFilter = false;
+  limitSelection = false;
+  selectedItems= [];
+  tipoEntidadItems:TipoEntidad []|any;
+
   @ViewChild(ModalDeleteComponent) modal!: ModalDeleteComponent;
 
-  
+  @ViewChild('inputRef') inputElement: any;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+
   entidadForm=this.fb.group({
     id : [''],
     dni: [''],
@@ -90,7 +113,6 @@ export default class EntidadComponent {
     fechaIngreso : [''],
     sexoId: [''],
     cargoId: [''],
-    tipoEntidadId : [''],
     dependenciaId: [''],
      
   });
@@ -151,8 +173,30 @@ export default class EntidadComponent {
           id:item.id,
           nombre:item.nombre
         }));
-    
+       // this.tipoEntidadItems=listaTE;
+       debugger;
         this.tiposEntidades.set(listaTE);
+      }
+    });
+  }
+  GetListTipoEntidadByFilterName(filter:string)
+  {
+    this.tipoEntidadService.getListByFilterName(filter)
+    .subscribe({
+      next:(res)=>{
+        if(res.status===0)
+        {
+          var re=res.data;
+          const listaTE =res.data?.map(item=>({
+            id:item.id,
+            nombre:item.nombre
+          }));
+
+          //this.tipoEntidadItems=listaTE;
+  
+          this.tiposEntidades.set(listaTE);
+        }
+       
       }
     });
   }
@@ -198,7 +242,6 @@ export default class EntidadComponent {
      }
    });
   }
-
 
   ngOnInit(): void {
     initFlowbite();
@@ -248,12 +291,26 @@ export default class EntidadComponent {
 
   openModalEdit(entidad: Entidad, typeModal: string)
   {
+    this._tiposEntidades=[];
     this.GetListCargo();
     this.GetListTipoEntidad();
     this.GetListDependencia();
     this.GetListSexo();
+
     this.text = 'Editar';
     this.PostType = 'edit';
+
+    var entres = this.tipoEntidadService.getListByIdEntidad(entidad.id,'').subscribe({
+      next:(res)=>{
+        const ar=res.data?.map(item=>
+          this._tiposEntidades.push(item)
+        );
+
+       //this._tiposEntidades=ar;
+
+      }
+    });
+
     this.entidadForm.controls['id'].setValue(''+entidad.id);
     this.entidadForm.controls['dni'].setValue(''+entidad.persona?.dni);
     this.entidadForm.controls['codigo'].setValue(''+entidad.codigo);
@@ -263,7 +320,7 @@ export default class EntidadComponent {
     this.entidadForm.controls['sexoId'].setValue(''+entidad.persona?.sexoId);
   
    this.entidadForm.controls['cargoId'].setValue(''+entidad.cargo?.id);
-    this.entidadForm.controls['tipoEntidadId'].setValue(''+entidad.tipoEntidad?.id);
+    //this.entidadForm.controls['tipoEntidadId'].setValue(''+entidad.tipoEntidad?.id);
     this.entidadForm.controls['dependenciaId'].setValue(''+entidad.dependencia?.id);
     this.modalActivo = this.modalService.createModal('static-modal');
     this.modalActivo.show();
@@ -284,16 +341,32 @@ export default class EntidadComponent {
     this.GetListTipoEntidad();
     this.GetListDependencia();
     this.GetListSexo();
+
+
+     //this.selectedItems= this.tipoEntidadItems;
+     this.dropdownSettings = {
+        singleSelection: false,
+        idField: 'id',
+        textField: 'nombre',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        allowSearchFilter: this.ShowFilter
+      };
+
+      this.teForm = this.fb.group({
+        te: [this.selectedItems]
+      });
+
     this.text = 'Agregar';
     this.PostType = 'add';
     this.modalActivo = this.modalService.createModal('static-modal');
     this.modalActivo.show();
+
   }
 
-  
   closeModal(){
     this.entidadForm.reset();
-
+    this._tiposEntidades=[];  
     this.modalActivo.hide();
   }
   
@@ -341,11 +414,15 @@ export default class EntidadComponent {
       }
   }
 
-  onSubmit(){
+  onSubmit()
+  {
+    var arr=this.entidadService.convertirAGrupoAObjeto(this.entidadForm);
 
+    arr.tipoEntidadId=this._tiposEntidades;
+  
     if(this.PostType == 'add')
       {
-    this.entidadService.post(this.entidadService.convertirAGrupoAObjeto(this.entidadForm)).subscribe({
+      this.entidadService.post(arr).subscribe({
       next: (response) => {
         this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
         this.entidadForm.reset();
@@ -356,7 +433,11 @@ export default class EntidadComponent {
   }
     else{
 
-      this.entidadService.put(this.entidadService.convertirAGrupoAObjeto(this.entidadForm)).subscribe({
+      var arr=this.entidadService.convertirAGrupoAObjeto(this.entidadForm);
+
+      arr.tipoEntidadId=this._tiposEntidades;
+
+      this.entidadService.put(arr).subscribe({
         next: (response) => {
           this.matSnackBar.open("Dato modificado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'}).afterDismissed().subscribe({
             next:(s) =>{
@@ -384,6 +465,45 @@ export default class EntidadComponent {
     
   }
 
+
+  onItemSelect(item: any) {
+    console.log('onItemSelect', item);
+}
+  remove(tipoEnt:TipoEntidad)
+  {
+    this._tiposEntidades=this._tiposEntidades.filter(r=>r.id!==tipoEnt.id);
+  }
+
+  addTEToEntidad(event: MatChipInputEvent)
+  {
+
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+
+    //this.entidadForm.controls['tipoEntidadId'].setValue(this._tiposEntidades.);
+    event.option.deselect();
+
+    var item=event.option.value;
+
+    if(!this._tiposEntidades || this._tiposEntidades.length===0)
+     {
+      this._tiposEntidades.push(item);
+     }
+     else
+      if(!this._tiposEntidades.find(f=>f.id===item.id))
+        this._tiposEntidades.push(item);
+      
+  }
+
+  filterTipoEntidad(event:any)
+  {
+    if(event.data===null)
+      this.GetListTipoEntidad();
+
+    else
+      this.GetListTipoEntidadByFilterName(event.target.value);
+  }
 
 }
 
