@@ -7,7 +7,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ModalDeleteComponent } from '../../../components/modal-delete/modal-delete.component';
 import { TipoEntidad } from '@interfaces/tipoEntidad';
 import { TipoEvaluacion } from '@interfaces/tipo_evaluacion';
-import { Instrumento, tipoModal} from '@interfaces/instrumento';
+import { Instrumento, postDelete, tipoModal} from '@interfaces/instrumento';
 import { DatosInstrumentos } from '@interfaces/datos_instrumentos';
 import { Dimension } from '@interfaces/dimension';
 import { CommonModule } from '@angular/common';
@@ -42,10 +42,13 @@ export default class InstrumentoComponent {
   }
 
   PostType:tipoModal = 'add';
+  postDelete: postDelete = 'instrumento';
+
   _instrumentos = signal<Instrumento[]>([]); 
   dimensiones = signal<Dimension[]>([]);
   
   instrumentos = computed(()=>{
+    const e = this.idTipoEvaluacion()
     const inst = this._instrumentos().filter((values) => 
       {
         //const valor:number = parseInt(this.idTipoEvaluacion()+'', 10)
@@ -218,6 +221,7 @@ else{
   callChildMethod(modelo: Instrumento) {
     if(this.modalDelete()){
       this.modalDelete().openModal(); // Llama al método doSomething del componente hijo
+      this.postDelete = 'instrumento';
     }
     this.modeloInstrumento.set(modelo);
   }
@@ -225,11 +229,23 @@ else{
   delDimension(dimension: Dimension) {
     if(this.modalDelete()){
       this.modalDelete().openModal(); // Llama al método doSomething del componente hijo
+      this.postDelete = 'dimension';
     }
     this.modeloDimension.set(dimension);
   }
 
   onDelete(){
+    if(this.postDelete == 'instrumento'){
+      this.deletedInstrumento();
+    }
+    else if(this.postDelete == 'dimension'){
+      this.deleteDimension()
+    }
+    
+    this.getInstrumento()
+  }
+
+  deletedInstrumento(){
     this.instrumentoService.delete(this.modeloInstrumento()).subscribe(
       {
         next: (res) => {
@@ -238,6 +254,25 @@ else{
             this._instrumentos.update((valor) => {
               return valor.filter((dato) => dato.id !== this.modeloInstrumento()!.id);
             })
+          }else{
+            this.matSnackBar.open("Error al intentar eliminar el dato!",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+          }
+          
+        },
+        error: (a) =>{
+          this.matSnackBar.open("Error al intentar eliminar el dato!",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+        } 
+      }
+    )
+  }
+
+  deleteDimension(){
+    this.instrumentoService.deleteDimension(this.modeloDimension()).subscribe(
+      {
+        next: (res) => {
+          if(res){
+            this.matSnackBar.open("Dato eliminado correctamente!",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+            this.getInstrumento()
           }else{
             this.matSnackBar.open("Error al intentar eliminar el dato!",'Cerrar',{ duration:5000, horizontalPosition:'center'});
           }

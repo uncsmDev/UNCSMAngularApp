@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { Dimension} from '@interfaces/dimension';
 import { post } from '@interfaces/escala';
 import { Instrumento } from '@interfaces/instrumento';
-import { Pregunta } from '@interfaces/pregunta';
+import { PreguntasCerradas } from '@interfaces/pregunta_cerradas';
 import { TipoPregunta } from '@interfaces/tipo_pregunta';
 import { DimensionService } from '@services/sed/dimension.service';
 import { InstrumentoService } from '@services/sed/instrumento.service';
@@ -31,7 +31,7 @@ export default class FormPreguntaComponent {
   preguntaForm = this.fb.group({
     id: [0, [Validators.required]],
     nombre: ['', [Validators.required]],
-    dimesionId: [0, [Validators.required]]
+    dimesionId: [0, [Validators.required, this.instrumentoService.notZeroValidator]]
   });
 
   tipoPreguntaBAND = signal(false);
@@ -44,8 +44,8 @@ export default class FormPreguntaComponent {
 
   instrumentoId = input<number>(0, {alias: 'id'})
   
-  preguntas = signal<Pregunta[]>([]); 
-  pregunta = signal<Pregunta>({id: 0, dimesionId: 0, nombre: ''})
+  preguntas = signal<PreguntasCerradas[]>([]); 
+  pregunta = signal<PreguntasCerradas>({id: 0, dimesionId: 0, nombre: ''})
   
   modalDeleteComponent = viewChild.required(ModalDeleteComponent)
 
@@ -56,7 +56,7 @@ export default class FormPreguntaComponent {
   onSubmit(){
     if(this.preguntaForm.valid)
       {
-        const pregunta: Pregunta = this.preguntaForm.value as Pregunta;
+        const pregunta: PreguntasCerradas = this.preguntaForm.value as PreguntasCerradas;
         pregunta.dimesionId = Number(pregunta.dimesionId);
 
         if(this.typePost == 'post'){
@@ -71,7 +71,7 @@ export default class FormPreguntaComponent {
                     {
                       if(c.id ==  this.pregunta().dimesionId)
                         {
-                          c.preguntas?.push(this.pregunta());
+                          c.preguntasCerradas?.push(this.pregunta());
                         }
                       return c;
                     }
@@ -119,7 +119,7 @@ export default class FormPreguntaComponent {
   save(){
     this.typePost = 'post';
   }
-  edit(pregunta: Pregunta)
+  edit(pregunta: PreguntasCerradas)
   {
     this.preguntaForm.setValue(
       {
@@ -131,7 +131,7 @@ export default class FormPreguntaComponent {
     this.typePost = 'update';
   }
 
-  modelDelete(pregunta: Pregunta)
+  modelDelete(pregunta: PreguntasCerradas)
   {
     this.pregunta.set(pregunta);
     this.modalDeleteComponent().openModal();

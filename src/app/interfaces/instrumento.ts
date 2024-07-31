@@ -10,4 +10,5 @@ export interface Instrumento {
     dimensiones?:          Dimension[];
 }
 export type tipoModal =  'add' | 'edit'
+export type postDelete =  'instrumento' | 'dimension'
 

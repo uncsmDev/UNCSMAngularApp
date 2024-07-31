@@ -1,5 +1,5 @@
 import { Component, inject, input, output, signal, viewChild } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Instrumento, tipoModal } from '@interfaces/instrumento';
 import { InstrumentoService } from '@services/sed/instrumento.service';
@@ -21,6 +21,7 @@ export class ModalInstrumentoComponent {
   modalActivo!: ModalInterface;
   fb = inject(FormBuilder);
   modalService = inject(ModalService);
+  instrumentoService = inject(InstrumentoService)
 
   tipoEntidades = input.required<TipoEntidad[]>();
   tipoEvaluaciones = input.required<TipoEvaluacion[]>();
@@ -28,7 +29,7 @@ export class ModalInstrumentoComponent {
   instrumentoForm = this.fb.group({
     id: [0, [Validators.required]],
     nombre: ['', [Validators.required]],
-    tipoEntidadId: [0, [Validators.required]],
+    tipoEntidadId: [0, [Validators.required, this.instrumentoService.notZeroValidator]],
     tipoEvaluacionId: [0, [Validators.required]]
   });
 

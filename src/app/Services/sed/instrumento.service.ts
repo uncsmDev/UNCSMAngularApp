@@ -7,9 +7,10 @@ import { TipoEntidad } from '../../interfaces/tipoEntidad';
 import { TipoEvaluacion } from '../../interfaces/tipo_evaluacion';
 import { Instrumento } from '../../interfaces/instrumento';
 import { Dimension } from '../../interfaces/dimension';
-import { Pregunta } from '../../interfaces/pregunta';
+import { PreguntasCerradas } from '../../interfaces/pregunta_cerradas';
 import { TipoPregunta } from '../../interfaces/tipo_pregunta';
 import { Repuesta } from '@interfaces/Repuesta';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -71,8 +72,17 @@ export class InstrumentoService {
     return this.http.get(`${this.ruta}/DeleteVisible/${id}`);
   }
 
+  deleteDimension(dimension: Dimension | null): Observable<Result<Dimension>>{
+    const id = dimension!.id;
+    return this.http.get<Result<Dimension>>(`${this.rutaDimension}/DeleteVisible/${id}`);
+  }
+
   deleteAdmin(instrumento: Instrumento | null): Observable<any>{
     const id = instrumento!.id;
     return this.http.delete(`${this.ruta}/${id}`);
+  }
+
+  notZeroValidator(control: AbstractControl): ValidationErrors | null {
+    return control.value != 0 ? null : { notZero: true };
   }
 }
