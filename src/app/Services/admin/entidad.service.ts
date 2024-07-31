@@ -57,7 +57,7 @@ export class EntidadService {
       sexoId: parseInt(entidadForm.get('sexoId')?.value),
       fechaIngreso: entidadForm.get('fechaIngreso')?.value,
       cargoId:parseInt(entidadForm.get('cargoId')?.value),
-      tipoEntidadId: parseInt( entidadForm.get('tipoEntidadId')?.value),
+      tipoEntidadId:entidadForm.get('tipoEntidadId')?.value,
       dependenciaId: parseInt(entidadForm.get('dependenciaId')?.value),
     };
   }

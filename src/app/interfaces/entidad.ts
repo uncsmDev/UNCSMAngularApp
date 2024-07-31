@@ -9,7 +9,7 @@ export interface Entidad {
     fechaIngreso: Date;
     persona?: Persona;
     cargo?: Cargo;
-    tipoEntidad?: TipoEntidad;
+    tipoEntidad?: TipoEntidad[];
     dependencia?: Dependencia;
 }
 
@@ -22,6 +22,6 @@ export interface EntidadDto {
     sexoId:number;
     fechaIngreso: Date;
     cargoId?: number;
-    tipoEntidadId?: number;
+    tipoEntidadId?:  TipoEntidad[];
     dependenciaId?: number;
 }
