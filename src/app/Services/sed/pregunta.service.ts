@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class PreguntaService {
   private http = inject(HttpClient);
-  private ruta:string = appsettings.apiApp + 'Pregunta';
+  private ruta:string = appsettings.apiApp + 'PreguntaCerrada';
 
   constructor() { }
 

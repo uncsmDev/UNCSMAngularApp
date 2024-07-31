@@ -1,0 +1,10 @@
+.counter-item {
+    counter-increment: item;
+    position: relative;
+  }
+
+  .counter-item::before {
+    content: counter(item) ".";
+    position: absolute;
+    left: -1rem; /* Ajusta esto según sea necesario */
+  }

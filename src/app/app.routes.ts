@@ -42,7 +42,7 @@ export const routes: Routes = [
                 ,{
                     path: 'instrumento/:id',
                     title: 'Instrumento',
-                    loadComponent: () => import('./pages/sed/instrumento/preguntas/preguntas.component'),
+                    loadComponent: () => import('./pages/sed/instrumento/preguntas-cerradas/preguntas.component'),
                 }
             ]
     },

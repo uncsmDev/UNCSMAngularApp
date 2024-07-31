@@ -3,8 +3,6 @@
 export interface Pregunta {
     id:                number;
     nombre:            string;
-    instrumentoId:     number;
-    tipoPreguntaId:    number;
     dimesionId:        number;
 }
 

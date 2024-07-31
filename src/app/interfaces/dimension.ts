@@ -9,10 +9,3 @@ export interface Dimension {
     preguntas?:         Pregunta[];
 }
 
-export interface DimensionView {
-    id:                number;
-    nombre:            string;
-    tipoEntidadId:     number;
-    tipoEntidad:       null;
-    preguntas?:         Pregunta[];
-}

@@ -52,6 +52,12 @@ export class InstrumentoService {
     return this.http.put(`${this.ruta}/${ins.id}`, body, {headers});
   }
 
+  putDimension(dimension: Dimension): Observable<any>{
+    const headers = {'content-type': 'application/json'}
+    const body = JSON.stringify(dimension);
+    return this.http.put(`${this.rutaDimension}/${dimension.id}`, body, {headers});
+  }
+
   get(): Observable<Instrumento[]>{
     return this.http.get<Instrumento[]>(this.ruta)
   }

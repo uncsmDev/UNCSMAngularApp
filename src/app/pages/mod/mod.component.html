@@ -14,7 +14,7 @@
       
 <div class="max-w-sm bg-white border border-gray-400 rounded-lg shadow dark:bg-gray-700 dark:border-gray-500 ">
     <a (click)="link(modulo.path, modulo.id)" class="cursor-pointer relative block h-48 overflow-hidden rounded">
-        <img class="w-full rounded-t-lg transition duration-500 transform hover:scale-105" src="{{ modulo.imgLocation }}" alt="" />
+        <img class="w-full rounded-t-lg transition duration-500 transform hover:scale-105" ngSrc="{{ modulo.imgLocation }}" width="300" height="300" />
     </a>
     <div class="p-5">
         <a (click)="link(modulo.path, modulo.id)" class="cursor-pointer">
