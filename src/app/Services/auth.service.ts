@@ -36,12 +36,7 @@ export class AuthService {
   }
 
   googleLogin(idToken: string) {
-    return this.http.post<{ token: string }>(
-      this.apiUrl + 'google-login',
-      {
-        idToken: idToken,
-      }
-    );
+    return this.http.post<{ token: string }>(this.apiUrl + 'google-login',{idToken: idToken,});
   }
 
   isAuth(){

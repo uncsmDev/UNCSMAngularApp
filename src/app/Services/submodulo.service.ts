@@ -23,7 +23,7 @@ export class SubmoduloService {
     const tokenString = sessionStorage.getItem("loggedInUser");
     const token: LoginResult = tokenString ? JSON.parse(tokenString) : null;
     
-    return this.http.get<SubModulo[]>(url + `/GetListUser?id=${id}&userID=${token.idUser}`);
+    return this.http.get<SubModulo[]>(url + `/GetListUser?id=${id}&userID=${token.token}`);
   }
 
   googleLogin(idToken: string) {

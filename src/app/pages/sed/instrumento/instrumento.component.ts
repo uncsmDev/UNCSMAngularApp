@@ -178,10 +178,9 @@ onSubmitDimension(valores:EmiterResult<Dimension>){
             this._instrumentos.update((prev) => {
               return prev.map((data) => {
                 if (data.id === valores.data.instrumentoId) {
-                  // Crea una nueva copia del objeto con la propiedad 'dimensiones' actualizada
                   return {
                     ...data,
-                    dimensiones: data.dimensiones ? [...data.dimensiones, valores.data] : [valores.data]
+                    dimensiones: data.dimensiones ? [...data.dimensiones, a.data] : [valores.data]
                   };
                 }
                 return data;
@@ -201,6 +200,7 @@ onSubmitDimension(valores:EmiterResult<Dimension>){
     });
 }
 else{
+  const datosDimensiones = valores.data;
   this.instrumentoService.putDimension(valores.data).subscribe({
     next: (res) =>{
       if(res){

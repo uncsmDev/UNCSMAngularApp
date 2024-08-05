@@ -40,7 +40,6 @@ export class SidemenuComponent {
   menuActual()
   {
     const id = localStorage.getItem("moduloActual");
-    
     if (id!== null && id!== undefined) {
 
       this.SudModuloService.getSubModulo(parseInt(id)).subscribe(

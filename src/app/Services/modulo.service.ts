@@ -16,15 +16,17 @@ export class ModuloService {
   
   get(): Observable<Modulo[]> {
  
-    const user = sessionStorage.getItem("loggedInUser");
+    const tokenStorage = sessionStorage.getItem("loggedInUser");
   
-    if (user!== null && user!== undefined) {
+    if (tokenStorage!== null && tokenStorage!== undefined) {
       try {
         // Intenta convertir la cadena en un objeto JSON
-        const userObject = JSON.parse(user);
-  
+        const tokenJSON = JSON.parse(tokenStorage);
+
+        const idUser = tokenJSON.token;
+
         // Construye la URL completa incluyendo el Email del usuario
-        const url = `${this.apiUrl}/GetModuloxUser?id=${userObject.idUser}`;
+        const url = `${this.apiUrl}/GetModuloxUser?id=${idUser}`;
   
         // Realiza la solicitud GET
         return this.http.get<Modulo[]>(url);
