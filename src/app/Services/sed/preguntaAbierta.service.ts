@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { Instrumento } from '@interfaces/instrumento';
+import { PreguntaAbierta } from '@interfaces/pregunta_abierta';
 import { PreguntasCerradas } from '@interfaces/pregunta_cerradas';
 import { Result } from '@interfaces/Result.interface';
 import { TipoEntidad } from '@interfaces/tipoEntidad';
@@ -9,34 +11,34 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class PreguntaService {
+export class PreguntaAbiertaService {
   private http = inject(HttpClient);
-  private ruta:string = appsettings.apiApp + 'PreguntaCerrada';
-  
+  private ruta:string = appsettings.apiApp + 'PreguntaAbierta';
   private rutaInstrumento:string = appsettings.apiApp + 'TipoEntidad';
 
   constructor() { }
 
-  get(id:number): Observable<PreguntasCerradas[]>{
-    return this.http.get<PreguntasCerradas[]>(`${this.ruta}/${id}`)
+  get(id:number): Observable<Result<PreguntaAbierta[]>>{
+    return this.http.get<Result<PreguntaAbierta[]>>(`${this.ruta}/${id}`)
   }
 
-  post(pregunta: PreguntasCerradas): Observable<any>{
+  getInstrumento(id:number): Observable<Result<TipoEntidad>>{
+    return this.http.get<Result<TipoEntidad>>(`${this.rutaInstrumento}/GetTipoEntidad/${id}`)
+  }
+
+  post(pregunta: PreguntaAbierta): Observable<any>{
     const headers = { 'content-type': 'application/json'}  
     const body=JSON.stringify(pregunta);
     return this.http.post(this.ruta, body, {headers});
   }
 
-  update(pregunta: PreguntasCerradas):Observable<any> {
+  update(pregunta: PreguntaAbierta):Observable<any> {
     const headers = {'content-type': 'application/json'}
     const body = JSON.stringify(pregunta);
     return this.http.put(`${this.ruta}/${pregunta.id}`, body, {headers});
   }
 
-  delete(pregunta: PreguntasCerradas): Observable<Result<PreguntasCerradas>>{
-    return this.http.delete<Result<PreguntasCerradas>>(`${this.ruta}/${pregunta.id}`);
-  }
-  getInstrumento(id:number): Observable<Result<TipoEntidad>>{
-    return this.http.get<Result<TipoEntidad>>(`${this.rutaInstrumento}/GetTipoEntidad/${id}`)
+  delete(pregunta: PreguntaAbierta): Observable<Result<PreguntaAbierta>>{
+    return this.http.delete<Result<PreguntaAbierta>>(`${this.ruta}/${pregunta.id}`);
   }
 }

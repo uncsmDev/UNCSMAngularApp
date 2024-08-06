@@ -6,7 +6,7 @@ import { LoginResult } from '../interfaces/acount';
 import { PackPage } from '@interfaces/packPage';
 import { Observable } from 'rxjs';
 import { FormGroup } from '@angular/forms';
-import { Result } from '@interfaces/Repuesta';
+import { Result } from '@interfaces/Result.interface';
 
 @Injectable({
   providedIn: 'root'

@@ -3,63 +3,57 @@ import { Component, inject, input, signal, Input, viewChild } from '@angular/cor
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Dimension} from '@interfaces/dimension';
 import { post } from '@interfaces/escala';
 import { Instrumento } from '@interfaces/instrumento';
+import { PreguntaAbierta } from '@interfaces/pregunta_abierta';
 import { PreguntasCerradas } from '@interfaces/pregunta_cerradas';
-import { TipoPregunta } from '@interfaces/tipo_pregunta';
 import { TipoEntidad } from '@interfaces/tipoEntidad';
-import { DimensionService } from '@services/sed/dimension.service';
 import { InstrumentoService } from '@services/sed/instrumento.service';
-import { PreguntaService } from '@services/sed/pregunta.service';
+import { PreguntaAbiertaService } from '@services/sed/preguntaAbierta.service';
 import { ModalDeleteComponent } from 'app/components/modal-delete/modal-delete.component';
 
 @Component({
-  selector: 'app-form-pregunta',
+  selector: 'app-preguntas-abiertas',
   standalone: true,
   imports: [ReactiveFormsModule, JsonPipe, ModalDeleteComponent, LowerCasePipe],
-  templateUrl: './preguntas.component.html',
-  styleUrl: './preguntas.component.css'
+  templateUrl: './preguntas-abiertas.component.html',
+  styleUrl: './preguntas-abiertas.component.css'
 })
-export default class FormPreguntaComponent {
+export default class PreguntasAbiertasComponent {
   fb = inject(FormBuilder);
-  preguntaService = inject(PreguntaService);
+  preguntaService = inject(PreguntaAbiertaService);
   instrumentoService = inject(InstrumentoService);
-  dimensionService = inject(DimensionService);
   matSnackBar=inject(MatSnackBar);
   router = inject(Router);
 
   preguntaForm = this.fb.group({
     id: [0, [Validators.required]],
-    nombre: ['', [Validators.required]],
-    dimesionId: [0, [Validators.required, this.instrumentoService.notZeroValidator]]
+    nombre: ['', [Validators.required]]
   });
 
   tipoPreguntaBAND = signal(false);
 
-  i = 1;
-  dimensiones = signal<Dimension[]>([]);
-  instrumento = signal<Instrumento>({id: 0, nombre: '', tipoEntidadId: 0, tipoEvaluacionId: 0});
+  tipoEntidad = signal<TipoEntidad>({id: 0, nombre: ""});
   
   typePost: post = 'post';
 
   instrumentoId = input<number>(0, {alias: 'id'})
   
-  preguntas = signal<PreguntasCerradas[]>([]); 
-  pregunta = signal<PreguntasCerradas>({id: 0, dimesionId: 0, nombre: ''})
+  preguntas = signal<PreguntaAbierta[]>([]); 
+  pregunta = signal<PreguntaAbierta>({id: 0, nombre: '', instrumentoId: 0})
   
   modalDeleteComponent = viewChild.required(ModalDeleteComponent)
 
   ngOnInit() {
-    this.getDimension()
+    this.getPreguntaAbierta();
     this.getInstrumento()
   }
 
   onSubmit(){
     if(this.preguntaForm.valid)
       {
-        const pregunta: PreguntasCerradas = this.preguntaForm.value as PreguntasCerradas;
-        pregunta.dimesionId = Number(pregunta.dimesionId);
+        const pregunta: PreguntaAbierta = this.preguntaForm.value as PreguntaAbierta;
+        pregunta.instrumentoId = this.instrumentoId();
 
         if(this.typePost == 'post'){
           this.preguntaService.post(pregunta).subscribe({
@@ -67,18 +61,6 @@ export default class FormPreguntaComponent {
               if(a)
                 {
                   this.pregunta.set(a);
-                // 
-                this.dimensiones.update((prev) => {
-                  return prev.map((c) => 
-                    {
-                      if(c.id ==  this.pregunta().dimesionId)
-                        {
-                          c.preguntasCerradas?.push(this.pregunta());
-                        }
-                      return c;
-                    }
-                  )
-                })
                   this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
                 }
                 else{
@@ -97,7 +79,6 @@ export default class FormPreguntaComponent {
         next: a => {
           if(a)
             {
-              this.getDimension()
               this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
             }
             else{
@@ -121,19 +102,18 @@ export default class FormPreguntaComponent {
   save(){
     this.typePost = 'post';
   }
-  edit(pregunta: PreguntasCerradas)
+  edit(pregunta: PreguntaAbierta)
   {
     this.preguntaForm.setValue(
       {
         id: pregunta.id,
-        nombre: pregunta.nombre,
-        dimesionId: pregunta.dimesionId
+        nombre: pregunta.nombre
       }
     )
     this.typePost = 'update';
   }
 
-  modelDelete(pregunta: PreguntasCerradas)
+  modelDelete(pregunta: PreguntaAbierta)
   {
     this.pregunta.set(pregunta);
     this.modalDeleteComponent().openModal();
@@ -142,7 +122,6 @@ export default class FormPreguntaComponent {
   delete(){
     this.preguntaService.delete(this.pregunta()).subscribe({
       next: (res) => {
-        this.getDimension()
         this.matSnackBar.open("Dato eliminado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
       }
     })
@@ -152,27 +131,20 @@ export default class FormPreguntaComponent {
     this.preguntaForm.reset(
       {
         id: 0,
-        nombre: '',
-        dimesionId: 0
+        nombre: ''
       }
     );
   }
 
-  getDimension(){
-    this.dimensionService.getTE(this.instrumentoId()).subscribe({
-      next: (res) => {
-        this.dimensiones.set(res);
+  getPreguntaAbierta()
+  {
+    this.preguntaService.get(this.instrumentoId()).subscribe({
+      next: (preguntas_abiertas) => {
+        this.preguntas.set(preguntas_abiertas.data!);
       }
     })
   }
-  increment(value: number){
-    this.i += value;
-  }
-  resetIncrement()
-  {
-    this.i = 1;
-  }
-  tipoEntidad = signal<TipoEntidad>({id: 0, nombre: ""});
+
   getInstrumento(){
     this.preguntaService.getInstrumento(this.instrumentoId()).subscribe({
       next: (instrumento) => {

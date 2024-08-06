@@ -3,7 +3,7 @@ import { appsettings } from '../../Settings/appsettings';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {TipoEntidad} from '../../interfaces/tipoEntidad';
-import { Result } from '@interfaces/Repuesta';
+import { Result } from '@interfaces/Result.interface';
 
 @Injectable({
   providedIn: 'root'

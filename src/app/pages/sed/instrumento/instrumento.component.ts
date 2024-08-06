@@ -175,18 +175,7 @@ onSubmitDimension(valores:EmiterResult<Dimension>){
       next: a => {
         if(a)
           {
-            this._instrumentos.update((prev) => {
-              return prev.map((data) => {
-                if (data.id === valores.data.instrumentoId) {
-                  return {
-                    ...data,
-                    dimensiones: data.dimensiones ? [...data.dimensiones, a.data] : [valores.data]
-                  };
-                }
-                return data;
-              });
-            });
-
+            this.getInstrumento()
             this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
           }
           else{

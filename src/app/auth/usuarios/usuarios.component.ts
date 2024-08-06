@@ -20,7 +20,7 @@ import { ModalDeleteComponent } from 'app/components/modal-delete/modal-delete.c
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { AsyncPipe } from '@angular/common';
-import { Repuesta } from '@interfaces/Repuesta';
+import { ResultEnum } from '@interfaces/Result.interface';
 
 @Component({
   selector: 'app-usuarios',
@@ -97,7 +97,7 @@ export default class UsuariosComponent {
     this.SubmoduloService.insertSubModuloXUsuario(subModuloUserInsert).subscribe({
       next:(res)=>{
      
-        if(res.status=Repuesta.Created)
+        if(res.status=ResultEnum.Created)
           {
             this.inputElement.nativeElement.value = '';
             this.matSnackBar.open('Guardado exitoso: ' + res.message,'Cerrar',{ duration:5000, horizontalPosition:'center'});

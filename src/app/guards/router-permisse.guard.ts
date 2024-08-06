@@ -5,7 +5,6 @@ import { AuthService } from '../Services/auth.service';
 export const routerPermisseGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
-
   if(authService.isModuloPermisse()){
     return true;
   }

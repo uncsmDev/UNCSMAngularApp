@@ -9,7 +9,6 @@ import { Instrumento } from '../../interfaces/instrumento';
 import { Dimension } from '../../interfaces/dimension';
 import { PreguntasCerradas } from '../../interfaces/pregunta_cerradas';
 import { TipoPregunta } from '../../interfaces/tipo_pregunta';
-import { Repuesta } from '@interfaces/Repuesta';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Injectable({
