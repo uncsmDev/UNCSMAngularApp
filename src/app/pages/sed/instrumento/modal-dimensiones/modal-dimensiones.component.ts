@@ -39,7 +39,10 @@ export class ModalDimensionesComponent {
   onSubmit(){
     if(this.dimensionForm.valid)
     {
-         this.dimensionForm.value.instrumentoId = this.instrumentoId();
+          if(this.instrumentoId() != 0)
+          {
+            this.dimensionForm.value.instrumentoId = this.instrumentoId();
+          }
          const dimension: Dimension = this.dimensionForm.value as Dimension;
          this.outputPostType.emit({typeModal: this.PostType(), data: dimension})
          this.reset()
@@ -76,7 +79,7 @@ export class ModalDimensionesComponent {
     this.text = 'Editar';
     this.dimensionForm.controls['id'].setValue(inst!.id);
     this.dimensionForm.controls['nombre'].setValue(inst!.nombre);
-    this.dimensionForm.controls['instrumentoId'].setValue(this.instrumentoId());
+    this.dimensionForm.controls['instrumentoId'].setValue(inst!.instrumentoId);
     this.modalActivo = this.modalService.createModal('modal-dimensiones');
     this.modalActivo.show();
   }

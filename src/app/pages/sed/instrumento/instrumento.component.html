@@ -49,39 +49,71 @@
         </div>
         
         
-        <div class="flex justify-between ml-2 items-center">
+        <div class="flex justify-between space-x-2 ml-2 items-center">
             <a (click)="openModalEdit(ins)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
-                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-yellow-500 hover:text-yellow-400 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
                   </svg>
             </a>
             
             <a (click)="callChildMethod(ins)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
-                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-red-500 hover:text-red-400 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
                   </svg>
             </a>
         </div>
-    </div>
         
+    </div>
+    <hr class="w-48 h-1 mx-auto my-4 bg-gray-700 border-0 rounded md:my-4 dark:bg-gray-100">
     
-        <ol class="max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400 mb-3">
-            @for (dimensiones of ins.dimensiones; track dimensiones.id) {
+        <ol class="max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400 mb-4">
+            @for (dimensiones of ins.dimensiones; track dimensiones) {
             
-                <li>
-                    {{ dimensiones.nombre }}
-                </li>
+                <li class="flex justify-between items-center">
+                    <span>
+                    @if (dimensiones.nombre.length > 25) {
+                        {{ dimensiones.nombre.slice(0, 25) }}...
+                    }@else {
+                        {{ dimensiones.nombre }}
+                    } 
+                </span>
+                    <span class="flex space-x-2">
+                    <a (click)="openModalDimensionesEdit(dimensiones)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+                        <svg class="w-6 h-6 text-yellow-500 hover:text-yellow-400 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                          </svg>
+                    </a>
+                    
+                    <a (click)="delDimension(dimensiones)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+                        <svg class="w-6 h-6 text-red-500 hover:text-red-400 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                          </svg>
+                    </a>
+                </span>
+            </li>
             }
         </ol>
    
     <div class="flex gap-5 items-center justify-between">
-        <a (click)="openModalDimensiones(ins.id)" data-popover-target="addDimensiones" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer ">
-            Agregar dimensión
-        </a>
-        <a [routerLink]="['/sed/instrumento/', ins.id]" id="verIntrumento{{ins.id}}" data-popover-target="verIntrumento"  class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">
-            Ver instrumento
-              
-        </a>
+        <div>
+            <a (click)="openModalDimensiones(ins.id)" data-popover-target="addDimensiones" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer ">
+                Agregar dimensión
+            </a>
+        </div>
+        <div class="flex gap-3">
+            <a [routerLink]="['/sed/pc/', ins.id]" id="verIntrumento{{ins.id}}" data-popover-target="verIntrumento"  class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">
+                <svg class="w-6 h-6 text-gray-800 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z"/>
+                  </svg>
+                  
+            </a>
+            <a [routerLink]="['/sed/pa/', ins.id]" id="verIntrumento{{ins.id}}" data-popover-target="verIntrumento"  class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">
+                <svg class="w-6 h-6 text-gray-800 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 5h6m-6 4h6M10 3v4h4V3h-4Z"/>
+                  </svg>                  
+            </a>
+        </div>
+        
     <!-- 
         (mouseenter)="popper('Preguntas', 'Ver Instrumento', 'verIntrumento'+ins.id, 'right')"
 <div data-popover id="popoverContent" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">

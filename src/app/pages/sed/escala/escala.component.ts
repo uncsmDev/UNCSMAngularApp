@@ -98,11 +98,12 @@ export default class EscalaComponent {
         next: (response) => {
           this.matSnackBar.open("Dato modificado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'}).afterDismissed().subscribe({
             next:(s) =>{
-              this.closeModal()
+              
             }
           })
           this.escalaForm.reset();
           this.getDatos()
+          this.closeModal()
         },
         error: (error) => {this.matSnackBar.open("Error al modificar los datos",'Cerrar',{ duration:5000, horizontalPosition:'center'}) }
       });

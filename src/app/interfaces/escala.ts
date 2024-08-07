@@ -8,6 +8,9 @@ export interface Escala {
     nivelCumplimiento:             string;
     eliminado:                     boolean;
     visible:                       boolean;
+    idUsuarioCreador?:              string,
+    idUsuarioModifica?:             string,
+    idUsuarioElimina?:              string
 }
 
 export type post = 'post' | 'update';

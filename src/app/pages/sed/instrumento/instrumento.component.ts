@@ -7,11 +7,10 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ModalDeleteComponent } from '../../../components/modal-delete/modal-delete.component';
 import { TipoEntidad } from '@interfaces/tipoEntidad';
 import { TipoEvaluacion } from '@interfaces/tipo_evaluacion';
-import { Instrumento, tipoModal} from '@interfaces/instrumento';
+import { Instrumento, postDelete, tipoModal} from '@interfaces/instrumento';
 import { DatosInstrumentos } from '@interfaces/datos_instrumentos';
 import { Dimension } from '@interfaces/dimension';
 import { CommonModule } from '@angular/common';
-import { Pregunta } from '@interfaces/pregunta';
 import { ModalInstrumentoComponent } from './modal-instrumento/modal-instrumento.component';
 import { EmiterResult, TipoFormulario } from '@interfaces/EmiterResult';
 import { Router, RouterLink } from '@angular/router';
@@ -43,10 +42,13 @@ export default class InstrumentoComponent {
   }
 
   PostType:tipoModal = 'add';
+  postDelete: postDelete = 'instrumento';
+
   _instrumentos = signal<Instrumento[]>([]); 
   dimensiones = signal<Dimension[]>([]);
   
   instrumentos = computed(()=>{
+    const e = this.idTipoEvaluacion()
     const inst = this._instrumentos().filter((values) => 
       {
         //const valor:number = parseInt(this.idTipoEvaluacion()+'', 10)
@@ -63,17 +65,10 @@ export default class InstrumentoComponent {
     return valuesData;
   });
 
-  preguntaForm = this.fb.group({
-    id: [0, [Validators.required]],
-    nombre: ['', [Validators.required]],
-    instrumentoId: [0, [Validators.required]],
-    dimesionId: [0, [Validators.required]],
-    tipoPreguntaId: [0, [Validators.required]]
-  });
-
   tipoEntidades = signal<TipoEntidad[]>([])
   tipoEvaluaciones = signal<TipoEvaluacion[]>([])
   modeloInstrumento = signal<Instrumento|null>(null);
+  modeloDimension = signal<Dimension|null>(null);
 
   modalInstrumento = viewChild.required(ModalInstrumentoComponent);
   modalDimension = viewChild.required(ModalDimensionesComponent);
@@ -89,20 +84,15 @@ export default class InstrumentoComponent {
     
     this.getTipoEvaluacion();
     this.getDimension();
+   this.getInstrumento();
+  }
+
+  getInstrumento(){
     this.instrumentoService.get().subscribe({
       next: (datos) => {
         this._instrumentos.set(datos);
       }
     })
-  }
-  onSubmitQuestion2(){
-    if(this.preguntaForm.valid)
-      {
-        const pregunta: Pregunta = this.preguntaForm.value as Pregunta;
-        pregunta.dimesionId = Number(pregunta.dimesionId);
-        pregunta.instrumentoId = this.modeloInstrumento()!.id;
-        pregunta.tipoPreguntaId = Number(pregunta.tipoPreguntaId);
-    }     
   }
   openModal()
   {
@@ -123,6 +113,12 @@ export default class InstrumentoComponent {
     this.modalInstrumento().openModalEdit(this.modeloInstrumento());
   }
 
+  openModalDimensionesEdit(dimension: Dimension){
+    this.PostType = 'edit';
+    this.modeloDimension.set(dimension);
+    this.modalDimension().openModalEdit(this.modeloDimension())
+  }
+
   onSubmit(valores:EmiterResult<Instrumento>){
     valores.data.tipoEvaluacionId = this.idTipoEvaluacion();
     if(valores.typeModal == 'add')
@@ -137,12 +133,12 @@ export default class InstrumentoComponent {
               this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
             }
             else{
-              this.matSnackBar.open("Error al intentar guardar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+              this.matSnackBar.open("Error al intentar guardar el dato aa",'Cerrar',{ duration:5000, horizontalPosition:'center'});
             }
           
         },
         error: (e) => {
-          this.matSnackBar.open("Error al intentar guardar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+          this.matSnackBar.open("Error al intentar guardar el dato" + e,'Cerrar',{ duration:5000, horizontalPosition:'center'});
         }
       });
   }
@@ -172,8 +168,6 @@ export default class InstrumentoComponent {
     })
   }
 }     
-
-
 onSubmitDimension(valores:EmiterResult<Dimension>){
   if(valores.typeModal == 'add')
   {
@@ -181,19 +175,7 @@ onSubmitDimension(valores:EmiterResult<Dimension>){
       next: a => {
         if(a)
           {
-            this._instrumentos.update((prev) => {
-              return prev.map((data) => {
-                if (data.id === valores.data.instrumentoId) {
-                  // Crea una nueva copia del objeto con la propiedad 'dimensiones' actualizada
-                  return {
-                    ...data,
-                    dimensiones: data.dimensiones ? [...data.dimensiones, valores.data] : [valores.data]
-                  };
-                }
-                return data;
-              });
-            });
-
+            this.getInstrumento()
             this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
           }
           else{
@@ -207,19 +189,12 @@ onSubmitDimension(valores:EmiterResult<Dimension>){
     });
 }
 else{
-  /* this.instrumentoService.put(valores.data).subscribe({
+  const datosDimensiones = valores.data;
+  this.instrumentoService.putDimension(valores.data).subscribe({
     next: (res) =>{
       if(res){
-        this._instrumentos.update((arr) => {
-          return arr.map((dato)=>{
-            return valores.data.id == dato.id ? 
-            {...dato, nombre: valores.data.nombre, tipoEntidadId: valores.data.tipoEntidadId,
-              tipoEvaluacionId: this.idTipoEvaluacion()} 
-            : 
-            dato
-          })
-        })
-        this.modalInstrumento().closeModal();
+        this.getInstrumento()
+        this.modalDimension().closeModal();
         this.matSnackBar.open("Dato modificado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
       }
       else{
@@ -229,17 +204,37 @@ else{
     error: (err)=>{
       this.matSnackBar.open("Error al intentar editar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
     } 
-  })*/
+  })
 }
 }     
   callChildMethod(modelo: Instrumento) {
     if(this.modalDelete()){
       this.modalDelete().openModal(); // Llama al método doSomething del componente hijo
+      this.postDelete = 'instrumento';
     }
     this.modeloInstrumento.set(modelo);
   }
 
+  delDimension(dimension: Dimension) {
+    if(this.modalDelete()){
+      this.modalDelete().openModal(); // Llama al método doSomething del componente hijo
+      this.postDelete = 'dimension';
+    }
+    this.modeloDimension.set(dimension);
+  }
+
   onDelete(){
+    if(this.postDelete == 'instrumento'){
+      this.deletedInstrumento();
+    }
+    else if(this.postDelete == 'dimension'){
+      this.deleteDimension()
+    }
+    
+    this.getInstrumento()
+  }
+
+  deletedInstrumento(){
     this.instrumentoService.delete(this.modeloInstrumento()).subscribe(
       {
         next: (res) => {
@@ -248,6 +243,25 @@ else{
             this._instrumentos.update((valor) => {
               return valor.filter((dato) => dato.id !== this.modeloInstrumento()!.id);
             })
+          }else{
+            this.matSnackBar.open("Error al intentar eliminar el dato!",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+          }
+          
+        },
+        error: (a) =>{
+          this.matSnackBar.open("Error al intentar eliminar el dato!",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+        } 
+      }
+    )
+  }
+
+  deleteDimension(){
+    this.instrumentoService.deleteDimension(this.modeloDimension()).subscribe(
+      {
+        next: (res) => {
+          if(res){
+            this.matSnackBar.open("Dato eliminado correctamente!",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+            this.getInstrumento()
           }else{
             this.matSnackBar.open("Error al intentar eliminar el dato!",'Cerrar',{ duration:5000, horizontalPosition:'center'});
           }

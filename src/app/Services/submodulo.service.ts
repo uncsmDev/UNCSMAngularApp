@@ -6,7 +6,7 @@ import { LoginResult } from '../interfaces/acount';
 import { PackPage } from '@interfaces/packPage';
 import { Observable } from 'rxjs';
 import { FormGroup } from '@angular/forms';
-import { Result } from '@interfaces/Repuesta';
+import { Result } from '@interfaces/Result.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class SubmoduloService {
     const tokenString = sessionStorage.getItem("loggedInUser");
     const token: LoginResult = tokenString ? JSON.parse(tokenString) : null;
     
-    return this.http.get<SubModulo[]>(url + `/GetListUser?id=${id}&userID=${token.idUser}`);
+    return this.http.get<SubModulo[]>(url + `/GetListUser?id=${id}&userID=${token.token}`);
   }
 
   googleLogin(idToken: string) {

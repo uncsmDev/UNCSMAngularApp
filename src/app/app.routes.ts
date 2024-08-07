@@ -40,9 +40,14 @@ export const routes: Routes = [
                     loadComponent: () => import('./pages/sed/instrumento/instrumento.component'),
                 }
                 ,{
-                    path: 'instrumento/:id',
-                    title: 'Instrumento',
-                    loadComponent: () => import('./pages/sed/instrumento/preguntas/preguntas.component'),
+                    path: 'pc/:id',
+                    title: 'Preguntas Cerradas',
+                    loadComponent: () => import('./pages/sed/instrumento/preguntas-cerradas/preguntas.component'),
+                },
+                {
+                    path: 'pa/:id',
+                    title: 'Preguntas Abiertas',
+                    loadComponent: () => import('./pages/sed/instrumento/preguntas-abiertas/preguntas-abiertas.component'),
                 }
             ]
     },
