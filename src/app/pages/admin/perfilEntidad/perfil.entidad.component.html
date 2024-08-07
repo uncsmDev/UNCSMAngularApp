@@ -1,0 +1,122 @@
+<div  class="w-full p-2 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-4 dark:bg-gray-800 dark:border-gray-700">
+    <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">{{persona?.nombres}} {{persona?.apellidos}}</h5>
+    <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">{{sexo?.nombre}} - {{callFormato()}}</p>
+
+    <div class="items-center justify-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4 rtl:space-x-reverse">
+
+
+        <a href="#"  class="w-full sm:w-auto  bg-gray-700 hover:bg-blue-300  focus:ring-4 focus:outline-none focus:ring-gray-300 
+        text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
+            <!--svg class="me-3 w-7 h-7" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google-play"
+                role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path fill="currentColor"
+                    d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z">
+                </path>
+            </svg-->
+            <div class="text-center rtl:text-center ">
+                <div class="mb-1 text-lg">Código</div>
+                <div class="-mt-1 font-sans text-sm font-semibold">{{entidad?.codigo}}</div>
+            </div>
+        </a>
+
+
+        <a href="#"  class="w-full sm:w-auto  bg-gray-700 hover:bg-blue-300  focus:ring-4 focus:outline-none focus:ring-gray-300 
+        text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
+            <div class="text-center rtl:text-center ">
+                <div class="mb-1 text-lg">Dependencia</div>
+                <div class="-mt-1 font-sans text-sm font-semibold">{{entidad?.dependencia?.nombre}}</div>
+            </div>
+        </a>
+
+        <a href="#"  class="w-full sm:w-auto  bg-gray-700 hover:bg-blue-300  focus:ring-4 focus:outline-none focus:ring-gray-300 
+        text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
+            <div class="text-center rtl:text-center ">
+                <div class="mb-1 text-lg">Cargo</div>
+                <div class="-mt-1 font-sans text-sm font-semibold">{{entidad?.cargo?.nombre}}</div>
+            </div>
+        </a>
+
+        <a href="#"  class="w-full sm:w-auto  bg-gray-700 hover:bg-blue-300  focus:ring-4 focus:outline-none focus:ring-gray-300 
+        text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
+            <div class="text-center rtl:text-center ">
+                <div class="mb-1 text-lg">Fecha de Ingreso</div>
+                <div class="-mt-1 font-sans text-sm font-semibold">{{entidad?.fechaIngreso}}</div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<br/>
+
+<div class="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700">
+    <div class="container  mx-auto flex sm:flex-nowrap flex-wrap ">
+        <div class="lg:w-full md:w-1/2 bg-gray-300 flex flex-col md:ml-auto w-full h-min md:py-8 mt-8 md:mt-0 rounded p-5 bg-white dark:bg-gray-700 dark:text-white"> 
+            <div class="bg-white relative flex flex-wrap py-6 rounded shadow-md w-full bg-white dark:bg-gray-800 dark:text-white flex flex-col">
+             
+                <h4>Cuentas de Usuario</h4>
+
+                <div class="mt-5">
+                    <div class="relative overflow-x-auto">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-200">
+                            <thead class="text-xs text-gray-800 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
+                                <tr>
+                                    
+                                    <th scope="col" class="px-6 py-3">
+                                        Correo
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Estado
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Accion
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               
+                            </tbody>
+                        </table>
+                    </div>
+    
+                </div>
+    
+    
+            </div>
+        </div>
+
+        <div class="lg:w-2/3 md:w-1/2 bg-gray-300 flex flex-col md:ml-auto w-full h-min md:py-8 mt-8 md:mt-0 rounded p-5 bg-white dark:bg-gray-700 dark:text-white"> 
+            <div class="bg-white relative flex flex-wrap py-6 rounded shadow-md w-full bg-white dark:bg-gray-800 dark:text-white flex flex-col">
+             
+                <h4>Tipos de Entidad</h4>
+
+                <div class="mt-5">
+                    <div class="relative overflow-x-auto">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-200">
+                            <thead class="text-xs text-gray-800 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">
+                                        Tipo Entidad
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Accion
+                                    </th>
+                                  
+                                </tr>
+                            </thead>
+                            <tbody>
+                               
+                            </tbody>
+                        </table>
+                    </div>
+    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

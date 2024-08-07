@@ -52,8 +52,8 @@ export default class SubmoduloComponent {
     titulo: [''],
     descripcion: [''],
     path: [''],
-    loadComponent : [''],
     icon:[''],
+    visible: false,
     moduloId: 0,
   });
 
@@ -64,15 +64,14 @@ export default class SubmoduloComponent {
      next: (res)=> {
 
        this.pag=res.paginacion;
-       debugger;
-       console.log(res.listModel);
+  
        const subModuloslist=res.listModel.map(item=>({
          id:item.id,
          titulo :item.titulo,
          descripcion:item.descripcion,
          path:item.path,
-         loadComponent: item.loadComponent,
          icon: item.icon,
+         visible:item.visible,
          moduloId: item.moduloId,
          modulo:item.modulo
        }));
@@ -97,6 +96,9 @@ export default class SubmoduloComponent {
   {
     this.moduloService.getList().subscribe({
       next:(rsm)=>{
+
+        console.log(rsm);
+        debugger;
         const listModulo=rsm.map(item=>({
           id:item.id,
           titulo: item.titulo
@@ -130,7 +132,7 @@ export default class SubmoduloComponent {
 
    openModal()
    {
-     this.GetListModulos();
+     this.GetListModulos(); 
      this.text = 'Agregar';
      this.PostType = 'add';
      this.modalSubModulo = this.modalService.createModal('static-modal');
@@ -199,7 +201,7 @@ export default class SubmoduloComponent {
     this.subModuloForm.controls['titulo'].setValue(''+subModulo.titulo);
     this.subModuloForm.controls['descripcion'].setValue(''+subModulo.descripcion);
     this.subModuloForm.controls['path'].setValue(''+subModulo.path);
-    this.subModuloForm.controls['loadComponent'].setValue(''+subModulo.loadComponent);
+    this.subModuloForm.controls['visible'].setValue(subModulo.visible);
     this.subModuloForm.controls['icon'].setValue(''+subModulo.icon);
     this.subModuloForm.controls['moduloId'].setValue(subModulo.moduloId);
     

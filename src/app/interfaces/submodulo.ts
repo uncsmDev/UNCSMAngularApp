@@ -8,15 +8,23 @@ export interface SubModulo {
     descripcion:       string;
     path:              string;
     icon:              string;
-    loadComponent:     string;
     moduloId:          number;
-    visible?:           boolean;
+    visible:          boolean;
     modulo: Modulo;
 }
+
 
 export interface SubModuloViewer {
     id:                number;
     titulo:            string;
+}
+
+
+export interface SubModuloViewerTable {
+    id:                number;
+    titulo:            string;
+    moduloId:          number;
+    modulo:            Modulo;
 }
 
 export interface SubModuloXUser {

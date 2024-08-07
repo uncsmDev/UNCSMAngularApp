@@ -64,6 +64,16 @@ export const routes: Routes = [
                 loadComponent: () => import('./pages/admin/entidad/entidad.component'),
             },
             {
+                path: 'perfilEntidad/:id',
+                title: 'Perfil',
+                loadComponent: () => import('./pages/admin/perfilEntidad/perfil.entidad.component'),
+            },
+            {
+                path:'inputEntidad',
+                title:'Agregar Trabajador',
+                loadComponent:()=>import('./pages/admin/entidad/inputentidad/input.entidad.component'),
+            },
+            {
                 path:'usuarios', 
                 title: 'Usuarios',
                 loadComponent:()=>import('./auth/usuarios/usuarios.component')
