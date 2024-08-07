@@ -58,9 +58,10 @@ export default class PreguntasAbiertasComponent {
         if(this.typePost == 'post'){
           this.preguntaService.post(pregunta).subscribe({
             next: a => {
-              if(a)
+              if(a.data != null)
                 {
-                  this.pregunta.set(a);
+                  const data = a.data!;
+                  this.preguntas.update((p) => [...p, {id: data.id, nombre: data.nombre, instrumentoId: data.instrumentoId}]);
                   this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
                 }
                 else{
@@ -79,12 +80,16 @@ export default class PreguntasAbiertasComponent {
         next: a => {
           if(a)
             {
+              const data = a.data!;
+              this.preguntas.update((p) => {
+                return p.map(c => c.id == data.id ? {...c, nombre: data.nombre} : c
+                )
+              })
               this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
             }
             else{
               this.matSnackBar.open("Error al intentar guardar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
             }
-          
         },
         error: (e) => {
           this.matSnackBar.open("Error al intentar guardar el dato ",'Cerrar',{ duration:5000, horizontalPosition:'center'});
@@ -122,6 +127,7 @@ export default class PreguntasAbiertasComponent {
   delete(){
     this.preguntaService.delete(this.pregunta()).subscribe({
       next: (res) => {
+        this.preguntas.update((p) => p.filter(filtro => filtro.id != this.pregunta().id));
         this.matSnackBar.open("Dato eliminado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
       }
     })

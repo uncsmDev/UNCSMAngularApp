@@ -26,16 +26,16 @@ export class PreguntaAbiertaService {
     return this.http.get<Result<TipoEntidad>>(`${this.rutaInstrumento}/GetTipoEntidad/${id}`)
   }
 
-  post(pregunta: PreguntaAbierta): Observable<any>{
+  post(pregunta: PreguntaAbierta): Observable<Result<PreguntaAbierta>>{
     const headers = { 'content-type': 'application/json'}  
     const body=JSON.stringify(pregunta);
-    return this.http.post(this.ruta, body, {headers});
+    return this.http.post<Result<PreguntaAbierta>>(this.ruta, body, {headers});
   }
 
-  update(pregunta: PreguntaAbierta):Observable<any> {
+  update(pregunta: PreguntaAbierta):Observable<Result<PreguntaAbierta>> {
     const headers = {'content-type': 'application/json'}
     const body = JSON.stringify(pregunta);
-    return this.http.put(`${this.ruta}/${pregunta.id}`, body, {headers});
+    return this.http.put<Result<PreguntaAbierta>>(`${this.ruta}/${pregunta.id}`, body, {headers});
   }
 
   delete(pregunta: PreguntaAbierta): Observable<Result<PreguntaAbierta>>{
