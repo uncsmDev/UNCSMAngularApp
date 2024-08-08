@@ -8,6 +8,7 @@ export interface UsuarioViewModel {
     apellidos: string | null;
     email: string;
     cargo: string | null;
+    img?: File;
 }
 
 interface DetalleUsuarioViewModel extends UsuarioViewModel {

@@ -412,18 +412,8 @@ filterSubModulos(event:any): void
   {
     this.SBMxUForm.controls['subModuloId'].setValue(parseInt(event.option.value.id));
 
-    const subModuloUserInsert: SubModuloXUser=this.SBMxUForm.value as SubModuloXUser;
-
-    console.log('OnSelectSubModulo:::::::');
-    console.log(subModuloUserInsert);
-    console.log('OnSelectSubModulo::::::: V');
-    console.log(event.option.value);
-
     const inputSM=event.option.value;
-
-    console.log('OnSelectSubModulo:::::::inputSM');
-    console.log(inputSM); 
-
+    
     if(!this.subModulosT|| this.subModulosT.length==0)
     {
       this.subModulosT.push(inputSM);
@@ -431,31 +421,6 @@ filterSubModulos(event:any): void
     else 
       if(!this.subModulosT.find(f=>f.id===inputSM.id))
         this.subModulosT.push(inputSM);
-
-
-   /* this.SubmoduloService.insertSubModuloXUsuario(subModuloUserInsert).subscribe({
-      next:(res)=>{
-     
-        if(res.status=Repuesta.Created)
-          {
-            this.inputElement.nativeElement.value = '';
-            this.matSnackBar.open('Guardado exitoso: ' + res.message,'Cerrar',{ duration:5000, horizontalPosition:'center'});
-
-            this.GetListSubModuloByUserId(this.userInModal.id,this.pagSM.paginaInicio);
-          
-          }
-        else {
-          this.GetListSubModuloByUserId(this.userInModal.id,this.pagSM.paginaInicio);
-          this.matSnackBar.open(res.message) ;
-          this.inputElement.nativeElement.value = '';
-        } 
-      },
-      error: (error) => { 
-
-        if(error.error.errors.ConfirmPassword!=null)
-          this.matSnackBar.open('Algo salio mal','Cerrar',{ duration:5000, horizontalPosition:'center'})}
-    });*/
-
   }
 
 

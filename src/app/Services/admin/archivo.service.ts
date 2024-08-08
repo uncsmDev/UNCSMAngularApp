@@ -24,6 +24,4 @@ export class ArchivoService {
    headers.append('Content-Type', 'multipart/form-data');
     return this.http.post<ArchivoResponse>(this.apiUrl+'/Upload',fileData)
   }
-
-  
 }
