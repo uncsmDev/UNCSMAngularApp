@@ -2,12 +2,13 @@ import { Component, Signal, WritableSignal, computed, inject, signal,AfterViewIn
 import { initFlowbite } from 'flowbite';
 import {PackPage, Paginacion} from '../../../interfaces/packPage'
 import {InsertUsuario} from '../../../interfaces/usuario'
+import { Router } from '@angular/router';
 import type { InstanceOptions } from 'flowbite';
 import { map, startWith } from 'rxjs/operators';
 
 
 import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
-import {LiveAnnouncer} from '@angular/cdk/a11y';
+
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatIconModule} from '@angular/material/icon';
 
@@ -127,7 +128,7 @@ export default class EntidadComponent {
     telefono : [''],
   });
 
-  constructor()
+  constructor(private router: Router)
   {
     
   }
@@ -405,7 +406,7 @@ export default class EntidadComponent {
              this.matSnackBar.open(error.error.errors.Email,'Cerrar',{ duration:5000, horizontalPosition:'center'})
 
            
-            if(error.error=!null)
+            if(error.error=!0)
               this.matSnackBar.open('Puede que el correo ya este registrado','Cerrar',{ duration:5000, horizontalPosition:'center'})
            }
           
@@ -474,7 +475,7 @@ export default class EntidadComponent {
     this._tiposEntidades=this._tiposEntidades.filter(r=>r.id!==tipoEnt.id);
   }
 
-  addTEToEntidad(event: MatChipInputEvent)
+  addTEToEntidad(event: any)
   {
 
   }
@@ -503,6 +504,10 @@ export default class EntidadComponent {
 
     else
       this.GetListTipoEntidadByFilterName(event.target.value);
+  }
+
+  irPerfil(idEntidad:number) {
+    this.router.navigate(['/admin/perfilEntidad',idEntidad]);
   }
 
 }

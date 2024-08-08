@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { PackPage } from '../../interfaces/packPage';
 import {Entidad, EntidadDto} from '../../interfaces/entidad'
 import { FormGroup } from '@angular/forms';
+import { Result } from '@interfaces/Result.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +43,12 @@ export class EntidadService {
     return this.http.post(this.apiUrl+'/PostMaster', body,{'headers':headers})
   }
  
+  getById(id:number):Observable<Result<Entidad>>
+  {
+    var element= this.http.get<Result<Entidad>>(this.apiUrl+'/GetById?id='+id);
+  
+    return element;
+  }
   
   eliminar(entidad?:Entidad|null): Observable<any> {
     return this.http.delete(this.apiUrl+'/Delete/'+entidad?.id)
