@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { PackPage } from '../../interfaces/packPage';
 import {Entidad, EntidadDto} from '../../interfaces/entidad'
 import { FormGroup } from '@angular/forms';
-import { Result } from '@interfaces/Repuesta';
+import { Result } from '@interfaces/Result.interface';
 
 @Injectable({
   providedIn: 'root'

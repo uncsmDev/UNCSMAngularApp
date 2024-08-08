@@ -40,7 +40,7 @@ import { ModuloSelectView } from '@interfaces/modulo';
 import { ModuloService } from '@services/modulo.service';
 import { SubmoduloService } from '@services/submodulo.service';
 import { SubModuloViewer, SubModuloViewerTable, SubModuloXUser, SubModuloXUserView } from '@interfaces/submodulo';
-import { Repuesta } from '@interfaces/Repuesta';
+
 
 
 
