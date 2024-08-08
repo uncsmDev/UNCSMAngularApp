@@ -23,7 +23,12 @@ export const routes: Routes = [
                     title: 'Escalas',
                     loadComponent: () => import('./pages/sed/escala/escala.component'),
                 },
-               
+                {
+                    
+                    path: 'periodo',
+                    title: 'Periodos',
+                    loadComponent: () => import('./pages/sed/periodo/periodo.component'),
+                },
                 {
                     path: 'home',
                     title: 'Home',
