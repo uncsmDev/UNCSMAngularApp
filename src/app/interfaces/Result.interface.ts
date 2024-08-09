@@ -13,8 +13,6 @@ export enum ResultEnum
 
 export interface Result<T> {
 	data?:           T;
-	enumerableData?: T;
-	isEnumerable:   boolean;
 	status:         ResultEnum;
 	message:        string;
 }

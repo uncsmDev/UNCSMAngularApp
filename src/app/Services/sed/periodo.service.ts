@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 export class PeriodoService {
 
   http = inject(HttpClient)
-  ruta = appsettings.apiApp + 'periodo'
+  ruta = appsettings.apiApp + 'Periodo'
 
   constructor() { }
 
@@ -22,7 +22,7 @@ export class PeriodoService {
   post(periodo: Periodo): Observable<Result<Periodo>>{
     const headers = { 'content-type': 'application/json'}  
     const jsonPeriodo = JSON.stringify(periodo);
-    return this.http.post<Result<Periodo>>(`${this.ruta}`, periodo, {headers})
+    return this.http.post<Result<Periodo>>(this.ruta, jsonPeriodo, {headers})
   }
 
   put(periodo: Periodo): Observable<Result<Periodo>>{
