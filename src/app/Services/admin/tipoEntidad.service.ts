@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {TipoEntidad} from '../../interfaces/tipoEntidad';
 import { Result } from '@interfaces/Result.interface';
+import { Instrumento } from '@interfaces/instrumento';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,11 @@ export class TipoEntidadService {
   getList(): Observable<TipoEntidad[]> {
     var list= this.http.get<TipoEntidad[]>(this.apiUrl+'/GetList');
   
+    return list;
+  }
+
+  getTipoEntidadByInstrumento(instrumento: Instrumento): Observable<Result<TipoEntidad>> {
+    var list= this.http.get<Result<TipoEntidad>>(this.apiUrl+'/GetTipoEntidad/'+instrumento.id);
     return list;
   }
 

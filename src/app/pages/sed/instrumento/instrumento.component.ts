@@ -8,9 +8,8 @@ import { ModalDeleteComponent } from '../../../components/modal-delete/modal-del
 import { TipoEntidad } from '@interfaces/tipoEntidad';
 import { TipoEvaluacion } from '@interfaces/tipo_evaluacion';
 import { Instrumento, postDelete, tipoModal} from '@interfaces/instrumento';
-import { DatosInstrumentos } from '@interfaces/datos_instrumentos';
 import { Dimension } from '@interfaces/dimension';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { ModalInstrumentoComponent } from './modal-instrumento/modal-instrumento.component';
 import { EmiterResult, TipoFormulario } from '@interfaces/EmiterResult';
 import { Router, RouterLink } from '@angular/router';
@@ -33,6 +32,7 @@ export default class InstrumentoComponent {
   dimensionService = inject(DimensionService);
   modalService = inject(ModalService);
   flowbitSharedService = inject(FlowbitSharedService);
+  location = inject(Location)
 
   idTipoEvaluacion = input<number>(0, {alias: 'id'})
 
@@ -300,6 +300,10 @@ else{
     this.poperData.msg = msg;
     this.flowbitSharedService.popper(buttonName, placement);
   } */
+
+    back(){
+      this.location.back()
+    }
   
 }
 

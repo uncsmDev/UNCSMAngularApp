@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Periodo } from '@interfaces/periodo';
+import { Periodo, PeriodoAddInstrumento, PeriodoInstrumento } from '@interfaces/periodo';
 import { Result } from '@interfaces/Result.interface';
 import { appsettings } from 'app/Settings/appsettings';
 import { Observable } from 'rxjs';
@@ -15,8 +15,8 @@ export class PeriodoService {
 
   constructor() { }
 
-  get(): Observable<Result<Periodo[]>>{
-    return this.http.get<Result<Periodo[]>>(`${this.ruta}`)
+  get(): Observable<Result<PeriodoAddInstrumento[]>>{
+    return this.http.get<Result<PeriodoAddInstrumento[]>>(`${this.ruta}`)
   }
 
   post(periodo: Periodo): Observable<Result<Periodo>>{

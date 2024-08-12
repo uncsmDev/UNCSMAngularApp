@@ -43,6 +43,7 @@ export class ModalInstrumentoComponent {
     {
          const instrumento: Instrumento = this.instrumentoForm.value as Instrumento;
          this.outputPostType.emit({typeModal: this.PostType(), data: instrumento})
+         this.reset();
     }     
   }
 

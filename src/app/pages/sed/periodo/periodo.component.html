@@ -6,58 +6,66 @@
             
         </div>
     </div>
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2 ">
+
+    @for (periodo of periodos(); track periodo.id) {
+<div class="w-full max-w-xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700 mb-1">
+    <div class="flex justify-between">
+<h5 class="mb-3 text-base font-semibold text-gray-900 md:text-xl dark:text-white">
+    {{ periodo.nombre }}  
+    </h5>
+    <div class="flex">
+        <a (click)="openModalEdit(periodo, 'static-modal')" class="font-medium text-blue-600 dark:text-blue-500 hover:underline hover:text-red-600 cursor-pointer">
+            <svg class="w-6 h-6 text-yellow-500 hover:text-yellow-400 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+              </svg>
+        </a>
+        <a (click)="callModalDelete(periodo)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+            <svg class="w-6 h-6 text-red-500 hover:text-red-400 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+              </svg>
+        </a>
+    </div>
+    </div>
     
+    <div class="flex justify-between gap-4">
+        <div class="dark:bg-blue-900 bg-gray-200 w-full rounded p-4">
+            <p class="text-sm text-center font-bold text-gray-500 dark:text-gray-200 mb-2">Fecha de inicio</p>
+            <hr/>
+            <p class="text-sm text-center font-normal mt-2 text-gray-500 dark:text-gray-200">{{periodo.fechaInicio | date:"longDate"}}</p>
+        </div>
+        <div class="dark:bg-blue-900 bg-gray-200 w-full rounded p-4">
+            <p class="text-sm text-center font-bold text-gray-500 dark:text-gray-200 mb-2">Fecha de finalización</p>
+            <hr/>
+            <p class="text-sm text-center font-normal mt-2 text-gray-500 dark:text-gray-200">{{periodo.fechaFin | date:"longDate"}}</p>
+        </div>
+    </div>
+    <div class="flex mt-3 justify-end">
+        <a (click)="openModalInstrumentoAdd()" class="cursor-pointer" title="Agregar Instrumento">
+        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+          </svg>
+        </a>
+    </div>
+    @if(periodo.periodoxInstrumentos.length > 0)
+{
+    <ul class="my-4 space-y-3">
+        @for (instrumento of periodo.periodoxInstrumentos; track $index) {
+    <app-lista-instrumento [instrumento]="instrumento.instrumento" />
+}
     
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    Periodo
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Fecha de inicio
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Fecha de Finalización
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Acción
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (periodo of periodos(); track periodo.id) {
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {{periodo.nombre}}
-                </th>
-                <td class="px-6 py-4">
-                    {{periodo.fechaInicio | date:'dd/MM/yyyy'}}
-                </td>
-                <td class="px-6 py-4">
-                    {{periodo.fechaFin | date:'dd/MM/yyyy'}}
-                </td>
-                <td class="px-6 py-4 flex">
-                    <a (click)="openModalEdit(periodo, 'static-modal')" class="font-medium text-blue-600 dark:text-blue-500 hover:underline hover:text-red-600 cursor-pointer">
-                        <svg class="w-6 h-6 text-yellow-500 hover:text-yellow-400 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
-                          </svg>
-                    </a>
-                    <a (click)="callModalDelete(periodo)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
-                        <svg class="w-6 h-6 text-red-500 hover:text-red-400 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
-                          </svg>
-                    </a>
-                </td>
-            </tr>
+    </ul>
+}
+    <div>
+    </div>
+    </div>
+    
     }@empty {
         <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 text-center " role="alert">
             <span class="font-medium">No hay datos!</span> 
           </div>
     }
-        </tbody>
-    </table>
+</div>
 </div>
 
 
@@ -121,3 +129,4 @@
       </div>
   </div>
     <app-modal-delete #childRef (outputEvent)="onDelete()"></app-modal-delete>
+    <app-instrumento-add-modal />

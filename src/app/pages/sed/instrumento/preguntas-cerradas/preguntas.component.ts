@@ -1,4 +1,4 @@
-import { JsonPipe, LowerCasePipe } from '@angular/common';
+import { JsonPipe, Location, LowerCasePipe } from '@angular/common';
 import { Component, inject, input, signal, Input, viewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -28,7 +28,7 @@ export default class FormPreguntaComponent {
   dimensionService = inject(DimensionService);
   matSnackBar=inject(MatSnackBar);
   router = inject(Router);
-
+  location = inject(Location);
   preguntaForm = this.fb.group({
     id: [0, [Validators.required]],
     nombre: ['', [Validators.required]],
@@ -179,5 +179,9 @@ export default class FormPreguntaComponent {
         this.tipoEntidad.set(instrumento.data!);
       }
     })
+  }
+
+  back(){
+    this.location.back()
   }
 }

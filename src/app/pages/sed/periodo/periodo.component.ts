@@ -1,20 +1,22 @@
 import { CommonModule, formatDate } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, signal, viewChild } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { tipoModal } from '@interfaces/instrumento';
-import { Periodo } from '@interfaces/periodo';
+import { Periodo, PeriodoAddInstrumento } from '@interfaces/periodo';
 import { ModalService } from '@services/modal.service';
 import { PeriodoService } from '@services/sed/periodo.service';
 import { ModalDeleteComponent } from 'app/components/modal-delete/modal-delete.component';
 import { TitleComponent } from 'app/shared/title/title.component';
 import { ModalInterface } from 'flowbite';
+import { ListaInstrumentoComponent } from './ListaInstrumento/ListaInstrumento.component';
+import { InstrumentoAddModalComponent } from './instrumento-add-modal/instrumento-add-modal.component';
 
 @Component({
   selector: 'app-periodo',
   standalone: true,
   imports: [
-    CommonModule, TitleComponent, ReactiveFormsModule, ModalDeleteComponent
+    CommonModule, TitleComponent, ReactiveFormsModule, ModalDeleteComponent, ListaInstrumentoComponent, InstrumentoAddModalComponent
   ],
   templateUrl: './periodo.component.html',
   styleUrl: './periodo.component.css',
@@ -26,6 +28,7 @@ export default class PeriodoComponent {
   modalService = inject(ModalService);
   matSnackBar=inject(MatSnackBar);
   periodoService = inject(PeriodoService);
+  modalInstrumentoAdd = viewChild.required(InstrumentoAddModalComponent);
 
   periodoForm = this.formBuilder.group({
     id: [0, Validators.required],
@@ -39,7 +42,7 @@ export default class PeriodoComponent {
   PostType: tipoModal = 'add'
   modalActivo!: ModalInterface;
 
-  periodos = signal<Periodo[]>([])
+  periodos = signal<PeriodoAddInstrumento[]>([])
   periodo = signal<Periodo>(this.reset())
 
   ModalDelete = viewChild(ModalDeleteComponent);
@@ -133,10 +136,7 @@ export default class PeriodoComponent {
     const periodo: Periodo = this.periodoForm.value as Periodo;
     this.periodoService.post(periodo).subscribe({
       next: (response) => {
-        const data = response.data!;
-        this.periodos.update((periodo) => {
-          return [...periodo, {id: data.id, nombre: data.nombre, fechaInicio: data.fechaInicio, fechaFin: data.fechaFin}]
-        })
+        this.getPeriodo();
         this.matSnackBar.open(response.message,'Cerrar',{ duration:5000, horizontalPosition:'center'});
         this.periodoForm.reset(this.reset());
       },
@@ -184,6 +184,10 @@ export default class PeriodoComponent {
         this.matSnackBar.open("Error al eliminar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'})
       }
     })
+  }
+
+  openModalInstrumentoAdd(){
+    this.modalInstrumentoAdd().openModal();
   }
 
 }
