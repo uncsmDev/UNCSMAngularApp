@@ -60,7 +60,7 @@ export default class FormPreguntaComponent {
       {
         const pregunta: PreguntasCerradas = this.preguntaForm.value as PreguntasCerradas;
         pregunta.dimesionId = Number(pregunta.dimesionId);
-
+        debugger
         if(this.typePost == 'post'){
           this.preguntaService.post(pregunta).subscribe({
             next: a => {

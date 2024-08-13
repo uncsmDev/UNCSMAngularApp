@@ -7,7 +7,6 @@ import { ModalInterface } from 'flowbite';
 import InstrumentoComponent from '../instrumento.component';
 import { ModalService } from '@services/modal.service';
 import { TipoEntidad } from '@interfaces/tipoEntidad';
-import { TipoEvaluacion } from '@interfaces/tipo_evaluacion';
 import { EmiterResult } from '@interfaces/EmiterResult';
 import { Dimension } from '@interfaces/dimension';
 

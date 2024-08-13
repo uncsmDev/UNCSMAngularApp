@@ -4,7 +4,6 @@ import { Injectable, inject } from '@angular/core';
 import { appsettings } from '../../Settings/appsettings';
 import { Observable } from 'rxjs';
 import { TipoEntidad } from '../../interfaces/tipoEntidad';
-import { TipoEvaluacion } from '../../interfaces/tipo_evaluacion';
 import { Instrumento } from '../../interfaces/instrumento';
 import { Dimension } from '../../interfaces/dimension';
 import { PreguntasCerradas } from '../../interfaces/pregunta_cerradas';
@@ -27,11 +26,6 @@ export class InstrumentoService {
   getTipoEntidad(): Observable<TipoEntidad[]>
   {
     return this.http.get<TipoEntidad[]>(this.rutaTipoEntidad + 'GetList');
-  }
-
-  getTipoEvaluacion(): Observable<TipoEvaluacion[]>
-  {
-    return this.http.get<TipoEvaluacion[]>(this.rutaTipoEvaluacion)
   }
 
   post(instrumento: Instrumento): Observable<any>{

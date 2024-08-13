@@ -61,7 +61,13 @@ export default class PreguntasAbiertasComponent {
               if(a.data != null)
                 {
                   const data = a.data!;
-                  this.preguntas.update((p) => [...p, {id: data.id, nombre: data.nombre, instrumentoId: data.instrumentoId}]);
+                  if(this.preguntas.length > 0)
+                  {
+                    this.preguntas.update((p) => [...p, {id: data.id, nombre: data.nombre, instrumentoId: data.instrumentoId}]);
+                  }else{
+                    this.preguntas.set([{id: data.id, nombre: data.nombre, instrumentoId: data.instrumentoId}]);
+                  }
+                  
                   this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
                 }
                 else{

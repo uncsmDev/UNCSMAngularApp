@@ -7,7 +7,6 @@ import { ModalInterface } from 'flowbite';
 import InstrumentoComponent from '../instrumento.component';
 import { ModalService } from '@services/modal.service';
 import { TipoEntidad } from '@interfaces/tipoEntidad';
-import { TipoEvaluacion } from '@interfaces/tipo_evaluacion';
 import { EmiterResult } from '@interfaces/EmiterResult';
 
 @Component({
@@ -24,7 +23,6 @@ export class ModalInstrumentoComponent {
   instrumentoService = inject(InstrumentoService)
 
   tipoEntidades = input.required<TipoEntidad[]>();
-  tipoEvaluaciones = input.required<TipoEvaluacion[]>();
 
   instrumentoForm = this.fb.group({
     id: [0, [Validators.required]],
@@ -78,7 +76,6 @@ export class ModalInstrumentoComponent {
     this.instrumentoForm.controls['id'].setValue(inst!.id);
     this.instrumentoForm.controls['nombre'].setValue(inst!.nombre);
     this.instrumentoForm.controls['tipoEntidadId'].setValue(inst!.tipoEntidadId);
-    this.instrumentoForm.controls['tipoEvaluacionId'].setValue(inst!.tipoEvaluacionId);
     this.modalActivo = this.modalService.createModal('static-modal');
     this.modalActivo.show();
   }

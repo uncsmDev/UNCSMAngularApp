@@ -6,7 +6,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ModalDeleteComponent } from '../../../components/modal-delete/modal-delete.component';
 import { TipoEntidad } from '@interfaces/tipoEntidad';
-import { TipoEvaluacion } from '@interfaces/tipo_evaluacion';
 import { Instrumento, postDelete, tipoModal} from '@interfaces/instrumento';
 import { Dimension } from '@interfaces/dimension';
 import { CommonModule, Location } from '@angular/common';
@@ -34,8 +33,6 @@ export default class InstrumentoComponent {
   flowbitSharedService = inject(FlowbitSharedService);
   location = inject(Location)
 
-  idTipoEvaluacion = input<number>(0, {alias: 'id'})
-
   poperData = {
     titulo: '',
     msg: ''
@@ -48,12 +45,8 @@ export default class InstrumentoComponent {
   dimensiones = signal<Dimension[]>([]);
   
   instrumentos = computed(()=>{
-    const e = this.idTipoEvaluacion()
-    const inst = this._instrumentos().filter((values) => 
-      {
-        //const valor:number = parseInt(this.idTipoEvaluacion()+'', 10)
-        return values.tipoEvaluacionId == this.idTipoEvaluacion()
-      })
+    
+    const inst = this._instrumentos();
     const tipo = this.tipoEntidades()
 
     const valuesData = tipo.map((valores) => {
@@ -66,7 +59,6 @@ export default class InstrumentoComponent {
   });
 
   tipoEntidades = signal<TipoEntidad[]>([])
-  tipoEvaluaciones = signal<TipoEvaluacion[]>([])
   modeloInstrumento = signal<Instrumento|null>(null);
   modeloDimension = signal<Dimension|null>(null);
 
@@ -82,7 +74,6 @@ export default class InstrumentoComponent {
       }
     });
     
-    this.getTipoEvaluacion();
     this.getDimension();
    this.getInstrumento();
   }
@@ -120,7 +111,6 @@ export default class InstrumentoComponent {
   }
 
   onSubmit(valores:EmiterResult<Instrumento>){
-    valores.data.tipoEvaluacionId = this.idTipoEvaluacion();
     if(valores.typeModal == 'add')
     {
       this.instrumentoService.post(valores.data).subscribe({
@@ -128,7 +118,7 @@ export default class InstrumentoComponent {
           if(a)
             {
               this._instrumentos.update((prev) => {
-                return [...prev, {...valores.data, id: a, tipoEvaluacionId: this.idTipoEvaluacion()}]
+                return [...prev, {...valores.data, id: a}]
               })
               this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
             }
@@ -149,8 +139,7 @@ export default class InstrumentoComponent {
           this._instrumentos.update((arr) => {
             return arr.map((dato)=>{
               return valores.data.id == dato.id ? 
-              {...dato, nombre: valores.data.nombre, tipoEntidadId: valores.data.tipoEntidadId,
-                tipoEvaluacionId: this.idTipoEvaluacion()} 
+              {...dato, nombre: valores.data.nombre, tipoEntidadId: valores.data.tipoEntidadId} 
               : 
               dato
             })
@@ -285,14 +274,6 @@ else{
         this.dimensiones.set(res);
       }
     })
-  }
-
-  getTipoEvaluacion(){
-    this.instrumentoService.getTipoEvaluacion().subscribe({
-      next: (result) => {
-        this.tipoEvaluaciones.set(result);
-      }
-    });
   }
 
   /* popper(title: string, msg:string, buttonName:string, placement: "top"|"right"|"bottom"|"left"){
