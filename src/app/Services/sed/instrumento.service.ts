@@ -28,18 +28,22 @@ export class InstrumentoService {
     return this.http.get<TipoEntidad[]>(this.rutaTipoEntidad + 'GetList');
   }
 
+  getInstrumentoxEntidad(EntidadId: number) : Observable<Result<Instrumento[]>> {
+    return this.http.get<Result<Instrumento[]>>(`${this.ruta}/GetxEntidad/${EntidadId}`);
+  }
+
   post(instrumento: Instrumento): Observable<any>{
-    const headers = { 'content-type': 'application/json'}  
+    const headers = { 'content-type': 'application/json'}
     const body=JSON.stringify(instrumento);
     return this.http.post(this.ruta, body, {headers});
   }
 
   postDimension(dimension: Dimension): Observable<Result<Dimension>>{
-    const headers = { 'content-type': 'application/json'}  
+    const headers = { 'content-type': 'application/json'}
     const body=JSON.stringify(dimension);
     return this.http.post<Result<Dimension>>(this.rutaDimension, body, {headers});
   }
-  
+
   put(ins: Instrumento): Observable<any>{
     const headers = {'content-type': 'application/json'}
     const body = JSON.stringify(ins);

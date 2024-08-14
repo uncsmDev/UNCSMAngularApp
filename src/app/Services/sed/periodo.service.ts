@@ -19,14 +19,15 @@ export class PeriodoService {
     return this.http.get<Result<PeriodoAddInstrumento[]>>(`${this.ruta}`)
   }
 
+
   post(periodo: Periodo): Observable<Result<Periodo>>{
-    const headers = { 'content-type': 'application/json'}  
+    const headers = { 'content-type': 'application/json'}
     const jsonPeriodo = JSON.stringify(periodo);
     return this.http.post<Result<Periodo>>(this.ruta, jsonPeriodo, {headers})
   }
 
   put(periodo: Periodo): Observable<Result<Periodo>>{
-    const headers = { 'content-type': 'application/json'}  
+    const headers = { 'content-type': 'application/json'}
     const jsonPeriodo = JSON.stringify(periodo);
     return this.http.put<Result<Periodo>>(`${this.ruta}/${periodo.id}`, jsonPeriodo, {headers})
   }

@@ -1,5 +1,5 @@
 import { CommonModule, formatDate } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, input, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal, viewChild } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { tipoModal } from '@interfaces/instrumento';
@@ -22,7 +22,7 @@ import { InstrumentoAddModalComponent } from './instrumento-add-modal/instrument
   styleUrl: './periodo.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class PeriodoComponent { 
+export default class PeriodoComponent {
 
   formBuilder = inject(FormBuilder);
   modalService = inject(ModalService);
@@ -68,7 +68,7 @@ export default class PeriodoComponent {
       }
     })
   }
-  
+
   openModal()
   {
     this.periodoForm.reset(this.reset());
@@ -157,7 +157,7 @@ export default class PeriodoComponent {
 
         this.matSnackBar.open(response.message,'Cerrar',{ duration:5000, horizontalPosition:'center'}).afterDismissed().subscribe({
           next:(result) =>{
-            
+
           }
         })
         this.periodoForm.reset(this.reset());
@@ -188,6 +188,15 @@ export default class PeriodoComponent {
 
   openModalInstrumentoAdd(){
     this.modalInstrumentoAdd().openModal();
+  }
+
+validarFecha(fecha: string): boolean {
+    const ahora = new Date(); // Obtiene la fecha y hora actual
+    const fechaParametro = new Date(fecha);
+    if (fechaParametro < ahora) {
+      return false; // Fecha es anterior a la fecha y hora actuales
+    }
+    return true; // Fecha es válida (no es anterior a la fecha y hora actuales)
   }
 
 }
