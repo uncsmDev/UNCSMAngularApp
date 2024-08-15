@@ -39,7 +39,7 @@ export default class FormPreguntaComponent {
 
   i = 1;
   dimensiones = signal<Dimension[]>([]);
-  instrumento = signal<Instrumento>({id: 0, nombre: '', tipoEntidadId: 0, tipoEvaluacionId: 0});
+  instrumento = signal<Instrumento>({id: 0, nombre: '', tipoEntidadId: 0});
   
   typePost: post = 'post';
 

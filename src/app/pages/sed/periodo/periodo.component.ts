@@ -2,8 +2,8 @@ import { CommonModule, formatDate } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal, viewChild } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { tipoModal } from '@interfaces/instrumento';
-import { Periodo, PeriodoAddInstrumento } from '@interfaces/periodo';
+import { Instrumento, tipoModal } from '@interfaces/instrumento';
+import { Periodo, PeriodoAddInstrumento, PeriodoxInstrumento } from '@interfaces/periodo';
 import { ModalService } from '@services/modal.service';
 import { PeriodoService } from '@services/sed/periodo.service';
 import { ModalDeleteComponent } from 'app/components/modal-delete/modal-delete.component';
@@ -186,17 +186,17 @@ export default class PeriodoComponent {
     })
   }
 
-  openModalInstrumentoAdd(){
-    this.modalInstrumentoAdd().openModal();
+  openModalInstrumentoAdd(instrumentosAdd: PeriodoxInstrumento[], periodo: Periodo){
+    this.modalInstrumentoAdd().openModal(instrumentosAdd, periodo);
   }
 
 validarFecha(fecha: string): boolean {
-    const ahora = new Date(); // Obtiene la fecha y hora actual
+    const ahora = new Date();
     const fechaParametro = new Date(fecha);
     if (fechaParametro < ahora) {
-      return false; // Fecha es anterior a la fecha y hora actuales
+      return false;
     }
-    return true; // Fecha es válida (no es anterior a la fecha y hora actuales)
+    return true;
   }
 
 }

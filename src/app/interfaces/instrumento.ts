@@ -6,7 +6,6 @@ export interface Instrumento {
     id:                   number;
     nombre:               string;
     tipoEntidadId:        number;
-    tipoEvaluacionId:     number;
     dimensiones?:          Dimension[];
 }
 export type tipoModal =  'add' | 'edit'

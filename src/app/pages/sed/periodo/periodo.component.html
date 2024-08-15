@@ -44,7 +44,7 @@
     </div>
     @if(validarFecha(periodo.fechaInicio)){
     <div class="flex mt-3 justify-end">
-        <a (click)="openModalInstrumentoAdd()" class="cursor-pointer" title="Agregar Instrumento">
+        <a (click)="openModalInstrumentoAdd(periodo.periodoxInstrumentos, periodo)" class="cursor-pointer" title="Agregar Instrumento">
         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
           </svg>
@@ -132,5 +132,5 @@
           </div>
       </div>
   </div>
-    <app-modal-delete #childRef (outputEvent)="onDelete()"></app-modal-delete>
+    <app-modal-delete #childRef (outputEvent)="onDelete()" ></app-modal-delete>
     <app-instrumento-add-modal />

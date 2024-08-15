@@ -19,9 +19,7 @@
             <!-- <form novalidate [formGroup]="instrumentoForm" (ngSubmit)="onSubmit()"> -->
                 <div class="px-6 pt-4 sm:col-span-2">
                                   <label for="tipoEntidadId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo de Trabajador</label>
-                                  <select id="tipoEntidadId" (change)="getInstrumento($event)" formControlName="tipoEntidadId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500
-                          focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                          dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                  <select id="tipoEntidadId" (change)="getInstrumento($event)" formControlName="tipoEntidadId" class="block w-full px-4 py-3 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                       <option value="0"> --- Seleccione --- </option>
                                   @if(tipoEntidadesSginal().length > 0)
                                    {
@@ -41,7 +39,7 @@
 
   @for (inst of instrumentosSignal(); track inst.id) {
     <li>
-        <input type="radio" [id]="'radio'+inst.id" name="hosting" [value]="inst.id" class="hidden peer"  />
+        <input type="radio" [id]="'radio'+inst.id" name="hosting" [value]="inst.id" class="hidden peer" [checked]="comprobarSeleccion(inst)" (change)="addInstrumentoPeriodo(inst, $event)" />
         <label [for]="'radio'+inst.id" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
             <div class="block">
                 <div class="w-full text-lg font-semibold">{{inst.nombre}}</div>
@@ -64,9 +62,7 @@
     </div>
 
 </div>
-}
-
-                </section>
+}                </section>
             </div>
             <!-- Modal footer -->
             <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
