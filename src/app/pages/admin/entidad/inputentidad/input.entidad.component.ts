@@ -1,4 +1,4 @@
-import { Component, Signal, WritableSignal, computed, inject, signal,AfterViewInit, ViewChild, AfterContentInit } from '@angular/core';
+import { Component, Signal, WritableSignal, computed, inject, signal, AfterViewInit, ViewChild, AfterContentInit, input } from '@angular/core';
 import { initFlowbite,InstanceOptions } from 'flowbite';
 import {PackPage, Paginacion} from '../../../../interfaces/packPage'
 import {InsertUsuario, UsuarioViewModel} from '../../../../interfaces/usuario'
@@ -12,9 +12,9 @@ import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatIconModule} from '@angular/material/icon';
 
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {FormsModule,FormBuilder, ReactiveFormsModule, FormGroup, FormControl} from '@angular/forms';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatTableModule} from '@angular/material/table';
+import {FormsModule,FormBuilder, ReactiveFormsModule, FormGroup, FormControl, Validators} from '@angular/forms';
 
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
@@ -40,16 +40,19 @@ import { ModuloSelectView } from '@interfaces/modulo';
 import { ModuloService } from '@services/modulo.service';
 import { SubmoduloService } from '@services/submodulo.service';
 import { SubModuloViewer, SubModuloViewerTable, SubModuloXUser, SubModuloXUserView } from '@interfaces/submodulo';
-
-
+import { FdropzoneComponent } from "../../../../shared/input/fdropzone/fdropzone.component";
+import { EntidadFullDto } from '@interfaces/entidad';
+import { ArchivoService } from '@services/admin/archivo.service';
+import { Archivo } from '../../../../interfaces/archivo';
+import { EntidadService } from '@services/admin/entidad.service';
 
 
 
 @Component({
   selector: 'app-input-entidad',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, TitleComponent, ReactiveFormsModule, ModalDeleteComponent,MatAutocompleteModule,
-    MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule,MatChipsModule, MatIconModule],
+  imports: [MatTableModule, MatPaginatorModule, TitleComponent, ReactiveFormsModule, ModalDeleteComponent, MatAutocompleteModule,
+    MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule, MatChipsModule, MatIconModule, FdropzoneComponent ],
   templateUrl: './input.entidad.component.html',
   styleUrl: './input.entidad.component.css'
 })
@@ -64,6 +67,8 @@ export default class InputEntidadComponent  {
   sexoService=inject(SexoService);
   SubmoduloService=inject(SubmoduloService);
   moduloService=inject(ModuloService);
+  archivoService=inject(ArchivoService);
+  entidadService=inject(EntidadService);
 
 
   matSnackBar=inject(MatSnackBar);
@@ -75,9 +80,8 @@ export default class InputEntidadComponent  {
   subModulos:WritableSignal<SubModuloViewer[]>=signal([]);
   subModuloList:Signal<SubModuloViewer[]>=computed(this.subModulos);
   subModulosV!: SubModuloViewer[];
-  searchValue!: string;
-
   subModulosT:SubModuloViewerTable[]=[];
+  searchValue!: string;
 
   subModulosByUser:WritableSignal<SubModuloXUserView[]>=signal([]);
   subModuloByUserList:Signal<SubModuloXUserView[]>=computed(this.subModulosByUser);
@@ -104,11 +108,6 @@ export default class InputEntidadComponent  {
   pag!:Paginacion;
   pagSM!:Paginacion;
 
-  countryControl = new FormControl();
-
-  userInModal!:UsuarioViewModel;
-
-  teForm!:FormGroup;
   dropdownSettings: any = {};
   disabled = false;
   ShowFilter = false;
@@ -134,29 +133,53 @@ export default class InputEntidadComponent  {
     this.showPasswordRe = !this.showPasswordRe;
   }
 
-  entidadForm=this.fb.group({
+  masterForm=this.fb.group({
+    id : [0],
+    dni: new FormControl(''),
+    codigo: new FormControl('0000', Validators.required),
+    nombres: new FormControl('', Validators.required),
+    apellidos: new FormControl('', Validators.required),
+    sexoId: new FormControl('', Validators.required),
+    fechaIngreso:new FormControl('', Validators.required),
+
+   // imgPerfilInput: new FormControl('', Validators.required),
+
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
+    telefono: new FormControl('', Validators.required),
+    cargoId: new FormControl('', Validators.required),
+    dependenciaId: new FormControl('', Validators.required)
+
+  });
+
+
+  /*
+    masterForm=this.fb.group({
     id : [''],
     dni: [''],
-    codigo: ['000000'],
-    nombres: [''],
-    apellidos : [''],
-    fechaIngreso : [''],
-    sexoId: [''],
-    cargoId: [''],
-    dependenciaId: [''],
-     
+    codigo: ['000000',Validators.required],
+    nombres: ['', Validators.required],
+    apellidos: ['', Validators.required],
+    sexoId: ['', Validators.required],
+    fechaIngreso: ['', Validators.required],
+
+    imgPerfilInput: ['', Validators.required],
+
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
+    telefono: ['', Validators.required],
+    cargoId: [null],
+    tipoEntidad: [null],
+    dependenciaId: [null],
+    subModuloId:[null],
+    SubModuloXUserInput: [[], Validators.required],
   });
 
-  userForm=this.fb.group({
-    entidadId : 0,
-    email: [''],
-    password: [''],
-    confirmPassword: [''],
-    nombres : [''],
-    apellidos : [''],
-    telefono : [''],
-  });
+  */ 
 
+ 
   SBMxUForm=this.fb.group({
     subModuloId : 0,
     ApsNetUserId: [''],
@@ -213,7 +236,7 @@ export default class InputEntidadComponent  {
           nombre:item.nombre
         }));
        // this.tipoEntidadItems=listaTE;
-       debugger;
+  
         this.tiposEntidades.set(listaTE);
       }
     });
@@ -386,6 +409,7 @@ filterSubModulos(event:any): void
     //this.entidadForm.controls['tipoEntidadId'].setValue(this._tiposEntidades.);
     event.option.deselect();
 
+ 
     var item=event.option.value;
 
     if(!this._tiposEntidades || this._tiposEntidades.length===0)
@@ -394,8 +418,9 @@ filterSubModulos(event:any): void
      }
      else
       if(!this._tiposEntidades.find(f=>f.id===item.id))
+        {
         this._tiposEntidades.push(item);
-      
+      }
   }
 
   filterTipoEntidad(event:any)
@@ -423,9 +448,55 @@ filterSubModulos(event:any): void
         this.subModulosT.push(inputSM);
   }
 
-
+    Infile?:Archivo;
   onSubmit()
-  {}
+  {
+  
+    let f:Boolean=true;
+   
+    if(this._tiposEntidades.length===0)
+    {
+      this.matSnackBar.open("Especifique el Tipo de Trabajador",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+      f=false;
+    }
+    else
+    {
+
+    }
+
+    if(!this.archivoService.file||this.archivoService.file.length === 0)
+      this.matSnackBar.open("Agregue una Imagen/Foto de Perfil mas tarde",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+
+    if (this.masterForm.valid && f) 
+    {
+      //const moduloIn: ModuloView = this.moduloFormInput.value as unknown as ModuloView;
+      const inputMaster: EntidadFullDto = this.masterForm.value as unknown as EntidadFullDto;
+   
+      //inputMaster.fileA =this.archivoService.file;
+      inputMaster.tipoEntidad = this._tiposEntidades;
+
+      inputMaster.SubModulos = this.subModulosT;
+      console.log(inputMaster);
+
+      console.log('OnSumit   valid::::: ');
+
+      this.entidadService.postFullMaster(inputMaster,this.archivoService.file).subscribe({
+        next: u=>{
+          this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+
+        },
+        error: (error) => { 
+
+            this.matSnackBar.open(error,'Cerrar',{ duration:5000, horizontalPosition:'center'});
+         }
+      });
+
+    }
+    else
+      this.matSnackBar.open("Complete los datos para poder Guardar",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+
+
+  }
 
   deleteSubModuloXUsuario(SMU:SubModuloViewerTable)
   {
@@ -435,28 +506,6 @@ filterSubModulos(event:any): void
     this.matSnackBar.open('Objeto Eliminado','Cerrar',{ duration:5000, horizontalPosition:'center'});
 
   }
-
-    //-------------- Paginacion Inicio ---------------------------
-    previousPageModal()
-    {
-      if(this.pagSM.paginasAnteriores==true)
-        {
-         const idUser=this.SBMxUForm.get('ApsNetUserId')?.value?.toString();
-         this.GetListSubModuloByUserId(this.userInModal.id,this.pagSM.paginaInicio-1);
- 
-          //this.GetListIndex(this.pagSM.paginaInicio-1);
-        }
-   }
- 
-   nextPageModal()
-    {
-      if(this.pagSM.paginasPosteriores==true)
-        {
-         this.GetListSubModuloByUserId(this.userInModal.id,this.pagSM.paginaInicio+1);
-         
-        }
-   }
-   
 
    pageSize: number = 5;
    currentPage: number = 1;

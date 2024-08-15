@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { appsettings } from '../../Settings/appsettings';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PackPage } from '../../interfaces/packPage';
-import {Entidad, EntidadDto} from '../../interfaces/entidad'
+import {Entidad, EntidadDto, EntidadFullDto} from '../../interfaces/entidad'
 import { FormGroup } from '@angular/forms';
 import { Result } from '@interfaces/Result.interface';
 
@@ -43,6 +43,69 @@ export class EntidadService {
     return this.http.post(this.apiUrl+'/PostMaster', body,{'headers':headers})
   }
  
+
+  /*postFull(entidad:EntidadFullDto): Observable<any> {
+    const headers = { 'Content-Type': 'multipart/form-data'} 
+    const body=JSON.stringify(entidad);
+    return this.http.post(this.apiUrl+'/PostFullMaster', body,{'headers':headers})
+  }
+ */
+  /*post(fileData:FormData): Observable<ArchivoResponse> {
+    //const headers = { 'content-type': 'multipart/form-data'} 
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    return this.http.post<ArchivoResponse>(this.apiUrl+'/Upload',fileData)
+}
+*/
+
+postFull(entidad:EntidadFullDto):Observable<any>
+{
+  const headers = new HttpHeaders();
+  headers.append('Content-Type', 'multipart/form-data');
+  headers.append( 'Accept', '*/*');
+  return this.http.post(this.apiUrl+'/PostFullMaster',entidad);
+  
+}
+
+
+postFullMaster(data: EntidadFullDto, file?: File|any): Observable<any> {
+  const formData: FormData = new FormData();
+
+    // Append the file
+  if(file && file.size > 0)
+    formData.append('File', file, file.name);
+
+  
+
+  // Append other fields
+  formData.append('Dni', data.dni);
+  formData.append('Codigo',data.codigo.toString());
+  formData.append('Nombres', data.nombres);
+  formData.append('Apellidos', data.apellidos);
+  formData.append('SexoId', data.sexoId.toString());
+  formData.append('FechaIngreso', data.fechaIngreso.toString());
+  formData.append('CorreoPersonal', data.email);
+  formData.append('Ubicacion', 'Usuarios');
+  formData.append('SubCarpeta', 'IdUserNet');
+  formData.append('Email', data.email);
+  formData.append('Password', data.password);
+  formData.append('ConfirmPassword', data.confirmPassword);
+  formData.append('Telefono', data.telefono);
+  formData.append('TipoEntidades', JSON.stringify(data.tipoEntidad));
+  formData.append('CargoId', data.cargoId?.toString());
+  formData.append('DependenciaId', data.dependenciaId.toString());
+  formData.append('SubModulos', JSON.stringify(data.SubModulos));
+
+  debugger;
+  return this.http.post<any>(this.apiUrl+'/PostFullMaster', formData, {
+    headers: new HttpHeaders({
+      'Accept': '*/*'
+    })
+  });
+}
+
+
+
   getById(id:number):Observable<Result<Entidad>>
   {
     var element= this.http.get<Result<Entidad>>(this.apiUrl+'/GetById?id='+id);
