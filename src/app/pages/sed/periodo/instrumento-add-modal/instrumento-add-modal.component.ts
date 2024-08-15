@@ -28,14 +28,14 @@ export class InstrumentoAddModalComponent {
 
   private tipoEntidadService = inject(TipoEntidadService);
   private instrumentoService = inject(InstrumentoService);
-  tipoEntidadesSginal = signal<TipoEntidad[]>([]);
-
+  tipoEntidadesSignal = signal<TipoEntidad[]>([]);
+  tipoEntidadIdSignal = signal(0);
   public instrumentosAdd = signal<PeriodoxInstrumento[]>([])
   public periodo = signal<Periodo>({id: 0, fechaFin: '', fechaInicio: '', nombre: ''})
-  public instrumentoActual = signal<Instrumento>({id:0, nombre:'',tipoEntidadId:0})
+  instrumentoActualSignal = signal<Instrumento>({id:0, nombre:'',tipoEntidadId:0})
   text:string = 'Agregar';
 
-  instrumentosSignal = signal<Instrumento[]>([])
+  instrumentosSignalAdd = signal<Instrumento[]>([])
   //outputPostType = output<EmiterResult<Instrumento>>();
 
   onSubmit(){
@@ -45,7 +45,7 @@ export class InstrumentoAddModalComponent {
   getTipoEntidad(){
     this.tipoEntidadService.getList().subscribe({
       next: (tipo_entidad) => {
-        this.tipoEntidadesSginal.set(tipo_entidad);
+        this.tipoEntidadesSignal.set(tipo_entidad);
       }
     })
   }
@@ -68,39 +68,46 @@ export class InstrumentoAddModalComponent {
     const selectElement = event.target as HTMLSelectElement;
     const selectedValue = selectElement.value;
 
+    this.tipoEntidadIdSignal.set(Number(selectedValue));
     this.instrumentoService.getInstrumentoxEntidad(Number(selectedValue)).subscribe({
       next: (instrumentos) => {
         const data = instrumentos.data!;
         if(data != null)
         {
-          this.instrumentosSignal.set(data);
+          this.instrumentosSignalAdd.set(data);
         }
       }
     })
   }
 
-  comprobarSeleccion(instrumento: Instrumento) : boolean
-  {
-    const BAND = this.instrumentosAdd().some((inst) => inst.instrumento.id == instrumento.id);
-    if(BAND){
-      const actual = this.instrumentosAdd().find((inst) => inst.instrumento.id == instrumento.id);
-      if(actual != undefined){
-        this.instrumentoActual.set(actual.instrumento);
-      } 
-      
+  comprobarSeleccion(instrumento: Instrumento) : boolean {
+    return this.instrumentosAdd().some((inst) => inst.instrumento.id == instrumento.id);
+  }
+  
+  asignarInstrumento(instrumento: Instrumento): void {
+    const actual = this.instrumentosAdd().find((inst) => inst.instrumento.id == instrumento.id);
+    if (actual != undefined) {
+      const { id, nombre, tipoEntidadId } = actual.instrumento;
+      const instruments: Instrumento = { id: id, nombre: nombre, tipoEntidadId: tipoEntidadId };
+      this.instrumentoActualSignal.set(instruments);
     }
-    return BAND;
   }
 
+  handleChange(inst: Instrumento, event: Event) {
+    this.asignarInstrumento(inst);
+    this.addInstrumentoPeriodo(inst, event);
+  }
   addInstrumentoPeriodo(instrumento: Instrumento, event: Event){
+    debugger
     const radio = event.target as HTMLInputElement;
     if(radio.type === "radio"){
       if(radio.checked){
-        this.periodoxinstrumentoService.getByInstrumentoPeriodo(instrumento.id, this.periodo().id).subscribe({
-          next: (ixp) => {
-            if(ixp.data != null){
+        
+        const InstrumentoExiste = this.instrumentosAdd().find((dato) => dato.instrumento.tipoEntidadId == instrumento.tipoEntidadId)!;
 
-            }
+        this.periodoxinstrumentoService.del(InstrumentoExiste).subscribe({
+          next: (resp) => {
+            console.log(resp);
           }
         })
       }
