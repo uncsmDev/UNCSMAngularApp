@@ -96,7 +96,6 @@ postFullMaster(data: EntidadFullDto, file?: File|any): Observable<any> {
   formData.append('DependenciaId', data.dependenciaId.toString());
   formData.append('SubModulos', JSON.stringify(data.SubModulos));
 
-  debugger;
   return this.http.post<any>(this.apiUrl+'/PostFullMaster', formData, {
     headers: new HttpHeaders({
       'Accept': '*/*'
