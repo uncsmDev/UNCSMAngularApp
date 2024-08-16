@@ -12,7 +12,9 @@
 <div class="w-full max-w-xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700 mb-1">
     <div class="flex justify-between">
 <h5 class="mb-3 text-base font-semibold text-gray-900 md:text-xl dark:text-white">
-    {{ periodo.nombre }}
+    @let i=23;
+    {{ periodo.nombre }} lo que sigue es una variable desde la plantilla {{ i }}
+    
     </h5>
     <div class="flex">
       @if(validarFecha(periodo.fechaInicio)){
