@@ -17,4 +17,7 @@ export class PeriodoxinstrumentoService {
     return this.http.get<Result<PeriodoxInstrumento>>(`${this.ruta}/GetByInstrumentoPeriodo/${InstrumentoId}/${PeriodoId}`)
   }
 
+  del(periodoxInstrumento: PeriodoxInstrumento): Observable<Result<PeriodoxInstrumento>>{
+    return this.http.delete<Result<PeriodoxInstrumento>>(`${this.ruta}/${periodoxInstrumento.periodoId}/${periodoxInstrumento.instrumentoId}`)
+  }
 }
