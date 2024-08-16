@@ -20,4 +20,16 @@ export class PeriodoxinstrumentoService {
   del(periodoxInstrumento: PeriodoxInstrumento): Observable<Result<PeriodoxInstrumento>>{
     return this.http.delete<Result<PeriodoxInstrumento>>(`${this.ruta}/${periodoxInstrumento.periodoId}/${periodoxInstrumento.instrumentoId}`)
   }
+
+  post(periodoxInstrumento: PeriodoxInstrumento): Observable<Result<PeriodoxInstrumento>>{
+    const headers = { 'content-type': 'application/json'}  
+    const body=JSON.stringify(periodoxInstrumento);
+    return this.http.post<Result<PeriodoxInstrumento>>(this.ruta, body, {headers});
+  }
+
+  update(periodoId: number, instrumentoId:number, periodoxInstrumento: PeriodoxInstrumento): Observable<Result<PeriodoxInstrumento>>{
+    const headers = { 'content-type': 'application/json'}  
+    const body=JSON.stringify(periodoxInstrumento);
+    return this.http.put<Result<PeriodoxInstrumento>>(`${this.ruta}/${periodoId}/${instrumentoId}`, body, {headers});
+  }
 }

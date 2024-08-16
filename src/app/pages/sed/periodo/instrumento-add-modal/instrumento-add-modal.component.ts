@@ -81,13 +81,13 @@ export class InstrumentoAddModalComponent {
   }
 
   comprobarSeleccion(instrumento: Instrumento) : boolean {
-    return this.instrumentosAdd().some((inst) => inst.instrumento.id == instrumento.id);
+    return this.instrumentosAdd().some((inst) => inst.instrumento!.id == instrumento.id);
   }
   
   asignarInstrumento(instrumento: Instrumento): void {
-    const actual = this.instrumentosAdd().find((inst) => inst.instrumento.id == instrumento.id);
+    const actual = this.instrumentosAdd().find((inst) => inst.instrumento!.id == instrumento.id);
     if (actual != undefined) {
-      const { id, nombre, tipoEntidadId } = actual.instrumento;
+      const { id, nombre, tipoEntidadId } = actual.instrumento!;
       const instruments: Instrumento = { id: id, nombre: nombre, tipoEntidadId: tipoEntidadId };
       this.instrumentoActualSignal.set(instruments);
     }
@@ -98,21 +98,41 @@ export class InstrumentoAddModalComponent {
     this.addInstrumentoPeriodo(inst, event);
   }
   addInstrumentoPeriodo(instrumento: Instrumento, event: Event){
-    debugger
     const radio = event.target as HTMLInputElement;
     if(radio.type === "radio"){
       if(radio.checked){
-        
-        const InstrumentoExiste = this.instrumentosAdd().find((dato) => dato.instrumento.tipoEntidadId == instrumento.tipoEntidadId)!;
+        const InstrumentoExiste = this.instrumentosAdd().find((dato) => dato.instrumento!.tipoEntidadId == instrumento.tipoEntidadId)!;
 
-        this.periodoxinstrumentoService.del(InstrumentoExiste).subscribe({
-          next: (resp) => {
-            console.log(resp);
-          }
-        })
+        const periodoxInstrumento:PeriodoxInstrumento = {instrumentoId: instrumento.id, periodoId: this.periodo().id}
+
+        if(InstrumentoExiste != undefined)
+        {
+          this.updatePeriodoxIntrumento(InstrumentoExiste.periodoId, InstrumentoExiste.instrumentoId, periodoxInstrumento);
+        }
+        else{
+          this.addPeriodoxIntrumento(periodoxInstrumento);
+        }
       }
     }
     
+  }
+
+  updatePeriodoxIntrumento(periodoId:number, instrumentoId: number, periodoxInstrumento:PeriodoxInstrumento){
+    
+    this.periodoxinstrumentoService.update(periodoId, instrumentoId, periodoxInstrumento).subscribe({
+      next: (response) => {
+        console.log(response)
+      }
+    })
+  }
+
+  addPeriodoxIntrumento(periodoxInstrumento:PeriodoxInstrumento){
+    
+    this.periodoxinstrumentoService.post(periodoxInstrumento).subscribe({
+      next: (response) => {
+        console.log(response)
+      }
+    })
   }
 
 }
