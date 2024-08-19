@@ -75,9 +75,7 @@ export default class PeriodoComponent {
 
 
   deleteInstrumentPeriodo(){
-    
-    const peridodxInstrumento:PeriodoxInstrumento = {instrumentoId:this.isntrumentoDelete().instrumentoId, periodoId: this.isntrumentoDelete().periodoId}
-    this.periodoxinstrumentoService.del(peridodxInstrumento).subscribe({
+    this.periodoxinstrumentoService.del(this.isntrumentoDelete()).subscribe({
       next:(response) => {
         console.log(response);
         
@@ -200,8 +198,7 @@ export default class PeriodoComponent {
   }
 
   onDelete(){
-    
-    this.deletePeriodoSignal() ? this.deletePeriodo() : true;
+    this.deletePeriodoSignal() ? this.deletePeriodo() : this.deleteInstrumentPeriodo();
   }
 
   deletePeriodo()

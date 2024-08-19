@@ -1,9 +1,10 @@
+import { PeriodoxInstrumento } from './../../../../interfaces/periodoxinstrumento.';
 import { Result } from '@interfaces/Result.interface';
 import { CommonModule } from '@angular/common';
 import { Component, inject, input, signal, OnInit, viewChild, output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Instrumento } from '@interfaces/instrumento';
-import { Periodo, PeriodoInstrumento, PeriodoxInstrumento } from '@interfaces/periodo';
+import { Periodo, PeriodoInstrumento } from '@interfaces/periodo';
 import { TipoEntidad } from '@interfaces/tipoEntidad';
 import { TipoEntidadService } from '@services/admin/tipoEntidad.service';
 import { PeriodoxinstrumentoService } from '@services/sed/periodoxinstrumento.service';
@@ -27,7 +28,7 @@ export class ListaInstrumentoComponent {
   tipoEntidadSignal = signal<TipoEntidad>({nombre: '', id: 0})
   ModalDelete = viewChild(ModalDeleteComponent);
   deletePeriodoInstrumento = output();
-  callModalDeleteOutput = output();
+  callModalDeleteOutput = output<PeriodoxInstrumento>();
   periodoxinstrumentoService = inject(PeriodoxinstrumentoService);
 
   ngOnInit(){
@@ -47,7 +48,7 @@ export class ListaInstrumentoComponent {
     this.deletePeriodoInstrumento.emit();
   }
 
-  callModalDelete() {
-    this.callModalDeleteOutput.emit()
+  callModalDelete(instrumento: number, periodo: number) {
+    this.callModalDeleteOutput.emit({instrumentoId: instrumento, periodoId: periodo})
   }
 }
