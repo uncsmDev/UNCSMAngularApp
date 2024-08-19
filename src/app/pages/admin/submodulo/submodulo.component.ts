@@ -97,8 +97,6 @@ export default class SubmoduloComponent {
     this.moduloService.getList().subscribe({
       next:(rsm)=>{
 
-        console.log(rsm);
-        debugger;
         const listModulo=rsm.map(item=>({
           id:item.id,
           titulo: item.titulo

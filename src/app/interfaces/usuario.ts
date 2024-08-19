@@ -11,12 +11,11 @@ export interface UsuarioViewModel {
     img?: File;
 }
 
-interface DetalleUsuarioViewModel extends UsuarioViewModel {
-    codigo: number;
-    sexo: string;
-    dni: string;
-    tipoEntidad: string;
-    dependencia: string;
+export interface UsuarioView{
+  id: string;
+  entidadId:number;
+  email:string;
+  phoneNumber: string;
 }
 
 export interface InsertUsuario {

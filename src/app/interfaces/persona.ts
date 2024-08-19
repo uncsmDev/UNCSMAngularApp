@@ -7,4 +7,5 @@ export interface Persona {
     apellidos: string;
     sexoId:number;
     sexo: Sexo;
+    img:string;
 }

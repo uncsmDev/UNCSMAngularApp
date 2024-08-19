@@ -133,6 +133,7 @@ export default class EntidadComponent {
     
   }
 
+  
   GetListSexo()
   {
     this.sexoService.getList()
@@ -509,6 +510,11 @@ export default class EntidadComponent {
   irPerfil(idEntidad:number) {
     this.router.navigate(['/admin/perfilEntidad',idEntidad]);
   }
+
+  irInputEntidad() {
+    this.router.navigate(['/admin/inputEntidad']);
+  }
+
 
 }
 
