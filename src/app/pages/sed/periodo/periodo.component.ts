@@ -77,7 +77,7 @@ export default class PeriodoComponent {
   deleteInstrumentPeriodo(){
     this.periodoxinstrumentoService.del(this.isntrumentoDelete()).subscribe({
       next:(response) => {
-        console.log(response);
+        this.getPeriodo();
         
         this.matSnackBar.open(response.message,'Cerrar',{ duration:5000, horizontalPosition:'center'});
       },
@@ -127,8 +127,6 @@ export default class PeriodoComponent {
 
     const fechaInicio = this.conversionFecha(new Date(periodo.fechaInicio));
     const fechaFin = this.conversionFecha(new Date(periodo.fechaFin));
-
-    console.log(fechaInicio)
 
     this.periodoForm.controls['id'].setValue(periodo.id);
     this.periodoForm.controls['nombre'].setValue(''+periodo.nombre);
@@ -205,13 +203,7 @@ export default class PeriodoComponent {
   {
     this.periodoService.delete(this.periodo()).subscribe({
       next: (response) => {
-        this.periodos.update((periodo) => {
-          return periodo.filter((p)=>
-            {
-              return p.id != this.periodo().id
-            }
-          )
-        })
+        this.getPeriodo();
 
         this.matSnackBar.open(response.message,'Cerrar',{ duration:5000, horizontalPosition:'center'});
       },
