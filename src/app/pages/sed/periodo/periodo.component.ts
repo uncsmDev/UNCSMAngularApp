@@ -47,6 +47,7 @@ export default class PeriodoComponent {
 
   periodos = signal<PeriodoAddInstrumento[]>([])
   periodo = signal<Periodo>(this.reset())
+  isntrumentoDelete = signal<PeriodoxInstrumento>({periodoId:0, instrumentoId: 0})
 
   ModalDelete = viewChild(ModalDeleteComponent);
 
@@ -73,9 +74,9 @@ export default class PeriodoComponent {
   }
 
 
-  deleteInstrumentPeriodo(pxi: PeriodoxInstrumento){
+  deleteInstrumentPeriodo(){
     
-    const peridodxInstrumento:PeriodoxInstrumento = {instrumentoId:pxi.instrumento!.id, periodoId: pxi.periodoId}
+    const peridodxInstrumento:PeriodoxInstrumento = {instrumentoId:this.isntrumentoDelete().instrumentoId, periodoId: this.isntrumentoDelete().periodoId}
     this.periodoxinstrumentoService.del(peridodxInstrumento).subscribe({
       next:(response) => {
         console.log(response);
@@ -103,12 +104,16 @@ export default class PeriodoComponent {
     }
     
     this.periodo.set(modelo);
+    this.deletePeriodoSignal.set(true)
+
   }
 
-  callModalDeleteInstrumento() {
+  callModalDeleteInstrumento(modelo: PeriodoxInstrumento) {
     if(this.ModalDelete()){
       this.ModalDelete()!.openModal(); // Llama al método doSomething del componente hijo
     }
+    this.isntrumentoDelete.set(modelo)
+    this.deletePeriodoSignal.set(false)
   }
 
 

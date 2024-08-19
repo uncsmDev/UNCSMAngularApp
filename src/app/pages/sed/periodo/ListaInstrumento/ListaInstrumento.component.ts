@@ -26,7 +26,8 @@ export class ListaInstrumentoComponent {
   matSnackBar=inject(MatSnackBar);
   tipoEntidadSignal = signal<TipoEntidad>({nombre: '', id: 0})
   ModalDelete = viewChild(ModalDeleteComponent);
-  deletePeriodoInstrumento = output<PeriodoxInstrumento>();
+  deletePeriodoInstrumento = output();
+  callModalDeleteOutput = output();
   periodoxinstrumentoService = inject(PeriodoxinstrumentoService);
 
   ngOnInit(){
@@ -43,12 +44,10 @@ export class ListaInstrumentoComponent {
   }
 
   deleteInstrumentPeriodo(){
-    this.deletePeriodoInstrumento.emit({periodoId: this.instrumento().id, instrumentoId:this.periodo().id});
+    this.deletePeriodoInstrumento.emit();
   }
 
   callModalDelete() {
-    if(this.ModalDelete()){
-      this.ModalDelete()!.openModal(); // Llama al método doSomething del componente hijo
-    }
+    this.callModalDeleteOutput.emit()
   }
 }

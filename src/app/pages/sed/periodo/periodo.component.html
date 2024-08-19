@@ -56,7 +56,7 @@
 {
     <ul class="my-4 space-y-3">
         @for (instrumento of periodo.periodoxInstrumentos; track $index) {
-    <app-lista-instrumento (deletePeriodoInstrumento)="getPeriodo()" [instrumento]="instrumento.instrumento!" [periodo]="periodo" (deletePeriodoInstrumento)="deleteInstrumentPeriodo($event)" />
+    <app-lista-instrumento (deletePeriodoInstrumento)="getPeriodo()" [instrumento]="instrumento.instrumento!" [periodo]="periodo" (deletePeriodoInstrumento)="deleteInstrumentPeriodo()" (callModalDeleteOutput)="deleteInstrumentPeriodo()" />
 }
 
     </ul>
