@@ -2,8 +2,9 @@ import { Injectable, inject } from '@angular/core';
 import { appsettings } from '../Settings/appsettings';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { InsertUsuario, UsuarioViewModel } from '../interfaces/usuario';
+import { InsertUsuario, UsuarioView, UsuarioViewModel } from '../interfaces/usuario';
 import { PackPage } from '../interfaces/packPage';
+import { Result } from '@interfaces/Result.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,12 @@ export class UsuarioService {
     const headers = { 'content-type': 'application/json'}  
     const body=JSON.stringify(insert);
     return this.http.post(this.api+'register', body,{'headers':headers})
+  }
+
+  getByEntidadId(id?:number):Observable<Result<UsuarioView[]>>
+  {
+    var list= this.http.get<Result<UsuarioView[]>>(this.apiUrl+'/GetByEntidadId?id='+id);
+    return list;
   }
 
   googleLogin(idToken: string) {

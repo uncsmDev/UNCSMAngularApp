@@ -5,6 +5,12 @@ import { EntidadService } from '../../../Services/admin/entidad.service';
 import { Persona } from '@interfaces/persona';
 import { map } from 'rxjs';
 import { Sexo } from '@interfaces/sexo';
+import { ArchivoService } from '@services/admin/archivo.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { TipoEntidad } from '@interfaces/tipoEntidad';
+import { UsuarioView } from '@interfaces/usuario';
+import { UsuarioService } from '../../../Services/usuario.service';
 
 @Component({
   selector: 'app-perfil.entidad',
@@ -19,29 +25,52 @@ export default class PerfilEntidadComponent implements OnInit {
   entidad?:Entidad;
   persona?:any;
   sexo?:Sexo;
+  fileDir?: string;
+  UserNet!: UsuarioView;
+  tiposEntidades?: TipoEntidad[];
+
+  imageUrl: SafeUrl | undefined;
+
+  matSnackBar=inject(MatSnackBar);
 
   _entidadService=inject(EntidadService);
+  _archivoService=inject(ArchivoService);
+  _usuarioService=inject(UsuarioService);
+  
 
-
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute,  private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.userId = params['id'];
     });
 
-    console.log(this.userId);
-
-
-    
     this._entidadService.getById(this.userId).subscribe({
       next: (ent) => {
-        //const enti=ent.data;
-       // const per=ent.data?.persona;
 
         this.entidad = ent.data; 
         this.persona=ent.data?.persona;
         this.sexo=this.persona.sexoes;
+
+        this.fileDir=ent.data?.persona?.img;
+
+        if(this.fileDir!=null)
+        {
+           this._archivoService.getByAddress(this.fileDir).subscribe({
+            next:(fileRes)=>
+            {
+              if(fileRes.size>0)
+              {
+                  const objectUrl = URL.createObjectURL(fileRes);
+                  this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectUrl);
+              }
+            },
+            error:(er)=>
+            {
+              this.matSnackBar.open("No se pudo cargar la Imagen",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+            }
+           });
+        }
         console.log('on on  Service');
         console.log(this.entidad);
         console.log(this.persona);
@@ -53,6 +82,22 @@ export default class PerfilEntidadComponent implements OnInit {
         // Manejo de errores según tu necesidad
       }
     });
+
+    this._usuarioService.getByEntidadId(this.entidad?.id).subscribe({
+      next:(Usuarios)=>{
+        const lus=Usuarios.data.map(item=>({
+          id:item.id,
+          entidadId:item.entidadId,
+          email:item.email,
+          phoneNumber:item.phoneNumber
+        }))
+      },
+      error:(error)=>{
+        console  .error('Error al obtener Usuario:', error);
+      }
+    })
+    
+   // this.tiposEntidades=ent.data.tipoEntidad;
   }
 
 

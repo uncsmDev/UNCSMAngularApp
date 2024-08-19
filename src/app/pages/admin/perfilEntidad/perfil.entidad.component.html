@@ -1,7 +1,18 @@
+
+
+ @if(imageUrl!=null)
+ {
+    <div class="flex items-center justify-center p-6">
+        <div class="rounded-full overflow-hidden w-60 h-60">
+            <img [src]="imageUrl" alt=" " class="w-full h-full object-cover">
+        </div>
+    </div>
+ }
+
 <div  class="w-full p-2 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-4 dark:bg-gray-800 dark:border-gray-700">
     <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">{{persona?.nombres}} {{persona?.apellidos}}</h5>
     <p class="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">{{sexo?.nombre}} - {{callFormato()}}</p>
-
+    <p></p>
     <div class="items-center justify-center space-y-4 sm:flex sm:space-y-0 sm:space-x-4 rtl:space-x-reverse">
 
 
@@ -104,7 +115,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-                               
+                               @for (item of tiposEntidades; track $index) 
+                               {
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                   
+                                    <td class="px-6 py-4">
+                                        {{item.nombre}}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <a  title="Eliminar" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                                              </svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                               }
                             </tbody>
                         </table>
                     </div>
