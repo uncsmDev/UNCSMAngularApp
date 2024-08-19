@@ -26,7 +26,7 @@ export class ListaInstrumentoComponent {
   matSnackBar=inject(MatSnackBar);
   tipoEntidadSignal = signal<TipoEntidad>({nombre: '', id: 0})
   ModalDelete = viewChild(ModalDeleteComponent);
-  deletePeriodoInstrumento = output();
+  deletePeriodoInstrumento = output<PeriodoxInstrumento>();
   periodoxinstrumentoService = inject(PeriodoxinstrumentoService);
 
   ngOnInit(){
@@ -43,17 +43,7 @@ export class ListaInstrumentoComponent {
   }
 
   deleteInstrumentPeriodo(){
-    const peridodxInstrumento:PeriodoxInstrumento = {instrumentoId:this.instrumento().id, periodoId: this.periodo().id}
-    this.periodoxinstrumentoService.del(peridodxInstrumento).subscribe({
-      next:(response) => {
-        console.log(response);
-        this.deletePeriodoInstrumento.emit();
-        this.matSnackBar.open(response.message,'Cerrar',{ duration:5000, horizontalPosition:'center'});
-      },
-      error: (error)=> {
-        this.matSnackBar.open("Error al eliminar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'})
-      }
-    })
+    this.deletePeriodoInstrumento.emit({periodoId: this.instrumento().id, instrumentoId:this.periodo().id});
   }
 
   callModalDelete() {

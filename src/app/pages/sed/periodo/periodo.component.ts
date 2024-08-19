@@ -11,6 +11,7 @@ import { TitleComponent } from 'app/shared/title/title.component';
 import { ModalInterface } from 'flowbite';
 import { ListaInstrumentoComponent } from './ListaInstrumento/ListaInstrumento.component';
 import { InstrumentoAddModalComponent } from './instrumento-add-modal/instrumento-add-modal.component';
+import { PeriodoxinstrumentoService } from '@services/sed/periodoxinstrumento.service';
 
 @Component({
   selector: 'app-periodo',
@@ -29,13 +30,15 @@ export default class PeriodoComponent {
   matSnackBar=inject(MatSnackBar);
   periodoService = inject(PeriodoService);
   modalInstrumentoAdd = viewChild.required(InstrumentoAddModalComponent);
-
+  periodoxinstrumentoService = inject(PeriodoxinstrumentoService)
   periodoForm = this.formBuilder.group({
     id: [0, Validators.required],
     nombre: ['', Validators.required],
     fechaInicio: [formatDate(new Date(), 'dd-MM-yyyy', 'en'), Validators.required],
     fechaFin: [formatDate(new Date(), 'dd-MM-yyyy', 'en'), Validators.required]
   });
+
+  deletePeriodoSignal = signal(true);
 
   text = 'Agregar';
 
@@ -69,6 +72,22 @@ export default class PeriodoComponent {
     })
   }
 
+
+  deleteInstrumentPeriodo(pxi: PeriodoxInstrumento){
+    
+    const peridodxInstrumento:PeriodoxInstrumento = {instrumentoId:pxi.instrumento!.id, periodoId: pxi.periodoId}
+    this.periodoxinstrumentoService.del(peridodxInstrumento).subscribe({
+      next:(response) => {
+        console.log(response);
+        
+        this.matSnackBar.open(response.message,'Cerrar',{ duration:5000, horizontalPosition:'center'});
+      },
+      error: (error)=> {
+        this.matSnackBar.open("Error al eliminar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'})
+      }
+    })
+  }
+
   openModal()
   {
     this.periodoForm.reset(this.reset());
@@ -82,8 +101,16 @@ export default class PeriodoComponent {
     if(this.ModalDelete()){
       this.ModalDelete()!.openModal(); // Llama al método doSomething del componente hijo
     }
+    
     this.periodo.set(modelo);
   }
+
+  callModalDeleteInstrumento() {
+    if(this.ModalDelete()){
+      this.ModalDelete()!.openModal(); // Llama al método doSomething del componente hijo
+    }
+  }
+
 
   closeModal(){
     this.modalActivo.hide();
@@ -168,6 +195,12 @@ export default class PeriodoComponent {
   }
 
   onDelete(){
+    
+    this.deletePeriodoSignal() ? this.deletePeriodo() : true;
+  }
+
+  deletePeriodo()
+  {
     this.periodoService.delete(this.periodo()).subscribe({
       next: (response) => {
         this.periodos.update((periodo) => {

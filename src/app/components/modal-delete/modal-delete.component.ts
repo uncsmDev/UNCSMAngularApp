@@ -19,7 +19,6 @@ export class ModalDeleteComponent {
   }
 
   createModal(){
-
     const $modalElement: HTMLElement | null = document.getElementById('popup-modal');
     if (!$modalElement) {
       throw new Error('Elemento modal no encontrado');
@@ -56,7 +55,6 @@ export class ModalDeleteComponent {
   {
     this.createModal();
     this.modalActivo.show();
-
   }
 
   closeModalDelete(){

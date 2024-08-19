@@ -34,6 +34,7 @@ export class InstrumentoAddModalComponent {
   public periodo = signal<Periodo>({id: 0, fechaFin: '', fechaInicio: '', nombre: ''})
   instrumentoActualSignal = signal<Instrumento>({id:0, nombre:'',tipoEntidadId:0})
   text:string = 'Agregar';
+  isSubmitting = signal(false);
 
   instrumentosSignalAdd = signal<Instrumento[]>([])
   //outputPostType = output<EmiterResult<Instrumento>>();
@@ -81,7 +82,12 @@ export class InstrumentoAddModalComponent {
   }
 
   comprobarSeleccion(instrumento: Instrumento) : boolean {
-    return this.instrumentosAdd().some((inst) => inst.instrumento!.id == instrumento.id);
+    if(this.instrumentosAdd().length> 0){
+      return this.instrumentosAdd().some((inst) => inst.instrumentoId == instrumento.id);
+    }
+    else{
+      return false;
+    }
   }
   
   asignarInstrumento(instrumento: Instrumento): void {
@@ -94,32 +100,50 @@ export class InstrumentoAddModalComponent {
   }
 
   handleChange(inst: Instrumento, event: Event) {
+    this.isSubmitting.set(true);
     this.asignarInstrumento(inst);
-    this.addInstrumentoPeriodo(inst, event);
+    this.addInstrumentoPeriodo(inst, event).finally(() => {
+        this.isSubmitting.set(false);
+    });
   }
-  addInstrumentoPeriodo(instrumento: Instrumento, event: Event){
+
+  
+
+  addInstrumentoPeriodo(instrumento: Instrumento, event: Event) : Promise<void> {
     const radio = event.target as HTMLInputElement;
     if(radio.type === "radio"){
       if(radio.checked){
         const InstrumentoExiste = this.instrumentosAdd().find((dato) => dato.instrumento!.tipoEntidadId == instrumento.tipoEntidadId)!;
 
-        const periodoxInstrumento:PeriodoxInstrumento = {instrumentoId: instrumento.id, periodoId: this.periodo().id}
+        const periodoxInstrumento:PeriodoxInstrumento = {instrumentoId: instrumento.id, periodoId: this.periodo().id, instrumento:instrumento}
 
         if(InstrumentoExiste != undefined)
         {
           this.updatePeriodoxIntrumento(InstrumentoExiste.periodoId, InstrumentoExiste.instrumentoId, periodoxInstrumento);
+          this.instrumentosAdd.update((valor) => {
+            return valor.map((dato) => dato.instrumentoId == InstrumentoExiste.instrumentoId && dato.periodoId == InstrumentoExiste.periodoId ? {...dato, instrumentoId: periodoxInstrumento.instrumentoId, periodoId: periodoxInstrumento.periodoId} : dato)
+          })
         }
         else{
           this.addPeriodoxIntrumento(periodoxInstrumento);
+          if(this.instrumentosAdd().length > 0)
+          {
+            this.instrumentosAdd.update((valor) => {
+              return [...valor, periodoxInstrumento]
+            })
+          }
+          else{
+            this.instrumentosAdd.set([periodoxInstrumento])
+          }
         }
       }
     }
-    
+    return Promise.resolve();
   }
 
   updatePeriodoxIntrumento(periodoId:number, instrumentoId: number, periodoxInstrumento:PeriodoxInstrumento){
-    
-    this.periodoxinstrumentoService.update(periodoId, instrumentoId, periodoxInstrumento).subscribe({
+    const datos:PeriodoxInstrumento = {periodoId: periodoxInstrumento.periodoId, instrumentoId: periodoxInstrumento.instrumentoId} 
+    this.periodoxinstrumentoService.update(periodoId, instrumentoId, datos).subscribe({
       next: (response) => {
         console.log(response)
       }
@@ -127,8 +151,8 @@ export class InstrumentoAddModalComponent {
   }
 
   addPeriodoxIntrumento(periodoxInstrumento:PeriodoxInstrumento){
-    
-    this.periodoxinstrumentoService.post(periodoxInstrumento).subscribe({
+    const datos:PeriodoxInstrumento = {periodoId: periodoxInstrumento.periodoId, instrumentoId: periodoxInstrumento.instrumentoId} 
+    this.periodoxinstrumentoService.post(datos).subscribe({
       next: (response) => {
         console.log(response)
       }
