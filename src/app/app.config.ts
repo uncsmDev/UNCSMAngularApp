@@ -11,6 +11,7 @@ import { ErrorResponseInterceptor } from './interceptors/error-response.intercep
 import {LOCALE_ID } from '@angular/core';
 import localeEs from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
+import { spinnerInterceptor } from './interceptors/spinner.interceptor';
 registerLocaleData(localeEs, 'es'); //Esto no es un import, 
 
 export const appConfig: ApplicationConfig = {
@@ -18,7 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, 
       withComponentInputBinding(), withViewTransitions({skipInitialTransition: true})), 
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([tokenHttpInterceptor, ErrorResponseInterceptor])), provideAnimationsAsync(), provideAnimationsAsync(),
+    provideHttpClient(withInterceptors([tokenHttpInterceptor, ErrorResponseInterceptor, spinnerInterceptor])), provideAnimationsAsync(), provideAnimationsAsync(),
     {
       provide: LOCALE_ID, useValue: 'es'
     }

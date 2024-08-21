@@ -8,11 +8,12 @@ import { Router, RouterLink } from '@angular/router';
 import { TitleComponent } from '../../shared/title/title.component';
 import { HeaderDashboardComponent } from '../../shared/header-dashboard/header-dashboard.component';
 import { NgOptimizedImage } from '@angular/common';
+import { SpinnerGeneralComponent } from 'app/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-mod',
   standalone: true,
-  imports: [HeaderDashboardComponent, FooterComponent, SpinnerComponent, RouterLink, TitleComponent, NgOptimizedImage],
+  imports: [HeaderDashboardComponent, FooterComponent, SpinnerComponent, RouterLink, TitleComponent, NgOptimizedImage, SpinnerGeneralComponent],
   templateUrl: './mod.component.html',
   styleUrl: './mod.component.css'
 })
