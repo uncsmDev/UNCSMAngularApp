@@ -11,6 +11,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { TipoEntidad } from '@interfaces/tipoEntidad';
 import { UsuarioView } from '@interfaces/usuario';
 import { UsuarioService } from '../../../Services/usuario.service';
+import { TipoEntidadService } from '@services/admin/tipoEntidad.service';
 
 @Component({
   selector: 'app-perfil.entidad',
@@ -26,7 +27,7 @@ export default class PerfilEntidadComponent implements OnInit {
   persona?:any;
   sexo?:Sexo;
   fileDir?: string;
-  UserNet!: UsuarioView;
+  UserNet!: UsuarioView[];
   tiposEntidades?: TipoEntidad[];
 
   imageUrl: SafeUrl | undefined;
@@ -36,6 +37,7 @@ export default class PerfilEntidadComponent implements OnInit {
   _entidadService=inject(EntidadService);
   _archivoService=inject(ArchivoService);
   _usuarioService=inject(UsuarioService);
+  _tipoEntidadService=inject(TipoEntidadService);
   
 
   constructor(private route: ActivatedRoute,  private sanitizer: DomSanitizer) {}
@@ -90,12 +92,24 @@ export default class PerfilEntidadComponent implements OnInit {
           entidadId:item.entidadId,
           email:item.email,
           phoneNumber:item.phoneNumber
-        }))
+        }));
+
+        this.UserNet=lus;
       },
       error:(error)=>{
         console  .error('Error al obtener Usuario:', error);
       }
-    })
+    });
+
+    
+    this._tipoEntidadService.getListByIdEntidad(this.UserNet[0].entidadId,'').subscribe({
+      next:(te)=>{
+        this.tiposEntidades=te.data;
+      },
+      error:(error)=>{
+        console  .error('Error al obtener Usuario:', error);
+      }
+    });
     
    // this.tiposEntidades=ent.data.tipoEntidad;
   }
