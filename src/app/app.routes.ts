@@ -48,6 +48,11 @@ export const routes: Routes = [
                     path: 'pa/:id',
                     title: 'Preguntas Abiertas',
                     loadComponent: () => import('./pages/sed/instrumento/preguntas-abiertas/preguntas-abiertas.component'),
+                },
+                {
+                    path: 'asignacion',
+                    title: 'Asignación para la Evaluación',
+                    loadComponent: () => import('./pages/sed/asignacion-evaluacio/asignacion-evaluacio.component'),
                 }
             ]
     },

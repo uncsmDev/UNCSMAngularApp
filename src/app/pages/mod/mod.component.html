@@ -12,9 +12,6 @@
     {
 
 @for (modulo of modulosNotEdit(); track modulo.id) {
-    @defer (on viewport;) {
-
-
 <div class="max-w-sm bg-white border border-gray-400 rounded-lg shadow dark:bg-gray-700 dark:border-gray-500 ">
     <a (click)="link(modulo.path, modulo.id)" class="cursor-pointer relative block h-48 overflow-hidden rounded">
         <img class="w-full rounded-t-lg transition duration-500 transform hover:scale-105" ngSrc="{{ modulo.imgLocation }}" width="300" height="300" />
@@ -33,18 +30,7 @@
         </a>
     </div>
 </div>
-} @placeholder {
-    <div class="col-span-4">
-        <app-spinner />
-    </div>
-  }
 }
-@empty {
-    <div class="col-span-4">
-        <app-spinner />
-    </div>
-}
-
 }@else {
     <div class="col-span-4">
       <div class="flex items-center p-4 mb-4 text-xl text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
