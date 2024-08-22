@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, input, output, signal, type OnInit } from '@angular/core';
+import { Component, inject, input, output, signal, viewChild, type OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Instrumento } from '@interfaces/instrumento';
 import { Periodo, PeriodoxInstrumento } from '@interfaces/periodo';
@@ -9,12 +9,13 @@ import { ModalService } from '@services/modal.service';
 import { InstrumentoService } from '@services/sed/instrumento.service';
 import { PeriodoxinstrumentoService } from '@services/sed/periodoxinstrumento.service';
 import { ModalInterface } from 'flowbite';
+import PeriodoComponent from '../periodo.component';
 
 @Component({
   selector: 'app-instrumento-add-modal',
   standalone: true,
   imports: [
-    CommonModule,
+    CommonModule, PeriodoComponent
   ],
   templateUrl: './instrumento-add-modal.component.html',
   styleUrl: './instrumento-add-modal.component.css',
@@ -35,6 +36,7 @@ export class InstrumentoAddModalComponent {
   instrumentoActualSignal = signal<Instrumento>({id:0, nombre:'',tipoEntidadId:0})
   text:string = 'Agregar';
   isSubmitting = signal(false);
+  refresh = output();
 
   instrumentosSignalAdd = signal<Instrumento[]>([])
   //outputPostType = output<EmiterResult<Instrumento>>();
@@ -52,6 +54,7 @@ export class InstrumentoAddModalComponent {
   }
 
   closeModal(){
+    this.refresh.emit();
     this.modalActivo.hide();
   }
 
@@ -106,9 +109,7 @@ export class InstrumentoAddModalComponent {
         this.isSubmitting.set(false);
     });
   }
-
   
-
   addInstrumentoPeriodo(instrumento: Instrumento, event: Event) : Promise<void> {
     const radio = event.target as HTMLInputElement;
     if(radio.type === "radio"){
@@ -145,7 +146,6 @@ export class InstrumentoAddModalComponent {
     const datos:PeriodoxInstrumento = {periodoId: periodoxInstrumento.periodoId, instrumentoId: periodoxInstrumento.instrumentoId} 
     this.periodoxinstrumentoService.update(periodoId, instrumentoId, datos).subscribe({
       next: (response) => {
-        console.log(response)
       }
     })
   }
@@ -154,7 +154,7 @@ export class InstrumentoAddModalComponent {
     const datos:PeriodoxInstrumento = {periodoId: periodoxInstrumento.periodoId, instrumentoId: periodoxInstrumento.instrumentoId} 
     this.periodoxinstrumentoService.post(datos).subscribe({
       next: (response) => {
-        console.log(response)
+        
       }
     })
   }

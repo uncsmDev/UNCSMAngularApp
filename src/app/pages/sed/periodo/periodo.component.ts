@@ -166,6 +166,7 @@ export default class PeriodoComponent {
       next: (response) => {
         this.getPeriodo();
         this.matSnackBar.open(response.message,'Cerrar',{ duration:5000, horizontalPosition:'center'});
+        this.closeModal();
         this.periodoForm.reset(this.reset());
       },
       error: (error) => { this.matSnackBar.open("Error al guardar los datos",'Cerrar',{ duration:5000, horizontalPosition:'center'}) }
@@ -182,10 +183,10 @@ export default class PeriodoComponent {
         this.periodos.update((periodo) => {
           return periodo.map(p => p.id == data.id ? {...p, nombre: data.nombre, fechaInicio: data.fechaInicio, fechaFin: data.fechaFin} : p)
         })
-
+        this.closeModal();
         this.matSnackBar.open(response.message,'Cerrar',{ duration:5000, horizontalPosition:'center'}).afterDismissed().subscribe({
           next:(result) =>{
-
+            
           }
         })
         this.periodoForm.reset(this.reset());
