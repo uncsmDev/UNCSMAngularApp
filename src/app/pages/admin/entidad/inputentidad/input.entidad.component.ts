@@ -3,6 +3,7 @@ import { initFlowbite,InstanceOptions } from 'flowbite';
 import {PackPage, Paginacion} from '../../../../interfaces/packPage'
 import {InsertUsuario, UsuarioViewModel} from '../../../../interfaces/usuario'
 import { Router } from '@angular/router'; 
+import { Location } from '@angular/common';
 
 import { map, startWith } from 'rxjs/operators';
 
@@ -45,6 +46,8 @@ import { EntidadFullDto } from '@interfaces/entidad';
 import { ArchivoService } from '@services/admin/archivo.service';
 import { Archivo } from '../../../../interfaces/archivo';
 import { EntidadService } from '@services/admin/entidad.service';
+import { TipoContratoService } from '@services/admin/tipoContrato.service';
+import { TipoContrato } from '@interfaces/tipo_contrato';
 
 
 
@@ -69,6 +72,7 @@ export default class InputEntidadComponent  {
   moduloService=inject(ModuloService);
   archivoService=inject(ArchivoService);
   entidadService=inject(EntidadService);
+  tipoContratoService=inject(TipoContratoService);
 
 
   matSnackBar=inject(MatSnackBar);
@@ -91,6 +95,9 @@ export default class InputEntidadComponent  {
 
   cargos:WritableSignal<Cargo[]>=signal([]);
   cargoList:Signal<Cargo[]>=computed(this.cargos);
+
+  tipoContratos:WritableSignal<TipoContrato[]>=signal([]);
+  tipoContratoList:Signal<TipoContrato[]>=computed(this.tipoContratos);
 
   tiposEntidades:WritableSignal<TipoEntidad[]|any>=signal([]);
   tipoEntidadList:Signal<TipoEntidad[]>=computed(this.tiposEntidades);
@@ -149,6 +156,7 @@ export default class InputEntidadComponent  {
     confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
     telefono: new FormControl('', Validators.required),
     cargoId: new FormControl('', Validators.required),
+    tipoContratoId: new FormControl('', Validators.required),
     dependenciaId: new FormControl('', Validators.required)
 
   });
@@ -189,7 +197,7 @@ export default class InputEntidadComponent  {
   });
 
 
-  constructor(private router: Router)
+  constructor(private router: Router,private location: Location)
   {
     
   }
@@ -278,6 +286,21 @@ export default class InputEntidadComponent  {
     });
   }
 
+  GetListTipoContrato()
+  {
+    this.tipoContratoService.getList()
+    .subscribe({
+      next: rtc=>{
+        var dataList=rtc.data
+        const tcList=dataList.map(item=>({
+          id:item.id,
+          nombre: item.nombre
+        }));
+
+        this.tipoContratos.set(tcList);
+      }
+    });
+  }
 
   displayFn(subject:any)
   {
@@ -361,6 +384,7 @@ export default class InputEntidadComponent  {
     this.GetListSexo();
     this.GetListTipoEntidad();
     this.GetListModulos();
+    this.GetListTipoContrato();
 
     this.SBMxUForm.get('subModuloId')?.disable();
   }
@@ -528,4 +552,9 @@ filterSubModulos(event:any): void
      }
    }
     //---------------Paginacion fin --------------------------------
+
+    goBack(): void {
+      this.location.back();
+    }
+    
 }

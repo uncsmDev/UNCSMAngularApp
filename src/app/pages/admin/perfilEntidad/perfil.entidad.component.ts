@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, Signal, WritableSignal, computed, inject, signal } from '@angular/core';
+import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Entidad } from '@interfaces/entidad';
 import { EntidadService } from '../../../Services/admin/entidad.service';
@@ -12,6 +13,9 @@ import { TipoEntidad } from '@interfaces/tipoEntidad';
 import { UsuarioView } from '@interfaces/usuario';
 import { UsuarioService } from '../../../Services/usuario.service';
 import { TipoEntidadService } from '@services/admin/tipoEntidad.service';
+import { SubmoduloService } from '@services/submodulo.service';
+import { PackPage, Paginacion } from '@interfaces/packPage';
+import { SubModuloXUserView } from '@interfaces/submodulo';
 
 @Component({
   selector: 'app-perfil.entidad',
@@ -24,11 +28,17 @@ export default class PerfilEntidadComponent implements OnInit {
 
   userId!: number;
   entidad?:Entidad;
-  persona?:any;
+  persona!:any;
   sexo?:Sexo;
   fileDir?: string;
-  UserNet!: UsuarioView[];
+  UserNet!: UsuarioView;
   tiposEntidades?: TipoEntidad[];
+  fechaFormat!: string;
+
+  pagSM!:Paginacion;
+
+  subModulosByUser:WritableSignal<SubModuloXUserView[]>=signal([]);
+  subModuloByUserList:Signal<SubModuloXUserView[]>=computed(this.subModulosByUser);
 
   imageUrl: SafeUrl | undefined;
 
@@ -38,9 +48,10 @@ export default class PerfilEntidadComponent implements OnInit {
   _archivoService=inject(ArchivoService);
   _usuarioService=inject(UsuarioService);
   _tipoEntidadService=inject(TipoEntidadService);
+  _subModuloService=inject(SubmoduloService);
   
 
-  constructor(private route: ActivatedRoute,  private sanitizer: DomSanitizer) {}
+  constructor(private route: ActivatedRoute,  private sanitizer: DomSanitizer,private location: Location) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -53,7 +64,7 @@ export default class PerfilEntidadComponent implements OnInit {
         this.entidad = ent.data; 
         this.persona=ent.data?.persona;
         this.sexo=this.persona.sexoes;
-
+        this.fechaFormat=this.formatearFecha(this.entidad.fechaIngreso);
         this.fileDir=ent.data?.persona?.img;
 
         if(this.fileDir!=null)
@@ -73,6 +84,27 @@ export default class PerfilEntidadComponent implements OnInit {
             }
            });
         }
+
+        this._tipoEntidadService.getListByIdEntidad(this.entidad.id,'').subscribe({
+          next:(te)=>{
+            
+            this.tiposEntidades=te.data;
+          },
+          error:(error)=>{
+            console  .error('Error al obtener Usuario:', error);
+          }
+        });
+       
+
+        this._usuarioService.getByEntidadId(this.entidad.id).subscribe({
+          next: (u)=>
+            {
+              this.UserNet=u[0];
+              this.GetListSubModuloByUserId(this.UserNet.id,0);
+            }
+        })
+        
+       
         console.log('on on  Service');
         console.log(this.entidad);
         console.log(this.persona);
@@ -81,37 +113,29 @@ export default class PerfilEntidadComponent implements OnInit {
       },
       error: (error) => {
         console  .error('Error al obtener la entidad:', error);
-        // Manejo de errores según tu necesidad
       }
     });
+   // this.tiposEntidades=ent.data.tipoEntidad;
+  }
 
-    this._usuarioService.getByEntidadId(this.entidad?.id).subscribe({
-      next:(Usuarios)=>{
-        const lus=Usuarios.data.map(item=>({
+  GetListSubModuloByUserId(idUser:string,PagSubM:number)
+  {
+    this._subModuloService.getSubModuloListByUser(idUser,PagSubM).subscribe({
+      next:(rsmu)=>{
+
+        this.pagSM=rsmu.paginacion;
+
+        const listSMU=rsmu.listModel.map(item=>({
           id:item.id,
-          entidadId:item.entidadId,
-          email:item.email,
-          phoneNumber:item.phoneNumber
+          subModuloId:item.subModuloId,
+          ApsNetUserId:item.ApsNetUserId,
+          moduloId:item.moduloId,
+          subModulo:item.subModulo
         }));
 
-        this.UserNet=lus;
-      },
-      error:(error)=>{
-        console  .error('Error al obtener Usuario:', error);
+        this.subModulosByUser.set(listSMU);
       }
     });
-
-    
-    this._tipoEntidadService.getListByIdEntidad(this.UserNet[0].entidadId,'').subscribe({
-      next:(te)=>{
-        this.tiposEntidades=te.data;
-      },
-      error:(error)=>{
-        console  .error('Error al obtener Usuario:', error);
-      }
-    });
-    
-   // this.tiposEntidades=ent.data.tipoEntidad;
   }
 
 
@@ -130,5 +154,53 @@ export default class PerfilEntidadComponent implements OnInit {
     const parte4 = cadenaOriginal.substring(13);
     return `${parte1}-${parte2}-${parte3}${parte4}`;
   }
+
+  previousPageModal()
+  {
+    if(this.pagSM.paginasAnteriores==true)
+      {
+       this.GetListSubModuloByUserId(this.UserNet.id,this.pagSM.paginaInicio-1);
+
+        //this.GetListIndex(this.pagSM.paginaInicio-1);
+      }
+ }
+
+ nextPageModal()
+  {
+    if(this.pagSM.paginasPosteriores==true)
+      {
+       this.GetListSubModuloByUserId(this.UserNet.id,this.pagSM.paginaInicio+1);
+       
+      }
+ }
+
+
+ deleteSubModuloXUsuario(SMU:SubModuloXUserView)
+ {
+   this._subModuloService.deleteSubModuloXUsuario(SMU.id).subscribe({
+     next:(rs)=>{
+       this.matSnackBar.open( rs.message,'Cerrar',{ duration:5000, horizontalPosition:'center'});
+
+       this.GetListSubModuloByUserId(this.UserNet.id,this.pagSM.paginaInicio);
+     }, 
+     error: (error) =>{ console.error("Error", error);
+     }
+   });
+ }
+  
+
+ formatearFecha(fechaString:Date) {
+  const fecha = new Date(fechaString);
+  const dia = String(fecha.getDate()).padStart(2, '0');
+  const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son base 0
+  const anio = fecha.getFullYear();
+
+  return `${anio}-${mes}-${dia}`;
+}
+
+
+goBack(): void {
+  this.location.back();
+}
 
 }

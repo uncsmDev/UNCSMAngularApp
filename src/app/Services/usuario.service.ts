@@ -34,9 +34,9 @@ export class UsuarioService {
     return this.http.post(this.api+'register', body,{'headers':headers})
   }
 
-  getByEntidadId(id?:number):Observable<Result<UsuarioView[]>>
+  getByEntidadId(id?:number):Observable<UsuarioView[]>
   {
-    var list= this.http.get<Result<UsuarioView[]>>(this.apiUrl+'/GetByEntidadId?id='+id);
+    var list= this.http.get<UsuarioView[]>(this.apiUrl+'/GetByEntidadId?id='+id);
     return list;
   }
 
