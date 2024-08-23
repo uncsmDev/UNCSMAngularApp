@@ -1,24 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal, type OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { CargoList } from '@interfaces/cargo';
 import { Paginacion } from '@interfaces/packPage';
 import { CargoService } from '@services/admin/cargo.service';
 import { TitleComponent } from 'app/shared/title/title.component';
-import {
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
-  CdkDrag,
-  CdkDropList,
-} from '@angular/cdk/drag-drop';
-
 
 @Component({
   selector: 'app-asignacion-evaluacio',
   standalone: true,
   imports: [
-    CommonModule, TitleComponent, CdkDropList, CdkDrag
+    CommonModule, TitleComponent, RouterLink
   ],
   templateUrl: './asignacion-evaluacio.component.html',
   styleUrl: './asignacion-evaluacio.component.css',
@@ -80,20 +73,5 @@ export default class AsignacionEvaluacioComponent implements OnInit {
 
   //---------------Paginacion fin --------------------------------
 
-  todo = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
-
-  done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
-
-  drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
-  }
+  
 }

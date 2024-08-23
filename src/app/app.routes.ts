@@ -53,6 +53,12 @@ export const routes: Routes = [
                     path: 'asignacion',
                     title: 'Asignación para la Evaluación',
                     loadComponent: () => import('./pages/sed/asignacion-evaluacio/asignacion-evaluacio.component'),
+                },
+
+                {
+                    path: 'asignacion/:id',
+                    title: 'Asignación para la Evaluación',
+                    loadComponent: () => import('./pages/sed/asignacion-evaluacio/asignacion/asignacion.component'),
                 }
             ]
     },
