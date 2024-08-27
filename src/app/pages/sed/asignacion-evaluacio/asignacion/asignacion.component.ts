@@ -23,18 +23,21 @@ import { EvaluacionCargoService } from '@services/sed/evaluacion-cargo.service';
   styleUrl: './asignacion.component.css',
 })
 export default class AsignacionComponent implements OnInit {
+
+  texto = '';
   cargosArreglo:Cargo[] = [];
+  tempCargosArreglo:Cargo[] = [];
   cargosAsignadosArreglo:Cargo[] = [];
 
   cargoId = input.required<number>({alias: "id"})
   cargoSvc = inject(CargoService);
   evaluacionCargoSvc = inject(EvaluacionCargoService);
   cargo = signal<Cargo>({id: 0, nombre: '', descripcion: ''})
-  
-  cargos = signal<Cargo[]>([])
-  
 
-  ngOnInit(): void { 
+  cargos = signal<Cargo[]>([])
+
+
+  ngOnInit(): void {
     this.getCargo();
     this.getCargos();
     this.getEvaluacionCargo();
@@ -51,6 +54,7 @@ export default class AsignacionComponent implements OnInit {
   getEvaluacionCargo(){
     this.evaluacionCargoSvc.getEvaluacionCargo(this.cargoId()).subscribe({
       next: (c) => {
+
         this.cargosAsignadosArreglo = c.data;
       }
     })
@@ -61,15 +65,29 @@ export default class AsignacionComponent implements OnInit {
       next: (c) => {
         this.cargos.set(c.data);
         this.cargosArreglo = c.data;
+        this.tempCargosArreglo= c.data;
       }
     })
+  }
+
+  handlerSearch(texto: Event){
+    const textoEvento = texto.target as HTMLInputElement;
+    const value = textoEvento.value;
+    this.tempCargosArreglo = this.cargosArreglo.filter((word) => word.nombre.toLowerCase().includes(value.toLowerCase()))
   }
 
   saludo(){
     console.log("Hola chiquito")
   }
 
+  comprobarParamostrar(item: number){
+    return !this.cargosAsignadosArreglo.some((a) => a.id == item);
+  }
+
   drop(event: CdkDragDrop<Cargo[]>) {
+    this.tempCargosArreglo = this.tempCargosArreglo.filter((data, index, self) =>
+      index === self.findIndex((a) => a.id === data.id)
+  );
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {

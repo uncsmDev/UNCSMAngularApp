@@ -1,11 +1,11 @@
 <app-title title="Asignación para la Evaluación"/>
 
 <h1 class="text-center text-2xl font-medium dark:text-white dark:bg-gray-700 text-gray-900  rounded p-2 px-4">*** {{cargo().nombre}} ***</h1>
-<div class="flex justify-between mx-20 mt-5">
+<div class="flex justify-center gap-60 mt-5">
   <div class="example-container">
     <div class="flex flex-col items-center mb-2">
     <h2 class="text-lg font-medium dark:text-white text-gray-900 mb-2">Cargos asignados</h2>
-    <button type="button" class="w-full px-6 py-3.5 text-base font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex flex-col">
+    <button type="button" class="w-full px-6 py-3.5 text-base font-medium text-white  items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex flex-col">
         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 0 1 1-1h11.586a1 1 0 0 1 .707.293l2.414 2.414a1 1 0 0 1 .293.707V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Z"/>
             <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M8 4h8v4H8V4Zm7 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
@@ -20,14 +20,14 @@
       class="example-list"
       (cdkDropListDropped)="drop($event)">
       @for (item of cargosAsignadosArreglo; track item) {
-        <div class="example-box" cdkDrag>{{item.nombre}}<a (click)="saludo()">Clic me</a></div>
+        <div class="example-box overflow-hidden"  cdkDrag>{{item.nombre}}<a class="block p-1 text-sm w-12 text-center text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" (click)="saludo()">{{12}}</a></div>
       }
     </div>
   </div>
   <div class="example-container">
     <div class="flex flex-col items-center mb-2">
         <h2 class="text-lg font-medium dark:text-white text-gray-900 mb-2">Cargos</h2>
-        <form class="w-full">   
+        <form class="w-full">
             <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
             <div class="relative">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none w-full">
@@ -35,22 +35,23 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                     </svg>
                 </div>
-                <input type="search" id="search" class="block w-full p-4 ps-10 text-sm text-gray-900 w-full border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar" required />
-                <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buscar</button>
+                <input type="search" id="search" (keyup)="handlerSearch($event)" class="block p-4 ps-10 text-sm text-gray-900 w-full border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar" required />
             </div>
         </form>
     </div>
-    
+
   <div class="overflow-x-auto h-3/4 rounded container">
     <div
       cdkDropList
       #cargos="cdkDropList"
-      [cdkDropListData]="cargosArreglo"
+      [cdkDropListData]="tempCargosArreglo"
       [cdkDropListConnectedTo]="[cargosAsignados]"
       class="example-list"
       (cdkDropListDropped)="drop($event)">
-      @for (item of cargosArreglo; track item) {
-        <div class="example-box" cdkDrag>{{item.nombre}}</div>
+      @for (item of tempCargosArreglo; track item) {
+        @if(comprobarParamostrar(item.id)){
+          <div class="example-box" cdkDrag>{{item.nombre}}</div>
+        }
       }
     </div>
 </div>
