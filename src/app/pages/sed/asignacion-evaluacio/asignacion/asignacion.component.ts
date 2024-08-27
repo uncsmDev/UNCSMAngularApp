@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, input, signal, type OnInit } from '@angular/core';
+import { Component, inject, input, signal, viewChild, type OnInit } from '@angular/core';
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -10,14 +10,16 @@ import {
 import { TitleComponent } from 'app/shared/title/title.component';
 import { RouterLink } from '@angular/router';
 import { CargoService } from '@services/admin/cargo.service';
-import { Cargo } from '@interfaces/cargo';
+import { Cargo, CargoAsignacion } from '@interfaces/cargo';
 import { EvaluacionCargoService } from '@services/sed/evaluacion-cargo.service';
+import { EvaluacionCargo } from '@interfaces/evaluacion_cargo';
+import { CantidadAddModalComponent } from './cantidad-add-modal/cantidad-add-modal.component';
 
 @Component({
   selector: 'app-asignacion',
   standalone: true,
   imports: [
-    CommonModule, CdkDropList, CdkDrag, TitleComponent
+    CommonModule, CdkDropList, CdkDrag, TitleComponent, CantidadAddModalComponent
   ],
   templateUrl: './asignacion.component.html',
   styleUrl: './asignacion.component.css',
@@ -25,17 +27,22 @@ import { EvaluacionCargoService } from '@services/sed/evaluacion-cargo.service';
 export default class AsignacionComponent implements OnInit {
 
   texto = '';
-  cargosArreglo:Cargo[] = [];
-  tempCargosArreglo:Cargo[] = [];
-  cargosAsignadosArreglo:Cargo[] = [];
+  cargosArreglo:CargoAsignacion[] = [];
+  tempCargosArreglo:CargoAsignacion[] = [];
+  cargosAsignadosArreglo:CargoAsignacion[] = [];
 
   cargoId = input.required<number>({alias: "id"})
   cargoSvc = inject(CargoService);
   evaluacionCargoSvc = inject(EvaluacionCargoService);
   cargo = signal<Cargo>({id: 0, nombre: '', descripcion: ''})
+  save = true;
+  cantidadModal = viewChild.required(CantidadAddModalComponent);
 
   cargos = signal<Cargo[]>([])
 
+  saveCargos(){
+    this.save = true;
+  }
 
   ngOnInit(): void {
     this.getCargo();
@@ -54,7 +61,6 @@ export default class AsignacionComponent implements OnInit {
   getEvaluacionCargo(){
     this.evaluacionCargoSvc.getEvaluacionCargo(this.cargoId()).subscribe({
       next: (c) => {
-
         this.cargosAsignadosArreglo = c.data;
       }
     })
@@ -76,28 +82,38 @@ export default class AsignacionComponent implements OnInit {
     this.tempCargosArreglo = this.cargosArreglo.filter((word) => word.nombre.toLowerCase().includes(value.toLowerCase()))
   }
 
-  saludo(){
-    console.log("Hola chiquito")
+  saludo(item: CargoAsignacion){
+    this.cantidadModal().openModal(6, item);
   }
 
   comprobarParamostrar(item: number){
     return !this.cargosAsignadosArreglo.some((a) => a.id == item);
   }
 
-  drop(event: CdkDragDrop<Cargo[]>) {
-    this.tempCargosArreglo = this.tempCargosArreglo.filter((data, index, self) =>
-      index === self.findIndex((a) => a.id === data.id)
-  );
+  drop(event: CdkDragDrop<CargoAsignacion[]>) {
+    
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
+      if (event.container.id === 'cargos_asignados') {
+        
+      } else if (event.container.id === 'cargos') {
+
+      }
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex,
       );
+      this.save = false;
     }
+    this.tempCargosArreglo = this.tempCargosArreglo.filter((data, index, self) =>{
+      return index === self.findIndex((a) => {
+        return a.id === data.id })
+    });
+    
   }
+  
 
 }
