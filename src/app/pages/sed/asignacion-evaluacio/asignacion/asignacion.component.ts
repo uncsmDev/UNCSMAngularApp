@@ -14,6 +14,7 @@ import { Cargo, CargoAsignacion } from '@interfaces/cargo';
 import { EvaluacionCargoService } from '@services/sed/evaluacion-cargo.service';
 import { EvaluacionCargo } from '@interfaces/evaluacion_cargo';
 import { CantidadAddModalComponent } from './cantidad-add-modal/cantidad-add-modal.component';
+import { Dependencia } from '@interfaces/dependencia';
 
 @Component({
   selector: 'app-asignacion',
@@ -31,10 +32,10 @@ export default class AsignacionComponent implements OnInit {
   tempCargosArreglo:CargoAsignacion[] = [];
   cargosAsignadosArreglo:CargoAsignacion[] = [];
 
-  cargoId = input.required<number>({alias: "id"})
+  dependenciaId = input.required<number>({alias: "id"})
   cargoSvc = inject(CargoService);
   evaluacionCargoSvc = inject(EvaluacionCargoService);
-  cargo = signal<Cargo>({id: 0, nombre: '', descripcion: ''})
+  dependencia = signal<Dependencia>({id: 0, nombre: '', dependenciaId: 0})
   save = true;
   cantidadModal = viewChild.required(CantidadAddModalComponent);
 
@@ -42,32 +43,47 @@ export default class AsignacionComponent implements OnInit {
 
   saveCargos(){
     this.save = true;
+
   }
 
   ngOnInit(): void {
-    this.getCargo();
     this.getCargos();
-    this.getEvaluacionCargo();
+    this.getEvaluacionCargoPlusCargo();
+    this.getDependencia();
   }
 
-  getCargo(){
-    this.cargoSvc.getCargo(this.cargoId()).subscribe({
-      next: (c) => {
-        this.cargo.set(c.data);
+
+  getDependencia(){
+    this.evaluacionCargoSvc.getDependencia(this.dependenciaId()).subscribe({
+      next:(dp) => {
+        this.dependencia.set(dp.data);
       }
     })
   }
 
   getEvaluacionCargo(){
-    this.evaluacionCargoSvc.getEvaluacionCargo(this.cargoId()).subscribe({
+    this.evaluacionCargoSvc.getEvaluacionCargo(this.dependenciaId()).subscribe({
       next: (c) => {
-        this.cargosAsignadosArreglo = c.data;
+        //this.cargosAsignadosArreglo = c.data;
+      }
+    })
+  }
+
+  getEvaluacionCargoPlusCargo(){
+    this.evaluacionCargoSvc.getEvaluacionCargoAsignados(this.dependenciaId()).subscribe({
+      next: (c) => {
+        this.cargosAsignadosArreglo = c.data.map((data) => ({ 
+          id: data.cargo!.id,
+          nombre: data.cargo!.nombre,
+          descripcion: '',
+          cantidad: data.cantidadEvaluados
+         }));
       }
     })
   }
 
   getCargos(){
-    this.cargoSvc.getWithoutEvaluacionCargo(this.cargoId()).subscribe({
+    this.cargoSvc.getWithoutEvaluacionCargo(this.dependenciaId()).subscribe({
       next: (c) => {
         this.cargos.set(c.data);
         this.cargosArreglo = c.data;

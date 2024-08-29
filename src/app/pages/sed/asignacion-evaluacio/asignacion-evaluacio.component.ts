@@ -1,27 +1,30 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal, type OnInit } from '@angular/core';
+import { Component, inject, signal, viewChild, type OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { CargoList } from '@interfaces/cargo';
+import { Dependencia, DependenciaList } from '@interfaces/dependencia';
 import { Paginacion } from '@interfaces/packPage';
-import { CargoService } from '@services/admin/cargo.service';
+import { DependenciaService } from '@services/admin/dependencia.service';
 import { TitleComponent } from 'app/shared/title/title.component';
+import { CargosModalComponent } from './cargos-modal/cargos-modal.component';
 
 @Component({
   selector: 'app-asignacion-evaluacio',
   standalone: true,
   imports: [
-    CommonModule, TitleComponent, RouterLink
+    CommonModule, TitleComponent, RouterLink, CargosModalComponent
   ],
   templateUrl: './asignacion-evaluacio.component.html',
   styleUrl: './asignacion-evaluacio.component.css',
 })
 export default class AsignacionEvaluacioComponent implements OnInit {
 
-  cargoService=inject(CargoService)
+  dependenciaService=inject(DependenciaService)
   pag!:Paginacion;
   fb = inject(FormBuilder);
-  cargos = signal<CargoList[]>([]);
+  dependencias = signal<DependenciaList[]>([]);
+  dependenciasOriginal = signal<DependenciaList[]>([]);
+  modalCargo = viewChild.required(CargosModalComponent)
   entidadForm=this.fb.group({
     id : [''],
     dni: [''],
@@ -37,10 +40,13 @@ export default class AsignacionEvaluacioComponent implements OnInit {
 
   GetListIndex(pag:number)
   {
-   this.cargoService.getPagination(pag).subscribe({
+   this.dependenciaService.getPagination(pag).subscribe({
      next: (res)=> {
        this.pag=res.paginacion;
-       this.cargos.set(
+       this.dependencias.set(
+        res.listModel
+      );
+      this.dependenciasOriginal.set(
         res.listModel
       );
      },
@@ -48,6 +54,18 @@ export default class AsignacionEvaluacioComponent implements OnInit {
        console.error(error);
      }
    });
+  }
+
+  openModal(item: DependenciaList){
+    this.modalCargo().openModal(item);
+  }
+
+  handlerSearch(texto: Event){
+
+    //Mejorar
+    const textoEvento = texto.target as HTMLInputElement;
+    const value = textoEvento.value;
+    this.dependencias.set(this.dependenciasOriginal().filter((word) => word.nombre.toLowerCase().includes(value.toLowerCase())))
   }
 
   ngOnInit(): void {

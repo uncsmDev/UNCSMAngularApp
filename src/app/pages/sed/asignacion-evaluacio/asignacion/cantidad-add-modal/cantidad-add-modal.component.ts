@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject} from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Cargo, CargoAsignacion } from '@interfaces/cargo';
+import { EvaluacionCargo } from '@interfaces/evaluacion_cargo';
 import { ModalService } from '@services/modal.service';
 import { ModalInterface } from 'flowbite';
 
@@ -29,7 +30,7 @@ export class CantidadAddModalComponent {
   openModal(cantidad: number, cargo: CargoAsignacion)
   {
     this.text = 'Agregar';
-    this.textCargo = cargo.nombre
+    this.textCargo = cargo.nombre;
     this.modalActivo = this.modalService.createModal('cantidad-add');
     this.modalActivo.show();
   }
