@@ -24,6 +24,10 @@ import { ModalDimensionesComponent } from "./modal-dimensiones/modal-dimensiones
   styleUrl: './instrumento.component.css'
 })
 export default class InstrumentoComponent {
+
+  TipoEvaluacionId = input<number>(0, {alias: 'TipoEvaluacionId'})
+  TipoTrabajadorId = input<number>(0, {alias: 'TipoTrabajadorId'})
+
   matSnackBar=inject(MatSnackBar);
   router = inject(Router);
   fb = inject(FormBuilder);

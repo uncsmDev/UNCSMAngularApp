@@ -4,7 +4,7 @@ import { FormBuilder } from '@angular/forms';
 import { Instrumento } from '@interfaces/instrumento';
 import { Periodo, PeriodoxInstrumento } from '@interfaces/periodo';
 import { TipoEntidad } from '@interfaces/tipoEntidad';
-import { TipoEntidadService } from '@services/admin/tipoEntidad.service';
+import { TipoTrabajadorService } from '@services/admin/tipoTrabajador.service';
 import { ModalService } from '@services/modal.service';
 import { InstrumentoService } from '@services/sed/instrumento.service';
 import { PeriodoxinstrumentoService } from '@services/sed/periodoxinstrumento.service';
@@ -27,7 +27,7 @@ export class InstrumentoAddModalComponent {
   private modalService = inject(ModalService);
   private periodoxinstrumentoService = inject(PeriodoxinstrumentoService)
 
-  private tipoEntidadService = inject(TipoEntidadService);
+  private tipoEntidadService = inject(TipoTrabajadorService);
   private instrumentoService = inject(InstrumentoService);
   tipoEntidadesSignal = signal<TipoEntidad[]>([]);
   tipoEntidadIdSignal = signal(0);

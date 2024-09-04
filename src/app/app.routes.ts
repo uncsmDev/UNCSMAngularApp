@@ -15,55 +15,70 @@ export const routes: Routes = [
                 {
                     path: '',
                     redirectTo: 'sed/home',
-                    pathMatch: 'full'
+                    pathMatch: 'full',
                   },
                 {
                     
                     path: 'escala',
                     title: 'Escalas',
                     loadComponent: () => import('./pages/sed/escala/escala.component'),
+                    canActivate: [routerPermisseGuard]
                 },
                 {
                     
                     path: 'periodo',
                     title: 'Periodos',
                     loadComponent: () => import('./pages/sed/periodo/periodo.component'),
+                    canActivate: [routerPermisseGuard]
                 },
                 {
                     path: 'home',
                     title: 'Home',
                     loadComponent: () => import('./pages/sed/home/home.component'),
+                    canActivate: [routerPermisseGuard]
                 },
                 {
                     path: 'tipos-evaluaciones',
                     title: 'Tipos de Evaluaciones',
                     loadComponent: () => import('./pages/sed/instrumento/TipoEvaluacion/TipoEvaluacion.component'),
+                    canActivate: [routerPermisseGuard]
                 },
                 {
-                    path: 'instrumentos/:id',
+                    path: 'tipo-trabajador/:id',
+                    title: 'Instrumentos',
+                    loadComponent: () => import('./pages/sed/instrumento/tipo-trabajador/TipoTrabajador.component'),
+                    canActivate: [routerPermisseGuard]
+                },
+                {
+                    path: 'instrumentos/:TipoEvaluacionId/:TipoTrabajadorId',
                     title: 'Instrumentos',
                     loadComponent: () => import('./pages/sed/instrumento/instrumento.component'),
+                    canActivate: [routerPermisseGuard]
                 }
                 ,{
                     path: 'pc/:id',
                     title: 'Preguntas Cerradas',
                     loadComponent: () => import('./pages/sed/instrumento/preguntas-cerradas/preguntas.component'),
+                    canActivate: [routerPermisseGuard]
                 },
                 {
                     path: 'pa/:id',
                     title: 'Preguntas Abiertas',
                     loadComponent: () => import('./pages/sed/instrumento/preguntas-abiertas/preguntas-abiertas.component'),
+                    canActivate: [routerPermisseGuard]
                 },
                 {
                     path: 'asignacion',
                     title: 'Asignación para la Evaluación',
                     loadComponent: () => import('./pages/sed/asignacion-evaluacio/asignacion-evaluacio.component'),
+                    canActivate: [routerPermisseGuard]
                 },
 
                 {
                     path: 'asignacion/:id',
                     title: 'Asignación para la Evaluación',
                     loadComponent: () => import('./pages/sed/asignacion-evaluacio/asignacion/asignacion.component'),
+                    canActivate: [routerPermisseGuard]
                 }
             ]
     },

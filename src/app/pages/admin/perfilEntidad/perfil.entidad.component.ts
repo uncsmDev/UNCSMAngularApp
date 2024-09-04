@@ -12,7 +12,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { TipoEntidad } from '@interfaces/tipoEntidad';
 import { UsuarioView } from '@interfaces/usuario';
 import { UsuarioService } from '../../../Services/usuario.service';
-import { TipoEntidadService } from '@services/admin/tipoEntidad.service';
+import { TipoTrabajadorService } from '@services/admin/tipoTrabajador.service';
 import { SubmoduloService } from '@services/submodulo.service';
 import { PackPage, Paginacion } from '@interfaces/packPage';
 import { SubModuloXUserView } from '@interfaces/submodulo';
@@ -47,7 +47,7 @@ export default class PerfilEntidadComponent implements OnInit {
   _entidadService=inject(EntidadService);
   _archivoService=inject(ArchivoService);
   _usuarioService=inject(UsuarioService);
-  _tipoEntidadService=inject(TipoEntidadService);
+  _tipoEntidadService=inject(TipoTrabajadorService);
   _subModuloService=inject(SubmoduloService);
   
 

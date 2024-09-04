@@ -2,23 +2,27 @@ import { Injectable, inject } from '@angular/core';
 import { appsettings } from '../../Settings/appsettings';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {TipoEntidad} from '../../interfaces/tipoEntidad';
+import {TipoEntidad, TipoTrabajador} from '../../interfaces/tipoEntidad';
 import { Result } from '@interfaces/Result.interface';
 import { Instrumento } from '@interfaces/instrumento';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TipoEntidadService {
+export class TipoTrabajadorService {
 
   private http = inject(HttpClient);
 
-  private apiUrl:string = appsettings.apiApp + "TipoEntidad";
+  private apiUrl:string = appsettings.apiApp + "TipoTrabajador";
   constructor() { }
 
-  getList(): Observable<TipoEntidad[]> {
+  getList() {
     var list= this.http.get<TipoEntidad[]>(this.apiUrl+'/GetList');
-  
+    return list;
+  }
+
+  get() {
+    var list= this.http.get<Result<TipoTrabajador[]>>(this.apiUrl);
     return list;
   }
 
