@@ -5,7 +5,6 @@ import { ModalService } from '@services/modal.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ModalDeleteComponent } from '../../../components/modal-delete/modal-delete.component';
-import { TipoEntidad } from '@interfaces/tipoEntidad';
 import { Instrumento, postDelete, tipoModal} from '@interfaces/instrumento';
 import { Dimension } from '@interfaces/dimension';
 import { CommonModule, Location } from '@angular/common';
@@ -47,22 +46,7 @@ export default class InstrumentoComponent {
 
   _instrumentos = signal<Instrumento[]>([]); 
   dimensiones = signal<Dimension[]>([]);
-  
-  instrumentos = computed(()=>{
-    
-    const inst = this._instrumentos();
-    const tipo = this.tipoEntidades()
 
-    const valuesData = tipo.map((valores) => {
-      const instrumento = inst.filter((f) =>{
-        return f.tipoEntidadId == valores.id
-      })
-      return {...valores, instrumento}
-    })
-    return valuesData;
-  });
-
-  tipoEntidades = signal<TipoEntidad[]>([])
   modeloInstrumento = signal<Instrumento|null>(null);
   modeloDimension = signal<Dimension|null>(null);
 
@@ -72,20 +56,15 @@ export default class InstrumentoComponent {
   tipoFormulario: TipoFormulario = 'instrumento';
 
   ngOnInit() {
-    this.instrumentoService.getTipoEntidad().subscribe({
-      next: (result) => {
-        this.tipoEntidades.set(result);
-      }
-    });
     
     this.getDimension();
-   this.getInstrumento();
+    this.getInstrumento();
   }
 
   getInstrumento(){
-    this.instrumentoService.get().subscribe({
+    this.instrumentoService.GetxTipoTrabajadorxTipoEvaluacion(this.TipoEvaluacionId(), this.TipoTrabajadorId()).subscribe({
       next: (datos) => {
-        this._instrumentos.set(datos);
+        this._instrumentos.set(datos.data);
       }
     })
   }
@@ -114,53 +93,25 @@ export default class InstrumentoComponent {
     this.modalDimension().openModalEdit(this.modeloDimension())
   }
 
-  onSubmit(valores:EmiterResult<Instrumento>){
+  onSubmit(valores:EmiterResult<Instrumento | null>){
     if(valores.typeModal == 'add')
     {
-      this.instrumentoService.post(valores.data).subscribe({
-        next: a => {
-          if(a)
-            {
-              this._instrumentos.update((prev) => {
-                return [...prev, {...valores.data, id: a}]
-              })
-              this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
-            }
-            else{
-              this.matSnackBar.open("Error al intentar guardar el dato aa",'Cerrar',{ duration:5000, horizontalPosition:'center'});
-            }
-          
-        },
-        error: (e) => {
-          this.matSnackBar.open("Error al intentar guardar el dato" + e,'Cerrar',{ duration:5000, horizontalPosition:'center'});
-        }
-      });
-  }
-  else{
-    this.instrumentoService.put(valores.data).subscribe({
-      next: (res) =>{
-        if(res){
-          this._instrumentos.update((arr) => {
-            return arr.map((dato)=>{
-              return valores.data.id == dato.id ? 
-              {...dato, nombre: valores.data.nombre, tipoEntidadId: valores.data.tipoEntidadId} 
-              : 
-              dato
-            })
+      if(valores.data != null)
+        {
+          const instrumentoData = valores.data;
+         this._instrumentos.update((prev) => {
+            return [instrumentoData, ...prev]
           })
-          this.modalInstrumento().closeModal();
-          this.matSnackBar.open("Dato modificado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+          this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
         }
         else{
-          this.matSnackBar.open("Error al intentar editar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+          this.matSnackBar.open("Error al intentar guardar el dato aa",'Cerrar',{ duration:5000, horizontalPosition:'center'});
         }
-      },
-      error: (err)=>{
-        this.matSnackBar.open("Error al intentar editar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
-      }
-    })
-  }
-}     
+    }
+    else{
+
+    }
+  }     
 onSubmitDimension(valores:EmiterResult<Dimension>){
   if(valores.typeModal == 'add')
   {

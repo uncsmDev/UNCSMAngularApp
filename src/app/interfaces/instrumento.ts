@@ -5,8 +5,9 @@ import { Dimension } from "./dimension";
 export interface Instrumento {
     id:                   number;
     nombre:               string;
-    tipoEntidadId:        number;
-    dimensiones?:          Dimension[];
+    tipoEvaluacionId:     number;
+    tipoTrabajadorId:       number;
+    dimensiones?:         Dimension[];
 }
 export type tipoModal =  'add' | 'edit'
 export type postDelete =  'instrumento' | 'dimension'

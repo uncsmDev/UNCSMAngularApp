@@ -45,7 +45,7 @@ export const routes: Routes = [
                 },
                 {
                     path: 'tipo-trabajador/:id',
-                    title: 'Instrumentos',
+                    title: 'Tipos de trabajadores',
                     loadComponent: () => import('./pages/sed/instrumento/tipo-trabajador/TipoTrabajador.component'),
                     canActivate: [routerPermisseGuard]
                 },
