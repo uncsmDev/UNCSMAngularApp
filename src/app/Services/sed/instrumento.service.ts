@@ -44,10 +44,10 @@ export class InstrumentoService {
     return this.http.post<Result<Dimension>>(this.rutaDimension, body, {headers});
   }
 
-  put(ins: Instrumento): Observable<any>{
+  put(ins: Instrumento){
     const headers = {'content-type': 'application/json'}
     const body = JSON.stringify(ins);
-    return this.http.put(`${this.ruta}/${ins.id}`, body, {headers});
+    return this.http.put<Result<Instrumento>>(`${this.ruta}/${ins.id}`, body, {headers});
   }
 
   putDimension(dimension: Dimension): Observable<any>{

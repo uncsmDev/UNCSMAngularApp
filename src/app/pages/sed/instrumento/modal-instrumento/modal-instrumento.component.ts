@@ -57,10 +57,15 @@ export class ModalInstrumentoComponent {
           {
             this.instrumentoService.post(instrumento).subscribe({
               next: a => {
-                console.log(a)
-                this.outputPostType.emit({typeModal: this.PostType(), data: a.data})
-                this.reset();
-                this.closeModal();
+                if(a.data != null)
+                {
+                  this.outputPostType.emit({typeModal: this.PostType(), data: a.data})
+                  this.reset();
+                  this.closeModal();
+                }
+                else{
+                  this.outputPostType.emit({typeModal: this.PostType(), data: null})
+                }
               },
               error: (e) => {
                 this.outputPostType.emit({typeModal: this.PostType(), data: null})
@@ -68,29 +73,22 @@ export class ModalInstrumentoComponent {
             });
         }
         else{
-          /* this.instrumentoService.put(valores.data).subscribe({
+          console.log(instrumento)
+          this.instrumentoService.put(instrumento).subscribe({
             next: (res) =>{
               if(res){
-                this._instrumentos.update((arr) => {
-                  return arr.map((dato)=>{
-                    return valores.data.id == dato.id ? 
-                    {...dato, nombre: valores.data.nombre, tipoEntidadId: valores.data.tipoEntidadId} 
-                    : 
-                    dato
-                  })
-                })
-                this.modalInstrumento().closeModal();
-                this.matSnackBar.open("Dato modificado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+                console.log(res);
+                this.closeModal();
               }
               else{
-                this.matSnackBar.open("Error al intentar editar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+                this.outputPostType.emit({typeModal: this.PostType(), data: null})
               }
             },
             error: (err)=>{
-              this.matSnackBar.open("Error al intentar editar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+              this.outputPostType.emit({typeModal: this.PostType(), data: null})
             }
           })
-            */
+          
         }
         
          
