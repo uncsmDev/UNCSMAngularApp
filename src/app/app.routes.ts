@@ -103,6 +103,11 @@ export const routes: Routes = [
                 path: 'submodulo',
                 title: 'Catalogo SubModulos',
                 loadComponent: () => import('./pages/admin/submodulo/submodulo.component'),
+            },
+            {
+                path: 'trabajador',
+                title: 'Trabajadores',
+                loadComponent: () => import('./pages/admin/trabajador/trabajador.component'),
             }
         ]
     

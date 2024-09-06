@@ -5,7 +5,7 @@ import {InsertUsuario, UsuarioViewModel} from '../../../../interfaces/usuario'
 import { Router } from '@angular/router'; 
 import { Location } from '@angular/common';
 
-import { map, startWith } from 'rxjs/operators';
+import { filter, map, startWith } from 'rxjs/operators';
 
 
 import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
@@ -48,6 +48,7 @@ import { Archivo } from '../../../../interfaces/archivo';
 import { EntidadService } from '@services/admin/entidad.service';
 import { TipoContratoService } from '@services/admin/tipoContrato.service';
 import { TipoContrato } from '@interfaces/tipo_contrato';
+import { ResultEnum } from '@interfaces/Result.interface';
 
 
 
@@ -95,6 +96,7 @@ export default class InputEntidadComponent  {
 
   cargos:WritableSignal<Cargo[]>=signal([]);
   cargoList:Signal<Cargo[]>=computed(this.cargos);
+  cargosOrig:WritableSignal<Cargo[]>=signal([]);
 
   tipoContratos:WritableSignal<TipoContrato[]>=signal([]);
   tipoContratoList:Signal<TipoContrato[]>=computed(this.tipoContratos);
@@ -126,6 +128,7 @@ export default class InputEntidadComponent  {
 
   @ViewChild('inputRef') inputElement: any;
   @ViewChild('inputSub') inputSubM: any;
+  @ViewChild('inputCarg') inputCargM: any;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
 
@@ -149,44 +152,19 @@ export default class InputEntidadComponent  {
     sexoId: new FormControl('', Validators.required),
     fechaIngreso:new FormControl('', Validators.required),
 
-   // imgPerfilInput: new FormControl('', Validators.required),
-
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
     telefono: new FormControl('', Validators.required),
     cargoId: new FormControl('', Validators.required),
+    dependenciaId: new FormControl('', Validators.required),
     tipoContratoId: new FormControl('', Validators.required),
-    dependenciaId: new FormControl('', Validators.required)
-
+    tipoEntidadId: new FormControl('', Validators.required),
+    fechaInicio:new FormControl('', Validators.required),
+    fechaFin:new FormControl('')
   });
 
-
-  /*
-    masterForm=this.fb.group({
-    id : [''],
-    dni: [''],
-    codigo: ['000000',Validators.required],
-    nombres: ['', Validators.required],
-    apellidos: ['', Validators.required],
-    sexoId: ['', Validators.required],
-    fechaIngreso: ['', Validators.required],
-
-    imgPerfilInput: ['', Validators.required],
-
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
-    telefono: ['', Validators.required],
-    cargoId: [null],
-    tipoEntidad: [null],
-    dependenciaId: [null],
-    subModuloId:[null],
-    SubModuloXUserInput: [[], Validators.required],
-  });
-
-  */ 
-
+  cargoIdControl = new FormControl('');
  
   SBMxUForm=this.fb.group({
     subModuloId : 0,
@@ -282,6 +260,7 @@ export default class InputEntidadComponent  {
           descripcion:item.descripcion
         }));
         this.cargos.set(listaCargo);
+        this.cargosOrig.set(listaCargo);
       }
     });
   }
@@ -305,6 +284,11 @@ export default class InputEntidadComponent  {
   displayFn(subject:any)
   {
     return subject? subject.titulo:undefined;
+  }
+
+  displayFnC(subject:any)
+  {
+    return subject? subject.nombre:undefined;
   }
   
   
@@ -408,9 +392,26 @@ onSelectedModulo(event: Event)
   this.GetListSubModuloByIdMoulo(parseInt(this.valIdModuloSelect),'');
 }
 
+onSelectedTipoTrabaja(event: Event)
+{
+  this.SBMxUForm.get('subModuloId')?.enable();
+  this.valIdModuloSelect = (event.target as HTMLSelectElement).value;
+
+  this.GetListSubModuloByIdMoulo(parseInt(this.valIdModuloSelect),'');
+}
+
+
 filterSubModulos(event:any): void 
 {
   this.GetListSubModuloByIdMoulo(parseInt(this.valIdModuloSelect),event.target.value);
+}
+
+filterCargos(event:any): void 
+{
+
+  const input=(event.target.value as string).toLocaleLowerCase();
+    
+  this.cargos.set(this.cargosOrig().filter(ca=>ca.nombre.toLowerCase().includes(input)));
 }
 
 
@@ -472,7 +473,16 @@ filterSubModulos(event:any): void
         this.subModulosT.push(inputSM);
   }
 
-    Infile?:Archivo;
+  onSelectCargo(event:any)
+  {
+    this.masterForm.controls['cargoId'].setValue(event.option.value.id);
+    /*this.SBMxUForm.controls['subModuloId'].setValue(parseInt(event.option.value.id));
+
+    const inputSM=event.option.value;
+*/
+  }
+
+  Infile?:Archivo;
   onSubmit()
   {
   
@@ -483,11 +493,7 @@ filterSubModulos(event:any): void
       this.matSnackBar.open("Especifique el Tipo de Trabajador",'Cerrar',{ duration:5000, horizontalPosition:'center'});
       f=false;
     }
-    else
-    {
-
-    }
-
+ 
     if(!this.archivoService.file||this.archivoService.file.length === 0)
       this.matSnackBar.open("Agregue una Imagen/Foto de Perfil mas tarde",'Cerrar',{ duration:5000, horizontalPosition:'center'});
 
@@ -502,11 +508,17 @@ filterSubModulos(event:any): void
       inputMaster.SubModulos = this.subModulosT;
       console.log(inputMaster);
 
+      debugger;
       console.log('OnSumit   valid::::: ');
 
       this.entidadService.postFullMaster(inputMaster,this.archivoService.file).subscribe({
         next: u=>{
-          this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+
+          if(u.status==ResultEnum.Created ||u.status==ResultEnum.Success)
+            this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+          else if(u.status==ResultEnum.Error)
+            this.matSnackBar.open(u.message,'Cerrar',{ duration:5000, horizontalPosition:'center'});
+
 
         },
         error: (error) => { 

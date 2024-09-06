@@ -1,0 +1,6 @@
+{
+    "debug.allowBreakpointsEverywhere": true,
+    "debug.showVariableTypes": true,
+    "debug.showSubSessionsInToolBar": true,
+    "debug.console.acceptSuggestionOnEnter": "on"
+}

@@ -55,4 +55,8 @@ export interface EntidadFullDto {
     dependenciaId: number;
     //Permisos
     SubModulos: SubModuloViewerTable[];
+    
+    tipoContratoId: number;
+    fechaInicio: Date;
+    fechaFin: Date;
 }
