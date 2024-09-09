@@ -7,17 +7,17 @@ import { Dimension} from '@interfaces/dimension';
 import { post } from '@interfaces/escala';
 import { Instrumento } from '@interfaces/instrumento';
 import { PreguntasCerradas } from '@interfaces/pregunta_cerradas';
-import { TipoPregunta } from '@interfaces/tipo_pregunta';
 import { TipoEntidad } from '@interfaces/tipoEntidad';
 import { DimensionService } from '@services/sed/dimension.service';
 import { InstrumentoService } from '@services/sed/instrumento.service';
 import { PreguntaService } from '@services/sed/pregunta.service';
 import { ModalDeleteComponent } from 'app/components/modal-delete/modal-delete.component';
+import { TitleComponent } from 'app/shared/title/title.component';
 
 @Component({
   selector: 'app-form-pregunta',
   standalone: true,
-  imports: [ReactiveFormsModule, JsonPipe, ModalDeleteComponent, LowerCasePipe],
+  imports: [ReactiveFormsModule, JsonPipe, ModalDeleteComponent, LowerCasePipe, TitleComponent],
   templateUrl: './preguntas.component.html',
   styleUrl: './preguntas.component.css'
 })
