@@ -1,14 +1,25 @@
 <app-title title="Asignación para la Evaluación"/>
-@if(cargos().length>0)
+<div class="flex justify-between">
+    <div class="pb-4 bg-white dark:bg-gray-900">
+        <label for="table-search" class="sr-only">Search</label>
+        <div class="relative mt-1">
+            <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                </svg>
+            </div>
+            <input (keyup)="handlerSearch($event)" type="text" id="table-search" class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar elemento">
+        </div>
+
+    </div>
+</div>
+@if(dependencias().length>0)
         {
 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
             <th scope="col" class="px-6 py-3">
-                INS
-            </th>
-            <th scope="col" class="px-6 py-3">
-                Nombres
+                Dirección / División / Áreas
             </th>
             <th scope="col" class="px-6 py-3">
                 Acción
@@ -19,19 +30,19 @@
 
         
             
-            @for (item of cargos(); track item.id) 
+            @for (item of dependencias(); track item.id) 
             {
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                       {{item.id}}
+                       {{item.nombre}}
                     </th>
-                    <td class="px-6 py-4">
-                        {{item.nombre}}
-                    </td>
-                    
                     <td class="px-6 py-4 flex">
-
-                        
+                        <a (click)="openModal(item)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline hover:text-red-600 cursor-pointer">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white"   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H6Zm7.25-2.095c.478-.86.75-1.85.75-2.905a5.973 5.973 0 0 0-.75-2.906 4 4 0 1 1 0 5.811ZM15.466 20c.34-.588.535-1.271.535-2v-1a5.978 5.978 0 0 0-1.528-4H18a4 4 0 0 1 4 4v1a2 2 0 0 1-2 2h-4.535Z" clip-rule="evenodd"/>
+                              </svg>
+                              
+                        </a>
                     </td>
                 </tr>
             }
@@ -46,7 +57,7 @@
             <button (click)="previousPage()">
                 <a class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                     <span class="sr-only">Previous</span>
-                    <svg class="w-2.5 h-2.5 rtl:rotate-180"  aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <svg class="w-2.5 h-2.5 rtl:rotate-180"    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
                     </svg>
                 </a>
@@ -62,7 +73,7 @@
             <button  (click)="nextPage()" >
                 <a [ariaDisabled]="" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                     <span class="sr-only">Next</span>
-                    <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <svg class="w-2.5 h-2.5 rtl:rotate-180"   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                     </svg>
                   </a>
@@ -73,35 +84,4 @@
 </nav>
 }
 
-
-<div class="example-container">
-    <h2>To do</h2>
-  
-    <div
-      cdkDropList
-      #todoList="cdkDropList"
-      [cdkDropListData]="todo"
-      [cdkDropListConnectedTo]="[doneList]"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)">
-      @for (item of todo; track item) {
-        <div class="example-box" cdkDrag>{{item}}</div>
-      }
-    </div>
-  </div>
-  
-  <div class="example-container">
-    <h2>Done</h2>
-  
-    <div
-      cdkDropList
-      #doneList="cdkDropList"
-      [cdkDropListData]="done"
-      [cdkDropListConnectedTo]="[todoList]"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)">
-      @for (item of done; track item) {
-        <div class="example-box" cdkDrag>{{item}}</div>
-      }
-    </div>
-  </div>
+<app-cargos-modal />

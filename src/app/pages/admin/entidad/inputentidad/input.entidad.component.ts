@@ -30,7 +30,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModalDeleteComponent } from '../../../../components/modal-delete/modal-delete.component';
 
 import { CargoService } from '../../../../Services/admin/cargo.service';
-import { TipoEntidadService } from '../../../../Services/admin/tipoEntidad.service';
+import { TipoTrabajadorService } from '../../../../Services/admin/tipoTrabajador.service';
 import { TipoEntidad } from '../../../../interfaces/tipoEntidad';
 import { Dependencia } from '../../../../interfaces/dependencia';
 import { DependenciaService } from '../../../../Services/admin/dependencia.service';
@@ -66,7 +66,7 @@ export default class InputEntidadComponent  {
 
   cargoService=inject(CargoService)
 
-  tipoEntidadService=inject(TipoEntidadService);
+  tipoEntidadService=inject(TipoTrabajadorService);
   dependenciaService=inject(DependenciaService);
   sexoService=inject(SexoService);
   SubmoduloService=inject(SubmoduloService);

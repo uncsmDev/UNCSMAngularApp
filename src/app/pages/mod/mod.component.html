@@ -4,7 +4,14 @@
 
 <div class="p-6 sm:ml-16 sm:mr-16 ">
     <div class=" p-4  border-gray-400 border-dashed rounded-lg dark:border-gray-700 mt-20 ">
-        <app-title title="Módulos" />
+        <div class="flex justify-between items-center w-full">
+            <div>
+        <!-- Título a la Izquierda -->
+        <h1 class="text-3xl mb-1 text-black dark:text-white font-bold">
+          Módulos</h1>
+          <hr class="border bg-gray-500 dark:bg-white decoration-8 decoration-blue-400 dark:decoration-blue-600 pb-1 mb-8 rounded w-16 " />
+          </div>
+    </div>
         <app-spinner-general />
 <div class="grid md:grid-cols-3 xl:grid-cols-4 gap-2 ">
     
@@ -24,7 +31,7 @@
         </a>
         <a (click)="link(modulo.path, modulo.id)" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer">
             Acceder
-             <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+             <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2"   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
             </svg>
         </a>
@@ -34,7 +41,7 @@
 }@else {
     <div class="col-span-4">
       <div class="flex items-center p-4 mb-4 text-xl text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
-        <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+        <svg class="flex-shrink-0 inline w-4 h-4 me-3"   xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
           <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
         </svg>
         <span class="sr-only">Info</span>

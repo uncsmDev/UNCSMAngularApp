@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { InstanceOptions, Popover, PopoverInterface, PopoverOptions} from 'flowbite';
 
 @Injectable({
@@ -52,5 +53,10 @@ export class FlowbitSharedService {
     
         popover.show();
     }
+  }
+  private sanitizer = inject(DomSanitizer)
+
+  getSafeSvg(icon:string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(icon);
   }
 }

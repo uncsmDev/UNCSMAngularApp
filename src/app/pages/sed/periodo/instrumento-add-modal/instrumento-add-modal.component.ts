@@ -4,7 +4,7 @@ import { FormBuilder } from '@angular/forms';
 import { Instrumento } from '@interfaces/instrumento';
 import { Periodo, PeriodoxInstrumento } from '@interfaces/periodo';
 import { TipoEntidad } from '@interfaces/tipoEntidad';
-import { TipoEntidadService } from '@services/admin/tipoEntidad.service';
+import { TipoTrabajadorService } from '@services/admin/tipoTrabajador.service';
 import { ModalService } from '@services/modal.service';
 import { InstrumentoService } from '@services/sed/instrumento.service';
 import { PeriodoxinstrumentoService } from '@services/sed/periodoxinstrumento.service';
@@ -27,13 +27,13 @@ export class InstrumentoAddModalComponent {
   private modalService = inject(ModalService);
   private periodoxinstrumentoService = inject(PeriodoxinstrumentoService)
 
-  private tipoEntidadService = inject(TipoEntidadService);
+  private tipoEntidadService = inject(TipoTrabajadorService);
   private instrumentoService = inject(InstrumentoService);
   tipoEntidadesSignal = signal<TipoEntidad[]>([]);
   tipoEntidadIdSignal = signal(0);
   public instrumentosAdd = signal<PeriodoxInstrumento[]>([])
   public periodo = signal<Periodo>({id: 0, fechaFin: '', fechaInicio: '', nombre: ''})
-  instrumentoActualSignal = signal<Instrumento>({id:0, nombre:'',tipoEntidadId:0})
+  instrumentoActualSignal = signal<Instrumento>({id:0, nombre:'', tipoTrabajadorId:0, tipoEvaluacionId: 0})
   text:string = 'Agregar';
   isSubmitting = signal(false);
   refresh = output();
@@ -73,7 +73,7 @@ export class InstrumentoAddModalComponent {
     const selectedValue = selectElement.value;
 
     this.tipoEntidadIdSignal.set(Number(selectedValue));
-    this.instrumentoService.getInstrumentoxEntidad(Number(selectedValue)).subscribe({
+    this.instrumentoService.GetxTipoTrabajadorxTipoEvaluacion(Number(selectedValue), 2).subscribe({
       next: (instrumentos) => {
         const data = instrumentos.data!;
         if(data != null)
@@ -96,8 +96,8 @@ export class InstrumentoAddModalComponent {
   asignarInstrumento(instrumento: Instrumento): void {
     const actual = this.instrumentosAdd().find((inst) => inst.instrumento!.id == instrumento.id);
     if (actual != undefined) {
-      const { id, nombre, tipoEntidadId } = actual.instrumento!;
-      const instruments: Instrumento = { id: id, nombre: nombre, tipoEntidadId: tipoEntidadId };
+      const { id, nombre, tipoTrabajadorId, tipoEvaluacionId } = actual.instrumento!;
+      const instruments: Instrumento = { id: id, nombre: nombre, tipoTrabajadorId: tipoTrabajadorId, tipoEvaluacionId: tipoEvaluacionId };
       this.instrumentoActualSignal.set(instruments);
     }
   }
@@ -114,7 +114,7 @@ export class InstrumentoAddModalComponent {
     const radio = event.target as HTMLInputElement;
     if(radio.type === "radio"){
       if(radio.checked){
-        const InstrumentoExiste = this.instrumentosAdd().find((dato) => dato.instrumento!.tipoEntidadId == instrumento.tipoEntidadId)!;
+        const InstrumentoExiste = this.instrumentosAdd().find((dato) => dato.instrumento!.tipoTrabajadorId == instrumento.tipoEvaluacionId)!;
 
         const periodoxInstrumento:PeriodoxInstrumento = {instrumentoId: instrumento.id, periodoId: this.periodo().id, instrumento:instrumento}
 

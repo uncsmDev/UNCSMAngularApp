@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Instrumento } from '@interfaces/instrumento';
 import { Periodo, PeriodoInstrumento } from '@interfaces/periodo';
 import { TipoEntidad } from '@interfaces/tipoEntidad';
-import { TipoEntidadService } from '@services/admin/tipoEntidad.service';
+import { TipoTrabajadorService } from '@services/admin/tipoTrabajador.service';
 import { PeriodoxinstrumentoService } from '@services/sed/periodoxinstrumento.service';
 import { ModalDeleteComponent } from 'app/components/modal-delete/modal-delete.component';
 
@@ -23,7 +23,7 @@ export class ListaInstrumentoComponent {
 
   instrumento = input.required<Instrumento>();
   periodo = input.required<Periodo>();
-  tipoEntidadService = inject(TipoEntidadService);
+  tipoEntidadService = inject(TipoTrabajadorService);
   matSnackBar=inject(MatSnackBar);
   tipoEntidadSignal = signal<TipoEntidad>({nombre: '', id: 0})
   ModalDelete = viewChild(ModalDeleteComponent);

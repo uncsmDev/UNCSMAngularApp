@@ -1,120 +1,125 @@
-<app-title title="Instrumento"/>
+<app-title title="Instrumentos" />
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <div class="flex justify-between">
-        <div class="pb-4 bg-white dark:bg-gray-900">
-            <label for="table-search" class="sr-only">Search</label>
-            <div class="relative mt-1">
-                <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                    </svg>
-                </div>
-                <input  type="text" id="table-search" class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar elemento">
-            </div>
+    <div class="flex justify-end">
 
-        </div>
         <div class="pb-4 bg-white dark:bg-gray-900">
-            <button (click)="openModal()" data-modal-target="static-modal" data-modal-toggle="static-modal" type="button" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">Nuevo Intrumento</button>
-
+            <button (click)="openModal()" data-modal-target="static-modal" data-modal-toggle="static-modal"
+                type="button"
+                class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">Nuevo Intrumento</button>
         </div>
     </div>
-
 </div>
-
-
 <section class="text-gray-600 body-font relative">
     <div class="container py-2 mx-auto flex sm:flex-nowrap flex-wrap">
-      <div class="w-full mr-4">
-<div class="gap-3 grid sm:grid-cols-1 md:grid-cols-3">
-    @for (instrumento of instrumentos(); track instrumento; let index = $index) {
+        <div class="w-full mr-4">
+            <div class="gap-3 grid sm:grid-cols-1 md:grid-cols-2">
+                    @for (ins of _instrumentos(); track ins.id) {
+                    <div class="max-w mb-2 mx-1 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-700 dark:border-gray-700">
 
-        @if(instrumento.instrumento.length > 0)
-        {
-            <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:bg-gray-800 dark:border-gray-700 mb-2 w-full">
-
-            <h2 class="text-xl mb-1 text-black dark:text-white font-bold mx-2">{{instrumento.nombre}}</h2>
-            <hr class="mb-1 text-black dark:text-white font-bold mx-2 mb-5 h-1 border-0 bg-white dark:bg-white bg-gray-400"/>
-
-
-    <div class="w-full">
-        @for (ins of instrumento.instrumento; track ins.id) {
+                        <div class="flex justify-between mb-3 bg-gray-300 dark:bg-gray-800 p-4 rounded-lg">
+                            <div class="grid grid-cols-2 sm:grid-cols-1">
+                                <!-- <input type="text" class="w-full"> -->
+                                <h2 class="text-xl mb-1 text-black dark:text-white font-bold mx-2">{{ins.nombre}}</h2>
+                            </div>
 
 
-    <div class="max-w-sm p-6 mb-2 mx-1 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-700 dark:border-gray-700">
+                            <div class="flex justify-between space-x-2 ml-2 items-center">
+                                <a (click)="openModalEdit(ins)"
+                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+                                    <svg class="w-6 h-6 text-yellow-500 hover:text-yellow-400 text-gray-800 dark:text-white"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
+                                    </svg>
+                                </a>
 
-    <div class="flex justify-between mb-3">
-        <div class="grid grid-cols-2 sm:grid-cols-1">
-            <!-- <input type="text" class="w-full"> -->
-            <h2 class="text-xl mb-1 text-black dark:text-white font-bold mx-2">{{ins.nombre}}</h2>
-        </div>
+                                <a (click)="callChildMethod(ins)"
+                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+                                    <svg class="w-6 h-6 text-red-500 hover:text-red-400 text-gray-800 dark:text-white"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                    </svg>
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <div class="px-4">
+                            <ol
+                                class="max-w space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400 mb-4">
+                                @for (dimensiones of ins.dimensiones; track dimensiones) {
+
+                                <li class="flex justify-between items-center dark:hover:bg-gray-600 rounded-lg p-1">
+                                    <span>
+                                        {{ dimensiones.nombre }}
+                                    </span>
+                                    <span class="flex space-x-2">
+                                        <a (click)="openModalDimensionesEdit(dimensiones)"
+                                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+                                            <svg class="w-6 h-6 text-yellow-500 hover:text-yellow-400 text-gray-800 dark:text-white"
+                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                                viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
+                                            </svg>
+                                        </a>
+
+                                        <a (click)="delDimension(dimensiones)"
+                                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+                                            <svg class="w-6 h-6 text-red-500 hover:text-red-400 text-gray-800 dark:text-white"
+                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                                viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                            </svg>
+                                        </a>
+                                    </span>
+                                </li>
+                                }
+                            </ol>
+                        </div>
 
 
-        <div class="flex justify-between space-x-2 ml-2 items-center">
-            <a (click)="openModalEdit(ins)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
-                <svg class="w-6 h-6 text-yellow-500 hover:text-yellow-400 text-gray-800 dark:text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
-                  </svg>
-            </a>
+                        <div class="flex gap-5 items-center justify-between px-4 pb-4">
+                            <div>
+                                <a (click)="openModalDimensiones(ins.id)" data-popover-target="addDimensiones"
+                                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer ">
+                                    Agregar dimensión
+                                </a>
+                            </div>
+                            <div class="flex gap-3">
+                                <a [routerLink]="['/sed/pc/', ins.id]" id="verIntrumento{{ins.id}}"
+                                    data-popover-target="verIntrumento"
+                                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">
+                                    <svg class="w-6 h-6 text-gray-800 text-white" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z" />
+                                    </svg>
+                                    <p>Preguntas cerradas</p>
+                                </a>
+                                <a [routerLink]="['/sed/pa/', ins.id]" id="verIntrumento{{ins.id}}"
+                                    data-popover-target="verIntrumento"
+                                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">
+                                    <svg class="w-6 h-6 text-gray-800 text-white" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 5h6m-6 4h6M10 3v4h4V3h-4Z" />
+                                    </svg>
+                                    <p>Preguntas abiertas</p>
+                                </a>
+                            </div>
 
-            <a (click)="callChildMethod(ins)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
-                <svg class="w-6 h-6 text-red-500 hover:text-red-400 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
-                  </svg>
-            </a>
-        </div>
-
-    </div>
-    <hr class="w-48 h-1 mx-auto my-4 bg-gray-700 border-0 rounded md:my-4 dark:bg-gray-100">
-
-        <ol class="max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400 mb-4">
-            @for (dimensiones of ins.dimensiones; track dimensiones) {
-
-                <li class="flex justify-between items-center">
-                    <span>
-                    @if (dimensiones.nombre.length > 25) {
-                        {{ dimensiones.nombre.slice(0, 25) }}...
-                    }@else {
-                        {{ dimensiones.nombre }}
-                    }
-                </span>
-                    <span class="flex space-x-2">
-                    <a (click)="openModalDimensionesEdit(dimensiones)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
-                        <svg class="w-6 h-6 text-yellow-500 hover:text-yellow-400 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
-                          </svg>
-                    </a>
-
-                    <a (click)="delDimension(dimensiones)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
-                        <svg class="w-6 h-6 text-red-500 hover:text-red-400 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
-                          </svg>
-                    </a>
-                </span>
-            </li>
-            }
-        </ol>
-
-    <div class="flex gap-5 items-center justify-between">
-        <div>
-            <a (click)="openModalDimensiones(ins.id)" data-popover-target="addDimensiones" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer ">
-                Agregar dimensión
-            </a>
-        </div>
-        <div class="flex gap-3">
-            <a [routerLink]="['/sed/pc/', ins.id]" id="verIntrumento{{ins.id}}" data-popover-target="verIntrumento"  class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">
-                <svg class="w-6 h-6 text-gray-800 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z"/>
-                  </svg>
-
-            </a>
-            <a [routerLink]="['/sed/pa/', ins.id]" id="verIntrumento{{ins.id}}" data-popover-target="verIntrumento"  class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">
-                <svg class="w-6 h-6 text-gray-800 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 5h6m-6 4h6M10 3v4h4V3h-4Z"/>
-                  </svg>
-            </a>
-        </div>
-
-    <!--
+                            <!--
         (mouseenter)="popper('Preguntas', 'Ver Instrumento', 'verIntrumento'+ins.id, 'right')"
 <div data-popover id="popoverContent" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
     <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
@@ -126,27 +131,17 @@
     <div data-popper-arrow></div>
 </div> -->
 
+                        </div>
+
+
+                    </div>
+                    }
+            </div>
+        </div>
     </div>
+</section>
 
-
-</div>
-}
-
-<!-- } -->
-
-    </div>
-
-</div>
-}
-}
-</div>
-      </div>
-
-    </div>
-  </section>
-
-
-<app-modal-instrumento (outputPostType)="onSubmit($event)" [tipoEntidades]="tipoEntidades()" [PostType]="PostType" />
+<app-modal-instrumento (outputPostType)="onSubmit($event)" [tipoEvaluacionId]="TipoTrabajadorId()" [tipoTrabajadorId]="TipoTrabajadorId()" [PostType]="PostType" />
 
 <app-modal-dimensiones (outputPostType)="onSubmitDimension($event)" [PostType]="PostType" />
 

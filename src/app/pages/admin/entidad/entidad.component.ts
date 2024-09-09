@@ -32,7 +32,7 @@ import { ModalDeleteComponent } from '../../../components/modal-delete/modal-del
 import { ModalService } from '../../../Services/modal.service';
 import { ModalInterface } from 'flowbite';
 import { CargoService } from '../../../Services/admin/cargo.service';
-import { TipoEntidadService } from '../../../Services/admin/tipoEntidad.service';
+import { TipoTrabajadorService } from '../../../Services/admin/tipoTrabajador.service';
 import { TipoEntidad } from '../../../interfaces/tipoEntidad';
 import { Dependencia } from '../../../interfaces/dependencia';
 import { DependenciaService } from '../../../Services/admin/dependencia.service';
@@ -55,7 +55,7 @@ export default class EntidadComponent {
   entidadService=inject(EntidadService);
   cargoService=inject(CargoService)
   modalService = inject(ModalService);
-  tipoEntidadService=inject(TipoEntidadService);
+  tipoEntidadService=inject(TipoTrabajadorService);
   dependenciaService=inject(DependenciaService);
   sexoService=inject(SexoService);
   usuarioService=inject(UsuarioService)

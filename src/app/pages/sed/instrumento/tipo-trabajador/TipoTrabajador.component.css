@@ -1,0 +1,5 @@
+.hover-scale:hover {
+  transform: scale(1.02); /* Aumenta el tamaño al pasar el cursor */
+  z-index: 10; /* Asegúrate de que esté por encima de otros elementos */
+  transition: transform 0.3s ease-in-out; /* Añade una transición suave */
+}

@@ -1,0 +1,74 @@
+<app-title title="Asignación para la Evaluación"/>
+
+<h1 class="text-center text-2xl font-medium dark:text-white dark:bg-gray-700 text-gray-900  rounded p-2 px-4">*** {{dependencia().nombre}} ***</h1>
+<div class="flex justify-center gap-10 xl:gap-60 mt-5">
+  <div class="example-container">
+    <div class="flex flex-col items-center mb-2">
+    <h2 class="text-lg font-medium dark:text-white text-gray-900 mb-2">Cargos asignados</h2>
+    <button type="button" (click)="saveCargos()" class="w-full px-6 py-3.5 text-base font-medium text-white  items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex flex-col">
+        <svg class="w-6 h-6 text-gray-800 dark:text-white"   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 0 1 1-1h11.586a1 1 0 0 1 .707.293l2.414 2.414a1 1 0 0 1 .293.707V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Z"/>
+            <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M8 4h8v4H8V4Zm7 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+          </svg>
+        </button>
+</div>
+    <div
+      cdkDropList
+      id="cargos_asignados"
+      #cargosAsignados="cdkDropList"
+      [cdkDropListData]="cargosAsignadosArreglo"
+      [cdkDropListConnectedTo]="[cargos]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      @for (item of cargosAsignadosArreglo; track item.nombre) {
+        <div class="example-box overflow-hidden" cdkDrag>{{item.nombre}} @if(save) {
+          <button class="block p-2 text-sm w-12 text-center text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" (click)="saludo(item)">
+            @if(item.cantidad == null)
+          {
+            0
+          }
+          @else
+          {
+            {{item.cantidad}}
+          }
+          </button>
+        }</div>
+      }
+    </div>
+  </div>
+  <div class="example-container">
+    <div class="flex flex-col items-center mb-2">
+        <h2 class="text-lg font-medium dark:text-white text-gray-900 mb-2">Cargos</h2>
+        <div class="w-full">
+           
+            <div class="relative">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none w-full">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                    </svg>
+                </div>
+                <input type="text" id="search" (keyup)="handlerSearch($event)" class="block p-4 ps-10 text-sm text-gray-900 w-full border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar" required />
+            </div>
+        </div>
+    </div>
+
+  <div class="overflow-x-auto h-3/4 rounded container">
+    <div
+      cdkDropList
+      id="cargos"
+      #cargos="cdkDropList"
+      [cdkDropListData]="tempCargosArreglo"
+      [cdkDropListConnectedTo]="[cargosAsignados]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)">
+      @for (item of tempCargosArreglo; track item) {
+        @if(comprobarParamostrar(item.id)){
+          <div class="example-box" cdkDrag>{{item.nombre}}</div>
+        }
+      }
+    </div>
+</div>
+  </div>
+</div>
+
+<app-cantidad-add-modal/>

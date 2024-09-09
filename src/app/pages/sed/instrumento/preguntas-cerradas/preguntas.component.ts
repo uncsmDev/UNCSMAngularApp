@@ -39,7 +39,7 @@ export default class FormPreguntaComponent {
 
   i = 1;
   dimensiones = signal<Dimension[]>([]);
-  instrumento = signal<Instrumento>({id: 0, nombre: '', tipoEntidadId: 0});
+  instrumento = signal<Instrumento>({id: 0, nombre: '', tipoTrabajadorId: 0, tipoEvaluacionId: 0});
   
   typePost: post = 'post';
 
@@ -60,7 +60,6 @@ export default class FormPreguntaComponent {
       {
         const pregunta: PreguntasCerradas = this.preguntaForm.value as PreguntasCerradas;
         pregunta.dimesionId = Number(pregunta.dimesionId);
-        debugger
         if(this.typePost == 'post'){
           this.preguntaService.post(pregunta).subscribe({
             next: a => {
