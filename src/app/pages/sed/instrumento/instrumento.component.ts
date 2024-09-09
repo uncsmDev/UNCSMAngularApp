@@ -94,7 +94,7 @@ export default class InstrumentoComponent {
   }
 
   onSubmit(valores:EmiterResult<Instrumento | null>){
-    if(valores.data != null)
+    if(valores.data == null)
     {
         this.matSnackBar.open("Error al intentar guardar el dato aa",'Cerrar',{ duration:5000, horizontalPosition:'center'});
     }
@@ -107,14 +107,12 @@ export default class InstrumentoComponent {
           this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
     }
     else if(valores.typeModal == 'edit'){
-      /* this._instrumentos.update((arr) => {
-        return arr.map((dato)=>{
-          return valores.data.id == dato.id ? 
-          {...dato, nombre: valores.data.nombre, tipoEntidadId: valores.data.tipoEntidadId} 
+      this._instrumentos.update((arr) => arr.map((dato)=>{
+          return valores.data?.id == dato.id ? 
+          {...dato, nombre: valores.data.nombre} 
           : 
           dato
-        })
-      })*/
+        }))
     }
   }     
 onSubmitDimension(valores:EmiterResult<Dimension>){
@@ -138,7 +136,6 @@ onSubmitDimension(valores:EmiterResult<Dimension>){
     });
 }
 else{
-  const datosDimensiones = valores.data;
   this.instrumentoService.putDimension(valores.data).subscribe({
     next: (res) =>{
       if(res){
