@@ -9,7 +9,6 @@ import { Sexo } from '@interfaces/sexo';
 import { ArchivoService } from '@services/admin/archivo.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { TipoEntidad, TipoEntidadI } from '@interfaces/tipoEntidad';
 import { UsuarioView } from '@interfaces/usuario';
 import { UsuarioService } from '../../../Services/usuario.service';
 import { TipoTrabajadorService } from '@services/admin/tipoTrabajador.service';
@@ -57,7 +56,7 @@ export default class PerfilEntidadComponent {
   sexo?:Sexo;
   fileDir?: string;
   UserNet!: UsuarioView;
-  tiposEntidades?: TipoEntidadI[];
+  //tiposEntidades?: TipoEntidadI[];
   fechaFormat!: string;
 
   pagSM!:Paginacion;
@@ -127,7 +126,7 @@ entidadFormEdit=this.fb.group({
            });
         }
 
-        this._tipoEntidadService.getListByIdEntidadI(this.entidad.id,'').subscribe({
+        /*this._tipoEntidadService.getListByIdEntidad(this.entidad.id,'').subscribe({
           next:(te)=>{
             console.log('tipo Entidad::::');
             console.log(te);
@@ -136,7 +135,7 @@ entidadFormEdit=this.fb.group({
           error:(error)=>{
             console  .error('Error al obtener Usuario:', error);
           }
-        });
+        });*/
        
 
         this._usuarioService.getByEntidadId(this.entidad.id).subscribe({
