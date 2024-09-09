@@ -1,4 +1,4 @@
-import { Component, OnInit, Signal, WritableSignal, computed, inject, signal } from '@angular/core';
+import { Component, OnInit, Signal, ViewChild, WritableSignal, computed, inject, signal } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Entidad } from '@interfaces/entidad';
@@ -9,33 +9,60 @@ import { Sexo } from '@interfaces/sexo';
 import { ArchivoService } from '@services/admin/archivo.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { TipoEntidad } from '@interfaces/tipoEntidad';
+import { TipoEntidad, TipoEntidadI } from '@interfaces/tipoEntidad';
 import { UsuarioView } from '@interfaces/usuario';
 import { UsuarioService } from '../../../Services/usuario.service';
 import { TipoTrabajadorService } from '@services/admin/tipoTrabajador.service';
 import { SubmoduloService } from '@services/submodulo.service';
 import { PackPage, Paginacion } from '@interfaces/packPage';
 import { SubModuloXUserView } from '@interfaces/submodulo';
+import { TitleComponent } from 'app/shared/title/title.component';
+import {FormsModule,FormBuilder, ReactiveFormsModule, FormGroup, FormControl} from '@angular/forms';
+import { ModalInterface } from 'flowbite';
+import { Dependencia } from '@interfaces/dependencia';
+
+
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
+
+import { Cargo } from '@interfaces/cargo';
+
+import { MatChipsModule} from '@angular/material/chips';
+
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { CargoService } from '@services/admin/cargo.service';
+import { ModalService } from '@services/modal.service';
+import { DependenciaService } from '@services/admin/dependencia.service';
+import { SexoService } from '@services/admin/sexo.service';
 
 @Component({
   selector: 'app-perfil.entidad',
   standalone: true,
-  imports: [],
+  imports: [MatTableModule, MatPaginatorModule, TitleComponent, ReactiveFormsModule,MatAutocompleteModule,
+    MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule,MatChipsModule,MatIconModule],
   templateUrl: './perfil.entidad.component.html',
   styleUrl: './perfil.entidad.component.css'
 })
-export default class PerfilEntidadComponent implements OnInit {
+export default class PerfilEntidadComponent {
 
   userId!: number;
-  entidad?:Entidad;
+  entidad!:Entidad;
   persona!:any;
   sexo?:Sexo;
   fileDir?: string;
   UserNet!: UsuarioView;
-  tiposEntidades?: TipoEntidad[];
+  tiposEntidades?: TipoEntidadI[];
   fechaFormat!: string;
 
   pagSM!:Paginacion;
+
+  fb = inject(FormBuilder);
 
   subModulosByUser:WritableSignal<SubModuloXUserView[]>=signal([]);
   subModuloByUserList:Signal<SubModuloXUserView[]>=computed(this.subModulosByUser);
@@ -49,6 +76,21 @@ export default class PerfilEntidadComponent implements OnInit {
   _usuarioService=inject(UsuarioService);
   _tipoEntidadService=inject(TipoTrabajadorService);
   _subModuloService=inject(SubmoduloService);
+
+  
+entidadFormEdit=this.fb.group({
+  id : [''],
+  dni: [''],
+  codigo: ['000000'],
+  nombres: [''],
+  apellidos : [''],
+  fechaIngreso : [''],
+  sexoId: [''],
+  cargoId: [''],
+  dependenciaId: [''],
+   
+});
+
   
 
   constructor(private route: ActivatedRoute,  private sanitizer: DomSanitizer,private location: Location) {}
@@ -85,9 +127,10 @@ export default class PerfilEntidadComponent implements OnInit {
            });
         }
 
-        this._tipoEntidadService.getListByIdEntidad(this.entidad.id,'').subscribe({
+        this._tipoEntidadService.getListByIdEntidadI(this.entidad.id,'').subscribe({
           next:(te)=>{
-            
+            console.log('tipo Entidad::::');
+            console.log(te);
             this.tiposEntidades=te.data;
           },
           error:(error)=>{
@@ -189,18 +232,13 @@ export default class PerfilEntidadComponent implements OnInit {
  }
   
 
- formatearFecha(fechaString:Date) {
-  const fecha = new Date(fechaString);
-  const dia = String(fecha.getDate()).padStart(2, '0');
-  const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son base 0
-  const anio = fecha.getFullYear();
+  formatearFecha(fechaString: Date) {
+    const fecha = new Date(fechaString);
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son base 0
+    const anio = fecha.getFullYear();
 
-  return `${anio}-${mes}-${dia}`;
-}
-
-
-goBack(): void {
-  this.location.back();
-}
+    return `${anio}-${mes}-${dia}`;
+  }
 
 }

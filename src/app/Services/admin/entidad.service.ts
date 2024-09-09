@@ -68,14 +68,13 @@ postFull(entidad:EntidadFullDto):Observable<any>
 }
 
 
-postFullMaster(data: EntidadFullDto, file?: File|any): Observable<any> {
+postFullMaster(data: EntidadFullDto, file?: File|any): Observable<Result<any>> {
   const formData: FormData = new FormData();
 
     // Append the file
   if(file && file.size > 0)
     formData.append('File', file, file.name);
 
-  
 
   // Append other fields
   formData.append('Dni', data.dni);
@@ -95,12 +94,14 @@ postFullMaster(data: EntidadFullDto, file?: File|any): Observable<any> {
   formData.append('CargoId', data.cargoId?.toString());
   formData.append('DependenciaId', data.dependenciaId.toString());
   formData.append('SubModulos', JSON.stringify(data.SubModulos));
+  formData.append('TipoContradoId', data.tipoContratoId.toString());
+  formData.append('FechaInicio', data.fechaInicio.toString());
 
-  return this.http.post<any>(this.apiUrl+'/PostFullMaster', formData, {
-    headers: new HttpHeaders({
-      'Accept': '*/*'
-    })
-  });
+  debugger;
+  if(data.fechaFin.toString()!='')
+    formData.append('FechaFin', data.fechaFin.toString());
+
+  return this.http.post<Result<any>>(this.apiUrl+'/PostFullMaster', formData, {  headers: new HttpHeaders({ 'Accept': '*/*' })});
 }
 
 

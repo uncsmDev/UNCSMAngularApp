@@ -7,7 +7,7 @@ import type { InstanceOptions } from 'flowbite';
 import { map, startWith } from 'rxjs/operators';
 
 
-import {MatChipInputEvent, MatChipsModule} from '@angular/material/chips';
+import { MatChipsModule} from '@angular/material/chips';
 
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatIconModule} from '@angular/material/icon';
@@ -515,6 +515,7 @@ export default class EntidadComponent {
     this.router.navigate(['/admin/inputEntidad']);
   }
 
+  
 
 }
 
