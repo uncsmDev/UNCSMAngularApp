@@ -48,7 +48,6 @@ export class ModalInstrumentoComponent {
   onSubmit(){
     if(this.instrumentoForm.valid)
     {
-      debugger
          const instrumento: Instrumento = this.instrumentoForm.value as Instrumento;
          instrumento.tipoEvaluacionId = this.tipoEvaluacionId();
          instrumento.tipoTrabajadorId = this.tipoTrabajadorId();
@@ -73,12 +72,12 @@ export class ModalInstrumentoComponent {
             });
         }
         else{
-          console.log(instrumento)
           this.instrumentoService.put(instrumento).subscribe({
             next: (res) =>{
               if(res){
-                console.log(res);
+                this.reset();
                 this.closeModal();
+                this.outputPostType.emit({typeModal: this.PostType(), data: res.data})
               }
               else{
                 this.outputPostType.emit({typeModal: this.PostType(), data: null})
