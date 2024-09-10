@@ -1,2 +1,113 @@
 <app-title title="Trabajadores"/>
-<p>trabajador works!</p>
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="flex justify-between">
+        <div class="pb-4 bg-white dark:bg-gray-900">
+            <label for="table-search" class="sr-only">Buscar</label>
+            <div class="relative mt-1">
+                <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                    </svg>
+                </div>
+                <input data-modal-target="static-modal" data-modal-toggle="static-modal" type="text" id="table-search" 
+                class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 
+                focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 
+                dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar">
+            </div>
+            
+        </div>
+        <div class="pb-4 bg-white dark:bg-gray-900">
+            <button  type="button" 
+            class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none 
+            focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 
+            dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">Nuevo Trabajador</button>
+            
+        </div>
+        
+    </div>
+
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    INS
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    DNI
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Nombres
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Apellidos
+                </th>
+             
+              
+                <th scope="col" class="px-6 py-3">
+                    Dependencia
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Acción
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @if(trabajadores().length>0)
+            {
+                
+                @for (item of trabajadorList(); track item.id) 
+                {
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                           {{item.codigo}}
+                        </th>
+                        <td class="px-6 py-4">
+                            {{item.persona.dni}}
+                        </td>
+                  
+                        <td class="px-6 py-4">
+                            {{item.persona?.nombres}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{item.persona?.apellidos}}
+                        </td>
+                      
+                        <!--td class="px-6 py-4">
+                            {{item.dependencia?.nombre}}
+                        </td>
+                        <td class="px-6 py-4 flex">
+                            <a (click)="openModalEdit(item, 'static-modal')" title="Editar" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white"   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                                  </svg>
+                            </a>
+                            <a (click)="callChildMethod(item)" title="Eliminar" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white"   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                                  </svg>
+                            </a>
+
+                            <a (click)="openCreateUser(item,'createUser-modal')" title="Crear una Cuenta de Usuario" data-modal-target="createUser-modal" data-modal-toggle="createUser-modal" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer    focus:ring-4 focus:outline-none focus:ring-blue-300">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white"   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
+                                  </svg>
+                            </a>
+
+                            <a  (click)="irPerfil(item.id)" title="Crear una Cuenta de Usuario" data-modal-target="createUser-modal" data-modal-toggle="createUser-modal" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer    focus:ring-4 focus:outline-none focus:ring-blue-300">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white"   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 13 16h-2a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 12 21Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" clip-rule="evenodd"/>
+                                  </svg>
+                            </a>
+                        </td-->
+                    </tr>
+                }
+            }
+        </tbody>
+      
+    </table>
+
+
+</div>
+  
