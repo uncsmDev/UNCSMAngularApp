@@ -133,7 +133,6 @@ export class SubmoduloService {
             return verificaCondicion ? this.rutaBD : undefined;
           });
 
-          console.log(valor)
           // Si no encuentra la ruta, redirige
           if (valor === undefined || valor === null) {
             this.router.navigate(['/mod']);
