@@ -95,7 +95,9 @@
                                 </a>
                             </div>
                             <div class="flex gap-3">
-                                <a [routerLink]="['/sed/pc/', ins.id]" id="verIntrumento{{ins.id}}"
+                                @if(ins.dimensiones != null && ins.dimensiones!.length)
+                                {
+                                    <a [routerLink]="['/sed/pc/', ins.id]" id="verIntrumento{{ins.id}}"
                                     data-popover-target="verIntrumento"
                                     class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">
                                     <svg class="w-6 h-6 text-gray-800 text-white" xmlns="http://www.w3.org/2000/svg"
@@ -117,6 +119,7 @@
                                     </svg>
                                     <p>Preguntas abiertas</p>
                                 </a>
+                                }
                             </div>
 
                             <!--
@@ -141,7 +144,7 @@
     </div>
 </section>
 
-<app-modal-instrumento (outputPostType)="onSubmit($event)" [tipoEvaluacionId]="TipoTrabajadorId()" [tipoTrabajadorId]="TipoTrabajadorId()" [PostType]="PostType" />
+<app-modal-instrumento (outputPostType)="onSubmit($event)" [tipoEvaluacionId]="TipoEvaluacionId()" [tipoTrabajadorId]="TipoTrabajadorId()" [PostType]="PostType" />
 
 <app-modal-dimensiones (outputPostType)="onSubmitDimension($event)" [PostType]="PostType" />
 
