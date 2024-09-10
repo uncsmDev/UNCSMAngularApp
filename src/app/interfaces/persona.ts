@@ -5,6 +5,7 @@ export interface Persona {
     dni: string;
     nombres: string;
     apellidos: string;
+    fechaNace: Date;
     sexoId:number;
     sexo: Sexo;
     img:string;
