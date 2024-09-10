@@ -4,6 +4,7 @@ import { appsettings } from '../../Settings/appsettings';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Cargo, CargoDTO, CargoList, CargoPagination, CargoPaginationDTO} from '../../interfaces/cargo';
+import { DependenciaList } from '@interfaces/dependencia';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +20,14 @@ export class CargoService {
     var list= this.http.get<Cargo[]>(this.apiUrl+'/GetList');
     return list;
   }
+  getWithCargos(id: number, dependenciaId: number){
+    return this.http.get<Result<Cargo[]>>(`${this.apiUrl}/GetWithCargos/${id}/${dependenciaId}`);
+  }
 
-  getWithoutEvaluacionCargo(id: number): Observable<Result<Cargo[]>> {
-    var list= this.http.get<Result<Cargo[]>>(`${this.apiUrl}/GetWithoutEvaluacionCargo/${id}`);
+  getWithoutEvaluacionCargo(Dependencia: DependenciaList) {
+    const headers = { 'content-type': 'application/json'}
+    const body=JSON.stringify(Dependencia);
+    var list= this.http.post<Result<Cargo[]>>(`${this.apiUrl}/GetWithoutEvaluacionCargo`, body, {headers});
     return list;
   }
 

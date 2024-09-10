@@ -40,32 +40,36 @@ export default class AsignacionEvaluacioComponent implements OnInit {
 
   GetListIndex(pag:number)
   {
-   this.dependenciaService.getPagination(pag).subscribe({
-     next: (res)=> {
-       this.pag=res.paginacion;
-       this.dependencias.set(
-        res.listModel
-      );
-      this.dependenciasOriginal.set(
-        res.listModel
-      );
-     },
-     error: (error) =>{
-       console.error(error);
-     }
-   });
+   this.searchDependencias(pag, '');
   }
 
+  searchDependencias(pag:number, dependencia: string){
+    this.dependenciaService.getPagination(pag, dependencia).subscribe({
+      next: (res)=> {
+        this.pag=res.paginacion;
+        this.dependencias.set(
+         res.listModel
+       );
+       this.dependenciasOriginal.set(
+         res.listModel
+       );
+      },
+      error: (error) =>{
+        console.error(error);
+      }
+    });
+  }
   openModal(item: DependenciaList){
     this.modalCargo().openModal(item);
   }
 
-  handlerSearch(texto: Event){
-
+  handlerSearch(texto: KeyboardEvent){
+    if (texto.key === 'Enter') {
     //Mejorar
     const textoEvento = texto.target as HTMLInputElement;
     const value = textoEvento.value;
-    this.dependencias.set(this.dependenciasOriginal().filter((word) => word.nombre.toLowerCase().includes(value.toLowerCase())))
+    this.searchDependencias(0, value.toLowerCase())
+    }
   }
 
   ngOnInit(): void {

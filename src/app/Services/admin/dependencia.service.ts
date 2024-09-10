@@ -20,8 +20,8 @@ export class DependenciaService {
     return list;
   }
 
-  getPagination(no_pagina: number): Observable<DependenciaPagination> {
-    var list= this.http.get<DependenciaPagination>(`${this.apiUrl}/GetPagination/${no_pagina}`);
+  getPagination(no_pagina: number, filtro: string): Observable<DependenciaPagination> {
+    var list= this.http.get<DependenciaPagination>(`${this.apiUrl}/GetPagination/${no_pagina}/${filtro}`);
     return list;
   }
 

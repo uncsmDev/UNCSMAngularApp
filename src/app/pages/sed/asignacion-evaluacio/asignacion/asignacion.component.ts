@@ -32,7 +32,9 @@ export default class AsignacionComponent implements OnInit {
   tempCargosArreglo:CargoAsignacion[] = [];
   cargosAsignadosArreglo:CargoAsignacion[] = [];
 
-  dependenciaId = input.required<number>({alias: "id"})
+  cargoId = input.required<number>({alias: "id"});
+  dependenciaId = input.required<number>({alias: "dependenciaId"});
+
   cargoSvc = inject(CargoService);
   evaluacionCargoSvc = inject(EvaluacionCargoService);
   dependencia = signal<Dependencia>({id: 0, nombre: '', dependenciaId: 0})
@@ -49,12 +51,12 @@ export default class AsignacionComponent implements OnInit {
   ngOnInit(): void {
     this.getCargos();
     this.getEvaluacionCargoPlusCargo();
-    this.getDependencia();
+    //this.getDependencia();
   }
 
 
   getDependencia(){
-    this.evaluacionCargoSvc.getDependencia(this.dependenciaId()).subscribe({
+    this.evaluacionCargoSvc.getDependencia(this.cargoId()).subscribe({
       next:(dp) => {
         this.dependencia.set(dp.data);
       }
@@ -62,7 +64,7 @@ export default class AsignacionComponent implements OnInit {
   }
 
   getEvaluacionCargo(){
-    this.evaluacionCargoSvc.getEvaluacionCargo(this.dependenciaId()).subscribe({
+    this.evaluacionCargoSvc.getEvaluacionCargo(this.cargoId()).subscribe({
       next: (c) => {
         //this.cargosAsignadosArreglo = c.data;
       }
@@ -70,7 +72,7 @@ export default class AsignacionComponent implements OnInit {
   }
 
   getEvaluacionCargoPlusCargo(){
-    this.evaluacionCargoSvc.getEvaluacionCargoAsignados(this.dependenciaId()).subscribe({
+    this.evaluacionCargoSvc.getEvaluacionCargoAsignados(this.cargoId()).subscribe({
       next: (c) => {
         this.cargosAsignadosArreglo = c.data.map((data) => ({ 
           id: data.cargo!.id,
@@ -83,11 +85,11 @@ export default class AsignacionComponent implements OnInit {
   }
 
   getCargos(){
-    this.cargoSvc.getWithoutEvaluacionCargo(this.dependenciaId()).subscribe({
+    this.cargoSvc.getWithCargos(this.cargoId(), this.dependenciaId()).subscribe({
       next: (c) => {
         this.cargos.set(c.data);
         this.cargosArreglo = c.data;
-        this.tempCargosArreglo= c.data;
+        this.tempCargosArreglo = c.data;
       }
     })
   }

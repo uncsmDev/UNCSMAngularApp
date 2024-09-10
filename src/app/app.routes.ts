@@ -83,7 +83,7 @@ export const routes: Routes = [
                     canActivate: [routerPermisseGuard]
                 },
                 {
-                    path: 'asignacion/:id',
+                    path: 'asignacion/:id/:dependenciaId',
                     title: 'Asignación para la Evaluación',
                     loadComponent: () => import('./pages/sed/asignacion-evaluacio/asignacion/asignacion.component'),
                     data: { breadcrumb: 'Asignación para la Evaluación' },

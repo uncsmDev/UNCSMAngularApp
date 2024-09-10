@@ -28,22 +28,24 @@ export class CargosModalComponent {
   router = inject(Router);
   cargos = signal<Cargo[]>([])
   cargosBusqueda = signal<Cargo[]>([])
+  dependenciaSignal = signal<DependenciaList>({id: 0, nombre: '', dependenciaId: 0})
   closeModal(){
     this.modalActivo.hide();
   }
 
   openModal(cargo: DependenciaList)
   {
-    this.getCargos(cargo.id!);
+    this.getCargos(cargo);
     this.text = 'Agregar';
     this.modalActivo = this.modalService.createModal('cargos');
     this.modalActivo.show();
   }
 
-  getCargos(dependencia: number){
+  getCargos(dependencia: DependenciaList){
+    this.dependenciaSignal.set(dependencia);
     this.cargoSvc.getWithoutEvaluacionCargo(dependencia).subscribe({
       next: (c) => {
-        console.log(c)
+        console.log(c);
         this.cargos.set(c.data);
         this.cargosBusqueda.set(c.data);
       }
@@ -53,7 +55,7 @@ export class CargosModalComponent {
   link(cargo: Cargo)
   {
     this.closeModal();
-    this.router.navigate(['/sed/asignacion/', cargo.id]);
+    this.router.navigate(['/sed/asignacion/', cargo.id, this.dependenciaSignal().id]);
   }
 
   handlerSearch(texto: Event){
