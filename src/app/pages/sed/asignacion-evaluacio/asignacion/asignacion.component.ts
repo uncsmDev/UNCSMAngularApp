@@ -10,11 +10,12 @@ import {
 import { TitleComponent } from 'app/shared/title/title.component';
 import { RouterLink } from '@angular/router';
 import { CargoService } from '@services/admin/cargo.service';
-import { Cargo, CargoAsignacion } from '@interfaces/cargo';
+import { Cargo, CargoAsignacion, CargosDependenciaGet } from '@interfaces/cargo';
 import { EvaluacionCargoService } from '@services/sed/evaluacion-cargo.service';
-import { EvaluacionCargo } from '@interfaces/evaluacion_cargo';
 import { CantidadAddModalComponent } from './cantidad-add-modal/cantidad-add-modal.component';
 import { Dependencia } from '@interfaces/dependencia';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { EvaluacionCargo } from '@interfaces/evaluacion-cargo';
 
 @Component({
   selector: 'app-asignacion',
@@ -28,32 +29,57 @@ import { Dependencia } from '@interfaces/dependencia';
 export default class AsignacionComponent implements OnInit {
 
   texto = '';
-  cargosArreglo:CargoAsignacion[] = [];
-  tempCargosArreglo:CargoAsignacion[] = [];
-  cargosAsignadosArreglo:CargoAsignacion[] = [];
+  cargosArreglo:CargosDependenciaGet[] = [];
+  tempCargosArreglo:CargosDependenciaGet[] = [];
+  cargosAsignadosArreglo:CargosDependenciaGet[] = [];
 
   cargoId = input.required<number>({alias: "id"});
   dependenciaId = input.required<number>({alias: "dependenciaId"});
 
   cargoSvc = inject(CargoService);
   evaluacionCargoSvc = inject(EvaluacionCargoService);
+  CargoSvc = inject(CargoService);
   dependencia = signal<Dependencia>({id: 0, nombre: '', dependenciaId: 0})
   save = true;
   cantidadModal = viewChild.required(CantidadAddModalComponent);
-
-  cargos = signal<Cargo[]>([])
+  cargosSignal = signal<CargosDependenciaGet[]>([])
+  cargoSignal = signal<Cargo>({} as Cargo);
 
   saveCargos(){
     this.save = true;
+    this.cargosAsignadosArreglo.forEach((c) => {
+      console.log(c);
 
+      const cCargo: EvaluacionCargo = {
+        id: 0,
+        cargoEvaluadorId: this.cargoId(),
+        cargoId: c.cargoID,
+        dependenciaId: c.dependenciaID,
+        cantidadEvaluados: 1
+      }
+
+      this.evaluacionCargoSvc.post(cCargo).subscribe({
+        next: (response) => {
+          console.log(response);
+        }
+      })
+    })
   }
 
   ngOnInit(): void {
     this.getCargos();
     this.getEvaluacionCargoPlusCargo();
     //this.getDependencia();
+    this.getCargo();
   }
 
+  getCargo(){
+    this.CargoSvc.getCargo(this.cargoId()).subscribe({
+      next: (c) => {
+        this.cargoSignal.set(c.data);
+      }
+    })
+  }
 
   getDependencia(){
     this.evaluacionCargoSvc.getDependencia(this.cargoId()).subscribe({
@@ -66,7 +92,8 @@ export default class AsignacionComponent implements OnInit {
   getEvaluacionCargo(){
     this.evaluacionCargoSvc.getEvaluacionCargo(this.cargoId()).subscribe({
       next: (c) => {
-        //this.cargosAsignadosArreglo = c.data;
+        console.log(c.data);
+        this.cargosAsignadosArreglo = c.data;
       }
     })
   }
@@ -74,12 +101,7 @@ export default class AsignacionComponent implements OnInit {
   getEvaluacionCargoPlusCargo(){
     this.evaluacionCargoSvc.getEvaluacionCargoAsignados(this.cargoId()).subscribe({
       next: (c) => {
-        this.cargosAsignadosArreglo = c.data.map((data) => ({ 
-          id: data.cargo!.id,
-          nombre: data.cargo!.nombre,
-          descripcion: '',
-          cantidad: data.cantidadEvaluados
-         }));
+        this.cargosAsignadosArreglo = c.data;
       }
     })
   }
@@ -87,7 +109,8 @@ export default class AsignacionComponent implements OnInit {
   getCargos(){
     this.cargoSvc.getWithCargos(this.cargoId(), this.dependenciaId()).subscribe({
       next: (c) => {
-        this.cargos.set(c.data);
+        console.log(c.data);
+        this.cargosSignal.set(c.data);
         this.cargosArreglo = c.data;
         this.tempCargosArreglo = c.data;
       }
@@ -97,18 +120,18 @@ export default class AsignacionComponent implements OnInit {
   handlerSearch(texto: Event){
     const textoEvento = texto.target as HTMLInputElement;
     const value = textoEvento.value;
-    this.tempCargosArreglo = this.cargosArreglo.filter((word) => word.nombre.toLowerCase().includes(value.toLowerCase()))
+    this.tempCargosArreglo = this.cargosArreglo.filter((word) => word.cargoNombre.toLowerCase().includes(value.toLowerCase()))
   }
 
-  saludo(item: CargoAsignacion){
+  saludo(item: CargosDependenciaGet){
     this.cantidadModal().openModal(6, item);
   }
 
   comprobarParamostrar(item: number){
-    return !this.cargosAsignadosArreglo.some((a) => a.id == item);
+    return !this.cargosAsignadosArreglo.some((a) => a.cargoID == item);
   }
 
-  drop(event: CdkDragDrop<CargoAsignacion[]>) {
+  drop(event: CdkDragDrop<CargosDependenciaGet[]>) {
     
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -128,7 +151,7 @@ export default class AsignacionComponent implements OnInit {
     }
     this.tempCargosArreglo = this.tempCargosArreglo.filter((data, index, self) =>{
       return index === self.findIndex((a) => {
-        return a.id === data.id })
+        return a.cargoID === data.cargoID })
     });
     
   }

@@ -1,11 +1,10 @@
 <app-title title="Asignación para la Evaluación"/>
-
-<h1 class="text-center text-2xl font-medium dark:text-white dark:bg-gray-700 text-gray-900  rounded p-2 px-4">***  ***</h1>
-<div class="flex justify-center gap-10 xl:gap-60 mt-5">
+<h1 class="text-center text-2xl font-medium dark:text-white dark:bg-gray-700 text-gray-900  rounded p-2 px-4">*** {{cargoSignal().nombre}} ***</h1>
+<div class="flex justify-center flex-col md:flex-row  xl:gap-8 mt-5">
   <div class="example-container">
     <div class="flex flex-col items-center mb-2">
     <h2 class="text-lg font-medium dark:text-white text-gray-900 mb-2">Cargos asignados</h2>
-    <button type="button" (click)="saveCargos()" class="w-full px-6 py-3.5 text-base font-medium text-white  items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex flex-col">
+    <button type="button" (click)="saveCargos()" class="w-full px-3 py-3.5 text-base font-medium text-white  items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 flex flex-col">
         <svg class="w-6 h-6 text-gray-800 dark:text-white"   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 0 1 1-1h11.586a1 1 0 0 1 .707.293l2.414 2.414a1 1 0 0 1 .293.707V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Z"/>
             <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M8 4h8v4H8V4Zm7 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
@@ -20,16 +19,23 @@
       [cdkDropListConnectedTo]="[cargos]"
       class="example-list"
       (cdkDropListDropped)="drop($event)">
-      @for (item of cargosAsignadosArreglo; track item.nombre) {
-        <div class="example-box overflow-hidden" cdkDrag>{{item.nombre}} @if(save) {
+      @for (item of cargosAsignadosArreglo; track item.cargoID+""+item.dependenciaID) {
+        <div class="example-box overflow-hidden" cdkDrag> <p class="text-sm font-normal dark:text-white text-gray-900 w-2/3 pr-1">{{item.cargoNombre}}</p>  <p class="text-xs font-light dark:text-white text-gray-900 w-1/3 pr-1">{{item.nombreDependencia}}</p> 
+          
+          @if(save) {
           <button class="block p-2 text-sm w-12 text-center text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" (click)="saludo(item)">
-            @if(item.cantidad == null)
+          @if(item.evaluacionCargo != null)
           {
-            0
-          }
-          @else
-          {
-            {{item.cantidad}}
+            @if(item.evaluacionCargo.cantidadEvaluados == null)
+            {
+              1
+            }
+            @else
+            {
+              {{item.evaluacionCargo.cantidadEvaluados}}
+            }
+          }@else {
+            1
           }
           </button>
         }</div>
@@ -38,7 +44,7 @@
   </div>
   <div class="example-container">
     <div class="flex flex-col items-center mb-2">
-        <h2 class="text-lg font-medium dark:text-white text-gray-900 mb-2">Cargos</h2>
+        <h2 class="text-lg font-medium dark:text-white text-gray-900 mb-2">Cargos potenciales</h2>
         <div class="w-full">
            
             <div class="relative">
@@ -61,9 +67,12 @@
       [cdkDropListConnectedTo]="[cargosAsignados]"
       class="example-list"
       (cdkDropListDropped)="drop($event)">
-      @for (item of tempCargosArreglo; track item) {
-        @if(comprobarParamostrar(item.id)){
-          <div class="example-box" cdkDrag>{{item.nombre}}</div>
+      @for (item of tempCargosArreglo; track item.cargoNombre) {
+        @if(comprobarParamostrar(item.cargoID)){
+          <div class="example-box" cdkDrag>
+            <p class="text-xs font-medium dark:text-white text-gray-900 w-2/4 pr-1">{{item.cargoNombre}}</p>
+            <p class="text-xs font-light dark:text-white text-gray-900 w-2/4 pr-1">{{item.nombreDependencia}}</p>
+          </div>
         }
       }
     </div>

@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { appsettings } from '../../Settings/appsettings';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {Cargo, CargoDTO, CargoList, CargoPagination, CargoPaginationDTO} from '../../interfaces/cargo';
+import {Cargo, CargoDTO, CargoList, CargoPagination, CargoPaginationDTO, CargosDependenciaGet} from '../../interfaces/cargo';
 import { DependenciaList } from '@interfaces/dependencia';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class CargoService {
     return list;
   }
   getWithCargos(id: number, dependenciaId: number){
-    return this.http.get<Result<Cargo[]>>(`${this.apiUrl}/GetWithCargos/${id}/${dependenciaId}`);
+    return this.http.get<Result<CargosDependenciaGet[]>>(`${this.apiUrl}/GetWithCargos/${id}/${dependenciaId}`);
   }
 
   getWithoutEvaluacionCargo(Dependencia: DependenciaList) {
@@ -41,7 +41,7 @@ export class CargoService {
     return list;
   }
 
-  getCargo(id: number): Observable<Result<Cargo>> {
+  getCargo(id: number){
     var list= this.http.get<Result<Cargo>>(`${this.apiUrl}/GetCargo/${id}`);
     return list;
   }
