@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject} from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { Cargo, CargoAsignacion } from '@interfaces/cargo';
-import { EvaluacionCargo } from '@interfaces/evaluacion_cargo';
+import { Cargo, CargoAsignacion, CargosDependenciaGet } from '@interfaces/cargo';
 import { ModalService } from '@services/modal.service';
 import { ModalInterface } from 'flowbite';
 
@@ -27,10 +26,10 @@ export class CantidadAddModalComponent {
     this.modalActivo.hide();
   }
 
-  openModal(cantidad: number, cargo: CargoAsignacion)
+  openModal(cantidad: number, cargo: CargosDependenciaGet)
   {
     this.text = 'Agregar';
-    this.textCargo = cargo.nombre;
+    this.textCargo = cargo.cargoNombre;
     this.modalActivo = this.modalService.createModal('cantidad-add');
     this.modalActivo.show();
   }
