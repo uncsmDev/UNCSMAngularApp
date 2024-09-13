@@ -47,28 +47,31 @@ export default class AsignacionComponent implements OnInit {
 
   saveCargos(){
     this.save = true;
-    this.cargosAsignadosArreglo.forEach((c) => {
-      console.log(c);
+    this.evaluacionCargoSvc.delete(this.cargoId()).subscribe({
+      next: (response) => {
+        this.cargosAsignadosArreglo.forEach((c) => {
+          const cCargo: EvaluacionCargo = {
+            id: 0,
+            cargoEvaluadorId: this.cargoId(),
+            cargoId: c.cargoID,
+            dependenciaId: c.dependenciaID,
+            cantidadEvaluados: 1
+          }
+          this.evaluacionCargoSvc.post(cCargo).subscribe({
+            next: (response) => {
 
-      const cCargo: EvaluacionCargo = {
-        id: 0,
-        cargoEvaluadorId: this.cargoId(),
-        cargoId: c.cargoID,
-        dependenciaId: c.dependenciaID,
-        cantidadEvaluados: 1
+            }
+          })
+        })
       }
-
-      this.evaluacionCargoSvc.post(cCargo).subscribe({
-        next: (response) => {
-          console.log(response);
-        }
-      })
     })
+
+
   }
 
   ngOnInit(): void {
     this.getCargos();
-    this.getEvaluacionCargoPlusCargo();
+
     //this.getDependencia();
     this.getCargo();
   }
@@ -89,30 +92,29 @@ export default class AsignacionComponent implements OnInit {
     })
   }
 
-  getEvaluacionCargo(){
-    this.evaluacionCargoSvc.getEvaluacionCargo(this.cargoId()).subscribe({
-      next: (c) => {
-        console.log(c.data);
-        this.cargosAsignadosArreglo = c.data;
-      }
-    })
-  }
-
   getEvaluacionCargoPlusCargo(){
-    this.evaluacionCargoSvc.getEvaluacionCargoAsignados(this.cargoId()).subscribe({
-      next: (c) => {
-        this.cargosAsignadosArreglo = c.data;
-      }
-    })
+
   }
 
   getCargos(){
     this.cargoSvc.getWithCargos(this.cargoId(), this.dependenciaId()).subscribe({
       next: (c) => {
-        console.log(c.data);
         this.cargosSignal.set(c.data);
         this.cargosArreglo = c.data;
         this.tempCargosArreglo = c.data;
+        this.evaluacionCargoSvc.getEvaluacionCargoAsignados(this.cargoId()).subscribe({
+          next: (c) => {
+            console.log(c)
+            if(c.data != null){
+              this.cargosAsignadosArreglo = c.data;
+              this.cargosSignal.update((p) => {
+                return p.filter((d) => !this.cargosAsignadosArreglo.some(some => some.cargoID == d.cargoID))
+              })
+              this.cargosArreglo = this.cargosSignal();
+              this.tempCargosArreglo = this.cargosSignal();
+            }
+          }
+        })
       }
     })
   }
@@ -127,17 +129,12 @@ export default class AsignacionComponent implements OnInit {
     this.cantidadModal().openModal(6, item);
   }
 
-  comprobarParamostrar(item: number){
-    return !this.cargosAsignadosArreglo.some((a) => a.cargoID == item);
-  }
-
   drop(event: CdkDragDrop<CargosDependenciaGet[]>) {
-    
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       if (event.container.id === 'cargos_asignados') {
-        
+
       } else if (event.container.id === 'cargos') {
 
       }
@@ -153,8 +150,11 @@ export default class AsignacionComponent implements OnInit {
       return index === self.findIndex((a) => {
         return a.cargoID === data.cargoID })
     });
-    
+
+    console.log(this.tempCargosArreglo);
+    console.log(this.cargosAsignadosArreglo);
+
   }
-  
+
 
 }

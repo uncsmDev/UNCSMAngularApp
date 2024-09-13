@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 export class EvaluacionCargoService {
   http = inject(HttpClient);
   ruta = appsettings.apiApp + 'EvaluacionCargo';
-  
+
   getEvaluacionCargo(id: number){
     return this.http.get<Result<CargosDependenciaGet[]>>(`${this.ruta}/GetById/${id}`);
   }
@@ -31,5 +31,7 @@ export class EvaluacionCargoService {
     const body=JSON.stringify(cargoDependencia);
     return this.http.post<Result<EvaluacionCargo>>(`${this.ruta}`, body, {headers});
   }
-
+  delete(CargoEvaluadorId:number) {
+    return this.http.delete<Result<EvaluacionCargo>>(this.ruta+'/DeleteXDependencia/'+CargoEvaluadorId)
+  }
 }

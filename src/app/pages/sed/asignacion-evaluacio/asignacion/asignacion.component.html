@@ -20,8 +20,8 @@
       class="example-list"
       (cdkDropListDropped)="drop($event)">
       @for (item of cargosAsignadosArreglo; track item.cargoID+""+item.dependenciaID) {
-        <div class="example-box overflow-hidden" cdkDrag> <p class="text-sm font-normal dark:text-white text-gray-900 w-2/3 pr-1">{{item.cargoNombre}}</p>  <p class="text-xs font-light dark:text-white text-gray-900 w-1/3 pr-1">{{item.nombreDependencia}}</p> 
-          
+        <div class="example-box overflow-hidden" cdkDrag> <p class="text-sm font-normal dark:text-white text-gray-900 w-2/3 pr-1">{{item.cargoNombre}}</p>  <p class="text-xs font-light dark:text-white text-gray-900 w-1/3 pr-1">{{item.nombreDependencia}}</p>
+
           @if(save) {
           <button class="block p-2 text-sm w-12 text-center text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" (click)="saludo(item)">
           @if(item.evaluacionCargo != null)
@@ -46,7 +46,7 @@
     <div class="flex flex-col items-center mb-2">
         <h2 class="text-lg font-medium dark:text-white text-gray-900 mb-2">Cargos potenciales</h2>
         <div class="w-full">
-           
+
             <div class="relative">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none w-full">
                     <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -68,12 +68,12 @@
       class="example-list"
       (cdkDropListDropped)="drop($event)">
       @for (item of tempCargosArreglo; track item.cargoNombre) {
-        @if(comprobarParamostrar(item.cargoID)){
+
           <div class="example-box" cdkDrag>
             <p class="text-xs font-medium dark:text-white text-gray-900 w-2/4 pr-1">{{item.cargoNombre}}</p>
             <p class="text-xs font-light dark:text-white text-gray-900 w-2/4 pr-1">{{item.nombreDependencia}}</p>
           </div>
-        }
+
       }
     </div>
 </div>
