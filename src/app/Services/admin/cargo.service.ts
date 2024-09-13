@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { appsettings } from '../../Settings/appsettings';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {Cargo, CargoDTO, CargoList, CargoPagination, CargoPaginationDTO, CargosDependenciaGet} from '../../interfaces/cargo';
+import {Cargo, CargoPagination, CargoPaginationDTO, CargosDependenciaGet} from '../../interfaces/cargo';
 import { DependenciaList } from '@interfaces/dependencia';
 
 @Injectable({
@@ -31,27 +31,13 @@ export class CargoService {
     return list;
   }
 
-  getPagination(no_pagina: number): Observable<CargoPagination> {
-    var list= this.http.get<CargoPagination>(`${this.apiUrl}/GetPagination/${no_pagina}`);
-    return list;
-  }
-
-  getPaginationWithDependencia(no_pagina: number): Observable<CargoPaginationDTO> {
-    var list= this.http.get<CargoPaginationDTO>(`${this.apiUrl}/GetPaginationWithDependencia/${no_pagina}`);
-    return list;
-  }
-
   getCargo(id: number){
     var list= this.http.get<Result<Cargo>>(`${this.apiUrl}/GetCargo/${id}`);
     return list;
   }
 
-  googleLogin(idToken: string) {
-    return this.http.post<{ token: string }>(
-      this.apiUrl + 'google-login',
-      {
-        idToken: idToken,
-      }
-    );
+  countCargoTrabajadores(CargoId: number, DependenciaId : number) {
+    var list= this.http.get<Result<number>>(`${this.apiUrl}/CountCargoTrabajadores/${CargoId}/${DependenciaId}`);
+    return list;
   }
 }
