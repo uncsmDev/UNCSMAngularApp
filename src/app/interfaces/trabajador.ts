@@ -6,5 +6,6 @@ export interface Trabajador
     codigo: string,
     fechaIngreso: Date,
     personaId:number,
-    persona:Persona
+    persona:Persona,
+    contratos: number
 }

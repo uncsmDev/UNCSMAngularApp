@@ -1,0 +1,277 @@
+<app-title title="Nuevo Trabajador"/>
+
+<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content" data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500" data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300" role="tablist">
+        <li class="me-2" role="presentation">
+            <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-styled-tab" data-tabs-target="#styled-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Datos Personales</button>
+        </li>
+        <li class="me-2" role="presentation">
+            <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contrato-styled-tab" data-tabs-target="#contrato" type="button" role="tab" aria-controls="contrato" aria-selected="false">Tipo de Trabajador y Contrato</button>
+        </li>
+     
+    </ul>
+</div>
+<div id="default-styled-tab-content">
+    <form  [formGroup]="masterFormInput"  (ngSubmit)="onSubmit()">
+
+        <div class="hidden p-3 rounded-lg bg-gray-50 dark:bg-gray-800" id="styled-profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="card w-full  h-min rounded-lg shadow-md">
+                <div class="grid grid-cols-2 md:grid-cols-2 gap-2 ">
+                    <div class=" flex flex-col md:ml-auto w-full h-min md:py-8 mt-8 md:mt-0 rounded p-3 bg-white dark:bg-gray-900 dark:text-white">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Datos Personales</h5>
+    
+                        <div class="grid gap-6 mb-6 md:grid-cols-2 sm:grid-cols-1">
+                        
+                            <div class="relative">
+                                <label for="dni" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">DNI</label>
+                                        <input type="text" formControlName="dni" name="dni" id="dni" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                                          dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="XXX-XXXXXX-XXXXA" />
+                            </div>
+
+                            <div class="relative">
+                                <label for="fechaNace" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha de Nacimiento</label>
+                                        <input type="date" formControlName="fechaNace" name="fechaNace" id="fechaNace" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                                          dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" />
+                            </div>
+                        </div>
+                        <div class="grid gap-6 mb-6 md:grid-cols-1 sm:grid-cols-1">
+                            <div class="relative">
+                                <label for="nombres" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombres</label>
+                                <input type="text" formControlName="nombres" name="nombres" id="nombres" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                                  dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="José Luis" />
+                            </div>
+                            <div class="relative">
+                                <label for="apellidos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Apellidos</label>
+                                <input type="text" formControlName="apellidos" name="apellidos" id="apellidos" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                                  dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Marquez Stark" />
+                            </div>
+                        </div>
+                        <div class="grid gap-6 mb-6 md:grid-cols-2 sm:grid-cols-1">
+                            <div class="relative">
+                                <form [formGroup]="masterFormInput" class="w-full">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione un Sexo</label>
+                                    <select  name="sexoId" formControlName="sexoId" id="sexoId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                        block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                                        dark:focus:border-blue-500">
+                                        <option value="">--- Sexo ---</option>
+                                        @for (item of sexoList(); track item.id) 
+                                        {
+                                            <option [value]="item.id">{{item.nombre}}</option>
+                                        }
+                                    </select>
+                                </form>
+                            </div>
+                      
+                            <div class="relative">
+                                <form [formGroup]="masterFormInput" class="w-full">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione un Estado Civil</label>
+                                    <select  name="estadoCivilId" formControlName="estadoCivilId" id="estadoCivilId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                        block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                                        dark:focus:border-blue-500">
+                                        <option value="">--- Estado Civil ---</option>
+                                        @for (item of estadoCivils(); track item.id) 
+                                        {
+                                            <option [value]="item.id">{{item.nombre}}</option>
+                                        }
+                                    </select>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-6 mb-6 md:grid-cols-1 sm:grid-cols-1">
+                            <div class="relative">
+                                <label for="correoPersonal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Correo Personal</label>
+                                <input type="text" formControlName="correoPersonal" name="correoPersonal" id="correoPersonal" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                                  dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="jose.marquez@persoal.com" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class=" flex flex-col md:ml-auto w-full h-min md:py-8 mt-8 md:mt-0 rounded p-3 bg-white dark:bg-gray-900 dark:text-white">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Datos Generales</h5>
+    
+                      
+                        <div class="grid gap-6 mb-6 md:grid-cols-2 sm:grid-cols-1">
+                            <div class="relative">
+                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pais</label>
+                                    <select id="paisId"  (change)="onSelectedPais($event)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                        block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                                        dark:focus:border-blue-500">
+                                        <option value="">--- Pais ---</option>
+                                        @for (item of paisList(); track item.id) 
+                                        {
+                                            <option [value]="item.id">{{item.nombre}}</option>
+                                        }
+                                    </select>
+                              
+                            </div>
+                          
+                    
+                            <div class="relative">
+                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Departamento</label>
+                                <select id="paisId"  (change)="onSelectedDepartamento($event)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                    block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                                    dark:focus:border-blue-500">
+                                    <option value="">--- Departamento ---</option>
+                                    @for (item of departamentoList(); track item.id) 
+                                    {
+                                        <option [value]="item.id">{{item.nombre}}</option>
+                                    }
+                                </select>
+                          
+                            </div>
+                        </div>
+
+                        <div class="grid gap-6 mb-6 md:grid-cols-1 sm:grid-cols-1">
+                            <div class="relative">
+                                <form [formGroup]="masterFormInput" class="w-full">
+                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Municipio</label>
+                                <select id="municipioId"   name="municipioId" formControlName="municipioId"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                    block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                                    dark:focus:border-blue-500">
+                                    <option value="">--- Departamento ---</option>
+                                    @for (item of municipioList(); track item.id) 
+                                    {
+                                        <option [value]="item.id">{{item.nombre}}</option>
+                                    }
+                                </select>
+                                </form>
+                            </div>
+                        </div>
+                 
+                        <div class="grid gap-6 mb-6 md:grid-cols-2 sm:grid-cols-1">
+                            <div class="relative">
+                                <label for="codigo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telefono/Celular 1</label>
+                                        <input type="text" formControlName="telefono1" name="telefono1" id="telefono1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                                          dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0000 0000" />
+                            </div>
+                            <div class="relative">
+                                <label for="dni" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telefono/Celular 2</label>
+                                        <input type="text" formControlName="telefono2" name="telefono2" id="telefono2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                                          dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0000 0000" />
+                            </div>
+                        </div>
+                 
+                        <div class="grid gap-6 mb-4 md:grid-cols-1 sm:grid-cols-1">
+                            <div class="relative">
+                                <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dirección</label>
+                                <textarea  formControlName="direccion" name="direccion" id="direccion"  rows="6"  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300
+                                 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                                  dark:focus:ring-blue-500 dark:focus:border-blue-500"  placeholder="Dirección"></textarea>
+                            
+                            </div>
+                          
+                        </div>
+                 
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="hidden p-3 rounded-lg bg-gray-50 dark:bg-gray-800" id="contrato" role="tabpanel" aria-labelledby="contrato-tab">
+            <div class="card w-full  h-min rounded-lg shadow-md">
+                <div class="grid grid-cols-2 md:grid-cols-2 gap-2 ">
+                    <div class=" flex flex-col md:ml-auto w-full h-min md:py-8 mt-8 md:mt-0 rounded p-3 bg-white dark:bg-gray-900 dark:text-white">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Institucional</h5>
+
+
+                        <div class="grid gap-6 mb-6 md:grid-cols-2 sm:grid-cols-1">
+                        
+                            <div class="relative">
+                                <label for="codigo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Código</label>
+                                        <input type="text" formControlName="codigo" name="codigo" id="codigo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                                          dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="00000" />
+                            </div>
+
+                            <div class="relative">
+                                <label for="fechaIngreso" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha de Ingreso</label>
+                                        <input type="date" formControlName="fechaIngreso" name="fechaIngreso" id="fechaIngreso" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                                          dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" />
+                            </div>
+                        </div>
+                    
+                        <div class="grid gap-6 mb-6  md:grid-cols-1">
+                        
+                        </div>
+                        <div class="grid gap-6 md:grid-cols-1">
+                   
+                         
+                        </div>
+                       
+        
+                    </div>
+        
+                    <div class=" flex flex-col md:ml-auto w-full h-min md:py-8 mt-8 md:mt-0 rounded p-3 bg-white dark:bg-gray-900 dark:text-white">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Contrato</h5>
+                        <div class="grid gap-6 mb-6 md:grid-cols-1">
+                            <div class="relative">
+                           
+                            </div>
+    
+                         
+    
+                            <div class="relative">
+                              
+    
+                                <form  class="w-full">
+                                   
+                                  </form>
+                            </div>
+                        </div>
+    
+                        <!--h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Periodo</h5-->
+        
+                        <div class="grid gap-6 mb-6 md:grid-cols-2 sm:grid-cols-1">
+                            <div class="relative ">
+                                <label for="fechaInicio" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha de  Inicio</label>
+                                <div class="relative max-w-sm">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path  d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                        </svg>
+                                    </div>
+                                    <input formControlName="fechaInicio" name="fechaInicio" id="fechaInicio" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm 
+                                                                    rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                                                                     dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="DD/MM/yyyy">
+                                </div>
+                            </div>
+                            <div class="relative ">
+                                <label for="fechaFin" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha que Finaliza</label>
+                                <div class="relative max-w-sm">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                        </svg>
+                                    </div>
+                                    <input formControlName="fechaFin" name="fechaFin" id="fechaFin"
+                                        type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm 
+                                        rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                                         dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="DD/MM/yyyy">
+                                </div>
+    
+    
+                            </div>
+                        </div>
+                    </div>
+        
+        
+                </div>
+            </div>
+        </div>
+    
+
+    </form>
+</div>

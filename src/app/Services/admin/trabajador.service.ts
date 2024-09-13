@@ -17,12 +17,16 @@ export class TrabajadorService {
 
   constructor() { }
 
-  getList(pag:number):  Observable< PackPage<Trabajador>>
+  getList(pag:number): Observable<PackPage<Trabajador>>
   {
     var list= this.http.get<PackPage<Trabajador>>(this.apiUrl+'/GetList?Pagina='+pag);
     return list;
   }
 
-
+  getListWithFilter(pag:number,filterText:string): Observable<PackPage<Trabajador>>
+  {
+    var list= this.http.get<PackPage<Trabajador>>(this.apiUrl+'/GetListWithFilter?Pagina='+pag+"&filterText="+filterText);
+    return list;
+  }
   
 }
