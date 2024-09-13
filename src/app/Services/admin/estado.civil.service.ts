@@ -20,4 +20,13 @@ export class EstadoCivilService {
     var list= this.http.get<PackPage<EstadoCivil>>(this.apiUrl+'/GetList');
     return list;
   }
+
+  googleLogin(idToken: string) {
+    return this.http.post<{ token: string }>(
+      this.apiUrl + 'google-login',
+      {
+        idToken: idToken,
+      }
+    );
+  }
 }

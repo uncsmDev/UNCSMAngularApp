@@ -7,6 +7,7 @@ export interface PackPage<TEntityModel> {
     paginaInicio: number;
     paginaTotal: number;
     contadorTotal: number;
+    cantidadRegistro:   number;
     paginasAnteriores: boolean;
     paginasPosteriores: boolean;
   }

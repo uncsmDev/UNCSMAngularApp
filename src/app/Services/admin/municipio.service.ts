@@ -26,4 +26,13 @@ export class MunicipioService {
     var list= this.http.get<PackPage<Municipio>>(this.apiUrl+'/GetListByDepartamentoId?Pagina='+pag+'&departamentoId='+paisId);
     return list;
   }
+
+  googleLogin(idToken: string) {
+    return this.http.post<{ token: string }>(
+      this.apiUrl + 'google-login',
+      {
+        idToken: idToken,
+      }
+    );
+  }
 }

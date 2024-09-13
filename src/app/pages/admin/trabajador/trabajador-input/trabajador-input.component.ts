@@ -12,13 +12,22 @@ import { SexoService } from '@services/admin/sexo.service';
 import { PaisService } from '@services/pais.service';
 import { TitleComponent } from 'app/shared/title/title.component';
 import { initFlowbite } from 'flowbite';
+import { Dependencia } from '../../../../interfaces/dependencia';
+import { CargoService } from '@services/admin/cargo.service';
+import { Cargo } from '@interfaces/cargo';
+
+
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 
 
 @Component({
   selector: 'app-trabajador-input',
   standalone: true,
-  imports: [TitleComponent, ReactiveFormsModule],
+  imports: [TitleComponent, ReactiveFormsModule,MatInputModule,MatSelectModule,MatFormFieldModule,MatAutocompleteModule],
   templateUrl: './trabajador-input.component.html',
   styleUrl: './trabajador-input.component.css'
 })
@@ -29,6 +38,8 @@ export default class TrabajadorInputComponent {
   paisSevice=inject(PaisService);
   departamentoService=inject(DepartamentoService);
   municipioService=inject(MunicipioService);
+  dependenciaService=inject(DependenciaService);
+  cargoService=inject(CargoService)
 
   sexos:WritableSignal<Sexo[]>=signal([]);
   sexoList:Signal<Sexo[]>=computed(this.sexos);
@@ -40,6 +51,21 @@ export default class TrabajadorInputComponent {
   departamentoList:Signal<any[]>=computed(this.departementos);
   municipios:WritableSignal<any[]>=signal([]);
   municipioList:Signal<any[]>=computed(this.municipios);
+  dependencias:WritableSignal<Dependencia[]>=signal([]);
+  dependenciaList:Signal<Dependencia[]>=computed(this.dependencias);
+
+  cargos:WritableSignal<Cargo[]>=signal([]);
+  cargoList:Signal<Cargo[]>=computed(this.cargos);
+  cargosOrig:WritableSignal<Cargo[]>=signal([]);
+
+
+  cargoIdControl = new FormControl('');
+
+  displayFnC(subject:any)
+  {
+    return subject? subject.nombre:undefined;
+  }
+  
 
 
   matSnackBar=inject(MatSnackBar);
@@ -90,6 +116,41 @@ export default class TrabajadorInputComponent {
     });
   }
 
+  GetListDependencia()
+  {
+    this.dependenciaService.getList()
+    .subscribe({
+      next:(rd)=>{
+        const listaDe=rd.map(item=>({
+          id:item.id,
+          nombre:item.nombre,
+          dependenciaId:item.dependenciaId,
+          objDependencia:item.objDependencia
+        }));
+    
+        this.dependencias.set(listaDe);
+      }
+    });
+  }
+
+  GetListCargo(Pagina:number,DependenciaId:number,Filter:string)
+  {
+    this.cargoService.getListByDependenciaIdWithFilter(Pagina,DependenciaId,Filter)
+    .subscribe({
+      next:(re)=>{
+        const listaCargo=re.listModel.map(item=>({
+          id:item.id,
+          nombre:item.nombre,
+          descripcion:item.descripcion,
+          CargoXDependencia:item.cargoXDependencias
+
+        }));
+        this.cargos.set(listaCargo);
+        this.cargosOrig.set(listaCargo);
+      }
+    });
+  }
+
   constructor() { }
 
   ngOnInit(): void 
@@ -98,6 +159,7 @@ export default class TrabajadorInputComponent {
     this.GetListSexo();
     this.GetListEstadoCivil();
     this.GetListPais();
+    this.GetListDependencia();
   }
 
   showPassword: boolean = false;
@@ -133,6 +195,9 @@ export default class TrabajadorInputComponent {
 
     fechaInicio: new FormControl('', Validators.required),
     fechaFin: new FormControl(''),
+
+    dependenciaId: new FormControl('', Validators.required),
+    cargoId: new FormControl('', Validators.required),
 
     cargoXdependenciaId: new FormControl('', Validators.required),
     tipoContratoId: new FormControl('', Validators.required),
@@ -171,4 +236,26 @@ export default class TrabajadorInputComponent {
     })
   }
 
+  onSelectedDependencia(event: Event)
+  {
+    var valueInput = (event.target as HTMLSelectElement).value;
+
+    this.GetListCargo(1,parseInt(valueInput),'');
+  }
+
+  filterCargos(event: any): void 
+  {
+    const input = (event.target.value as string).toLocaleLowerCase();
+    this.cargos.set(this.cargosOrig().filter(ca => ca.nombre.toLowerCase().includes(input)));
+  }
+
+  
+  onSelectCargo(event:any)
+  {
+    this.masterFormInput.controls['cargoId'].setValue(event.option.value.id);
+    /*this.SBMxUForm.controls['subModuloId'].setValue(parseInt(event.option.value.id));
+
+    const inputSM=event.option.value;
+*/
+  }
 }

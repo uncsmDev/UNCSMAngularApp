@@ -21,4 +21,13 @@ export class SexoService {
     return list;
   }
 
+  googleLogin(idToken: string) {
+    return this.http.post<{ token: string }>(
+      this.apiUrl + 'google-login',
+      {
+        idToken: idToken,
+      }
+    );
+  }
+
 }

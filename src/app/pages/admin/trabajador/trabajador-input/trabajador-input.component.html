@@ -200,9 +200,43 @@
                             </div>
                         </div>
                     
-                        <div class="grid gap-6 mb-6  md:grid-cols-1">
-                        
+                        <div class="grid gap-6 md:grid-cols-1">
+                            <div class="relative">
+                                <form [formGroup]="masterFormInput" class="w-full">
+                                    <label for="dependenciaId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una dependencia</label>
+                                    <select (change)="onSelectedDependencia($event)" id="dependenciaId" formControlName="dependenciaId" name="dependenciaId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                        focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 
+                                        dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="">--- Dependencia ---</option>
+                                        @for (itemD of dependenciaList(); track itemD.id) 
+                                        {
+                                            <option [value]="itemD.id">{{itemD.nombre}}</option>
+                                        }
+                                    </select>
+                                </form>
+                            </div>
+                         
                         </div>
+
+                        <div class="grid gap-6 mb-6  md:grid-cols-1">
+                            <form  class="w-full">
+                                <label class="block text-sm font-medium text-gray-900 dark:text-white">Selecione un Cargo</label>
+                                <mat-form-field  class="w-full h-auto"  appearance="outline">
+                                  <input type="text" (input)="filterCargos($event)" 
+                                         placeholder="Cargo..."
+                                         aria-label="Cargo"
+                                         matInput
+                                         [formControl]="cargoIdControl"
+                                         [matAutocomplete]="autoFC">
+                                  <mat-autocomplete [displayWith]="displayFnC"  #autoFC="matAutocomplete"  id="cargoId"   name="cargoId" (optionSelected)="onSelectCargo($event)">
+                                    @for (item of cargoList() ; track item) {
+                                      <mat-option [value]="item">{{item.nombre}}</mat-option>
+                                    }
+                                  </mat-autocomplete>
+                                </mat-form-field>
+                              </form>
+                        </div>
+
                         <div class="grid gap-6 md:grid-cols-1">
                    
                          

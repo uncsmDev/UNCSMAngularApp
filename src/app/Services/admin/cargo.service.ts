@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Cargo, CargoDTO, CargoList, CargoPagination, CargoPaginationDTO, CargosDependenciaGet} from '../../interfaces/cargo';
 import { DependenciaList } from '@interfaces/dependencia';
+import { PackPage } from '@interfaces/packPage';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,14 @@ export class CargoService {
 
   getCargo(id: number){
     var list= this.http.get<Result<Cargo>>(`${this.apiUrl}/GetCargo/${id}`);
+    return list;
+  }
+
+
+  getListByDependenciaIdWithFilter(pagina: number,dependeciaId: number , filterText: string): Observable<PackPage<Cargo>> {
+
+    
+    var list= this.http.get<PackPage<Cargo>>(`${this.apiUrl}/GetlistByDependenciaId?Pagina=${pagina}&DependenciaId=${dependeciaId}&Filter=${filterText}`);
     return list;
   }
 

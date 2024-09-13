@@ -5,6 +5,7 @@ export interface Cargo
     id: number,
     nombre: string,
     descripcion: string
+    cargoXDependencias?: CargoXDependencia[]
 }
 
 export interface CargoAsignacion

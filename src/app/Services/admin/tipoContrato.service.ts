@@ -19,5 +19,14 @@ export class TipoContratoService {
   getList(): Observable<Result<TipoContrato[]>> {
     return this.http.get<Result<TipoContrato[]>>(this.apiUrl+'/GetList');
   }
+
+  googleLogin(idToken: string) {
+    return this.http.post<{ token: string }>(
+      this.apiUrl + 'google-login',
+      {
+        idToken: idToken,
+      }
+    );
+  }
     
 }

@@ -26,4 +26,13 @@ export class DepartamentoService {
     var list= this.http.get<PackPage<Departamento>>(this.apiUrl+'/GetListByPaisId?Pagina='+pag+'&PaisId='+paisId);
     return list;
   }
+
+  googleLogin(idToken: string) {
+    return this.http.post<{ token: string }>(
+      this.apiUrl + 'google-login',
+      {
+        idToken: idToken,
+      }
+    );
+  }
 }
