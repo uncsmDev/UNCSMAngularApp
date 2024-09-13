@@ -1,4 +1,5 @@
 import { Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
+import { Router } from '@angular/router';
 import { Paginacion } from '@interfaces/packPage';
 import { Trabajador } from '@interfaces/trabajador';
 import { TrabajadorService } from '@services/admin/trabajador.service';
@@ -25,10 +26,12 @@ export default class TrabajadorComponent {
     this.GetListIndex(0);
   }
   
-  constructor() { }
-
+  constructor(private router: Router) { }
+  //-------------- Paginacion datos ---------------------------
   paginacion!:Paginacion;
   
+
+  //-------------- GetLists Inicio ---------------------------
   GetListIndex(Pagina:number)
   {
     this.trabajadorService.getList(Pagina).subscribe(
@@ -39,6 +42,69 @@ export default class TrabajadorComponent {
         }
       }
     );
+  }
+
+  GetListWithFilter(Pag:number,filterText:string)
+  {
+    this.trabajadorService.getListWithFilter(Pag,filterText).subscribe({
+      next: (data) => {
+        this.paginacion=data.paginacion;
+        this.trabajadores.set(data.listModel);
+      }      
+    });
+  }
+
+  //-------------- GetLists Fin ---------------------------
+
+  //-------------- Paginacion Search ---------------------------
+  handlerSearch(texto: KeyboardEvent){
+    if (texto.key === 'Enter') 
+    {
+      const textoEvento = texto.target as HTMLInputElement;
+      const value = textoEvento.value;
+
+      if(value=="")
+        return this.GetListIndex(0);
+   
+      this.GetListWithFilter(0,value);
+    }
+  }
+
+
+   //-------------- Paginacion Inicio ---------------------------
+  previousPage() 
+  {
+    var valueInput = document.getElementById("table-search") as HTMLInputElement;
+    if (valueInput.value == "")
+    {
+      if (this.paginacion.paginasAnteriores == true) 
+      {
+        this.GetListIndex(this.paginacion.paginaInicio - 1);
+      }
+    }
+    else 
+      this.GetListWithFilter(this.paginacion.paginaInicio - 1,valueInput.value);
+  }
+
+   nextPage()
+   {
+    var valueInput = document.getElementById("table-search") as HTMLInputElement;
+    if (valueInput.value == "")
+    {
+      if(this.paginacion.paginasPosteriores==true)
+        {
+          this.GetListIndex(this.paginacion.paginaInicio+1);
+        }
+    }
+    else  this.GetListWithFilter(this.paginacion.paginaInicio + 1,valueInput.value);
+     
+   }
+ 
+   //---------------Paginacion fin --------------------------------
+   
+
+   irInputTrabajador() {
+    this.router.navigate(['/admin/trabajador/nuevo-trabajador']);
   }
 
 }

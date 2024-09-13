@@ -144,6 +144,12 @@ export const routes: Routes = [
                 title: 'Trabajadores',
                 loadComponent: () => import('./pages/admin/trabajador/trabajador.component'),
             }
+            ,
+            {
+                path: 'trabajador/nuevo-trabajador',
+                title: 'Nuevo Trabajador',
+                loadComponent: () => import('./pages/admin/trabajador/trabajador-input/trabajador-input.component'),
+            }
         ]
     
        
