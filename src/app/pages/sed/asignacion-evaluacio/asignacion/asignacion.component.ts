@@ -104,7 +104,6 @@ export default class AsignacionComponent implements OnInit {
         this.tempCargosArreglo = c.data;
         this.evaluacionCargoSvc.getEvaluacionCargoAsignados(this.cargoId()).subscribe({
           next: (c) => {
-            console.log(c)
             if(c.data != null){
               this.cargosAsignadosArreglo = c.data;
               this.cargosSignal.update((p) => {
@@ -126,7 +125,7 @@ export default class AsignacionComponent implements OnInit {
   }
 
   saludo(item: CargosDependenciaGet){
-    this.cantidadModal().openModal(6, item);
+    this.cantidadModal().openModal(item);
   }
 
   drop(event: CdkDragDrop<CargosDependenciaGet[]>) {
@@ -150,9 +149,6 @@ export default class AsignacionComponent implements OnInit {
       return index === self.findIndex((a) => {
         return a.cargoID === data.cargoID })
     });
-
-    console.log(this.tempCargosArreglo);
-    console.log(this.cargosAsignadosArreglo);
 
   }
 

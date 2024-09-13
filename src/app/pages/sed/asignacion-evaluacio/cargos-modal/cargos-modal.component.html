@@ -1,5 +1,5 @@
 <div id="cargos" data-modal-backdrop="static" tabindex="-1" class="hidden overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0">
-    <div class="relative p-4 w-full max-w-4xl h-4/5">
+    <div class="relative p-4 w-full max-w-5xl h-4/5">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 h-4/5">
             <!-- Modal header -->
@@ -31,9 +31,12 @@
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                   <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-600 dark:text-gray-400">
                       <tr>
-                          <th scope="col" class="w-4/5 px-6 py-3">
+                          <th scope="col" class="w-3/5 px-6 py-3">
                               Dirección / División / Áreas
                           </th>
+                          <th scope="col" class="w-1/5 px-6 py-3">
+                            Tipo de Trabajador
+                        </th>
                           <th scope="col" class="w-1/5 px-6 py-3">
                               Acción
                           </th>
@@ -47,9 +50,12 @@
                           @for (item of cargos(); track item.id)
                           {
                               <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                  <th scope="row" class="w-4/5 px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                  <th scope="row" class="w-3/5 px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                      {{item.nombre}}
                                   </th>
+                                  <td class="w-1/5 px-6 py-4">
+                                    {{ item.tipoTrabajador?.nombre }}
+                                  </td>
                                   <td class="w-1/5 px-6 py-4 flex">
                                       <a (click)="link(item)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline hover:text-red-600 cursor-pointer">
                                           <svg class="w-6 h-6 text-gray-800 dark:text-white"   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">

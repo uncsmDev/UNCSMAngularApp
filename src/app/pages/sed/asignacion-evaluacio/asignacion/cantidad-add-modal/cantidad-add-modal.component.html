@@ -18,14 +18,18 @@
             <!-- Modal body -->
             <!-- <form novalidate [formGroup]="instrumentoForm" (ngSubmit)="onSubmit()"> -->
                 <div class="px-6 pt-4 sm:col-span-2 pb-5">
-                    <form class="max-w-sm mx-auto">
-                        <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione la cantidad</label>
-                        <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                          <option value="0">Todos</option>
+                    <form class="max-w-sm mx-auto" [formGroup]="formCount">
+                        <label for="cantidad" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione la cantidad</label>
+                        <select id="cantidad" name="cantidad" formControlName="cantidad" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            @for (c of cantidadArreglo(); track $index) {
+                                <option value="0">{{c}}</option>
+                            }
                         </select>
                       </form>
   
-                                  
+                      <div class="mt-5 p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+                        <span class="font-medium">Advertencia!</span> Esta opción solo aplica para los trabajadores que tienen un contrato indefinido.
+                      </div>
                               </div>
             
         </div>

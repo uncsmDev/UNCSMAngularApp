@@ -1,11 +1,13 @@
 import { CargoXDependencia } from './cargoxdependencia';
 import { EvaluacionCargo } from './evaluacion-cargo';
+import { TipoTrabajador } from './tipoEntidad';
 export interface Cargo
 {
     id: number,
     nombre: string,
-    descripcion: string
-    cargoXDependencias?: CargoXDependencia[]
+    descripcion: string,
+    cargoXDependencias?: CargoXDependencia[],
+    tipoTrabajador?: TipoTrabajador
 }
 
 export interface CargoAsignacion
