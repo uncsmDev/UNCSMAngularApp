@@ -40,8 +40,12 @@ export class CargoService {
 
   getListByDependenciaIdWithFilter(pagina: number,dependeciaId: number , filterText: string): Observable<PackPage<Cargo>> {
 
+    if(filterText !=='')
+      var list= this.http.get<PackPage<Cargo>>(`${this.apiUrl}/GetListByDependenciaIWhithFilter?Pagina=${pagina}&DependenciaId=${dependeciaId}&Filter=${filterText}`);
+    else
+      var list= this.http.get<PackPage<Cargo>>(`${this.apiUrl}/GetListByDependenciaIWhithFilter?Pagina=${pagina}&DependenciaId=${dependeciaId}`);
+      
     
-    var list= this.http.get<PackPage<Cargo>>(`${this.apiUrl}/GetlistByDependenciaId?Pagina=${pagina}&DependenciaId=${dependeciaId}&Filter=${filterText}`);
     return list;
   }
 

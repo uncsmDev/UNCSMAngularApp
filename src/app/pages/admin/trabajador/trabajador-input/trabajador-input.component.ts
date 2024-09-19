@@ -21,13 +21,19 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { TipoContrato } from '@interfaces/tipo_contrato';
+import { TipoContratoService } from '@services/admin/tipoContrato.service';
 
-
+import { FdropzoneComponent } from "../../../../shared/input/fdropzone/fdropzone.component";
+import { SubmoduloService } from '@services/submodulo.service';
+import { SubModuloViewer, SubModuloViewerTable } from '@interfaces/submodulo';
+import { ModuloSelectView } from '@interfaces/modulo';
+import { ModuloService } from '@services/modulo.service';
 
 @Component({
   selector: 'app-trabajador-input',
   standalone: true,
-  imports: [TitleComponent, ReactiveFormsModule,MatInputModule,MatSelectModule,MatFormFieldModule,MatAutocompleteModule],
+  imports: [TitleComponent, ReactiveFormsModule,MatInputModule,MatSelectModule,MatFormFieldModule,MatAutocompleteModule,FdropzoneComponent],
   templateUrl: './trabajador-input.component.html',
   styleUrl: './trabajador-input.component.css'
 })
@@ -39,7 +45,11 @@ export default class TrabajadorInputComponent {
   departamentoService=inject(DepartamentoService);
   municipioService=inject(MunicipioService);
   dependenciaService=inject(DependenciaService);
-  cargoService=inject(CargoService)
+  cargoService=inject(CargoService);
+  tipoContratoService=inject(TipoContratoService);
+  moduloService=inject(ModuloService);
+  
+  SubmoduloService=inject(SubmoduloService);
 
   sexos:WritableSignal<Sexo[]>=signal([]);
   sexoList:Signal<Sexo[]>=computed(this.sexos);
@@ -53,6 +63,19 @@ export default class TrabajadorInputComponent {
   municipioList:Signal<any[]>=computed(this.municipios);
   dependencias:WritableSignal<Dependencia[]>=signal([]);
   dependenciaList:Signal<Dependencia[]>=computed(this.dependencias);
+  tipoContratos:WritableSignal<TipoContrato[]>=signal([]);
+  tipoContratoList:Signal<TipoContrato[]>=computed(this.tipoContratos);
+
+  subModulos:WritableSignal<SubModuloViewer[]>=signal([]);
+  subModuloList:Signal<SubModuloViewer[]>=computed(this.subModulos);
+  subModulosV!: SubModuloViewer[];
+  subModulosT:SubModuloViewerTable[]=[];
+  searchValue!: string;
+  modulos:WritableSignal<ModuloSelectView[]>=signal([]);
+  moduloList:Signal<ModuloSelectView[]>=computed(this.modulos);  
+
+  selectedSubModulo!: SubModuloViewer;
+  filteredSubModulos!: SubModuloViewer[];
 
   cargos:WritableSignal<Cargo[]>=signal([]);
   cargoList:Signal<Cargo[]>=computed(this.cargos);
@@ -151,6 +174,34 @@ export default class TrabajadorInputComponent {
     });
   }
 
+  GetListTipoContrato()
+  {
+    this.tipoContratoService.getList().subscribe({
+      next:(tc)=>{
+        const listTC=tc.data.map(item=>({
+          id:item.id,
+          nombre:item.nombre
+        }));
+
+        this.tipoContratos.set(listTC);
+      }
+    })
+  }
+
+  GetListModulos()
+  {
+    this.moduloService.getList().subscribe({
+      next:(rm)=>{
+        const listmodulo=rm.map(item=>({
+          id:item.id,
+          titulo:item.titulo
+        }));
+        this.modulos.set(listmodulo);
+      }
+
+    });
+  }
+
   constructor() { }
 
   ngOnInit(): void 
@@ -160,6 +211,8 @@ export default class TrabajadorInputComponent {
     this.GetListEstadoCivil();
     this.GetListPais();
     this.GetListDependencia();
+    this.GetListTipoContrato();
+    this.GetListModulos();
   }
 
   showPassword: boolean = false;
@@ -207,6 +260,14 @@ export default class TrabajadorInputComponent {
     confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
     telefono: new FormControl('', Validators.required),
 
+  });
+
+  SBMxUForm=this.fb.group({
+    subModuloId : 0,
+    ApsNetUserId: [''],
+    moduloId: 0,
+    nombres:[''],
+    apellidos:[''],
   });
 
   onSubmit() 
@@ -257,5 +318,91 @@ export default class TrabajadorInputComponent {
 
     const inputSM=event.option.value;
 */
+  }
+
+  
+
+
+  displayFn(subject:any)
+  {
+    return subject? subject.titulo:undefined;
+  }
+  filterSubModulos(event:any): void 
+  {
+    this.GetListSubModuloByIdMoulo(parseInt(this.valIdModuloSelect),event.target.value);
+  }
+
+  GetListSubModuloByIdMoulo(id:number,filter:string)//id Modulo
+  {
+   if(filter==null)
+     filter='';
+
+   this.SubmoduloService.getListByModulo(id,filter).subscribe({
+     next:(rsm)=>{
+       const listSM=rsm.map(item=>({ id:item.id,titulo:item.titulo}));
+       this.subModulos.set(listSM);
+       this.filteredSubModulos = this.subModulosV;
+       this.subModulosV =rsm;
+  
+     this.filteredSubModulos = this.subModulosV;
+     }
+   });
+  }
+
+  deleteSubModuloXUsuario(SMU:SubModuloViewerTable)
+  {
+    
+    this.subModulosT=this.subModulosT.filter( k=>k.id!==SMU.id);
+
+    this.matSnackBar.open('Objeto Eliminado','Cerrar',{ duration:5000, horizontalPosition:'center'});
+
+  }
+
+  pageSize: number = 5;
+  currentPage: number = 1;
+
+  get paginated() {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    return this.subModulosT.slice(start, end);
+  }
+
+  
+  nextPage() {
+    if (this.currentPage * this.pageSize < this.subModulosT.length) {
+      this.currentPage++;
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  onSelectSubModulo(event:any)
+  {
+    this.SBMxUForm.controls['subModuloId'].setValue(parseInt(event.option.value.id));
+
+    const inputSM=event.option.value;
+    
+    if(!this.subModulosT|| this.subModulosT.length==0)
+    {
+      this.subModulosT.push(inputSM);
+    }
+    else 
+      if(!this.subModulosT.find(f=>f.id===inputSM.id))
+        this.subModulosT.push(inputSM);
+  }
+
+  valIdModuloSelect!:string;
+  idSubModuloSelct=0;
+
+  onSelectedModulo(event: Event)
+  {
+    this.SBMxUForm.get('subModuloId')?.enable();
+    this.valIdModuloSelect = (event.target as HTMLSelectElement).value;
+
+    this.GetListSubModuloByIdMoulo(parseInt(this.valIdModuloSelect),'');
   }
 }
