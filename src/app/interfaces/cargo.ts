@@ -30,7 +30,7 @@ export interface CargosDependenciaGet {
     cargoNombre:         string;
     dependenciaSuperior: number;
     evaluacionCargo?:    EvaluacionCargo;
-    cantidadEvaluados?:  number;
+    cantidadEvaluado?:  number;
 }
 
 

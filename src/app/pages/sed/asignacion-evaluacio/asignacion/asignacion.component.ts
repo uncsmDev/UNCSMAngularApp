@@ -57,6 +57,11 @@ export default class AsignacionComponent implements OnInit {
     })
   }
 
+
+  changeCount(event: CargosDependenciaGet){
+    this.cargosAsignadosArreglo.find(f => f.id == event.id)!.cantidadEvaluado = event.cantidadEvaluado;
+  }
+
   getCargos(){
     this.cargoSvc.getWithCargos(this.cargoId(), this.dependenciaId()).subscribe({
       next: (c) => {
@@ -68,7 +73,7 @@ export default class AsignacionComponent implements OnInit {
           next: (c) => {
             if(c.data != null){
               this.cargosAsignadosArreglo = c.data;
-              console.log(this.cargosAsignadosArreglo);
+              
               this.cargosSignal.update((p) => {
                 return p.filter((d) => !this.cargosAsignadosArreglo.some(some => some.cargoID == d.cargoID))
               })
@@ -90,6 +95,7 @@ export default class AsignacionComponent implements OnInit {
   saludo(item: CargosDependenciaGet){
     this.cantidadModal().openModal(item);
   }
+
 
   drop(event: CdkDragDrop<CargosDependenciaGet[]>) {
     if (event.previousContainer === event.container) {
@@ -115,7 +121,6 @@ export default class AsignacionComponent implements OnInit {
       } else if (event.container.id === 'cargos') {
           this.evaluacionCargoSvc.delete(movingItem.id!).subscribe({
           next: (response) => {
-            console.log(response);
           }
         });
       }

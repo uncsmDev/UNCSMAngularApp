@@ -24,19 +24,12 @@
 
          
           <button class="block p-2 text-sm w-12 text-center text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" (click)="saludo(item)">
-          @if(item.evaluacionCargo != null)
-          {
-            @if(item.evaluacionCargo.cantidadEvaluados == null)
-            {
+            @if (item.cantidadEvaluado) {
+              {{item.cantidadEvaluado}}
+            }
+            @else {
               1
             }
-            @else
-            {
-              {{item.evaluacionCargo.cantidadEvaluados}}
-            }
-          }@else {
-            1
-          }
           </button>
         </div>
       }
@@ -80,4 +73,4 @@
   </div>
 </div>
 
-<app-cantidad-add-modal/>
+<app-cantidad-add-modal (emitCantidad)="changeCount($event)"/>

@@ -31,6 +31,13 @@ export class EvaluacionCargoService {
     const body=JSON.stringify(cargoDependencia);
     return this.http.post<Result<EvaluacionCargo>>(`${this.ruta}`, body, {headers});
   }
+
+
+  updateCantidad(id: number, cantidad: number){
+    const headers = { 'content-type': 'application/json'}
+    const body=JSON.stringify(cantidad);
+    return this.http.put<Result<EvaluacionCargo>>(`${this.ruta}/PutCantidad/${id}`, body, {headers});
+  }
   DeleteXDependencia(CargoEvaluadorId:number) {
     return this.http.delete<Result<EvaluacionCargo>>(this.ruta+'/DeleteXDependencia/'+CargoEvaluadorId)
   }
