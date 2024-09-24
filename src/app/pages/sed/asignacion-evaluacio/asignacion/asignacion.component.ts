@@ -39,40 +39,13 @@ export default class AsignacionComponent implements OnInit {
   cargoSvc = inject(CargoService);
   evaluacionCargoSvc = inject(EvaluacionCargoService);
   CargoSvc = inject(CargoService);
-  dependencia = signal<Dependencia>({id: 0, nombre: '', dependenciaId: 0})
-  save = true;
+  dependencia = signal<Dependencia>({} as Dependencia)
   cantidadModal = viewChild.required(CantidadAddModalComponent);
   cargosSignal = signal<CargosDependenciaGet[]>([])
   cargoSignal = signal<Cargo>({} as Cargo);
 
-  saveCargos(){
-    this.save = true;
-    this.evaluacionCargoSvc.delete(this.cargoId()).subscribe({
-      next: (response) => {
-        this.cargosAsignadosArreglo.forEach((c) => {
-          const cCargo: EvaluacionCargo = {
-            id: 0,
-            cargoEvaluadorId: this.cargoId(),
-            cargoId: c.cargoID,
-            dependenciaId: c.dependenciaID,
-            cantidadEvaluados: 1
-          }
-          this.evaluacionCargoSvc.post(cCargo).subscribe({
-            next: (response) => {
-
-            }
-          })
-        })
-      }
-    })
-
-
-  }
-
   ngOnInit(): void {
     this.getCargos();
-
-    //this.getDependencia();
     this.getCargo();
   }
 
@@ -84,28 +57,18 @@ export default class AsignacionComponent implements OnInit {
     })
   }
 
-  getDependencia(){
-    this.evaluacionCargoSvc.getDependencia(this.cargoId()).subscribe({
-      next:(dp) => {
-        this.dependencia.set(dp.data);
-      }
-    })
-  }
-
-  getEvaluacionCargoPlusCargo(){
-
-  }
-
   getCargos(){
     this.cargoSvc.getWithCargos(this.cargoId(), this.dependenciaId()).subscribe({
       next: (c) => {
         this.cargosSignal.set(c.data);
         this.cargosArreglo = c.data;
         this.tempCargosArreglo = c.data;
+
         this.evaluacionCargoSvc.getEvaluacionCargoAsignados(this.cargoId()).subscribe({
           next: (c) => {
             if(c.data != null){
               this.cargosAsignadosArreglo = c.data;
+              console.log(this.cargosAsignadosArreglo);
               this.cargosSignal.update((p) => {
                 return p.filter((d) => !this.cargosAsignadosArreglo.some(some => some.cargoID == d.cargoID))
               })
@@ -132,10 +95,29 @@ export default class AsignacionComponent implements OnInit {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
+      const previousIndex = event.previousIndex;
+      const movingItem: CargosDependenciaGet = event.previousContainer.data[previousIndex];
+
       if (event.container.id === 'cargos_asignados') {
+        const cCargo: EvaluacionCargo = {
+          id: 0,
+          cargoEvaluadorId: this.cargoId(),
+          cargoId: movingItem.cargoID,
+          dependenciaId: movingItem.dependenciaID,
+          cantidadEvaluados: 1
+        }
+        this.evaluacionCargoSvc.post(cCargo).subscribe({
+          next: (response) => {
+            this.cargosAsignadosArreglo.find(f => f.cargoID == movingItem.cargoID)!.id = response.data.id;
+          }
+        })
 
       } else if (event.container.id === 'cargos') {
-
+          this.evaluacionCargoSvc.delete(movingItem.id!).subscribe({
+          next: (response) => {
+            console.log(response);
+          }
+        });
       }
       transferArrayItem(
         event.previousContainer.data,
@@ -143,13 +125,11 @@ export default class AsignacionComponent implements OnInit {
         event.previousIndex,
         event.currentIndex,
       );
-      this.save = false;
     }
     this.tempCargosArreglo = this.tempCargosArreglo.filter((data, index, self) =>{
       return index === self.findIndex((a) => {
         return a.cargoID === data.cargoID })
     });
-
   }
 
 
