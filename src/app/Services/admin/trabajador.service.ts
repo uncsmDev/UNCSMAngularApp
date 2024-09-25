@@ -1,10 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { appsettings } from '../../Settings/appsettings';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Trabajador} from '../../interfaces/trabajador';
 import { Result } from '@interfaces/Result.interface';
 import { PackPage, Paginacion } from '@interfaces/packPage';
+import { TrabajadorInput } from '@interfaces/trabajadorInput';
+import { Persona } from '@interfaces/persona';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +29,27 @@ export class TrabajadorService {
   {
     var list= this.http.get<PackPage<Trabajador>>(this.apiUrl+'/GetListWithFilter?Pagina='+pag+"&filterText="+filterText);
     return list;
+  }
+
+  postFull(data:TrabajadorInput,file?:File|any) : Observable<Result<Persona>>
+  {
+    const formData:FormData = new FormData();
+
+    if(file && file.size > 0)
+      formData.append('File', file, file.name);
+
+
+    Object.keys(data).forEach(key => {
+      const value = (data as any)[key]; // Obtener el valor de la propiedad
+    
+      if (value !== null && value !== undefined) {
+        formData.append(key, value);
+      }
+    });
+
+    formData.delete('SubModulos');
+    formData.append('SubModulos', JSON.stringify(data.SubModulos));
+    return this.http.post<Result<any>>(this.apiUrl+'/PostFull',formData, {  headers: new HttpHeaders({ 'Accept': '*/*' })});
   }
   
   googleLogin(idToken: string) {
