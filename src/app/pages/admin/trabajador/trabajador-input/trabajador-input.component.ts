@@ -288,8 +288,10 @@ export default class TrabajadorInputComponent {
         next:u=>
         {
           if(u.status==ResultEnum.Created ||u.status==ResultEnum.Success)
-            
+          {
             this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+            this.masterFormInput.reset();
+          }
           else
             this.matSnackBar.open("Dato no guardado "+u.message ,'Cerrar',{ duration:5000, horizontalPosition:'center'});
         }
@@ -300,46 +302,6 @@ export default class TrabajadorInputComponent {
     } 
     else
       this.matSnackBar.open("Formulario Invalido",'Cerrar',{ duration:5000, horizontalPosition:'center'});
-    /*
-    
-    
-
-
-    if (this.masterForm.valid && f) 
-    {
-      //const moduloIn: ModuloView = this.moduloFormInput.value as unknown as ModuloView;
-      const inputMaster: EntidadFullDto = this.masterForm.value as unknown as EntidadFullDto;
-   
-      inputMaster.tipoEntidad = this._tiposEntidades;
-
-      inputMaster.SubModulos = this.subModulosT;
-      console.log(inputMaster);
-
-      debugger;
-      console.log('OnSumit   valid::::: ');
-
-      this.entidadService.postFullMaster(inputMaster,this.archivoService.file).subscribe({
-        next: u=>{
-
-          if(u.status==ResultEnum.Created ||u.status==ResultEnum.Success)
-            this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
-          else if(u.status==ResultEnum.Error)
-            this.matSnackBar.open(u.message,'Cerrar',{ duration:5000, horizontalPosition:'center'});
-
-
-        },
-        error: (error) => { 
-
-            this.matSnackBar.open(error,'Cerrar',{ duration:5000, horizontalPosition:'center'});
-         }
-      });
-
-    }
-    else
-      this.matSnackBar.open("Complete los datos para poder Guardar",'Cerrar',{ duration:5000, horizontalPosition:'center'});
-
-    */
-
   }
 
   onSelectedPais(event: Event)
@@ -430,7 +392,6 @@ export default class TrabajadorInputComponent {
     const end = start + this.pageSize;
     return this.subModulosT.slice(start, end);
   }
-
   
   nextPage() {
     if (this.currentPage * this.pageSize < this.subModulosT.length) {

@@ -109,11 +109,6 @@ export const routes: Routes = [
                 loadComponent: () => import('./pages/admin/entidad/entidad.component'),
             },
             {
-                path: 'perfilEntidad/:id',
-                title: 'Perfil',
-                loadComponent: () => import('./pages/admin/perfilEntidad/perfil.entidad.component'),
-            },
-            {
                 path:'inputEntidad',
                 title:'Agregar Trabajador',
                 loadComponent:()=>import('./pages/admin/entidad/inputentidad/input.entidad.component'),
@@ -149,6 +144,16 @@ export const routes: Routes = [
                 path: 'trabajador/nuevo-trabajador',
                 title: 'Nuevo Trabajador',
                 loadComponent: () => import('./pages/admin/trabajador/trabajador-input/trabajador-input.component'),
+            },
+            {
+                path: 'perfilEntidad/:id',
+                title: 'Perfil',
+                loadComponent: () => import('./pages/admin/perfilEntidad/perfil.entidad.component'),
+            },
+            {
+                path: 'trabajador/perfil/:id',
+                title: 'Perfil Trabajador',
+                loadComponent: () => import('./pages/admin/trabajador/trabajador-perfil/trabajador-perfil.component'),
             }
         ]
     
