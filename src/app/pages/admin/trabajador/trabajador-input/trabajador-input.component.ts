@@ -1,4 +1,4 @@
-import { Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, Signal, signal, WritableSignal, input } from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, FormControl, Validators} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EstadoCivil } from '@interfaces/estado.civil';
@@ -29,11 +29,16 @@ import { SubmoduloService } from '@services/submodulo.service';
 import { SubModuloViewer, SubModuloViewerTable } from '@interfaces/submodulo';
 import { ModuloSelectView } from '@interfaces/modulo';
 import { ModuloService } from '@services/modulo.service';
+import { ArchivoService } from '@services/admin/archivo.service';
+import { TrabajadorInput } from '@interfaces/trabajadorInput';
+import { TrabajadorService } from '@services/admin/trabajador.service';
+import { ResultEnum } from '@interfaces/Result.interface';
 
 @Component({
   selector: 'app-trabajador-input',
   standalone: true,
-  imports: [TitleComponent, ReactiveFormsModule,MatInputModule,MatSelectModule,MatFormFieldModule,MatAutocompleteModule,FdropzoneComponent],
+  imports: [TitleComponent, ReactiveFormsModule,MatInputModule,
+    MatSelectModule,MatFormFieldModule,MatAutocompleteModule,FdropzoneComponent],
   templateUrl: './trabajador-input.component.html',
   styleUrl: './trabajador-input.component.css'
 })
@@ -48,8 +53,9 @@ export default class TrabajadorInputComponent {
   cargoService=inject(CargoService);
   tipoContratoService=inject(TipoContratoService);
   moduloService=inject(ModuloService);
-  
+  archivoService=inject(ArchivoService);
   SubmoduloService=inject(SubmoduloService);
+  trabajadorService=inject(TrabajadorService);
 
   sexos:WritableSignal<Sexo[]>=signal([]);
   sexoList:Signal<Sexo[]>=computed(this.sexos);
@@ -89,8 +95,6 @@ export default class TrabajadorInputComponent {
     return subject? subject.nombre:undefined;
   }
   
-
-
   matSnackBar=inject(MatSnackBar);
   fb = inject(FormBuilder);
 
@@ -226,7 +230,6 @@ export default class TrabajadorInputComponent {
     this.showPasswordRe = !this.showPasswordRe;
   }
 
-
   masterFormInput = this.fb.group
   ({
     id: [0],
@@ -252,7 +255,7 @@ export default class TrabajadorInputComponent {
     dependenciaId: new FormControl('', Validators.required),
     cargoId: new FormControl('', Validators.required),
 
-    cargoXdependenciaId: new FormControl('', Validators.required),
+   // cargoXdependenciaId: new FormControl('', Validators.required),
     tipoContratoId: new FormControl('', Validators.required),
 
     email: ['', [Validators.required, Validators.email]],
@@ -264,16 +267,80 @@ export default class TrabajadorInputComponent {
 
   SBMxUForm=this.fb.group({
     subModuloId : 0,
-    ApsNetUserId: [''],
     moduloId: 0,
-    nombres:[''],
-    apellidos:[''],
   });
 
   onSubmit() 
   {
-  }
+    let f:Boolean=true;
 
+     
+    if(!this.archivoService.file||this.archivoService.file.length === 0)
+      this.matSnackBar.open("Agregue una Imagen/Foto de Perfil mas tarde",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+    
+    if(this.masterFormInput.valid)
+    {
+      const input:TrabajadorInput=this.masterFormInput.value as unknown as TrabajadorInput;
+
+      input.SubModulos=this.subModulosT;
+
+      this.trabajadorService.postFull(input,this.archivoService.file).subscribe({
+        next:u=>
+        {
+          if(u.status==ResultEnum.Created ||u.status==ResultEnum.Success)
+            
+            this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+          else
+            this.matSnackBar.open("Dato no guardado "+u.message ,'Cerrar',{ duration:5000, horizontalPosition:'center'});
+        }
+      })
+
+      console.log(input);
+      this.matSnackBar.open("Formulario Valido",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+    } 
+    else
+      this.matSnackBar.open("Formulario Invalido",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+    /*
+    
+    
+
+
+    if (this.masterForm.valid && f) 
+    {
+      //const moduloIn: ModuloView = this.moduloFormInput.value as unknown as ModuloView;
+      const inputMaster: EntidadFullDto = this.masterForm.value as unknown as EntidadFullDto;
+   
+      inputMaster.tipoEntidad = this._tiposEntidades;
+
+      inputMaster.SubModulos = this.subModulosT;
+      console.log(inputMaster);
+
+      debugger;
+      console.log('OnSumit   valid::::: ');
+
+      this.entidadService.postFullMaster(inputMaster,this.archivoService.file).subscribe({
+        next: u=>{
+
+          if(u.status==ResultEnum.Created ||u.status==ResultEnum.Success)
+            this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+          else if(u.status==ResultEnum.Error)
+            this.matSnackBar.open(u.message,'Cerrar',{ duration:5000, horizontalPosition:'center'});
+
+
+        },
+        error: (error) => { 
+
+            this.matSnackBar.open(error,'Cerrar',{ duration:5000, horizontalPosition:'center'});
+         }
+      });
+
+    }
+    else
+      this.matSnackBar.open("Complete los datos para poder Guardar",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+
+    */
+
+  }
 
   onSelectedPais(event: Event)
   {
@@ -299,8 +366,9 @@ export default class TrabajadorInputComponent {
 
   onSelectedDependencia(event: Event)
   {
+    
+    this.cargoIdControl.setValue('');
     var valueInput = (event.target as HTMLSelectElement).value;
-
     this.GetListCargo(1,parseInt(valueInput),'');
   }
 
@@ -310,7 +378,6 @@ export default class TrabajadorInputComponent {
     this.cargos.set(this.cargosOrig().filter(ca => ca.nombre.toLowerCase().includes(input)));
   }
 
-  
   onSelectCargo(event:any)
   {
     this.masterFormInput.controls['cargoId'].setValue(event.option.value.id);
@@ -319,9 +386,6 @@ export default class TrabajadorInputComponent {
     const inputSM=event.option.value;
 */
   }
-
-  
-
 
   displayFn(subject:any)
   {

@@ -1,0 +1,11 @@
+@media (prefers-color-scheme: dark) {
+    input[matInput] {
+      background-color: #ffffff; /* gris oscuro */
+      color: #000000; /* texto blanco */
+      border-color: #000000; /* borde gris oscuro */
+    }
+  
+    aria-label {
+      color: #fff; /* texto blanco */
+    }
+  }
