@@ -8,6 +8,7 @@ export interface Instrumento {
     tipoEvaluacionId:     number;
     tipoTrabajadorId:       number;
     dimensiones?:         Dimension[];
+    habilitar?:            boolean;
 }
 export type tipoModal =  'add' | 'edit'
 export type postDelete =  'instrumento' | 'dimension'

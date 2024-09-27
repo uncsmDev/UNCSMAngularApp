@@ -43,13 +43,8 @@ export class TipoTrabajadorService {
     var list= this.http.get<Result<TipoEntidad[]>>(this.apiUrl+'/GetListByEntidadId?id='+id+'&filter='+filter);
     return list;
   }
-
-  googleLogin(idToken: string) {
-    return this.http.post<{ token: string }>(
-      this.apiUrl + 'google-login',
-      {
-        idToken: idToken,
-      }
-    );
+  getOne(id:number)
+  {
+    return this.http.get<Result<TipoTrabajador>>(`${this.apiUrl}/GetOne/${id}`);
   }
 }

@@ -31,6 +31,8 @@ export interface CargosDependenciaGet {
     dependenciaSuperior: number;
     evaluacionCargo?:    EvaluacionCargo;
     cantidadEvaluado?:  number;
+    nombreTipoTrabajador:string;
+    tipoTrabajadorId:number;
 }
 
 

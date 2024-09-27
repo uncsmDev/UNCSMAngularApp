@@ -44,7 +44,6 @@ export class CantidadAddModalComponent {
     this.cargo.set(cargo);
     this.formCount.controls['cantidad'].setValue(cargo.cantidadEvaluado!);
     this.cargoSvc.countCargoTrabajadores(cargo.cargoID, cargo.dependenciaID).subscribe({
-
       next: (response) => {
         this.cantidad.set(response.data);
         this.cantidadArreglo.set([]);

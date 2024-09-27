@@ -14,6 +14,9 @@ import { Router, RouterLink } from '@angular/router';
 import { DimensionService } from '@services/sed/dimension.service';
 import { FlowbitSharedService } from '@services/flowbit-shared.service';
 import { ModalDimensionesComponent } from "./modal-dimensiones/modal-dimensiones.component";
+import { TipoTrabajador } from '@interfaces/tipoEntidad';
+import { TipoTrabajadorService } from '@services/admin/tipoTrabajador.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-instrumento',
@@ -31,6 +34,7 @@ export default class InstrumentoComponent {
   router = inject(Router);
   fb = inject(FormBuilder);
   instrumentoService = inject(InstrumentoService);
+  tipoTrabajadorSvc = inject(TipoTrabajadorService);
   dimensionService = inject(DimensionService);
   modalService = inject(ModalService);
   flowbitSharedService = inject(FlowbitSharedService);
@@ -44,7 +48,8 @@ export default class InstrumentoComponent {
   PostType:tipoModal = 'add';
   postDelete: postDelete = 'instrumento';
 
-  _instrumentos = signal<Instrumento[]>([]); 
+  _instrumentos = signal<Instrumento[]>([]);
+  tipoTrabajadorSignal = signal<TipoTrabajador>({} as TipoTrabajador); 
   dimensiones = signal<Dimension[]>([]);
 
   modeloInstrumento = signal<Instrumento|null>(null);
@@ -56,14 +61,22 @@ export default class InstrumentoComponent {
   tipoFormulario: TipoFormulario = 'instrumento';
 
   ngOnInit() {
-    
     this.getDimension();
     this.getInstrumento();
+    this.getTipoTrabajador();
   }
 
+getTipoTrabajador(){
+this.tipoTrabajadorSvc.getOne(this.TipoTrabajadorId()).subscribe({
+  next: (data) => {
+    this.tipoTrabajadorSignal.set(data.data!);
+  }
+})
+}
   getInstrumento(){
     this.instrumentoService.GetxTipoTrabajadorxTipoEvaluacion(this.TipoEvaluacionId(), this.TipoTrabajadorId()).subscribe({
       next: (datos) => {
+        console.log(datos.data);
         this._instrumentos.set(datos.data);
       }
     })
@@ -178,6 +191,12 @@ else{
     }
     
     this.getInstrumento()
+  }
+
+  onChange(event: Event){
+    const input = event.target as HTMLInputElement;
+    const value = Number.parseInt(input.value);
+    this.instrumentoService.putHabilitar(value, this.TipoTrabajadorId(), this.TipoEvaluacionId()).subscribe();
   }
 
   deletedInstrumento(){

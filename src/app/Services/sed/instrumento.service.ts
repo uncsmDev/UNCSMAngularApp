@@ -50,6 +50,12 @@ export class InstrumentoService {
     return this.http.put<Result<Instrumento>>(`${this.ruta}/${ins.id}`, body, {headers});
   }
 
+  putHabilitar(InstrumentoId: number, tipoTrabajador: number, tipoEvaluacion: number){
+    const headers = {'content-type': 'application/json'}
+    const body = JSON.stringify(InstrumentoId);
+    return this.http.put<Result<Instrumento>>(`${this.ruta}/UpdateHabilitar/${tipoTrabajador}/${tipoEvaluacion}`, body, {headers});
+  }
+
   putDimension(dimension: Dimension): Observable<any>{
     const headers = {'content-type': 'application/json'}
     const body = JSON.stringify(dimension);

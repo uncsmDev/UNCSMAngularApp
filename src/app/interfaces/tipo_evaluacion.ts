@@ -8,4 +8,5 @@ export interface TipoEvaluacion {
     siglas:            string;
     descripcion:       string;
     instrumentos?:     Instrumento;
+    porcentaje?:       number;
 }

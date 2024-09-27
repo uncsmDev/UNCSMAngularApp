@@ -1,3 +1,4 @@
+import { TipoTrabajadorEnum } from './../../../../interfaces/enums.inteface';
 import { CommonModule } from '@angular/common';
 import { Component, inject, input, signal, viewChild, type OnInit } from '@angular/core';
 import {
@@ -32,7 +33,7 @@ export default class AsignacionComponent implements OnInit {
   cargosArreglo:CargosDependenciaGet[] = [];
   tempCargosArreglo:CargosDependenciaGet[] = [];
   cargosAsignadosArreglo:CargosDependenciaGet[] = [];
-
+  TipoTrabajadorEnum = TipoTrabajadorEnum;
   cargoId = input.required<number>({alias: "id"});
   dependenciaId = input.required<number>({alias: "dependenciaId"});
 
@@ -52,6 +53,7 @@ export default class AsignacionComponent implements OnInit {
   getCargo(){
     this.CargoSvc.getCargo(this.cargoId()).subscribe({
       next: (c) => {
+        console.log(c);
         this.cargoSignal.set(c.data);
       }
     })
@@ -71,6 +73,7 @@ export default class AsignacionComponent implements OnInit {
 
         this.evaluacionCargoSvc.getEvaluacionCargoAsignados(this.cargoId()).subscribe({
           next: (c) => {
+            console.log(c);
             if(c.data != null){
               this.cargosAsignadosArreglo = c.data;
               
@@ -110,11 +113,12 @@ export default class AsignacionComponent implements OnInit {
           cargoEvaluadorId: this.cargoId(),
           cargoId: movingItem.cargoID,
           dependenciaId: movingItem.dependenciaID,
-          cantidadEvaluados: 1
+          cantidadEvaluados: this.cargoSignal().tipoTrabajador!.id == TipoTrabajadorEnum.DIRECTIVO ? 0 : 1
         }
         this.evaluacionCargoSvc.post(cCargo).subscribe({
           next: (response) => {
             this.cargosAsignadosArreglo.find(f => f.cargoID == movingItem.cargoID)!.id = response.data.id;
+            this.cargosAsignadosArreglo.find(f => f.cargoID == movingItem.cargoID)!.cantidadEvaluado = 1;
           }
         })
 

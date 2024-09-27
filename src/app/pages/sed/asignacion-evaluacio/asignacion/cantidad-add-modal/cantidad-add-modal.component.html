@@ -33,7 +33,14 @@
                       </form>
   
                       <div class="mt-5 p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
-                        <span class="font-medium">Advertencia!</span> Seleccione la cantidad de evaluados.
+                        <span class="font-medium">Advertencia!</span> <br>
+                        <ol class="max-w-md space-y-1  list-decimal list-inside ">
+                            <li>Seleccione la cantidad de evaluados.</li>
+                            @if(cantidadArreglo().length == cantidad() || cantidad() == 1) {
+                                <li>Auto-evaluación</li>
+                            }
+                        </ol>
+                        
                       </div>
                               </div>
             

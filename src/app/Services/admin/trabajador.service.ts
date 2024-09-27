@@ -28,13 +28,6 @@ export class TrabajadorService {
     var list= this.http.get<PackPage<Trabajador>>(this.apiUrl+'/GetListWithFilter?Pagina='+pag+"&filterText="+filterText);
     return list;
   }
+
   
-  googleLogin(idToken: string) {
-    return this.http.post<{ token: string }>(
-      this.apiUrl + 'google-login',
-      {
-        idToken: idToken,
-      }
-    );
-  }
 }

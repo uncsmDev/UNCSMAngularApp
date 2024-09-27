@@ -18,4 +18,11 @@ export class TipoEvaluacionesService {
   {
     return this.http.get<Result<TipoEvaluacion[]>>(this.ruta);
   }
+
+
+  updatePorcentaje(cantidad: number, id: number){
+    const headers = {'content-type': 'application/json'}
+    const body = JSON.stringify(cantidad);
+    return this.http.put<Result<TipoEvaluacion>>(`${this.ruta}/UpdatePorcentaje/${id}`, body, {headers});
+  }
 }

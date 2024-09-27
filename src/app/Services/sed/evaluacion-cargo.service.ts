@@ -31,8 +31,6 @@ export class EvaluacionCargoService {
     const body=JSON.stringify(cargoDependencia);
     return this.http.post<Result<EvaluacionCargo>>(`${this.ruta}`, body, {headers});
   }
-
-
   updateCantidad(id: number, cantidad: number){
     const headers = { 'content-type': 'application/json'}
     const body=JSON.stringify(cantidad);
