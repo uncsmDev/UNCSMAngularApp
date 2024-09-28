@@ -1,13 +1,12 @@
-import { Component, Input, booleanAttribute } from '@angular/core';
+import { Component, Input, booleanAttribute, signal } from '@angular/core';
 import { Location } from '@angular/common';
+import { LoginResult } from '@interfaces/acount';
 
 @Component({
   selector: 'app-title',
   standalone: true,
   imports: [],
   template:`
-
-
       <div class="flex justify-between items-center w-full">
         <div>
     <!-- Título a la Izquierda -->
@@ -29,9 +28,14 @@ import { Location } from '@angular/common';
 })
 export class TitleComponent {
   @Input({ required: true }) title!: string;
+  name = signal('');
+  img = signal('');
 
   constructor(private location: Location){}
 
+  ngOnInit() {
+    
+  }
   
   goBack(): void {
     this.location.back();

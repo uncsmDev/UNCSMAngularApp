@@ -1,3 +1,4 @@
+import { Result } from './../../interfaces/Result.interface';
 import { Injectable, inject } from '@angular/core';
 import { appsettings } from '../../Settings/appsettings';
 import { HttpClient } from '@angular/common/http';
@@ -24,15 +25,4 @@ export class DependenciaService {
     var list= this.http.get<DependenciaPagination>(`${this.apiUrl}/GetPagination/${no_pagina}/${filtro}`);
     return list;
   }
-
-  googleLogin(idToken: string) {
-    return this.http.post<{ token: string }>(
-      this.apiUrl + 'google-login',
-      {
-        idToken: idToken,
-      }
-    );
-  }
-
-  constructor() { }
 }

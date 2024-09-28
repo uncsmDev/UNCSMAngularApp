@@ -101,7 +101,6 @@ entidadFormEdit=this.fb.group({
 
     this._entidadService.getById(this.userId).subscribe({
       next: (ent) => {
-
         this.entidad = ent.data; 
         this.persona=ent.data?.persona;
         this.sexo=this.persona.sexoes;

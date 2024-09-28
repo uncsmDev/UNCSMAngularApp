@@ -17,6 +17,13 @@ export const routes: Routes = [
                     redirectTo: 'sed/home',
                     pathMatch: 'full',
                   },
+                  {
+                    path: 'aplicacion/:id',
+                    title: 'Aplicación de la Evaluación',
+                    loadComponent: () => import('./pages/sed/home/AplicacionEvaluacion/AplicacionEvaluacion.component'),
+                    data: { breadcrumb: 'Escalas' },
+                    canActivate: [routerPermisseGuard]
+                  },
                 {
                     
                     path: 'escala',

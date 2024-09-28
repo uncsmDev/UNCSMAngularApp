@@ -7,6 +7,7 @@ import { SidemenuComponent } from '../../shared/sidemenu/sidemenu.component';
 import { initFlowbite } from 'flowbite';
 import { SubModulo } from '../../interfaces/submodulo';
 import { SpinnerGeneralComponent } from 'app/components/spinner/spinner.component';
+import { LoginResult, TokenData } from '@interfaces/acount';
 
 @Component({
   selector: 'app-sed',
@@ -18,5 +19,5 @@ import { SpinnerGeneralComponent } from 'app/components/spinner/spinner.componen
 export default class SedComponent {
   ngOnInit(){
     initFlowbite();
-  }
+  }  
 }

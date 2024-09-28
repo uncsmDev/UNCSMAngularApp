@@ -1,8 +1,8 @@
 declare var google: any;
 
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoginResult } from '../interfaces/acount';
+import { LoginResult, TokenData } from '../interfaces/acount';
 import { HttpClient } from '@angular/common/http';
 import { appsettings } from '../Settings/appsettings';
 
@@ -16,6 +16,8 @@ export class AuthService {
 
   private apiUrl:string = appsettings.apiUrl + "Account/";
   private tokenKey='token';
+
+  DataToken = signal<TokenData>({} as TokenData);
 
   constructor() { }
 
@@ -57,5 +59,20 @@ export class AuthService {
         return true;
       }
     return false;
+  }
+
+  getDataUser(){
+    const tokenString = sessionStorage.getItem("loggedInUser");
+    const token: LoginResult = tokenString ? JSON.parse(tokenString) : null;
+    const tokenParse: TokenData = JSON.parse(atob(token.token.split(".")[1]));
+    if(tokenParse !== null)
+    {
+      this.DataToken.set(tokenParse)
+      return this.DataToken()
+    }else
+    {
+        this.DataToken.set({} as TokenData) ;
+        return this.DataToken()
+    }
   }
 }
