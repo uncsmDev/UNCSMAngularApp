@@ -3,9 +3,9 @@
 import { PreguntasCerradas } from "./pregunta_cerradas";
 
 export interface Dimension {
-    id:                number;
-    nombre:            string;
+    id:                 number;
+    nombre:             string;
     instrumentoId:      number;
-    preguntasCerradas?:         PreguntasCerradas[];
+    preguntasCerradas?: PreguntasCerradas[];
 }
 

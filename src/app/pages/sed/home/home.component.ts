@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
@@ -11,7 +12,7 @@ import { EvaluacionTrabajadorService } from '@services/sed/EvaluacionTrabajador.
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, DatePipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

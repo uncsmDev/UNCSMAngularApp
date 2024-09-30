@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
+import { Instrumento } from '@interfaces/instrumento';
 import { Result } from '@interfaces/Result.interface';
 import { appsettings } from 'app/Settings/appsettings';
 
@@ -22,5 +23,9 @@ export class EvaluacionTrabajadorService {
 
   GetByIdEvaluado(id: number){
     return this.http.get<Result<PersonaInfoDTO>>(`${this.apiUrl}/GetByIdEvaluado/${id}`);
+  }
+
+  GetInstrumento(tipoTrabajadorId: number, tipoEvaluacionId: number){
+    return this.http.get<Result<Instrumento>>(`${this.apiUrl}/GetInstrumento/${tipoTrabajadorId}/${tipoEvaluacionId}`);
   }
 }
