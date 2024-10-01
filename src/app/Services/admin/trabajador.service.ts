@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import {Trabajador} from '../../interfaces/trabajador';
 import { Result } from '@interfaces/Result.interface';
 import { PackPage, Paginacion } from '@interfaces/packPage';
-import { TrabajadorInput } from '@interfaces/trabajadorInput';
+import { TrabajadorDto, TrabajadorInput } from '@interfaces/trabajadorInput';
 import { Persona } from '@interfaces/persona';
 
 @Injectable({
@@ -52,4 +52,9 @@ export class TrabajadorService {
     return this.http.post<Result<any>>(this.apiUrl+'/PostFull',formData, {  headers: new HttpHeaders({ 'Accept': '*/*' })});
   }
   
+  getById(id:number): Observable<Result<TrabajadorDto>>   
+  {
+    var trabajador= this.http.get<Result<TrabajadorDto>>(this.apiUrl+'/GetById?IdTrabajador='+id);
+    return trabajador;
+  }
 }

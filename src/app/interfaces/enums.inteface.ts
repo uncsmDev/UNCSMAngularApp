@@ -3,3 +3,9 @@ export enum TipoTrabajadorEnum {
     DOCENTE = 2,
     ADMINISTRATIVO = 3
 }
+
+export enum TipoContratoEnum
+{
+    TEMPORAL = 1,
+    INDEFINIDO = 2
+}
