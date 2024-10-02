@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
@@ -12,7 +12,7 @@ import { EvaluacionTrabajadorService } from '@services/sed/EvaluacionTrabajador.
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, DatePipe],
+  imports: [RouterLink, DatePipe, JsonPipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -45,6 +45,7 @@ export default class HomeComponent {
       {
         next: (res) => {
           this.Trabajadores.set(res.data);
+          console.log(this.Trabajadores());
           this.getImg();
         }
       }

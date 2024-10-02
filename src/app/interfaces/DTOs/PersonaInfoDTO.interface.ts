@@ -18,6 +18,6 @@ export interface PersonaInfoDTO {
     cargo: Cargo;
     tipoTrabajador: TipoTrabajador;
     tipoContrato: TipoContrato;
-    EvaluacionTrabajador: EvaluacionTrabajador
+    evaluacionTrabajador: EvaluacionTrabajador
     img: SafeUrl;
 }
