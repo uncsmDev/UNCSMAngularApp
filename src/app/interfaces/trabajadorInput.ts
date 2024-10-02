@@ -1,4 +1,11 @@
+import { DatosGenerales } from "./datos.generales";
+import { Persona } from "./persona";
+import { Sexo } from "./sexo";
 import { SubModuloViewerTable } from "./submodulo";
+import { Trabajador } from "./trabajador";
+import { Contrato } from "./contrato";
+import { Dependencia } from "./dependencia";
+import { Cargo } from "./cargo";
 
 export interface TrabajadorInput {
 
@@ -32,4 +39,25 @@ export interface TrabajadorInput {
     telefono: string;
 
     SubModulos: SubModuloViewerTable[];
+  }
+
+  export interface TrabajadorDto
+  {
+    id: number;
+    dirImg: string;
+
+    trabajador: Trabajador;
+    persona: Persona;
+    sexo: Sexo;
+    datosGenerales: DatosGenerales;
+
+    usuarioId:string;
+    usuario: string;
+    visible: boolean;
+    eliminado: boolean;
+    subModulos: SubModuloViewerTable[];
+
+    contrato: Contrato;
+    cargo: Cargo;
+    dependencia:Dependencia;
   }

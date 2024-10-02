@@ -9,3 +9,6 @@ export interface Trabajador
     persona:Persona,
     contratos: number
 }
+
+export type tipoModal =  'add' | 'edit'
+export type postDelete =  'instrumento' | 'dimension'
