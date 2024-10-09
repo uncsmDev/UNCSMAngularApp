@@ -61,7 +61,7 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
     this.evaluacionTrabajadorSvc.GetInstrumento(data.tipoTrabajador.id, 1, this.id()).subscribe({
       next:(res)=>{
         const data = res.data;
-        
+        console.log(data)
         this.datos = data;
         this.InstrumentoSignal.set(data);
       }
@@ -69,10 +69,6 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    }
 
    customNext(stepper: MatStepper) {
-    // Lógica personalizada antes de avanzar
-    console.log('Se está avanzando al siguiente paso');
-    
-    // Si deseas, puedes realizar validaciones antes de avanzar
     // Ejemplo:
     if (true) {
       stepper.next(); // Avanza al siguiente paso
@@ -88,6 +84,11 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
         this.EscalasSignal.set(data);
       }
     })
+   }
+
+   saveEscala(idRespuesta: number, idEscala: number){
+
+    console.log(idRespuesta, idEscala);
    }
 
 }

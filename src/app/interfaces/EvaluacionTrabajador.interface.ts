@@ -1,3 +1,5 @@
+import { RespuestaCerrada } from "./RespuestaCerrada.interface";
+
 export interface EvaluacionTrabajador {
     id: number;
     fechaInicioEvaluacion?: Date; // Nullable
@@ -22,10 +24,6 @@ export interface Periodo {
 
 export interface CategoriaDesempeno {
     // Define los campos de la interfaz 'CategoriaDesempeno' según tu modelo en C#
-}
-
-export interface RespuestaCerrada {
-    // Define los campos de la interfaz 'RespuestaCerrada' según tu modelo en C#
 }
 
 export interface RespuestaAbierta {

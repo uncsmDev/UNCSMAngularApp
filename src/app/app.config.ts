@@ -19,7 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, 
       withComponentInputBinding(), withViewTransitions({skipInitialTransition: true})), 
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([tokenHttpInterceptor, ErrorResponseInterceptor, spinnerInterceptor])), provideAnimationsAsync(), provideAnimationsAsync(),
+    provideHttpClient(withInterceptors([tokenHttpInterceptor, ErrorResponseInterceptor, spinnerInterceptor])),
     {
       provide: LOCALE_ID, useValue: 'es'
     }
