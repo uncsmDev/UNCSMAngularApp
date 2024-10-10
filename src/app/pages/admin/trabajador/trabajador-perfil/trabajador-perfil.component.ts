@@ -7,7 +7,7 @@ import { Persona } from '@interfaces/persona';
 import { ResultEnum } from '@interfaces/Result.interface';
 import { Sexo } from '@interfaces/sexo';
 import { SubModulo, SubModuloXUserView } from '@interfaces/submodulo';
-import { tipoModal, Trabajador } from '@interfaces/trabajador';
+import { tipoModal} from '@interfaces/trabajador';
 import { TrabajadorDto } from '@interfaces/trabajadorInput';
 import { ArchivoService } from '@services/admin/archivo.service';
 import { TrabajadorService } from '@services/admin/trabajador.service';
@@ -15,7 +15,6 @@ import { SubmoduloService } from '@services/submodulo.service';
 import { TitleComponent } from 'app/shared/title/title.component';
 import { TrabajadorDatosModalComponent } from '../trabajador-datos-modal/trabajador-datos-modal.component';
 import { ModalService } from '@services/modal.service';
-import { FlowbitSharedService } from '@services/flowbit-shared.service';
 
 
 @Component({
@@ -31,8 +30,7 @@ export default class TrabajadorPerfilComponent {
   trabajadorService=inject(TrabajadorService);
   _archivoService=inject(ArchivoService);
   modalService = inject(ModalService);
-  flowbitSharedService = inject(FlowbitSharedService);
-  
+
   matSnackBar=inject(MatSnackBar);
 
   trabajadorDto = signal<TrabajadorDto>({} as TrabajadorDto);
