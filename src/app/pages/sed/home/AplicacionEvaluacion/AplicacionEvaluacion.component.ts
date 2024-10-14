@@ -13,6 +13,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatStepper, MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
+import { InstrumentoDTO } from '@interfaces/DTOs/InstrumentoDTO.interface';
 
 
 @Component({
@@ -34,7 +35,7 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
   escalaServiceSvc = inject(EscalaService);
   id = input<number>(0, {alias: 'id'});
   EvaluadoSignal = signal({} as PersonaInfoDTO)
-  InstrumentoSignal = signal({} as Instrumento)
+  InstrumentoSignal = signal({} as InstrumentoDTO)
   EscalasSignal = signal<Escala[]>([])
   dateNow = signal(new Date());
 
@@ -50,6 +51,7 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    getEvaluacionTrabajador(){
     this.evaluacionTrabajadorSvc.GetByIdEvaluado(this.id()).subscribe({
       next:(res)=>{
+        console.log(res)
         const data = res.data!;
         this.EvaluadoSignal.set(data);
         this.getInstrumento(data);
@@ -62,19 +64,26 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
       next:(res)=>{
         const data = res.data;
         console.log(data)
-        this.datos = data;
+        //this.datos = data;
         this.InstrumentoSignal.set(data);
       }
     });
    }
 
-   customNext(stepper: MatStepper) {
+   customNext(stepper: MatStepper, DimensionId: number) {
     // Ejemplo:
     if (true) {
       stepper.next(); // Avanza al siguiente paso
     } else {
       alert('No se puede avanzar, complete todos los campos');
     }
+
+    console.log(DimensionId);
+  }
+
+  handleChange(event: Event, idRespuesta: number, idEscala: number) {
+    const selectElement = event.target as HTMLInputElement;
+    console.log(selectElement.checked, idRespuesta, idEscala);
   }
 
    getEscala(){
@@ -84,11 +93,6 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
         this.EscalasSignal.set(data);
       }
     })
-   }
-
-   saveEscala(idRespuesta: number, idEscala: number){
-
-    console.log(idRespuesta, idEscala);
    }
 
 }

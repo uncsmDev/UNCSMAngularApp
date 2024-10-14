@@ -56,25 +56,24 @@
               <th scope="col" class="px-6 py-3">
                   Preguntas
               </th>
-              @for (item of EscalasSignal(); track item.id) {
+              @for (item of EscalasSignal(); track item.nombre) {
                 <th scope="col" class="px-6 py-3">{{item.simbologia}}</th>
               }              
           </tr>
       </thead>
       <tbody>
           
-          @for (p of dv.preguntasCerradas; track p.id;let indexp = $index) {
-            @if(dv.id == p.dimesionId)
-            {
+          @for (p of dv.preguntasCerradas; track p; let indexp = $index) {
+            
           <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
               <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                 {{ p.nombre }}
               </th>
-              @for (item of EscalasSignal(); track item.id) {
+              @for (item of EscalasSignal(); track item) {
               <td class="px-6 py-4">
                 <div class="checkbox-wrapper-12">
                   <div class="cbx">
-                    <input id="cbx-12" type="radio" [name]="'escala'+p.id" (click)="saveEscala(p.id, item.id)"/>
+                    <input id="cbx-12" type="radio" (change)="handleChange($event, p.id, item.id)" [name]="'escala'+p.id" />
                     <label for="cbx-12"></label>
                     <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
                       <path d="M2 8.36364L6.23077 12L13 2"></path>
@@ -95,7 +94,7 @@
             }
               
           </tr>
-        }
+        
       }
           
       </tbody>
@@ -105,11 +104,11 @@
       <div class="flex justify-end">
         @if(index!=0)
         {
-          <button mat-button matStepperPrevious >Back</button>
+          <button mat-button matStepperPrevious >Atrás</button>
         }
         @if(index!=InstrumentoSignal().dimensiones!.length-1)
         {
-        <button mat-button (click)="customNext(stepper)">Next</button>
+        <button mat-button (click)="customNext(stepper, dv.id)">Siguiente</button>
         }
       </div>
     </form>
