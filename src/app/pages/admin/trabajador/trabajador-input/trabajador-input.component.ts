@@ -258,10 +258,10 @@ export default class TrabajadorInputComponent {
    // cargoXdependenciaId: new FormControl('', Validators.required),
     tipoContratoId: new FormControl('', Validators.required),
 
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
-    telefono: new FormControl('', Validators.required),
+    email: ['',Validators.email],
+    password: [''],
+    confirmPassword: [''],
+    telefono: new FormControl(''),
 
   });
 
@@ -272,6 +272,7 @@ export default class TrabajadorInputComponent {
 
   onSubmit() 
   {
+    
     let f:Boolean=true;
 
      
@@ -301,7 +302,11 @@ export default class TrabajadorInputComponent {
       this.matSnackBar.open("Formulario Valido",'Cerrar',{ duration:5000, horizontalPosition:'center'});
     } 
     else
+    {
+      this.masterFormInput.markAllAsTouched();
       this.matSnackBar.open("Formulario Invalido",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+
+    }
   }
 
   onSelectedPais(event: Event)

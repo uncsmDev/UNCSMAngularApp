@@ -21,7 +21,7 @@ export class TrabajadorDatosModalComponent {
   PostType = input.required<tipoModal>();
   text:string = 'Agregar';
 
-  outputPostType = output<EmiterResult<Trabajador>>();
+ // outputPostType = output<EmiterResult<Trabajador>>();
 
   openModal()
   {
