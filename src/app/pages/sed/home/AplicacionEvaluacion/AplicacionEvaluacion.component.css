@@ -154,3 +154,7 @@ mat-step-header {
 matStepLabel {
   color: var(--text-color);
 }
+
+/* ::ng-deep .mat-horizontal-stepper-header{
+  pointer-events: none !important;
+} */

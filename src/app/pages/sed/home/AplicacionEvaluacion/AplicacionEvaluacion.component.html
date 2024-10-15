@@ -11,41 +11,35 @@
          </p>
 </div>
 
-<div class="flex flex-col items-left mb-5">
-    <p class="text-black dark:text-white font-medium text-xl">I. Datos Generales:</p>
-    <table>
-        <tr>
-            <td><p class="text-black dark:text-white font-normal text-lg">Nombres y Apellidos: </p></td>
-            <td class="text-black dark:text-white font-normal text-lg">{{ EvaluadoSignal()?.persona?.nombres }} {{ EvaluadoSignal().persona?.apellidos }}</td>
-        </tr>
-        <tr>
-            <td><p class="text-black dark:text-white font-normal text-lg">Puesto que ocupa: </p></td>
-            <td class="text-black dark:text-white font-normal text-lg">{{ EvaluadoSignal().cargo?.nombre }}</td>
-        </tr>
-        <tr>
-            <td><p class="text-black dark:text-white font-normal text-lg">Fecha de Ingreso: </p></td>
-            <td class="text-black dark:text-white font-normal text-lg">{{ EvaluadoSignal().trabajador?.fechaIngreso | date }} Consultar</td>
-        </tr>
-        <tr>
-            <td><p class="text-black dark:text-white font-normal text-lg">Período a Evaluar: </p></td>
-            <td class="text-black dark:text-white font-normal text-lg">Consultar</td>
-        </tr>
-        <tr>
-            <td><p class="text-black dark:text-white font-normal text-lg">Fecha de Evaluación: </p></td>
-            
+<div class="w-full max-w-4xl mx-auto mt-6 bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
+  <div class="p-6">
+    <h2 class="text-2xl font-bold text-lefttext-gray-800 dark:text-white mb-6">
+      Datos Generales
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="space-y-4">
+        <app-encabezado titulo="Nombres y Apellidos:" [valor]="EvaluadoSignal().persona?.nombres + ' ' + EvaluadoSignal().persona?.apellidos" />
 
-            <td class="text-black dark:text-white font-normal text-lg">{{ dateNow() | date }}</td>
-        </tr>
-    </table>
+        <app-encabezado titulo="Fecha de Ingreso:" [valor]="(EvaluadoSignal().trabajador?.fechaIngreso | date)" />
+      </div>
+      <div class="space-y-4">
+        <app-encabezado titulo="Puesto que ocupa:" [valor]="EvaluadoSignal().cargo?.nombre" />
+        <app-encabezado titulo="Período a Evaluar:" [valor]="" />
+      </div>
+      <div class="space-y-4">
+        <app-encabezado titulo="Fecha de Evaluación:" [valor]="(dateNow() | date)" />
+
+      </div>
+    </div>
+  </div>
 </div>
 
 <div id="theme-container" class="dark-theme">
-<mat-stepper [linear]="isLinear" #stepper color="primary">
+<mat-stepper [linear]=isLinear [disableRipple]=disableRipple #stepper color="primary" class="custom-stepper">
   @for (dv of InstrumentoSignal().dimensiones; track $index; let index = $index) {
     @if(dv.preguntasCerradas!=null && dv.preguntasCerradas!.length > 0)
     {
-  <mat-step>
-    <form class="">
+  <mat-step completed="false">
       <ng-template matStepLabel>
         <div class="text-gray-700 dark:text-gray-100 " >{{dv.nombre}}</div>
       </ng-template>
@@ -73,11 +67,21 @@
               <td class="px-6 py-4">
                 <div class="checkbox-wrapper-12">
                   <div class="cbx">
-                    <input id="cbx-12" type="radio" (change)="handleChange($event, p.id, item.id)" [name]="'escala'+p.id" />
+                    @if(p.escalaId == item.id)
+                    {
+                      <input id="cbx-12" type="radio" (change)="handleChange($event, p.respuestaCerradaId, item.id)" [name]="'escala'+p.id" checked/>
                     <label for="cbx-12"></label>
                     <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
                       <path d="M2 8.36364L6.23077 12L13 2"></path>
                     </svg>
+                    }@else {
+                      <input id="cbx-12" type="radio" (change)="handleChange($event, p.respuestaCerradaId, item.id)" [name]="'escala'+p.id" />
+                      <label for="cbx-12"></label>
+                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                      </svg>
+                    }
+                    
                   </div>
                   <!-- Gooey-->
                   <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
@@ -111,8 +115,8 @@
         <button mat-button (click)="customNext(stepper, dv.id)">Siguiente</button>
         }
       </div>
-    </form>
   </mat-step>
+  
 }}
 </mat-stepper>
 </div>

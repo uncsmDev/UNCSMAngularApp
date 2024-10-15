@@ -31,4 +31,19 @@ export class EvaluacionTrabajadorService {
     return this.http.get<Result<InstrumentoDTO>>(`${this.apiUrl}/GetInstrumento/${tipoTrabajadorId}/${tipoEvaluacionId}/${evaluacionId}`);
   }
 
+  GetNextStep(dimensionId: number, evaluacionId: number){
+    return this.http.get<Result<true>>(`${this.apiUrl}/NextStep/${dimensionId}/${evaluacionId}`);
+  }
+
+  updateEscala(id: number, valor: number){
+    const headers = {'content-type': 'application/json'}
+    const body = JSON.stringify(valor);
+    return this.http.put<Result<Instrumento>>(`${this.apiUrl}/PutEscalaResponse/${id}`, body, {headers});
+  }
+
+  updateFinishEvaluacion(id: number){
+    const headers = {'content-type': 'application/json'}
+    return this.http.put<Result<Instrumento>>(`${this.apiUrl}/PutFinishEvaluacion/${id}`, {}, {headers});
+  }
+
 }

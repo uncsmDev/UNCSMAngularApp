@@ -13,7 +13,7 @@ export interface DimensionDTO {
     // Propiedades de Dimension
     id: number;
     nombre: string;
-
+    nextStep?: boolean;
     // Lista de Preguntas Cerradas
     preguntasCerradas: PreguntaCerradaDTO[];
 }
@@ -24,7 +24,7 @@ export interface PreguntaCerradaDTO {
     nombre: string;
 
     // Propiedades de RespuestaCerrada integradas dentro de PreguntaCerrada
-    RespuestaCerradaId: number;
+    respuestaCerradaId: number;
     EvaluacionTrabajadorId: number;
-    EscalaId?: number | null;
+    escalaId?: number | null;
 }
