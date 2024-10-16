@@ -1,3 +1,4 @@
+import { Result } from '@interfaces/Result.interface';
 import { map } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, inject, input, NgZone, signal, type OnInit } from '@angular/core';
@@ -39,7 +40,7 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
   escalaServiceSvc = inject(EscalaService);
   id = input<number>(0, {alias: 'id'});
   EvaluadoSignal = signal({} as PersonaInfoDTO)
-  InstrumentoSignal = signal({} as InstrumentoDTO)
+  InstrumentoSignal = signal({} as Result<InstrumentoDTO>)
   EscalasSignal = signal<Escala[]>([])
   dateNow = signal(new Date());
   matSnackBar=inject(MatSnackBar);
@@ -75,8 +76,14 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    getInstrumento(data: PersonaInfoDTO){
     this.evaluacionTrabajadorSvc.GetInstrumento(data.tipoTrabajador.id, 1, this.id()).subscribe({
       next:(res)=>{
-        const data = res.data;
-        this.InstrumentoSignal.set(data);
+        if(res.data!= null)
+        {
+          
+          const data = res.data;
+          this.InstrumentoSignal.set(res);
+        }
+        console.log(res);
+        console.log(this.InstrumentoSignal());
       }
     });
    }

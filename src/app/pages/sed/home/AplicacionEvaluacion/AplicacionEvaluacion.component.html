@@ -20,104 +20,129 @@
       <div class="space-y-4">
         <app-encabezado titulo="Nombres y Apellidos:" [valor]="EvaluadoSignal().persona?.nombres + ' ' + EvaluadoSignal().persona?.apellidos" />
 
-        <app-encabezado titulo="Fecha de Ingreso:" [valor]="(EvaluadoSignal().trabajador?.fechaIngreso | date)" />
+        <app-encabezado titulo="Fecha de Ingreso:" [valor]="(EvaluadoSignal().trabajador?.fechaIngreso | date: 'd \'de\' MMMM \'de\' yyyy')
+        " />
       </div>
       <div class="space-y-4">
         <app-encabezado titulo="Puesto que ocupa:" [valor]="EvaluadoSignal().cargo?.nombre" />
         <app-encabezado titulo="Período a Evaluar:" [valor]="" />
       </div>
       <div class="space-y-4">
-        <app-encabezado titulo="Fecha de Evaluación:" [valor]="(dateNow() | date)" />
+        <app-encabezado titulo="Fecha de Evaluación:" [valor]="(dateNow() | date: 'd \'de\' MMMM \'de\' yyyy')" />
 
       </div>
     </div>
   </div>
 </div>
-
-<div id="theme-container" class="dark-theme">
-<mat-stepper [linear]=isLinear [disableRipple]=disableRipple #stepper color="primary" class="custom-stepper">
-  @for (dv of InstrumentoSignal().dimensiones; track $index; let index = $index) {
-    @if(dv.preguntasCerradas!=null && dv.preguntasCerradas!.length > 0)
-    {
-  <mat-step completed="false">
-      <ng-template matStepLabel>
-        <div class="text-gray-700 dark:text-gray-100 " >{{dv.nombre}}</div>
-      </ng-template>
-<div class="relative shadow-md sm:rounded-lg">
-  <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mb-5">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-              <th scope="col" class="px-6 py-3">
-                  Preguntas
-              </th>
-              @for (item of EscalasSignal(); track item.nombre) {
-                <th scope="col" class="px-6 py-3">{{item.simbologia}}</th>
-              }              
-          </tr>
-      </thead>
-      <tbody>
-          
-          @for (p of dv.preguntasCerradas; track p; let indexp = $index) {
-            
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                {{ p.nombre }}
-              </th>
-              @for (item of EscalasSignal(); track item) {
-              <td class="px-6 py-4">
-                <div class="checkbox-wrapper-12">
-                  <div class="cbx">
-                    @if(p.escalaId == item.id)
-                    {
-                      <input id="cbx-12" type="radio" (change)="handleChange($event, p.respuestaCerradaId, item.id)" [name]="'escala'+p.id" checked/>
-                    <label for="cbx-12"></label>
-                    <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
-                      <path d="M2 8.36364L6.23077 12L13 2"></path>
-                    </svg>
-                    }@else {
-                      <input id="cbx-12" type="radio" (change)="handleChange($event, p.respuestaCerradaId, item.id)" [name]="'escala'+p.id" />
-                      <label for="cbx-12"></label>
-                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
-                        <path d="M2 8.36364L6.23077 12L13 2"></path>
-                      </svg>
-                    }
-                    
-                  </div>
-                  <!-- Gooey-->
-                  <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                    <defs>
-                      <filter id="goo-12">
-                        <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
-                        <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
-                        <feblend in="SourceGraphic" in2="goo-12"></feblend>
-                      </filter>
-                    </defs>
-                  </svg>
-                </div>
-              </td>
-            }
-              
-          </tr>
-        
+@if(InstrumentoSignal().data== null){
+  <div class="flex justify-center">
+  <div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 mt-6 w-2/3" role="alert">
+    <span class="font-medium">Alerta!</span> No tiene un instrumento valido o habilitado
+  </div>
+</div>
+}
+@else {
+  <div id="theme-container" class="dark-theme">
+    <mat-stepper [linear]=isLinear [disableRipple]=disableRipple #stepper color="primary" class="custom-stepper">
+      @if(InstrumentoSignal().data.dimensiones!=null && InstrumentoSignal().data.dimensiones!.length > 0){
+        <div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+          <span class="font-medium">Alerta!</span> Este instrumento no tiene dimensiones
+        </div>
       }
-          
-      </tbody>
-  </table>
-</div>
-          
-      <div class="flex justify-end">
-        @if(index!=0)
+      @for (dv of InstrumentoSignal().data.dimensiones; track $index; let index = $index) {
+        @if(dv.preguntasCerradas!=null && dv.preguntasCerradas!.length > 0)
         {
-          <button mat-button matStepperPrevious >Atrás</button>
-        }
-        @if(index!=InstrumentoSignal().dimensiones!.length-1)
-        {
-        <button mat-button (click)="customNext(stepper, dv.id)">Siguiente</button>
-        }
+      <mat-step completed="false">
+          <ng-template matStepLabel>
+            <div class="text-gray-700 dark:text-gray-100 " >{{dv.nombre}}</div>
+          </ng-template>
+    <div class="relative shadow-md sm:rounded-lg">
+      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mb-5">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                  <th scope="col" class="px-6 py-3">
+                      Preguntas
+                  </th>
+                  @for (item of EscalasSignal(); track item.nombre) {
+                    <th scope="col" class="px-6 py-3">{{item.simbologia}}</th>
+                  }              
+              </tr>
+          </thead>
+          <tbody>
+              
+              @for (p of dv.preguntasCerradas; track p; let indexp = $index) {
+                
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{ p.nombre }}
+                  </th>
+                  @for (item of EscalasSignal(); track item) {
+                  <td class="px-6 py-4">
+                    <div class="checkbox-wrapper-12">
+                      <div class="cbx">
+                        @if(p.escalaId == item.id)
+                        {
+                          <input id="cbx-12" type="radio" (change)="handleChange($event, p.respuestaCerradaId, item.id)" [name]="'escala'+p.id" checked/>
+                        <label for="cbx-12"></label>
+                        <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                          <path d="M2 8.36364L6.23077 12L13 2"></path>
+                        </svg>
+                        }@else {
+                          <input id="cbx-12" type="radio" (change)="handleChange($event, p.respuestaCerradaId, item.id)" [name]="'escala'+p.id" />
+                          <label for="cbx-12"></label>
+                          <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                            <path d="M2 8.36364L6.23077 12L13 2"></path>
+                          </svg>
+                        }
+                        
+                      </div>
+                      <!-- Gooey-->
+                      <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                        <defs>
+                          <filter id="goo-12">
+                            <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                            <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                            <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                          </filter>
+                        </defs>
+                      </svg>
+                    </div>
+                  </td>
+                }
+                  
+              </tr>
+            
+          }
+              
+          </tbody>
+      </table>
+    </div>
+              
+          <div class="flex justify-end">
+            @if(index!=0)
+            {
+              <button mat-button matStepperPrevious >Atrás</button>
+            }
+            @if(index!=InstrumentoSignal().data.dimensiones!.length-1)
+            {
+            <button mat-button (click)="customNext(stepper, dv.id)">Siguiente</button>
+            }
+            @if(index==InstrumentoSignal().data.dimensiones!.length-1)
+            {
+            <button mat-button (click)="customNext(stepper, dv.id)">Finalizar</button>
+            }
+          </div>
+      </mat-step>
+      
+    }
+    @else {
+      <div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+        <span class="font-medium">Alerta!</span> Esta dimension no tiene preguntas
       </div>
-  </mat-step>
-  
-}}
-</mat-stepper>
-</div>
+    }
+    }
+    </mat-stepper>
+    </div>
+}
+
 }

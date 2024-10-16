@@ -18,7 +18,7 @@ export const routes: Routes = [
                     pathMatch: 'full',
                   },
                   {
-                    path: 'aplicacion/:id',
+                    path: 'evaluacion-cuantitativa/:id',
                     title: 'Aplicación de la Evaluación',
                     loadComponent: () => import('./pages/sed/home/AplicacionEvaluacion/AplicacionEvaluacion.component'),
                     data: { breadcrumb: 'Escalas' },
