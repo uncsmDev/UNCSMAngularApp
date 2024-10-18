@@ -13,7 +13,6 @@ import { Component, input } from '@angular/core';
   </span>
   <span class="text-lg font-semibold text-gray-900 dark:text-white">
     {{valor()}}
-    
   </span>
 </div>`,
   styles: `

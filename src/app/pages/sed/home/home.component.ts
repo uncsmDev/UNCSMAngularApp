@@ -45,7 +45,6 @@ export default class HomeComponent {
       {
         next: (res) => {
           this.Trabajadores.set(res.data);
-          console.log(this.Trabajadores());
           this.getImg();
         }
       }
