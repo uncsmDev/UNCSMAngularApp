@@ -1,32 +1,6 @@
 <app-title title="Aplicación de la Evaluación" />
 @if(EvaluadoSignal())
 {
-<div class="w-full  mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
-  <div class="p-6">
-    <h2 class="text-2xl font-bold text-lefttext-gray-800 dark:text-white mb-6">
-      Datos Generales
-    </h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-      <div class="space-y-4">
-        <app-encabezado titulo="Nombres y Apellidos:" [valor]="EvaluadoSignal().persona?.nombres + ' ' + EvaluadoSignal().persona?.apellidos" />
-
-        <app-encabezado titulo="Fecha de Ingreso:" [valor]="(EvaluadoSignal().trabajador?.fechaIngreso | date: 'd \'de\' MMMM \'de\' yyyy')
-        " />
-      </div>
-      <div class="space-y-4">
-        <app-encabezado titulo="Categoría:" [valor]="EvaluadoSignal().tipoTrabajador?.nombre" />
-        <app-encabezado titulo="Puesto que ocupa:" [valor]="EvaluadoSignal().cargo?.nombre" />
-       
-      </div>
-      <div class="space-y-4">
-        <app-encabezado titulo="Período a Evaluar:" [valor]="" />
-        <app-encabezado titulo="Fecha de Evaluación:" [valor]="(dateNow() | date: 'd \'de\' MMMM \'de\' yyyy')" />
-        
-      </div>
-    </div>
-    
-  </div>
-</div>  
 <div class="w-12/12 md:w-11/12 mx-auto mt-6 bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
 <mat-tab-group>
   <mat-tab label="Indicaciones Generales para el llenado" > 
