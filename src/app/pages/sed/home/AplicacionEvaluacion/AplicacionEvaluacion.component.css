@@ -216,7 +216,7 @@ mat-vertical-content-container{
   position: relative;
   z-index: 2;
   overflow: hidden;
-  background: #fff;
+  background: #374151;
 }
 
 .advertisers-service-sec .service-card::after {
@@ -234,12 +234,12 @@ mat-vertical-content-container{
 .advertisers-service-sec h3 {
   font-size: 20px;
   font-weight: 600;
-  color: #1f194c;
+  color: #ddd7d7;
   z-index: 3;
 }
 
 .advertisers-service-sec p {
-  color: #575a7b;
+  color: #c7c7c7;
   font-size: 15px;
   line-height: 1.6;
   letter-spacing: 0.03em;
