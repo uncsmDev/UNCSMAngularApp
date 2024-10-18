@@ -33,16 +33,11 @@ export class FdropzoneComponent {
 
   preview(file:any): void {
     const reader = new FileReader();
-    console.log('File:', file);
     this.archivo=file;
 
     reader.onload = (e: any) => {
       this.previewImage = e.target.result;
     };
     reader.readAsDataURL(file);
-    console.log('reader :', reader);
   }
-
-
-  
 }

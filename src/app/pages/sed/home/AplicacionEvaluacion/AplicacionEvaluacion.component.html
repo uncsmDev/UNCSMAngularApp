@@ -7,7 +7,7 @@
     <p class="text-black dark:text-white font-medium text-xl">Selección y Contratación de Personal</p>
     <p class="text-black dark:text-white font-medium text-xl">Evaluación al Desempeño</p>
     <p class="text-black dark:text-white font-medium text-xl">Categoria: 
-                {{ EvaluadoSignal().tipoTrabajador?.nombre }}
+                {{ EvaluadoSignal().tipoTrabajador.nombre }}
          </p>
 </div>
 
@@ -16,15 +16,15 @@
     <table>
         <tr>
             <td><p class="text-black dark:text-white font-normal text-lg">Nombres y Apellidos: </p></td>
-            <td class="text-black dark:text-white font-normal text-lg">{{ EvaluadoSignal()?.persona?.nombres }} {{ EvaluadoSignal().persona?.apellidos }}</td>
+            <td class="text-black dark:text-white font-normal text-lg">{{ EvaluadoSignal().persona.nombres }} {{ EvaluadoSignal().persona.apellidos }}</td>
         </tr>
         <tr>
             <td><p class="text-black dark:text-white font-normal text-lg">Puesto que ocupa: </p></td>
-            <td class="text-black dark:text-white font-normal text-lg">{{ EvaluadoSignal().cargo?.nombre }}</td>
+            <td class="text-black dark:text-white font-normal text-lg">{{ EvaluadoSignal().cargo.nombre }}</td>
         </tr>
         <tr>
             <td><p class="text-black dark:text-white font-normal text-lg">Fecha de Ingreso: </p></td>
-            <td class="text-black dark:text-white font-normal text-lg">{{ EvaluadoSignal().trabajador?.fechaIngreso | date }} Consultar</td>
+            <td class="text-black dark:text-white font-normal text-lg">{{ EvaluadoSignal().trabajador.fechaIngreso | date }} Consultar</td>
         </tr>
         <tr>
             <td><p class="text-black dark:text-white font-normal text-lg">Período a Evaluar: </p></td>

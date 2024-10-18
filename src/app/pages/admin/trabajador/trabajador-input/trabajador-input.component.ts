@@ -244,7 +244,7 @@ export default class TrabajadorInputComponent {
     direccion: new FormControl('', Validators.required),
     telefono1: new FormControl('', Validators.required),
     telefono2: new FormControl(''),
-    correoPersonal: new FormControl(''),
+    correoPersonal: new FormControl('',Validators.email),
 
     codigo: new FormControl('0000', Validators.required),
     fechaIngreso: new FormControl('', Validators.required),
@@ -272,6 +272,9 @@ export default class TrabajadorInputComponent {
 
   onSubmit() 
   {
+    if (this.masterFormInput.invalid) {
+      this.masterFormInput.markAllAsTouched();
+    }
     
     let f:Boolean=true;
 

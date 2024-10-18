@@ -15,12 +15,15 @@ import { SubmoduloService } from '@services/submodulo.service';
 import { TitleComponent } from 'app/shared/title/title.component';
 import { TrabajadorDatosModalComponent } from '../trabajador-datos-modal/trabajador-datos-modal.component';
 import { ModalService } from '@services/modal.service';
+import { DatosPersonalesInput } from '@interfaces/Updates/datosPersonalesInput ';
+import { FdropzoneComponent } from 'app/shared/input/fdropzone/fdropzone.component';
+
 
 
 @Component({
   selector: 'app-trabajador-perfil',
   standalone: true,
-  imports: [TitleComponent,TrabajadorDatosModalComponent],
+  imports: [TitleComponent,TrabajadorDatosModalComponent,FdropzoneComponent],
   templateUrl: './trabajador-perfil.component.html',
   styleUrl: './trabajador-perfil.component.css'
 })
@@ -62,6 +65,7 @@ export default class TrabajadorPerfilComponent {
   {
     this.trabajadorService.getById(this.trabajadorId).subscribe(
       {
+        
         next: (data) => {
           if (data.status == ResultEnum.Success) {
            // this.trabajadorDto = data.data;
@@ -73,6 +77,9 @@ export default class TrabajadorPerfilComponent {
               this._archivoService.getByAddress(this.fileDir).subscribe({
                 next: (fileRes) => {
                   if (fileRes.size > 0) {
+
+                    
+
                     const objectUrl = URL.createObjectURL(fileRes);
                     this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectUrl);
                   }
@@ -140,9 +147,20 @@ export default class TrabajadorPerfilComponent {
     }
   }
 
+  datosPersonales: DatosPersonalesInput = {} as DatosPersonalesInput;
   openModalDatos()
   {
+    this.datosPersonales.id = this.trabajadorId;
+    this.datosPersonales.dni = this.trabajadorDto().persona?.dni;
+    this.datosPersonales.nombres = this.trabajadorDto().persona?.nombres;
+    this.datosPersonales.apellidos = this.trabajadorDto().persona?.apellidos;
+    this.datosPersonales.ins = this.trabajadorDto().trabajador.codigo;
     this.PostType = 'add';
-    this.modalDatos().openModal();
+    this.modalDatos().openModal(this.datosPersonales,this.imageUrl);
+  }
+
+  closeModal()
+  {
+    this.modalDatos().closeModal();
   }
 }
