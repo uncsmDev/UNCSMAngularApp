@@ -1,7 +1,7 @@
 <app-title title="Aplicación de la Evaluación" />
 @if(EvaluadoSignal())
 {
-<div class="flex flex-col items-center">
+<div class="flex flex-col items-start md:items-center">
     <p class="text-black dark:text-white font-medium text-xl">Universidad Nacional Casimiro Sotelo Montenegro</p>
     <p class="text-black dark:text-white font-medium text-xl">Coordinación Gestión de Talento Humano</p>
     <p class="text-black dark:text-white font-medium text-xl">Selección y Contratación de Personal</p>
@@ -32,53 +32,153 @@
         </tr>
         <tr>
             <td><p class="text-black dark:text-white font-normal text-lg">Fecha de Evaluación: </p></td>
-            
-
-            <td class="text-black dark:text-white font-normal text-lg">{{ dateNow() | date }}</td>
         </tr>
     </table>
 </div>
 
-<div id="theme-container" class="dark-theme">
-<mat-stepper [linear]="isLinear" #stepper color="primary">
-  @for (dv of InstrumentoSignal().dimensiones; track $index; let index = $index) {
-    @if(dv.preguntasCerradas!=null && dv.preguntasCerradas!.length > 0)
-    {
-  <mat-step>
-    <form class="">
-      <ng-template matStepLabel>
-        <div class="text-gray-700 dark:text-gray-100 " >{{dv.nombre}}</div>
-      </ng-template>
-<div class="relative shadow-md sm:rounded-lg">
-  <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mb-5">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-              <th scope="col" class="px-6 py-3">
-                  Preguntas
-              </th>
-              @for (item of EscalasSignal(); track item.id) {
-                <th scope="col" class="px-6 py-3">{{item.simbologia}}</th>
-              }              
-          </tr>
-      </thead>
-      <tbody>
-          
-          @for (p of dv.preguntasCerradas; track p.id;let indexp = $index) {
-            @if(dv.id == p.dimesionId)
-            {
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                {{ p.nombre }}
-              </th>
-              @for (item of EscalasSignal(); track item.id) {
-              <td class="px-6 py-4">
-                <div class="checkbox-wrapper-12">
+
+<div class="w-full  mx-auto mt-6 bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
+  <div class="p-6">
+    <h2 class="text-2xl font-bold text-lefttext-gray-800 dark:text-white mb-6">
+      Datos Generales
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div class="space-y-4">
+        <app-encabezado titulo="Nombres y Apellidos:" [valor]="EvaluadoSignal().persona?.nombres + ' ' + EvaluadoSignal().persona?.apellidos" />
+
+        <app-encabezado titulo="Fecha de Ingreso:" [valor]="(EvaluadoSignal().trabajador?.fechaIngreso | date: 'd \'de\' MMMM \'de\' yyyy')
+        " />
+      </div>
+      <div class="space-y-4">
+        <app-encabezado titulo="Categoría:" [valor]="EvaluadoSignal().tipoTrabajador?.nombre" />
+        <app-encabezado titulo="Puesto que ocupa:" [valor]="EvaluadoSignal().cargo?.nombre" />
+       
+      </div>
+      <div class="space-y-4">
+        <app-encabezado titulo="Período a Evaluar:" [valor]="" />
+        <app-encabezado titulo="Fecha de Evaluación:" [valor]="(dateNow() | date: 'd \'de\' MMMM \'de\' yyyy')" />
+        
+      </div>
+    </div>
+    
+  </div>
+</div>  
+<div class="w-12/12 md:w-11/12 mx-auto mt-6 bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
+
+
+<mat-tab-group>
+  <mat-tab label="Indicaciones Generales para el llenado" > 
+<ul class="m-7 space-y-4 text-left text-gray-500 dark:text-gray-400">
+  <li class="flex items-center space-x-3 rtl:space-x-reverse">
+       <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+       </svg>
+      <span>Lee e interprete el contenido del instrumento.</span>
+  </li>
+  <li class="flex items-center space-x-3 rtl:space-x-reverse">
+      <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+       </svg>
+      <span>Analice en forma detallada cada dimensión e indicador en el instrumento.</span>
+  </li>
+  <li class="flex items-center space-x-3 rtl:space-x-reverse">
+      <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+       </svg>
+      <span>Seleccione el grado que sea más representativo de la realidad del desempeño, de acuerdo con las categorías de la escala y su respectiva valoración</span>
+  </li>
+  
+</ul>
+
+  </mat-tab>
+  <mat-tab label="Categorías de la escala" > 
+    <div class="w-8/12 mx-auto flex flex-col items-center mt-2 p-6">
+      <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class=" text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        Categorías de la escala
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Valoración
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+              @for (es of EscalasSignal(); track es.simbologia) {
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"> 
+                    <th scope="row" class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {{ es.simbologia }} - {{ es.nombre }}
+                    </th>
+                    <td class="px-4 py-2">
+                        {{ es.valoracion }}
+                    </td>
+                </tr>
+              }
+            </tbody>
+        </table>
+    </div>
+    
+    
+    </div> </mat-tab>
+</mat-tab-group>
+</div>
+@if(InstrumentoSignal().data== null){
+  <div class="flex justify-center">
+  <div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 mt-6 w-2/3" role="alert">
+    <span class="font-medium">Alerta!</span> No tiene un instrumento valido o habilitado
+  </div>
+</div>
+}
+@else {
+  <div id="theme-container">
+    <mat-stepper [orientation]="stepperOrientation()" [linear]=isLinear [disableRipple]=disableRipple #stepper color="primary" >
+      @if(InstrumentoSignal().data.dimensiones!=null && InstrumentoSignal().data.dimensiones!.length > 0){
+        <div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+          <span class="font-medium">Alerta!</span> Este instrumento no tiene dimensiones
+        </div>
+      }
+      @for (dv of InstrumentoSignal().data.dimensiones; track $index; let index = $index) {
+        @if(dv.preguntasCerradas!=null && dv.preguntasCerradas!.length > 0)
+        {
+      <mat-step completed="false">
+          <ng-template matStepLabel>
+            <div class="text-gray-700 dark:text-gray-100 " >{{dv.nombre}}</div>
+          </ng-template>
+    <div class="flex flex-col items-center relative sm:rounded-lg md:overflow-x-hidden overflow-x-auto overflow-y-hidden">
+      <section id="advertisers" class="advertisers-service-sec ">
+        <div class="container">
+      @for (p of dv.preguntasCerradas; track p; let indexp = $index) {
+        
+        <div class="row mt-5 mt-md-4 row-cols-1 row-cols-sm-1 row-cols-md-3 justify-content-center">
+          <div class="col">
+            <div class="service-card ">
+            <h3 class="mb-4">{{ p.nombre }}</h3>
+            <div class="flex md:items-center items-left justify-start md:justify-center gap-5 flex-col md:flex-row">
+              @for (item of EscalasSignal(); track item) {
+            
+                <div class="checkbox-wrapper-12 flex items-center gap-3 ">
                   <div class="cbx">
-                    <input id="cbx-12" type="radio" [name]="'escala'+p.id" (click)="saveEscala(p.id, item.id)"/>
-                    <label for="cbx-12"></label>
-                    <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
-                      <path d="M2 8.36364L6.23077 12L13 2"></path>
-                    </svg>
+                    @if(p.escalaId == item.id)
+                    {
+                     
+                        <input id="cbx-12" type="radio" (change)="handleChange($event, p.respuestaCerradaId, item.id)" [name]="'escala'+p.id" checked/>
+                        <label for="cbx-12"></label>
+                        <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                          <path d="M2 8.36364L6.23077 12L13 2"></path>
+                        </svg>
+                     
+                      
+                      
+                    }@else {
+                      <input id="cbx-12" type="radio" (change)="handleChange($event, p.respuestaCerradaId, item.id)" [name]="'escala'+p.id" />
+                      <label for="cbx-12"></label>
+                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                      </svg>
+                    }
+                    
                   </div>
                   <!-- Gooey-->
                   <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
@@ -90,31 +190,49 @@
                       </filter>
                     </defs>
                   </svg>
+                  
+                  <div>
+                    <p> {{ item.nombre }} </p>
+                  </div>
                 </div>
-              </td>
-            }
-              
-          </tr>
-        }
-      }
-          
-      </tbody>
-  </table>
-</div>
-          
-      <div class="flex justify-end">
-        @if(index!=0)
-        {
-          <button mat-button matStepperPrevious >Back</button>
-        }
-        @if(index!=InstrumentoSignal().dimensiones!.length-1)
-        {
-        <button mat-button (click)="customNext(stepper)">Next</button>
-        }
+  
+              }
+            </div>
+        </div>
       </div>
-    </form>
-  </mat-step>
-}}
-</mat-stepper>
-</div>
+      
+    </div>
+    } 
+  </div>
+</section>
+
+    </div>
+              
+          <div class="flex justify-end mt-4">
+            @if(index!=0)
+            {
+              <button mat-button matStepperPrevious >Atrás</button>
+            }
+            @if(index!=InstrumentoSignal().data.dimensiones!.length-1)
+            {
+            <button mat-button (click)="customNext(stepper, dv.id)">Siguiente</button>
+            }
+            @if(index==InstrumentoSignal().data.dimensiones!.length-1)
+            {
+            <button mat-button (click)="customNext(stepper, dv.id)">Finalizar</button>
+            }
+          </div>
+      </mat-step>
+     
+    }
+    @else {
+      <div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+        <span class="font-medium">Alerta!</span> Esta dimension no tiene preguntas
+      </div>
+    }
+    }
+    </mat-stepper>
+    </div>
+}
+
 }

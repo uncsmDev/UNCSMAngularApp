@@ -1,5 +1,6 @@
+import { Result } from '@interfaces/Result.interface';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, inject, input, NgZone, signal, type OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, inject, input, NgZone, signal, type OnInit } from '@angular/core';
 import { PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
 import { Escala } from '@interfaces/escala';
 import { Instrumento } from '@interfaces/instrumento';
@@ -7,12 +8,24 @@ import { EscalaService } from '@services/sed/escala.service';
 import { EvaluacionTrabajadorService } from '@services/sed/EvaluacionTrabajador.service';
 import { TitleComponent } from 'app/shared/title/title.component';
 
+import Swal from 'sweetalert2'
 
-import {FormBuilder, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { Tabs } from 'flowbite';
+import type { TabsOptions, TabsInterface, TabItem } from 'flowbite';
+import type { InstanceOptions } from 'flowbite';
+
+import {MatTabsModule} from '@angular/material/tabs';
+
+
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatStepper, MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
+import { InstrumentoDTO } from '@interfaces/DTOs/InstrumentoDTO.interface';
+import { EncabezadoComponent } from './encabezado/encabezado.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SweetalertService } from '@services/sweetalert.service';
 
 
 @Component({
@@ -25,28 +38,37 @@ import {MatButtonModule} from '@angular/material/button';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    EncabezadoComponent,
+    MatTabsModule
   ],
   templateUrl: './AplicacionEvaluacion.component.html',
   styleUrl: './AplicacionEvaluacion.component.css',
 })
-export default class AplicacionEvaluacionComponent implements AfterViewInit {
+export default class AplicacionEvaluacionComponent implements AfterViewInit, OnInit {
   evaluacionTrabajadorSvc = inject(EvaluacionTrabajadorService);
   escalaServiceSvc = inject(EscalaService);
   id = input<number>(0, {alias: 'id'});
   EvaluadoSignal = signal({} as PersonaInfoDTO)
-  InstrumentoSignal = signal({} as Instrumento)
+  InstrumentoSignal = signal({} as Result<InstrumentoDTO>)
   EscalasSignal = signal<Escala[]>([])
   dateNow = signal(new Date());
-
+  matSnackBar=inject(MatSnackBar);
+  sweetalert = inject(SweetalertService);
+  stepperOrientation = signal<'horizontal' | 'vertical'>('horizontal');
   datos: Instrumento = {} as Instrumento;
 
   isLinear = true;
+  disableRipple = true;
   
    ngAfterViewInit(){
     this.getEvaluacionTrabajador()
     this.getEscala()
    }
-
+   
+   ngOnInit(): void {
+    this.setStepperOrientation(window.innerWidth);
+   }
+  
    getEvaluacionTrabajador(){
     this.evaluacionTrabajadorSvc.GetByIdEvaluado(this.id()).subscribe({
       next:(res)=>{
@@ -60,22 +82,70 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    getInstrumento(data: PersonaInfoDTO){
     this.evaluacionTrabajadorSvc.GetInstrumento(data.tipoTrabajador.id, 1, this.id()).subscribe({
       next:(res)=>{
-        const data = res.data;
-        console.log(data)
-        this.datos = data;
-        this.InstrumentoSignal.set(data);
+        if(res.data!= null)
+        {
+          
+          const data = res.data;
+          this.InstrumentoSignal.set(res);
+        }
       }
     });
    }
 
-   customNext(stepper: MatStepper) {
-    // Ejemplo:
-    if (true) {
-      stepper.next(); // Avanza al siguiente paso
+   customNext(stepper: MatStepper, DimensionId: number) {
+    this.evaluacionTrabajadorSvc.GetNextStep(DimensionId, this.id()).subscribe({
+      next:(res)=>{
+        if (res.data) {
+          stepper.selected!.completed = true;
+          stepper.next();
+        
+        } else {
+            /* this.matSnackBar.open("", 'Cerrar', {
+              duration: 5000,
+              horizontalPosition: 'center'
+            });*/
+
+           
+    Swal.fire({
+      title: 'Error!',
+      text: 'Debe contestar todas las preguntas antes de continuar',
+      icon: 'error',
+      confirmButtonText: 'Ok',
+      ...this.sweetalert.theme,
+    })
+        }
+      }
+    })
+  }
+  
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void {
+    this.setStepperOrientation(event.target.innerWidth);
+  }
+
+  private setStepperOrientation(width: number): void {
+    if (width <= 768) {
+      this.stepperOrientation.set('vertical');
     } else {
-      alert('No se puede avanzar, complete todos los campos');
+      this.stepperOrientation.set('horizontal');
     }
   }
+
+  finishEvaluacionCuantitativa(){
+   
+  }
+
+  handleChange(event: Event, idRespuesta: number, idEscala: number) {
+    const selectElement = event.target as HTMLInputElement;
+    console.log(selectElement.checked, idRespuesta, idEscala);
+    this.evaluacionTrabajadorSvc.updateEscala(idRespuesta, idEscala).subscribe({
+      next:(res)=>{
+        console.log(res);
+      }
+    })
+  }
+
 
    getEscala(){
     this.escalaServiceSvc.get().subscribe({
@@ -84,11 +154,6 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
         this.EscalasSignal.set(data);
       }
     })
-   }
-
-   saveEscala(idRespuesta: number, idEscala: number){
-
-    console.log(idRespuesta, idEscala);
    }
 
 }

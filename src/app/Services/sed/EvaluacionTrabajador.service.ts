@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { InstrumentoDTO } from '@interfaces/DTOs/InstrumentoDTO.interface';
 import { PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
 import { Escala } from '@interfaces/escala';
 import { Instrumento } from '@interfaces/instrumento';
@@ -27,7 +28,22 @@ export class EvaluacionTrabajadorService {
   }
 
   GetInstrumento(tipoTrabajadorId: number, tipoEvaluacionId: number, evaluacionId: number){
-    return this.http.get<Result<Instrumento>>(`${this.apiUrl}/GetInstrumento/${tipoTrabajadorId}/${tipoEvaluacionId}/${evaluacionId}`);
+    return this.http.get<Result<InstrumentoDTO>>(`${this.apiUrl}/GetInstrumento/${tipoTrabajadorId}/${tipoEvaluacionId}/${evaluacionId}`);
+  }
+
+  GetNextStep(dimensionId: number, evaluacionId: number){
+    return this.http.get<Result<true>>(`${this.apiUrl}/NextStep/${dimensionId}/${evaluacionId}`);
+  }
+
+  updateEscala(id: number, valor: number){
+    const headers = {'content-type': 'application/json'}
+    const body = JSON.stringify(valor);
+    return this.http.put<Result<Instrumento>>(`${this.apiUrl}/PutEscalaResponse/${id}`, body, {headers});
+  }
+
+  updateFinishEvaluacion(id: number){
+    const headers = {'content-type': 'application/json'}
+    return this.http.put<Result<Instrumento>>(`${this.apiUrl}/PutFinishEvaluacion/${id}`, {}, {headers});
   }
 
 }

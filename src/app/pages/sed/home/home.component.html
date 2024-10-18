@@ -8,7 +8,7 @@
   <hr class="border bg-gray-500 dark:bg-white decoration-8 decoration-blue-400 dark:decoration-blue-600 pb-1 mb-8 rounded w-16 " />
   </div>
 </div>
-<div class="flex flex-col items-center pb-10 md:grid md:grid-cols-3 md:gap-6">
+<div class="flex flex-col items-center pb-10 md:grid md:grid-cols-3 gap-3 md:gap-6">
 @for (item of Trabajadores(); track $index) {
     
 <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -24,7 +24,7 @@
         <span class="text-sm text-gray-500 dark:text-gray-400 text-center pt-2">
             <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{item.contrato.fechaInicio | date}} </span> - <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">{{item.contrato.fechaFin | date}}</span></span>
         <div class="flex mt-4 md:mt-6">
-            <a [routerLink]="['/sed/aplicacion', item.evaluacionTrabajador.id]" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">Evaluación
+            <a [routerLink]="['/sed/evaluacion-cuantitativa', item.evaluacionTrabajador.id]" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">Evaluación
 
               
             </a>

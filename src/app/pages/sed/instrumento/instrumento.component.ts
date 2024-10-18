@@ -76,7 +76,6 @@ this.tipoTrabajadorSvc.getOne(this.TipoTrabajadorId()).subscribe({
   getInstrumento(){
     this.instrumentoService.GetxTipoTrabajadorxTipoEvaluacion(this.TipoEvaluacionId(), this.TipoTrabajadorId()).subscribe({
       next: (datos) => {
-        console.log(datos.data);
         this._instrumentos.set(datos.data);
       }
     })
@@ -109,7 +108,7 @@ this.tipoTrabajadorSvc.getOne(this.TipoTrabajadorId()).subscribe({
   onSubmit(valores:EmiterResult<Instrumento | null>){
     if(valores.data == null)
     {
-        this.matSnackBar.open("Error al intentar guardar el dato aa",'Cerrar',{ duration:5000, horizontalPosition:'center'});
+        this.matSnackBar.open("Error al intentar guardar el dato",'Cerrar',{ duration:5000, horizontalPosition:'center'});
     }
     else if(valores.typeModal == 'add')
     {
