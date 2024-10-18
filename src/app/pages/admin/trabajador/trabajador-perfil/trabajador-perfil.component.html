@@ -17,14 +17,14 @@
             Editar
           </button>
           
-          <img [src]="imageUrl" alt="Profile Image" class="w-32 h-32 sm:w-36 sm:h-36 rounded-full" />
+          <img [src]="imageUrl" alt="Imagen de Perfil" class="w-32 h-32 sm:w-36 sm:h-36 rounded-full" />
           
           <div class="flex-1 text-center">
               <h5 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  {{trabajadorDto().persona?.nombres}} {{trabajadorDto().persona?.apellidos}}
+                  {{trabajadorDto().persona.nombres}} {{trabajadorDto().persona.apellidos}}
               </h5>
-              <p class="text-lg text-gray-500 dark:text-gray-400">Cédula: {{trabajadorDto().persona?.dni}}</p>
-              <p class="text-lg text-gray-500 dark:text-gray-400">INS: {{trabajadorDto().trabajador?.codigo}}</p>
+              <p class="text-lg text-gray-500 dark:text-gray-400">Cédula: {{trabajadorDto().persona.dni}}</p>
+              <p class="text-lg text-gray-500 dark:text-gray-400">INS: {{trabajadorDto().trabajador.codigo}}</p>
           </div>
         </div>
         
@@ -118,15 +118,22 @@
                 <div>
                     <p class="text-lg font-medium text-gray-500 dark:text-gray-400">Teléfono 1</p>
                     <p class="dark:text-white">{{trabajadorDto().datosGenerales.telefono1}}</p>
-              @if(trabajadorDto().datosGenerales.telefono2!=null)
-              {
-                <p class="text-lg font-medium text-gray-500 dark:text-gray-400">Teléfono 2</p>
-                <p class="dark:text-white">{{trabajadorDto().datosGenerales.telefono2}}</p>
-              }
-                </div>
-                <div>
+                    @if(trabajadorDto().datosGenerales.telefono2!=null)
+                    {
+                      <p class="text-lg font-medium text-gray-500 dark:text-gray-400">Teléfono 2</p>
+                      <p class="dark:text-white">{{trabajadorDto().datosGenerales.telefono2}}</p>
+                    }
+                    </div>
+                    <div>
                     <p class="text-lg font-medium text-gray-500 dark:text-gray-400">Usuario del Sistema</p>
-                    <p class="dark:text-white">{{trabajadorDto().usuario}}</p>
+                    @if(trabajadorDto().usuario!==null)
+                    {
+                      <p class="dark:text-white">{{trabajadorDto().usuario}}</p>
+                    }
+                    @else
+                    {
+                      <p class="dark:text-white">No hay usuario registrado</p>
+                    }
                     <p class="text-lg font-medium text-gray-500 dark:text-gray-400">Correo Personal</p>
                     <p class="dark:text-white">{{trabajadorDto().datosGenerales.correoPersonal}}</p>
                 </div>

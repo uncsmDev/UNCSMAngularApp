@@ -7,6 +7,7 @@ import { Result } from '@interfaces/Result.interface';
 import { PackPage, Paginacion } from '@interfaces/packPage';
 import { TrabajadorDto, TrabajadorInput } from '@interfaces/trabajadorInput';
 import { Persona } from '@interfaces/persona';
+import { DatosPersonalesInput } from '@interfaces/Updates/datosPersonalesInput ';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,12 @@ export class TrabajadorService {
   {
     var list= this.http.get<PackPage<Trabajador>>(this.apiUrl+'/GetListWithFilter?Pagina='+pag+"&filterText="+filterText);
     return list;
+  }
+
+  UpdatePersonalData(input:DatosPersonalesInput):Observable<Result<Persona>>
+  { 
+    var re=this.http.put<Result<Persona>>(this.apiUrl+'/UpdatePersonalData',input);
+    return re;
   }
 
   postFull(data:TrabajadorInput,file?:File|any) : Observable<Result<Persona>>

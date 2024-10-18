@@ -49,13 +49,26 @@
                                 <label for="nombres" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombres</label>
                                 <input type="text" formControlName="nombres" name="nombres" id="nombres" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
                                  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                  dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="José Luis" />
+                                 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Anthony Edward" />
+
+                               
+                                    <div class="p-4 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" [hidden]="masterFormInput.controls.nombres.valid || !masterFormInput.controls.nombres.touched">
+                                        <span class="font-medium">Alerta!</span> El campo Nombres es obligatorio
+                                    </div>
+                              
+    
                             </div>
                             <div class="relative">
                                 <label for="apellidos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Apellidos</label>
                                 <input type="text" formControlName="apellidos" name="apellidos" id="apellidos" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
                                  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                  dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Marquez Stark" />
+                                 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Stark Jr." />
+
+                                
+                                    <div class="p-4 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" [hidden]="masterFormInput.controls.apellidos.valid || !masterFormInput.controls.apellidos.touched">  <!---!masterFormInput.controls.apellidos.pristine-->
+                                        <span class="font-medium">Alerta!</span> El campo Apellidos es obligatorio
+                                    </div>
+                                 
                             </div>
                         </div>
                         <div class="grid gap-6 mb-6 md:grid-cols-2 sm:grid-cols-1">
@@ -71,6 +84,9 @@
                                             <option [value]="item.id">{{item.nombre}}</option>
                                         }
                                     </select>
+                                    <div class="p-4 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" [hidden]="masterFormInput.controls.sexoId.valid || !masterFormInput.controls.sexoId.touched">  <!---!masterFormInput.controls.apellidos.pristine-->
+                                        <span class="font-medium">Alerta!</span> El campo Sexo es obligatorio
+                                    </div>
                                 </form>
                             </div>
                       
@@ -86,6 +102,9 @@
                                             <option [value]="item.id">{{item.nombre}}</option>
                                         }
                                     </select>
+                                    <div class="p-4 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" [hidden]="masterFormInput.controls.estadoCivilId.valid || !masterFormInput.controls.estadoCivilId.touched">  <!---!masterFormInput.controls.apellidos.pristine-->
+                                        <span class="font-medium">Alerta!</span> El campo Estado Civil es obligatorio
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -95,7 +114,11 @@
                                 <label for="correoPersonal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Correo Personal</label>
                                 <input type="text" formControlName="correoPersonal" name="correoPersonal" id="correoPersonal" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
                                  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                                  dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="jose.marquez@persoal.com" />
+                                  dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="anthony.Stark@personal.com" />
+
+                                    <div class="p-4 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" [hidden]="masterFormInput.controls.correoPersonal.valid">  <!---!masterFormInput.controls.apellidos.pristine-->
+                                        <span class="font-medium">Alerta!</span> El campo Correo Personal es un correo
+                                    </div>
                             </div>
                         </div>
 
@@ -115,8 +138,7 @@
                                         {
                                             <option [value]="item.id">{{item.nombre}}</option>
                                         }
-                                    </select>
-                              
+                                    </select>                              
                             </div>
                           
                     
@@ -148,6 +170,10 @@
                                         <option [value]="item.id">{{item.nombre}}</option>
                                     }
                                 </select>
+
+                                <div class="p-4 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" [hidden]="masterFormInput.controls.municipioId.valid || !masterFormInput.controls.municipioId.touched">  <!---!masterFormInput.controls.apellidos.pristine-->
+                                    <span class="font-medium">Alerta!</span> El campo Municipio es obligatorio
+                                </div>
                                 </form>
                             </div>
                         </div>
@@ -158,6 +184,10 @@
                                         <input type="text" formControlName="telefono1" name="telefono1" id="telefono1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
                                          focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
                                           dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0000 0000" />
+
+                                          <div class="p-4 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" [hidden]="masterFormInput.controls.municipioId.valid || !masterFormInput.controls.municipioId.touched">  <!---!masterFormInput.controls.apellidos.pristine-->
+                                            <span class="font-medium">Alerta!</span> Este Numero de Telefono es obligatorio
+                                        </div>    
                             </div>
                             <div class="relative">
                                 <label for="dni" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telefono/Celular 2</label>
@@ -173,13 +203,17 @@
                                 <textarea  formControlName="direccion" name="direccion" id="direccion"  rows="6"  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300
                                  focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                                   dark:focus:ring-blue-500 dark:focus:border-blue-500"  placeholder="Dirección"></textarea>
-                            
+                                  
+                                  <div class="p-4 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" [hidden]="masterFormInput.controls.direccion.valid || !masterFormInput.controls.direccion.touched">  <!---!masterFormInput.controls.apellidos.pristine-->
+                                    <span class="font-medium">Alerta!</span> El campo Dirección es obligatorio
+                                    </div>    
                             </div>
                           
                         </div>
                  
                         
                     </div>
+
                 </div>
             </div>
         </div>
@@ -205,6 +239,11 @@
                                         <input type="date" formControlName="fechaIngreso" name="fechaIngreso" id="fechaIngreso" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
                                          focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
                                           dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="" />
+
+
+                                        <div class="p-4 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" [hidden]="masterFormInput.controls.fechaIngreso.valid || !masterFormInput.controls.fechaIngreso.touched">  <!---!masterFormInput.controls.apellidos.pristine-->
+                                            <span class="font-medium">Alerta!</span> El campo Fecha de Ingreso es obligatorio
+                                        </div> 
                             </div>
                         </div>
                     
@@ -221,6 +260,10 @@
                                             <option [value]="itemD.id">{{itemD.nombre}}</option>
                                         }
                                     </select>
+
+                                    <div class="p-4 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" [hidden]="masterFormInput.controls.dependenciaId.valid || !masterFormInput.controls.dependenciaId.touched">  <!---!masterFormInput.controls.apellidos.pristine-->
+                                        <span class="font-medium">Alerta!</span> El campo Dependencia obligatorio
+                                    </div> 
                                 </form>
                             </div>
                          
@@ -242,6 +285,12 @@
                                     }
                                   </mat-autocomplete>
                                 </mat-form-field>
+
+
+                                <div class="p-4 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" [hidden]="masterFormInput.controls.cargoId.valid || !masterFormInput.controls.cargoId.touched">  <!---!masterFormInput.controls.apellidos.pristine-->
+                                    <span class="font-medium">Alerta!</span> El campo Dependencia obligatorio
+                                </div> 
+
                               </form>
                         </div>
 
@@ -265,14 +314,7 @@
                                     </select>
                                 </form>
                             </div>
-    
-                            <!--div class="relative">
-                              
-    
-                                <form  class="w-full">
-                                   
-                                  </form>
-                            </div-->
+                            
                         </div>
         
                         <div class="grid gap-6 mb-6 md:grid-cols-2 sm:grid-cols-1">
