@@ -25,6 +25,7 @@ export class TrabajadorDatosModalComponent {
   modalService = inject(ModalService);
 
   PostType = input.required<tipoModal>();
+  img = input.required<SafeUrl | null>();
   text:string = 'Agregar';
 
   imgUrl: SafeUrl | undefined;
@@ -40,11 +41,13 @@ export class TrabajadorDatosModalComponent {
    ins: new FormControl('0000', Validators.required),
  });
 
-  openModal(inputData:DatosPersonalesInput,image:SafeUrl | undefined)
+  openModal(inputData:DatosPersonalesInput, image:SafeUrl | undefined)
   {
     this.reset()
     //this.datosPersonales = inputData;
-  
+
+    
+
     this.personalDataform.patchValue(inputData);
 
     this.text = 'Editar';

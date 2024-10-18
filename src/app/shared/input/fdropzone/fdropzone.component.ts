@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild, ElementRef, inject  } from '@angular/core';
+import { Component, ViewChild, ElementRef, inject, input, OnInit  } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ArchivoService } from '../../../Services/admin/archivo.service';
+import { SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-fdropzone',
@@ -10,13 +11,17 @@ import { ArchivoService } from '../../../Services/admin/archivo.service';
   templateUrl: './fdropzone.component.html',
   styleUrl: './fdropzone.component.css'
 })
-export class FdropzoneComponent {
+export class FdropzoneComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
+  img = input.required<SafeUrl | null>();
   archivoService=inject(ArchivoService);
 
 
   imageUrl!: string;
   
+  ngOnInit(): void {
+    console.log(this.img());
+  }
 
   public archivo:any=[];
 

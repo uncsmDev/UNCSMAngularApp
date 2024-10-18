@@ -42,7 +42,7 @@ export default class TrabajadorPerfilComponent {
   subModuloByUserList:Signal<SubModuloXUserView[]>=computed(this.subModulosByUser);
 
   modalDatos = viewChild.required(TrabajadorDatosModalComponent);
-
+  fileRes = signal<SafeUrl | null>(null);
   trabajadorId!: number;
   imageUrl: SafeUrl | undefined;
   fileDir?: string;
@@ -77,11 +77,9 @@ export default class TrabajadorPerfilComponent {
               this._archivoService.getByAddress(this.fileDir).subscribe({
                 next: (fileRes) => {
                   if (fileRes.size > 0) {
-
-                    
-
                     const objectUrl = URL.createObjectURL(fileRes);
                     this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectUrl);
+                    this.fileRes.set(this.sanitizer.bypassSecurityTrustUrl(objectUrl));
                   }
                 },
                 error: (er) => {
