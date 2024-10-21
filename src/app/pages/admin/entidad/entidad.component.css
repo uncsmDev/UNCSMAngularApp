@@ -1,4 +1,0 @@
-.full-width-form-field {
-    width: 100%; /* Ocupa todo el ancho disponible */
-    display: block; /* Por defecto, mat-form-field usa display: inline-block; cambiar a block para ocupar todo el ancho */
-  }

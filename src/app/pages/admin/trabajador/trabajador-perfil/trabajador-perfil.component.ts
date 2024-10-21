@@ -159,6 +159,18 @@ export default class TrabajadorPerfilComponent {
 
   closeModal()
   {
+    
     this.modalDatos().closeModal();
+  }
+
+
+  
+  formatearFecha(fechaString: Date) {
+    const fecha = new Date(fechaString);
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son base 0
+    const anio = fecha.getFullYear();
+
+    return `${anio}-${mes}-${dia}`;
   }
 }

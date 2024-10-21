@@ -32,9 +32,23 @@ export class TrabajadorService {
     return list;
   }
 
-  UpdatePersonalData(input:DatosPersonalesInput):Observable<Result<Persona>>
+  UpdatePersonalData(input:DatosPersonalesInput,file?:File):Observable<Result<Persona>>
   { 
-    var re=this.http.put<Result<Persona>>(this.apiUrl+'/UpdatePersonalData',input);
+    const formData:FormData = new FormData();
+
+    if(file && file.size > 0)
+      formData.append('File', file, file.name);
+
+
+    Object.keys(input).forEach(key => {
+      const value = (input as any)[key]; // Obtener el valor de la propiedad
+    
+      if (value !== null && value !== undefined) {
+        formData.append(key, value);
+      }
+    });
+
+    var re=this.http.put<Result<Persona>>(this.apiUrl+'/UpdatePersonalData',formData, {  headers: new HttpHeaders({ 'Accept': '*/*' })});
     return re;
   }
 

@@ -8,6 +8,8 @@ import { ModalInterface } from 'flowbite';
 import { ArchivoService } from '@services/admin/archivo.service';
 import { DatosPersonalesInput } from '@interfaces/Updates/datosPersonalesInput ';
 import { SafeUrl } from '@angular/platform-browser';
+import { TrabajadorService } from '@services/admin/trabajador.service';
+import { ResultEnum } from '@interfaces/Result.interface';
 
 @Component({
   selector: 'app-trabajador-datos-modal',
@@ -19,10 +21,13 @@ import { SafeUrl } from '@angular/platform-browser';
 export class TrabajadorDatosModalComponent {
 
   archivoService=inject(ArchivoService);
+  trabajadorService=inject(TrabajadorService);
   
   modalActivo!: ModalInterface;
   fb = inject(FormBuilder);
   modalService = inject(ModalService);
+
+  refresh = output();
 
   PostType = input.required<tipoModal>();
   img = input.required<SafeUrl | null>();
@@ -46,8 +51,6 @@ export class TrabajadorDatosModalComponent {
     this.reset()
     //this.datosPersonales = inputData;
 
-    
-
     this.personalDataform.patchValue(inputData);
 
     this.text = 'Editar';
@@ -59,6 +62,7 @@ export class TrabajadorDatosModalComponent {
   {
     this.modalActivo.hide();
     this.modalActivo.destroy();
+    this.refresh.emit(); 
   }
 
   reset()
@@ -79,6 +83,29 @@ export class TrabajadorDatosModalComponent {
     if(this.personalDataform.invalid)
     {
       this.personalDataform.markAllAsTouched();
+    }
+    else 
+    {
+      this.datosPersonales = this.personalDataform.value as unknown as DatosPersonalesInput;
+      this.trabajadorService.UpdatePersonalData(this.datosPersonales,this.archivoService.file).subscribe({
+        next: (data) => {
+          if(data.status==ResultEnum.Success)
+          {
+            this.modalActivo.hide();
+            this.refresh.emit();
+          }
+          else
+          {
+            console.log(data.message);
+          }
+        
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
+
+      this.modalActivo.hide();
     }
   }
   
