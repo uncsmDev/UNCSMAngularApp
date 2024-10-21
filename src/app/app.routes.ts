@@ -14,9 +14,16 @@ export const routes: Routes = [
             children: [
                 {
                     path: '',
-                    redirectTo: 'sed/home',
+                    redirectTo: '/sed/home',
                     pathMatch: 'full',
                   },
+                {
+                    path: 'home',
+                    title: 'Home',
+                    loadComponent: () => import('./pages/sed/home/home.component'),
+                    data: { breadcrumb: 'Home' },
+                    canActivate: [routerPermisseGuard]
+                },
                   {
                     path: 'evaluacion-cuantitativa/:id',
                     title: 'Aplicación de la Evaluación',
@@ -38,13 +45,6 @@ export const routes: Routes = [
                     title: 'Periodos',
                     loadComponent: () => import('./pages/sed/periodo/periodo.component'),
                     data: { breadcrumb: 'Periodos' },
-                    canActivate: [routerPermisseGuard]
-                },
-                {
-                    path: 'home',
-                    title: 'Home',
-                    loadComponent: () => import('./pages/sed/home/home.component'),
-                    data: { breadcrumb: 'Home' },
                     canActivate: [routerPermisseGuard]
                 },
                 {
@@ -107,7 +107,7 @@ export const routes: Routes = [
         children: [
             {
                 path: '',
-                redirectTo: 'admin/home',
+                redirectTo: '/admin/home',
                 pathMatch: 'full'
               },
             {
