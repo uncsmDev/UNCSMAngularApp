@@ -17,6 +17,7 @@ import { LoginResult, TokenData } from '@interfaces/acount';
   styleUrl: './sed.component.css'
 })
 export default class SedComponent {
+  router = inject(Router);
   ngOnInit(){
     initFlowbite();
   }  

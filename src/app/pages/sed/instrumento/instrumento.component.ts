@@ -5,6 +5,7 @@ import { ModalService } from '@services/modal.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ModalDeleteComponent } from '../../../components/modal-delete/modal-delete.component';
+import Swal from 'sweetalert2'
 import { Instrumento, postDelete, tipoModal} from '@interfaces/instrumento';
 import { Dimension } from '@interfaces/dimension';
 import { CommonModule, Location } from '@angular/common';
@@ -17,6 +18,7 @@ import { ModalDimensionesComponent } from "./modal-dimensiones/modal-dimensiones
 import { TipoTrabajador } from '@interfaces/tipoEntidad';
 import { TipoTrabajadorService } from '@services/admin/tipoTrabajador.service';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { SweetalertService } from '@services/sweetalert.service';
 
 @Component({
   selector: 'app-instrumento',
@@ -39,12 +41,12 @@ export default class InstrumentoComponent {
   modalService = inject(ModalService);
   flowbitSharedService = inject(FlowbitSharedService);
   location = inject(Location)
-
+  sweetalert = inject(SweetalertService);
   poperData = {
     titulo: '',
     msg: ''
   }
-
+  private previousValue= signal <number | null>(null); 
   PostType:tipoModal = 'add';
   postDelete: postDelete = 'instrumento';
 
@@ -77,6 +79,12 @@ this.tipoTrabajadorSvc.getOne(this.TipoTrabajadorId()).subscribe({
     this.instrumentoService.GetxTipoTrabajadorxTipoEvaluacion(this.TipoEvaluacionId(), this.TipoTrabajadorId()).subscribe({
       next: (datos) => {
         this._instrumentos.set(datos.data);
+
+        this._instrumentos().forEach(instrumento => {
+          if(instrumento.habilitar == true){
+            this.previousValue.set(instrumento.id);
+          }
+        })
       }
     })
   }
@@ -195,7 +203,33 @@ else{
   onChange(event: Event){
     const input = event.target as HTMLInputElement;
     const value = Number.parseInt(input.value);
-    this.instrumentoService.putHabilitar(value, this.TipoTrabajadorId(), this.TipoEvaluacionId()).subscribe();
+
+    this.instrumentoService.putHabilitar(value, this.TipoTrabajadorId(), this.TipoEvaluacionId()).subscribe(
+      {
+        next: (res) => {
+          if(res.data == null){
+            Swal.fire({
+              title: 'Error!',
+              text: 'El instrumento seleccionado, no contiene preguntas agregadas',
+              icon: 'error',
+              confirmButtonText: 'Ok',
+              ...this.sweetalert.theme,
+            });
+            this.revertToPreviousValue(); 
+          }
+        }
+        
+      }
+    );
+  }
+
+  revertToPreviousValue(): void {
+    if (this.previousValue() !== null) {
+      const previousRadio = document.querySelector(`input[id="${this.previousValue()}"]`) as HTMLInputElement;
+      if (previousRadio) {
+        previousRadio.checked = true;  // Restaurar la selección del radio button anterior
+      }
+    }
   }
 
   deletedInstrumento(){

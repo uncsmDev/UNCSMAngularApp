@@ -1,6 +1,6 @@
 import { Result } from '@interfaces/Result.interface';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, HostListener, inject, input, NgZone, signal, type OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, inject, input, NgZone, QueryList, signal, viewChild, type OnInit } from '@angular/core';
 import { PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
 import { Escala } from '@interfaces/escala';
 import { Instrumento } from '@interfaces/instrumento';
@@ -56,6 +56,7 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
   sweetalert = inject(SweetalertService);
   stepperOrientation = signal<'horizontal' | 'vertical'>('horizontal');
   datos: Instrumento = {} as Instrumento;
+ radioButtons = viewChild.required<QueryList<ElementRef>>('radioButton');
 
   isLinear = true;
   disableRipple = true;
@@ -64,6 +65,22 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
     this.getEvaluacionTrabajador()
     this.getEscala()
    }
+   
+  selectRadio(itemId: number, preguntaId: number) {
+    console.log(this.radioButtons());
+    // Encontrar el radio button correcto basándose en el itemId
+    const radioToSelect = this.radioButtons().find((radio) => {
+      return radio.nativeElement.id === `radio-${itemId}-${preguntaId}`;
+    });
+
+    console.log(radioToSelect);
+
+    if (radioToSelect && !radioToSelect.nativeElement.checked) {
+      radioToSelect.nativeElement.checked = true;
+      radioToSelect.nativeElement.dispatchEvent(new Event('change')); // Disparar evento 'change' manualmente
+    }
+  }
+
    
    ngOnInit(): void {
     this.setStepperOrientation(window.innerWidth);
