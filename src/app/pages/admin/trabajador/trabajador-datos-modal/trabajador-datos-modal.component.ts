@@ -31,6 +31,7 @@ export class TrabajadorDatosModalComponent {
 
   PostType = input.required<tipoModal>();
   img = input.required<SafeUrl | null>();
+  imgEmit = output<DatosPersonalesInput>();
   text:string = 'Agregar';
 
   imgUrl: SafeUrl | undefined;
