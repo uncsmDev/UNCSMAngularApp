@@ -60,10 +60,11 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
 
   isLinear = true;
   disableRipple = true;
-  
+  variable = true;
    ngAfterViewInit(){
     this.getEvaluacionTrabajador()
     this.getEscala()
+    //comentario
    }
    
   selectRadio(itemId: number, preguntaId: number) {

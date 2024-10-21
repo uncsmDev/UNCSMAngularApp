@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild, ElementRef, inject, input, OnInit  } from '@angular/core';
+import { Component, ViewChild, ElementRef, inject, input, OnInit, output  } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ArchivoService } from '../../../Services/admin/archivo.service';
 import { SafeUrl } from '@angular/platform-browser';
@@ -15,7 +15,7 @@ export class FdropzoneComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
   img = input.required<SafeUrl | null>();
   archivoService=inject(ArchivoService);
-
+  imgEmit = output<string | ArrayBuffer>();
 
   imageUrl!: string;
   
@@ -42,6 +42,7 @@ export class FdropzoneComponent implements OnInit {
 
     reader.onload = (e: any) => {
       this.previewImage = e.target.result;
+      this.imgEmit.emit(this.previewImage);
     };
     reader.readAsDataURL(file);
   }

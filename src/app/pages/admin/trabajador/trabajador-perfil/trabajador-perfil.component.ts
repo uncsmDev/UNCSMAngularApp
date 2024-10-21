@@ -60,6 +60,10 @@ export default class TrabajadorPerfilComponent {
 
     this.getById();
   }
+
+  actualizarimagen(datosGuardados: DatosPersonalesInput){
+    this.imageUrl = datosGuardados.img!;
+  }
   
   getById()
   {

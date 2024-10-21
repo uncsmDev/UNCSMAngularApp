@@ -253,4 +253,4 @@
   </div>
 </div>
 
-<app-trabajador-datos-modal PostType="add" [img] = fileRes() ></app-trabajador-datos-modal>
+<app-trabajador-datos-modal PostType="add" [img] = fileRes() (imgEmit)="actualizarimagen($event)" ></app-trabajador-datos-modal>

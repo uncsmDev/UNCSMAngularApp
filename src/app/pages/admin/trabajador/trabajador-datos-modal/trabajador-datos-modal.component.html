@@ -22,7 +22,7 @@
                 <h3 class="mb-2  font-bold tracking-tight text-gray-900 dark:text-white">Imagen de Perfil</h3>
                 <div class=" flex flex-col md:ml-auto w-full h-min md:py-8 mt-8 md:mt-0 rounded p-5 bg-white dark:bg-gray-900 dark:text-white">
                     
-                    <app-fdropzone [img] = img()>
+                    <app-fdropzone [img] = img() (imgEmit)="actualizarimagen($event)">
                     </app-fdropzone>
                     
                 </div>

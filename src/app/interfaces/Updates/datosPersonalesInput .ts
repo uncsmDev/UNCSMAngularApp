@@ -4,4 +4,5 @@ export interface DatosPersonalesInput {
     nombres?: string;
     apellidos?: string;
     ins: string;
+    img?: string | ArrayBuffer;
 }

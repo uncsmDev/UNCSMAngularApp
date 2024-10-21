@@ -33,6 +33,7 @@ export class TrabajadorDatosModalComponent {
   img = input.required<SafeUrl | null>();
   imgEmit = output<DatosPersonalesInput>();
   text:string = 'Agregar';
+  imagen: string | ArrayBuffer = '';
 
   imgUrl: SafeUrl | undefined;
  // outputPostType = output<EmiterResult<Trabajador>>();
@@ -79,6 +80,10 @@ export class TrabajadorDatosModalComponent {
     )
   }
 
+
+  actualizarimagen(imagen: string | ArrayBuffer){
+    this.imagen = imagen;
+  }
   onSubmit() 
   {
     if(this.personalDataform.invalid)
@@ -92,6 +97,8 @@ export class TrabajadorDatosModalComponent {
         next: (data) => {
           if(data.status==ResultEnum.Success)
           {
+            this.datosPersonales.img = this.imagen;
+            this.imgEmit.emit(this.datosPersonales);
             this.modalActivo.hide();
             this.refresh.emit();
           }
