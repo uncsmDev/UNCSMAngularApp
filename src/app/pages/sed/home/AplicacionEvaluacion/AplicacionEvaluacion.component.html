@@ -27,6 +27,8 @@
     </div>
   </div>
 </div>  
+
+@if(InstrumentoSignal().data!= null){
 <div class="w-12/12 md:w-11/12 mx-auto mt-6 bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
 <mat-tab-group>
   <mat-tab label="Indicaciones Generales para el llenado" > 
@@ -86,14 +88,8 @@
     </div> </mat-tab>
 </mat-tab-group>
 </div>
-@if(InstrumentoSignal().data== null){
-  <div class="flex justify-center">
-  <div class="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 mt-6 w-2/3" role="alert">
-    <span class="font-medium">Alerta!</span> No tiene un instrumento valido o habilitado
-  </div>
-</div>
 }
-@else {
+@if(InstrumentoSignal().data!= null){
   <div id="theme-container">
     <mat-stepper [orientation]="stepperOrientation()" [linear]=isLinear [disableRipple]=disableRipple #stepper color="primary" >
       @if(InstrumentoSignal().data.dimensiones!=null && InstrumentoSignal().data.dimensiones!.length > 0){

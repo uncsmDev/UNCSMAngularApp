@@ -7,16 +7,8 @@ import { Instrumento } from '@interfaces/instrumento';
 import { EscalaService } from '@services/sed/escala.service';
 import { EvaluacionTrabajadorService } from '@services/sed/EvaluacionTrabajador.service';
 import { TitleComponent } from 'app/shared/title/title.component';
-
 import Swal from 'sweetalert2'
-
-import { Tabs } from 'flowbite';
-import type { TabsOptions, TabsInterface, TabItem } from 'flowbite';
-import type { InstanceOptions } from 'flowbite';
-
 import {MatTabsModule} from '@angular/material/tabs';
-
-
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -26,6 +18,7 @@ import { InstrumentoDTO } from '@interfaces/DTOs/InstrumentoDTO.interface';
 import { EncabezadoComponent } from './encabezado/encabezado.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SweetalertService } from '@services/sweetalert.service';
+import { EvaluacionTrabajador } from '@interfaces/EvaluacionTrabajador.interface';
 
 
 @Component({
@@ -49,6 +42,7 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
   escalaServiceSvc = inject(EscalaService);
   id = input<number>(0, {alias: 'id'});
   EvaluadoSignal = signal({} as PersonaInfoDTO)
+  evaluacionSignal = signal({} as EvaluacionTrabajador)
   InstrumentoSignal = signal({} as Result<InstrumentoDTO>)
   EscalasSignal = signal<Escala[]>([])
   dateNow = signal(new Date());
@@ -62,9 +56,24 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
   disableRipple = true;
   variable = true;
    ngAfterViewInit(){
-    this.getEvaluacionTrabajador()
-    this.getEscala()
-    //comentario
+
+    this.evaluacionTrabajadorSvc.getTipoEvaluacionHabilitada(this.id()).subscribe({
+      next:(res)=>{
+        if(res.data!= null){
+          this.evaluacionSignal.set(res.data);
+          if(res.data.evaluacionCuantitativaTerminada != null && res.data.evaluacionCuantitativaTerminada == true){
+
+            this.getEvaluacionTrabajadorSinInstrumento();
+          }else{
+            this.getEvaluacionTrabajador()
+            this.getEscala()
+          }
+        }else{
+          this.getEvaluacionTrabajador()
+          this.getEscala()
+        }
+      }
+    })
    }
    
   selectRadio(itemId: number, preguntaId: number) {
@@ -93,6 +102,15 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
         const data = res.data!;
         this.EvaluadoSignal.set(data);
         this.getInstrumento(data);
+      }
+   })
+   }
+
+   getEvaluacionTrabajadorSinInstrumento(){
+    this.evaluacionTrabajadorSvc.GetByIdEvaluado(this.id()).subscribe({
+      next:(res)=>{
+        const data = res.data!;
+        this.EvaluadoSignal.set(data);
       }
    })
    }

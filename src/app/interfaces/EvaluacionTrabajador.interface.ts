@@ -8,7 +8,8 @@ export interface EvaluacionTrabajador {
     revisionEvaluacion: boolean;
     evaluadoId: number;
     evaluadorId: number;
-
+    evaluacionCuantitativaTerminada?: boolean;
+    evaluacionCualitativaTerminada?: boolean;
     categoriaDesempenoId?: number; // Nullable
     periodoId?: number; // Nullable
 

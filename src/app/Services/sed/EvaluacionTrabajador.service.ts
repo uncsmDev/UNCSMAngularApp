@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { InstrumentoDTO } from '@interfaces/DTOs/InstrumentoDTO.interface';
 import { PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
 import { Escala } from '@interfaces/escala';
+import { EvaluacionTrabajador } from '@interfaces/EvaluacionTrabajador.interface';
 import { Instrumento } from '@interfaces/instrumento';
 import { Result } from '@interfaces/Result.interface';
 import { appsettings } from 'app/Settings/appsettings';
@@ -29,6 +30,10 @@ export class EvaluacionTrabajadorService {
 
   GetInstrumento(tipoTrabajadorId: number, tipoEvaluacionId: number, evaluacionId: number){
     return this.http.get<Result<InstrumentoDTO>>(`${this.apiUrl}/GetInstrumento/${tipoTrabajadorId}/${tipoEvaluacionId}/${evaluacionId}`);
+  }
+
+  getTipoEvaluacionHabilitada(evaluacionId: number){
+    return this.http.get<Result<EvaluacionTrabajador>>(`${this.apiUrl}/GetTipoEvaluacionHabilitada/${evaluacionId}`);
   }
 
   GetNextStep(dimensionId: number, evaluacionId: number){
