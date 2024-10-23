@@ -56,7 +56,11 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
   disableRipple = true;
   variable = true;
    ngAfterViewInit(){
+    this.iniciarEvaluacion();
+   }
 
+   iniciarEvaluacion(){
+    
     this.evaluacionTrabajadorSvc.getTipoEvaluacionHabilitada(this.id()).subscribe({
       next:(res)=>{
         if(res.data!= null){
@@ -64,34 +68,25 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
           if(res.data.evaluacionCuantitativaTerminada != null && res.data.evaluacionCuantitativaTerminada == true){
 
             this.getEvaluacionTrabajadorSinInstrumento();
+            this.InstrumentoSignal.set({} as Result<InstrumentoDTO>);
           }else{
             this.getEvaluacionTrabajador()
             this.getEscala()
           }
         }else{
-          this.getEvaluacionTrabajador()
-          this.getEscala()
+          this.evaluacionTrabajadorSvc.updateInicioEvaluacion(this.id()).subscribe(
+            {
+              next:(res)=>{
+                this.getEvaluacionTrabajador()
+                this.getEscala()
+              }
+            }
+          );
         }
       }
     })
    }
-   
-  selectRadio(itemId: number, preguntaId: number) {
-    console.log(this.radioButtons());
-    // Encontrar el radio button correcto basándose en el itemId
-    const radioToSelect = this.radioButtons().find((radio) => {
-      return radio.nativeElement.id === `radio-${itemId}-${preguntaId}`;
-    });
-
-    console.log(radioToSelect);
-
-    if (radioToSelect && !radioToSelect.nativeElement.checked) {
-      radioToSelect.nativeElement.checked = true;
-      radioToSelect.nativeElement.dispatchEvent(new Event('change')); // Disparar evento 'change' manualmente
-    }
-  }
-
-   
+ 
    ngOnInit(): void {
     this.setStepperOrientation(window.innerWidth);
    }
@@ -135,20 +130,14 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
           stepper.selected!.completed = true;
           stepper.next();
         
-        } else {
-            /* this.matSnackBar.open("", 'Cerrar', {
-              duration: 5000,
-              horizontalPosition: 'center'
-            });*/
-
-           
-    Swal.fire({
-      title: 'Error!',
-      text: 'Debe contestar todas las preguntas antes de continuar',
-      icon: 'error',
-      confirmButtonText: 'Ok',
-      ...this.sweetalert.theme,
-    })
+        } else {           
+          Swal.fire({
+            title: 'Error!',
+            text: 'Debe contestar todas las preguntas antes de continuar',
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            ...this.sweetalert.theme,
+          })
         }
       }
     })
@@ -169,7 +158,11 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
   }
 
   finishEvaluacionCuantitativa(){
-   
+    this.evaluacionTrabajadorSvc.updateFinishEvaluacionCuantitativa(this.id()).subscribe({
+      next:(res)=>{
+        this.iniciarEvaluacion();
+      }
+    })
   }
 
   handleChange(event: Event, idRespuesta: number, idEscala: number) {

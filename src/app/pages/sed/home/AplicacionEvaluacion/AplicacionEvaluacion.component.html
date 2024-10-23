@@ -21,7 +21,7 @@
       </div>
       <div class="space-y-4">
         <app-encabezado titulo="Período a Evaluar:" [valor]="" />
-        <app-encabezado titulo="Fecha de Evaluación:" [valor]="(dateNow() | date: 'd \'de\' MMMM \'de\' yyyy')" />
+        <app-encabezado titulo="Fecha de Evaluación:" [valor]="(EvaluadoSignal().evaluacionTrabajador?.fechaInicioEvaluacion | date: 'd \'de\' MMMM \'de\' yyyy')" />
         
       </div>
     </div>
@@ -149,7 +149,7 @@
                     </defs>
                   </svg>
                   
-                  <div (click)="selectRadio(item.id, p.id)">
+                  <div>
                     <p> {{ item.nombre }} </p>
                   </div>
                 </div>
@@ -177,7 +177,7 @@
             }
             @if(index==InstrumentoSignal().data.dimensiones!.length-1)
             {
-            <button mat-button (click)="customNext(stepper, dv.id)">Finalizar</button>
+            <button mat-button (click)="finishEvaluacionCuantitativa()">Finalizar</button>
             }
           </div>
       </mat-step>

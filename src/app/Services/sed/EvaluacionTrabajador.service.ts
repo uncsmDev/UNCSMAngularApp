@@ -51,4 +51,14 @@ export class EvaluacionTrabajadorService {
     return this.http.put<Result<Instrumento>>(`${this.apiUrl}/PutFinishEvaluacion/${id}`, {}, {headers});
   }
 
+  updateInicioEvaluacion(id: number){
+    const headers = {'content-type': 'application/json'}
+    return this.http.put(`${this.apiUrl}/updateFechaInicioEvaluacion/${id}`, {}, {headers});
+  }
+
+  updateFinishEvaluacionCuantitativa(id: number){
+    const headers = {'content-type': 'application/json'}
+    return this.http.put(`${this.apiUrl}/UpdateFinishEvaluacionCuantitativa/${id}`, {}, {headers});
+  }
+
 }
