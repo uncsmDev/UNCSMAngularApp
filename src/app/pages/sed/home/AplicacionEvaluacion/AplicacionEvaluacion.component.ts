@@ -1,6 +1,6 @@
 import { Result } from '@interfaces/Result.interface';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, HostListener, inject, input, NgZone, QueryList, signal, viewChild, type OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, inject, input, signal, type OnInit } from '@angular/core';
 import { PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
 import { Escala } from '@interfaces/escala';
 import { Instrumento } from '@interfaces/instrumento';
@@ -14,12 +14,12 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatStepper, MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
-import { InstrumentoDTO } from '@interfaces/DTOs/InstrumentoDTO.interface';
+import { InstrumentoAbiertoDTO, InstrumentoDTO } from '@interfaces/DTOs/InstrumentoDTO.interface';
 import { EncabezadoComponent } from './encabezado/encabezado.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SweetalertService } from '@services/sweetalert.service';
 import { EvaluacionTrabajador } from '@interfaces/EvaluacionTrabajador.interface';
-
+import { RespuestaDTO } from '@interfaces/DTOs/respuesta.interface';
 
 @Component({
   selector: 'app-aplicacion-evaluacion',
@@ -44,27 +44,28 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
   EvaluadoSignal = signal({} as PersonaInfoDTO)
   evaluacionSignal = signal({} as EvaluacionTrabajador)
   InstrumentoSignal = signal({} as Result<InstrumentoDTO>)
+  InstrumentoAbiertaSignal = signal({} as Result<InstrumentoAbiertoDTO>)
   EscalasSignal = signal<Escala[]>([])
   dateNow = signal(new Date());
   matSnackBar=inject(MatSnackBar);
   sweetalert = inject(SweetalertService);
   stepperOrientation = signal<'horizontal' | 'vertical'>('horizontal');
   datos: Instrumento = {} as Instrumento;
- radioButtons = viewChild.required<QueryList<ElementRef>>('radioButton');
-
+  respuestaAbiertaSignal = signal<RespuestaDTO[]>([]);
   isLinear = true;
   disableRipple = true;
   variable = true;
+  
    ngAfterViewInit(){
     this.iniciarEvaluacion();
    }
 
    iniciarEvaluacion(){
-    
     this.evaluacionTrabajadorSvc.getTipoEvaluacionHabilitada(this.id()).subscribe({
       next:(res)=>{
         if(res.data!= null){
           this.evaluacionSignal.set(res.data);
+
           if(res.data.evaluacionCuantitativaTerminada != null && res.data.evaluacionCuantitativaTerminada == true){
 
             this.getEvaluacionTrabajadorSinInstrumento();
@@ -106,6 +107,7 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
       next:(res)=>{
         const data = res.data!;
         this.EvaluadoSignal.set(data);
+        this.getInstrumentoCualitativo(data);
       }
    })
    }
@@ -115,9 +117,18 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
       next:(res)=>{
         if(res.data!= null)
         {
-          
-          const data = res.data;
           this.InstrumentoSignal.set(res);
+        }
+      }
+    });
+   }
+
+   getInstrumentoCualitativo(data: PersonaInfoDTO){
+    this.evaluacionTrabajadorSvc.GetInstrumentoCualitativo(data.tipoTrabajador.id, 1, this.id()).subscribe({
+      next:(res)=>{
+        if(res.data!= null)
+        {
+          this.InstrumentoAbiertaSignal.set(res);
         }
       }
     });
@@ -165,14 +176,20 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
     })
   }
 
+  finishEvaluacionCualitativa(){
+    this.evaluacionTrabajadorSvc.UpdateFinishEvaluacionCualitativa(this.id()).subscribe({
+      next:(res)=>{
+        this.evaluacionSignal.update((datos) => {
+          return {...datos, evaluacionCualitativaTerminada:true };
+        });          
+        this.respuestaAbiertaSignal.set([]);
+      }
+    });
+  }
+
   handleChange(event: Event, idRespuesta: number, idEscala: number) {
     const selectElement = event.target as HTMLInputElement;
-    console.log(selectElement.checked, idRespuesta, idEscala);
-    this.evaluacionTrabajadorSvc.updateEscala(idRespuesta, idEscala).subscribe({
-      next:(res)=>{
-        console.log(res);
-      }
-    })
+    this.evaluacionTrabajadorSvc.updateEscala(idRespuesta, idEscala).subscribe();
   }
 
 
@@ -183,6 +200,39 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
         this.EscalasSignal.set(data);
       }
     })
+   }
+
+
+
+   guardarRespuesta(textAreaId: string){
+    const textAreas = document.getElementsByClassName('textareasresponse') as HTMLCollectionOf<HTMLTextAreaElement>;
+    Array.from(textAreas).forEach(textArea => {
+      this.respuestaAbiertaSignal().push({id: Number(textArea.id), respuesta: textArea.value});
+    });
+
+    this.evaluacionTrabajadorSvc.updateRespuestaAbierta(this.respuestaAbiertaSignal()).subscribe({
+      next:(res)=>{
+        if(res.data){
+          Swal.fire({
+            title: 'Instrumento guardado con éxito',
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            ...this.sweetalert.theme,
+          })
+          this.finishEvaluacionCualitativa();
+        }
+        else{
+          Swal.fire({
+            title: 'Error!',
+            text: 'Hubo un error al momento de guardar las respuestas',
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            ...this.sweetalert.theme,
+          })
+        }
+        
+      }
+    });
    }
 
 }

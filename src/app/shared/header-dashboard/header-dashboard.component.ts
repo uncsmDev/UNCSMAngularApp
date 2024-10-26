@@ -13,7 +13,7 @@ export class HeaderDashboardComponent {
   auth = inject(AuthService);
   DataToken = signal<TokenData>({} as TokenData);
   ngOnInit(){
-   this.DataToken.set(this.auth.getDataUser()); 
+   this.DataToken.set(this.auth.getDataUser());
   }
   signOut(){
     sessionStorage.removeItem("loggedInUser");

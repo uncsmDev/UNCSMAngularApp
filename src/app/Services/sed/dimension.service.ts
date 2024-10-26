@@ -16,7 +16,7 @@ export class DimensionService {
     return this.http.get<Dimension[]>(this.ruta);
   }
 
-  getTE(idTE: number): Observable<Dimension[]>{
-    return this.http.get<Dimension[]>(`${this.ruta}/${idTE}`);
+  getTE(idTE: number){
+    return this.http.get<Dimension>(`${this.ruta}/${idTE}`);
   }
 }

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { PreguntasCerradas } from '@interfaces/pregunta_cerradas';
 import { Result } from '@interfaces/Result.interface';
-import { TipoEntidad } from '@interfaces/tipoEntidad';
+import { TipoEntidad, TipoTrabajador } from '@interfaces/tipoEntidad';
 import { appsettings } from 'app/Settings/appsettings';
 import { Observable } from 'rxjs';
 
@@ -13,7 +13,7 @@ export class PreguntaService {
   private http = inject(HttpClient);
   private ruta:string = appsettings.apiApp + 'PreguntaCerrada';
   
-  private rutaInstrumento:string = appsettings.apiApp + 'TipoEntidad';
+  private rutaInstrumento:string = appsettings.apiApp + 'TipoTrabajador';
 
   constructor() { }
 
@@ -36,7 +36,7 @@ export class PreguntaService {
   delete(pregunta: PreguntasCerradas): Observable<Result<PreguntasCerradas>>{
     return this.http.delete<Result<PreguntasCerradas>>(`${this.ruta}/${pregunta.id}`);
   }
-  getInstrumento(id:number): Observable<Result<TipoEntidad>>{
-    return this.http.get<Result<TipoEntidad>>(`${this.rutaInstrumento}/GetTipoEntidad/${id}`)
+  getInstrumento(id:number){
+    return this.http.get<Result<TipoTrabajador>>(`${this.rutaInstrumento}/GetOneXInstrumento/${id}`)
   }
 }

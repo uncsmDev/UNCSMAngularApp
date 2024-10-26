@@ -1,6 +1,5 @@
 <app-title title="Aplicación de la Evaluación" />
-@if(EvaluadoSignal())
-{
+
   
 <div class="w-full  mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
   <div class="p-6">
@@ -27,26 +26,25 @@
     </div>
   </div>
 </div>  
-
-@if(InstrumentoSignal().data!= null){
+@if(InstrumentoSignal().data!= null && evaluacionSignal().evaluacionCuantitativaTerminada == null && evaluacionSignal().evaluacionCuantitativaTerminada != true){
 <div class="w-12/12 md:w-11/12 mx-auto mt-6 bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
 <mat-tab-group>
   <mat-tab label="Indicaciones Generales para el llenado" > 
 <ul class="m-7 space-y-4 text-left text-gray-500 dark:text-gray-400">
   <li class="flex items-center space-x-3 rtl:space-x-reverse">
-       <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+       <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400"  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
        </svg>
       <span>Lee e interprete el contenido del instrumento.</span>
   </li>
   <li class="flex items-center space-x-3 rtl:space-x-reverse">
-      <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+      <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400"  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
        </svg>
       <span>Analice en forma detallada cada dimensión e indicador en el instrumento.</span>
   </li>
   <li class="flex items-center space-x-3 rtl:space-x-reverse">
-      <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+      <svg class="flex-shrink-0 w-3.5 h-3.5 text-green-500 dark:text-green-400"  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
        </svg>
       <span>Seleccione el grado que sea más representativo de la realidad del desempeño, de acuerdo con las categorías de la escala y su respectiva valoración</span>
@@ -193,4 +191,36 @@
     </div>
 }
 
+@if(InstrumentoAbiertaSignal().data!=null && (evaluacionSignal(). evaluacionCualitativaTerminada == null || evaluacionSignal(). evaluacionCualitativaTerminada == false))
+{
+  <div class="w-full  mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden mt-6">
+    <div class="qanda-card">
+    <form >
+          
+    @for (item of InstrumentoAbiertaSignal().data.preguntasAbiertas; track $index) {
+      <div class="p-6">
+        
+          <div class="form-group">
+            <label for="answer" class="font-bold dark:text-white text-gray-900">{{ $index+1 }}. {{ item.nombre}}</label>
+            <textarea [id]="item.respuestaAbiertaId" class="w-full p-5 border-b border-radius-4 text-lg resize-y 
+            focus: outline-none border-gray-300 shadow-gray-400 mt-5 textareasresponse"
+              id="answer"
+              placeholder="Responder la pregunta..."
+              rows="4"
+            >{{ item.respuesta }}</textarea>
+          </div>
+          
+        
+      
+    </div>
+    }
+    <div class="flex justify-end mb-4 mr-4"> 
+      <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800" (click)="guardarRespuesta('ra-')">Terminar Evaluación</button>
+    </div>
+  </form>
+  </div>
+  </div>
+}
+@else if (evaluacionSignal(). evaluacionCualitativaTerminada == true && evaluacionSignal(). evaluacionCuantitativaTerminada == true) {
+  ejecutar retorno
 }

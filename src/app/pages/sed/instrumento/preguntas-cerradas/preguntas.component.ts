@@ -7,7 +7,7 @@ import { Dimension} from '@interfaces/dimension';
 import { post } from '@interfaces/escala';
 import { Instrumento } from '@interfaces/instrumento';
 import { PreguntasCerradas } from '@interfaces/pregunta_cerradas';
-import { TipoEntidad } from '@interfaces/tipoEntidad';
+import { TipoEntidad, TipoTrabajador } from '@interfaces/tipoEntidad';
 import { DimensionService } from '@services/sed/dimension.service';
 import { InstrumentoService } from '@services/sed/instrumento.service';
 import { PreguntaService } from '@services/sed/pregunta.service';
@@ -32,20 +32,19 @@ export default class FormPreguntaComponent {
   preguntaForm = this.fb.group({
     id: [0, [Validators.required]],
     nombre: ['', [Validators.required]],
-    dimesionId: [0, [Validators.required, this.instrumentoService.notZeroValidator]]
   });
 
   tipoPreguntaBAND = signal(false);
 
   i = 1;
-  dimensiones = signal<Dimension[]>([]);
+  dimensiones = signal<Dimension>({} as Dimension);
   instrumento = signal<Instrumento>({id: 0, nombre: '', tipoTrabajadorId: 0, tipoEvaluacionId: 0});
   
   typePost: post = 'post';
 
   instrumentoId = input<number>(0, {alias: 'id'})
   
-  preguntas = signal<PreguntasCerradas[]>([]); 
+  
   pregunta = signal<PreguntasCerradas>({id: 0, dimesionId: 0, nombre: ''})
   
   modalDeleteComponent = viewChild.required(ModalDeleteComponent)
@@ -59,7 +58,7 @@ export default class FormPreguntaComponent {
     if(this.preguntaForm.valid)
       {
         const pregunta: PreguntasCerradas = this.preguntaForm.value as PreguntasCerradas;
-        pregunta.dimesionId = Number(pregunta.dimesionId);
+        pregunta.dimesionId = Number(this.instrumentoId());
         if(this.typePost == 'post'){
           this.preguntaService.post(pregunta).subscribe({
             next: a => {
@@ -68,15 +67,10 @@ export default class FormPreguntaComponent {
                   this.pregunta.set(a);
                 // 
                 this.dimensiones.update((prev) => {
-                  return prev.map((c) => 
-                    {
-                      if(c.id ==  this.pregunta().dimesionId)
-                        {
-                          c.preguntasCerradas?.push(this.pregunta());
-                        }
-                      return c;
-                    }
-                  )
+                  return {
+                    ...prev,
+                    preguntasCerradas: [...prev.preguntasCerradas!, a]
+                  }
                 })
                   this.matSnackBar.open("Dato guardado correctamente",'Cerrar',{ duration:5000, horizontalPosition:'center'});
                 }
@@ -126,7 +120,6 @@ export default class FormPreguntaComponent {
       {
         id: pregunta.id,
         nombre: pregunta.nombre,
-        dimesionId: pregunta.dimesionId
       }
     )
     this.typePost = 'update';
@@ -152,7 +145,6 @@ export default class FormPreguntaComponent {
       {
         id: 0,
         nombre: '',
-        dimesionId: 0
       }
     );
   }
@@ -160,6 +152,7 @@ export default class FormPreguntaComponent {
   getDimension(){
     this.dimensionService.getTE(this.instrumentoId()).subscribe({
       next: (res) => {
+        console.log(res);
         this.dimensiones.set(res);
       }
     })
@@ -171,11 +164,11 @@ export default class FormPreguntaComponent {
   {
     this.i = 1;
   }
-  tipoEntidad = signal<TipoEntidad>({id: 0, nombre: ""});
+  tipoTrabajador = signal<TipoTrabajador>({id: 0, nombre: "", icono: null});
   getInstrumento(){
     this.preguntaService.getInstrumento(this.instrumentoId()).subscribe({
       next: (instrumento) => {
-        this.tipoEntidad.set(instrumento.data!);
+        this.tipoTrabajador.set(instrumento.data!);
       }
     })
   }

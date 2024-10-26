@@ -7,15 +7,16 @@ import { post } from '@interfaces/escala';
 import { Instrumento } from '@interfaces/instrumento';
 import { PreguntaAbierta } from '@interfaces/pregunta_abierta';
 import { PreguntasCerradas } from '@interfaces/pregunta_cerradas';
-import { TipoEntidad } from '@interfaces/tipoEntidad';
+import { TipoEntidad, TipoTrabajador } from '@interfaces/tipoEntidad';
 import { InstrumentoService } from '@services/sed/instrumento.service';
 import { PreguntaAbiertaService } from '@services/sed/preguntaAbierta.service';
 import { ModalDeleteComponent } from 'app/components/modal-delete/modal-delete.component';
+import { TitleComponent } from 'app/shared/title/title.component';
 
 @Component({
   selector: 'app-preguntas-abiertas',
   standalone: true,
-  imports: [ReactiveFormsModule, JsonPipe, ModalDeleteComponent, LowerCasePipe],
+  imports: [ReactiveFormsModule, JsonPipe, ModalDeleteComponent, LowerCasePipe, TitleComponent],
   templateUrl: './preguntas-abiertas.component.html',
   styleUrl: './preguntas-abiertas.component.css'
 })
@@ -60,8 +61,9 @@ export default class PreguntasAbiertasComponent {
             next: a => {
               if(a.data != null)
                 {
+                  debugger
                   const data = a.data!;
-                  if(this.preguntas.length > 0)
+                  if(this.preguntas().length > 0)
                   {
                     this.preguntas.update((p) => [...p, {id: data.id, nombre: data.nombre, instrumentoId: data.instrumentoId}]);
                   }else{
@@ -157,10 +159,13 @@ export default class PreguntasAbiertasComponent {
     })
   }
 
+  
+  tipoTrabajador = signal<TipoTrabajador>({id: 0, nombre: "", icono: null});
   getInstrumento(){
     this.preguntaService.getInstrumento(this.instrumentoId()).subscribe({
       next: (instrumento) => {
-        this.tipoEntidad.set(instrumento.data!);
+        console.log(instrumento);
+        this.tipoTrabajador.set(instrumento.data!);
       }
     })
   }
