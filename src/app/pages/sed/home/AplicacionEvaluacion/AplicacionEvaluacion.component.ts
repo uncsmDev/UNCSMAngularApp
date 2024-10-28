@@ -1,6 +1,6 @@
 import { Result } from '@interfaces/Result.interface';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, HostListener, inject, input, signal, type OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, inject, input, signal, Signal } from '@angular/core';
 import { PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
 import { Escala } from '@interfaces/escala';
 import { Instrumento } from '@interfaces/instrumento';
@@ -20,6 +20,20 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SweetalertService } from '@services/sweetalert.service';
 import { EvaluacionTrabajador } from '@interfaces/EvaluacionTrabajador.interface';
 import { RespuestaDTO } from '@interfaces/DTOs/respuesta.interface';
+import { Router } from '@angular/router';
+
+
+export interface EvaluacionEscala{
+  EvaluacionId: number
+  escalaId: number
+}
+
+export interface DimensionesCount{
+  dimensionId: number
+  dimension: string
+  count: number
+}
+
 
 @Component({
   selector: 'app-aplicacion-evaluacion',
@@ -37,7 +51,7 @@ import { RespuestaDTO } from '@interfaces/DTOs/respuesta.interface';
   templateUrl: './AplicacionEvaluacion.component.html',
   styleUrl: './AplicacionEvaluacion.component.css',
 })
-export default class AplicacionEvaluacionComponent implements AfterViewInit, OnInit {
+export default class AplicacionEvaluacionComponent implements AfterViewInit {
   evaluacionTrabajadorSvc = inject(EvaluacionTrabajadorService);
   escalaServiceSvc = inject(EscalaService);
   id = input<number>(0, {alias: 'id'});
@@ -55,6 +69,10 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
   isLinear = true;
   disableRipple = true;
   variable = true;
+  router = inject(Router);
+
+
+  nextStepCount = signal<DimensionesCount[]>([]);
   
    ngAfterViewInit(){
     this.iniciarEvaluacion();
@@ -65,7 +83,9 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
       next:(res)=>{
         if(res.data!= null){
           this.evaluacionSignal.set(res.data);
-
+          if(res.data.evaluacionCuantitativaTerminada != null && res.data.evaluacionCuantitativaTerminada == true && res.data.evaluacionCualitativaTerminada != null && res.data.evaluacionCualitativaTerminada == true){
+            this.router.navigate(['sed/home']);
+          }
           if(res.data.evaluacionCuantitativaTerminada != null && res.data.evaluacionCuantitativaTerminada == true){
 
             this.getEvaluacionTrabajadorSinInstrumento();
@@ -117,7 +137,14 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
       next:(res)=>{
         if(res.data!= null)
         {
+          
+          this.nextStepCount.set(res.data.dimensiones.map(d => (
+            { dimensionId: d.id, dimension: d.nombre, count: d.preguntasCerradas.length } )
+          ));
+          console.log(this.nextStepCount());
           this.InstrumentoSignal.set(res);
+
+
         }
       }
     });
@@ -134,26 +161,26 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
     });
    }
 
+   count = signal(0);
+
    customNext(stepper: MatStepper, DimensionId: number) {
-    this.evaluacionTrabajadorSvc.GetNextStep(DimensionId, this.id()).subscribe({
-      next:(res)=>{
-        if (res.data) {
-          stepper.selected!.completed = true;
-          stepper.next();
-        
-        } else {           
-          Swal.fire({
-            title: 'Error!',
-            text: 'Debe contestar todas las preguntas antes de continuar',
-            icon: 'error',
-            confirmButtonText: 'Ok',
-            ...this.sweetalert.theme,
-          })
-        }
-      }
-    })
+    
+
+    if(this.nextStepCount().find(f => f.dimensionId == DimensionId)?.count == this.count()){
+      stepper.selected!.completed = true;
+      stepper.next();
+      this.count.set(0);
+    }
+    else {           
+      Swal.fire({
+        title: 'Error!',
+        text: 'Debe contestar todas las preguntas antes de continuar',
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        ...this.sweetalert.theme,
+      })
+    }
   }
-  
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any): void {
@@ -169,11 +196,27 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
   }
 
   finishEvaluacionCuantitativa(){
-    this.evaluacionTrabajadorSvc.updateFinishEvaluacionCuantitativa(this.id()).subscribe({
-      next:(res)=>{
-        this.iniciarEvaluacion();
+    this.evaluacionTrabajadorSvc.updateEscala(this.dataUpdate()).subscribe({
+      next :(res)=>{
+        if(res.data != null && res.data == true){
+          this.evaluacionTrabajadorSvc.updateFinishEvaluacionCuantitativa(this.id()).subscribe({
+            next:(res)=>{
+              this.iniciarEvaluacion();
+            }
+          })
+        }
+        else{
+          Swal.fire({
+            title: 'Error!',
+            text: 'No se guardaron las respuestas, contacte con el administrador',
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            ...this.sweetalert.theme,
+          })
+        }
       }
-    })
+    });
+    
   }
 
   finishEvaluacionCualitativa(){
@@ -183,13 +226,17 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
           return {...datos, evaluacionCualitativaTerminada:true };
         });          
         this.respuestaAbiertaSignal.set([]);
+        this.router.navigate(['sed/home']);
       }
     });
   }
 
+  dataUpdate = signal<EvaluacionEscala[]>([]);
+
   handleChange(event: Event, idRespuesta: number, idEscala: number) {
     const selectElement = event.target as HTMLInputElement;
-    this.evaluacionTrabajadorSvc.updateEscala(idRespuesta, idEscala).subscribe();
+    this.dataUpdate.update((current) => [...current, { EvaluacionId: idRespuesta, escalaId: idEscala }]);
+    this.count.update((current) => current + 1);
   }
 
 
@@ -202,9 +249,7 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit, OnI
     })
    }
 
-
-
-   guardarRespuesta(textAreaId: string){
+   guardarRespuesta(){
     const textAreas = document.getElementsByClassName('textareasresponse') as HTMLCollectionOf<HTMLTextAreaElement>;
     Array.from(textAreas).forEach(textArea => {
       this.respuestaAbiertaSignal().push({id: Number(textArea.id), respuesta: textArea.value});

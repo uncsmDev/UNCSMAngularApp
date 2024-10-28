@@ -7,6 +7,7 @@ import { Escala } from '@interfaces/escala';
 import { EvaluacionTrabajador } from '@interfaces/EvaluacionTrabajador.interface';
 import { Instrumento } from '@interfaces/instrumento';
 import { Result } from '@interfaces/Result.interface';
+import { EvaluacionEscala } from 'app/pages/sed/home/AplicacionEvaluacion/AplicacionEvaluacion.component';
 import { appsettings } from 'app/Settings/appsettings';
 
 @Injectable({
@@ -45,11 +46,17 @@ export class EvaluacionTrabajadorService {
     return this.http.get<Result<true>>(`${this.apiUrl}/NextStep/${dimensionId}/${evaluacionId}`);
   }
 
-  updateEscala(id: number, valor: number){
+  /* updateEscala(id: number, valor: number){
     const headers = {'content-type': 'application/json'}
     const body = JSON.stringify(valor);
     return this.http.put<Result<Instrumento>>(`${this.apiUrl}/PutEscalaResponse/${id}`, body, {headers});
-  }
+  } */
+
+    updateEscala(data: EvaluacionEscala[]){
+      const headers = {'content-type': 'application/json'}
+      const body = JSON.stringify(data);
+      return this.http.put<Result<boolean>>(`${this.apiUrl}/PutEscalaResponse/`, body, {headers});
+    }
 
   updateRespuestaAbierta(respuesta: RespuestaDTO[]){
     const headers = {'content-type': 'application/json'}

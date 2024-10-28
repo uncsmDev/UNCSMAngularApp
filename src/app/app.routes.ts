@@ -25,7 +25,7 @@ export const routes: Routes = [
                     canActivate: [routerPermisseGuard]
                 },
                   {
-                    path: 'evaluacion-cuantitativa/:id',
+                    path: 'evaluacion/:id',
                     title: 'Aplicación de la Evaluación',
                     loadComponent: () => import('./pages/sed/home/AplicacionEvaluacion/AplicacionEvaluacion.component'),
                     data: { breadcrumb: 'Escalas' },

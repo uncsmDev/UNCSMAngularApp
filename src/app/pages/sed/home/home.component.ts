@@ -44,6 +44,7 @@ export default class HomeComponent {
     this.evaluacionTrabajadorSvc.GetPersonalByIdDependencia(Perfil[0].dependencia.id, Perfil[0].persona.id).subscribe(
       {
         next: (res) => {
+          console.log(res.data);
           this.Trabajadores.set(res.data);
           this.getImg();
         }
