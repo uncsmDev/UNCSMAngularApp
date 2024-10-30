@@ -82,13 +82,13 @@ export const routes: Routes = [
                     data: { breadcrumb: 'Preguntas Abiertas' },
                     canActivate: [routerPermisseGuard]
                 },
-                {
+                /* {
                     path: 'asignacion',
                     title: 'Asignación para la Evaluación',
                     loadComponent: () => import('./pages/sed/asignacion-evaluacio/asignacion-evaluacio.component'),
                     data: { breadcrumb: 'Asignación para la Evaluación' },
                     canActivate: [routerPermisseGuard]
-                },
+                }, */
                 {
                     path: 'asignacion/:id/:dependenciaId',
                     title: 'Asignación para la Evaluación',
@@ -115,6 +115,11 @@ export const routes: Routes = [
                 path:'usuarios', 
                 title: 'Usuarios',
                 loadComponent:()=>import('./auth/usuarios/usuarios.component')
+            },
+            {
+                path:'dependencias', 
+                title: 'Dependencias',
+                loadComponent:()=>import('./pages/admin/dependencias/dependencias.component')
             },
             {
                 path: 'home',

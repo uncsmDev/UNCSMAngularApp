@@ -31,9 +31,13 @@ export interface EvaluacionEscala{
 export interface DimensionesCount{
   dimensionId: number
   dimension: string
-  count: number
+  preguntaId: preguntaValor[]
 }
 
+interface preguntaValor {
+  id: number,
+  valor: boolean
+}
 
 @Component({
   selector: 'app-aplicacion-evaluacion',
@@ -82,12 +86,14 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
     this.evaluacionTrabajadorSvc.getTipoEvaluacionHabilitada(this.id()).subscribe({
       next:(res)=>{
         if(res.data!= null){
+
           this.evaluacionSignal.set(res.data);
-          if(res.data.evaluacionCuantitativaTerminada != null && res.data.evaluacionCuantitativaTerminada == true && res.data.evaluacionCualitativaTerminada != null && res.data.evaluacionCualitativaTerminada == true){
+
+          if(res.data.evaluacionCuantitativaTerminada != null && res.data.evaluacionCuantitativaTerminada == true && res.data.evaluacionCualitativaTerminada != null && res.data.evaluacionCualitativaTerminada == true)  
+          {
             this.router.navigate(['sed/home']);
           }
           if(res.data.evaluacionCuantitativaTerminada != null && res.data.evaluacionCuantitativaTerminada == true){
-
             this.getEvaluacionTrabajadorSinInstrumento();
             this.InstrumentoSignal.set({} as Result<InstrumentoDTO>);
           }else{
@@ -95,14 +101,10 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
             this.getEscala()
           }
         }else{
-          this.evaluacionTrabajadorSvc.updateInicioEvaluacion(this.id()).subscribe(
-            {
-              next:(res)=>{
-                this.getEvaluacionTrabajador()
-                this.getEscala()
-              }
-            }
-          );
+          this.getEvaluacionTrabajador()
+          this.getEscala()
+         
+          
         }
       }
     })
@@ -115,9 +117,25 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    getEvaluacionTrabajador(){
     this.evaluacionTrabajadorSvc.GetByIdEvaluado(this.id()).subscribe({
       next:(res)=>{
-        const data = res.data!;
-        this.EvaluadoSignal.set(data);
-        this.getInstrumento(data);
+        if(res.data != null)
+        {
+          const data = res.data!;
+        
+          this.EvaluadoSignal.set(data);
+          this.evaluacionTrabajadorSvc.updateInicioEvaluacion(this.id()).subscribe();
+          this.getInstrumento(data);
+        }
+        else{
+          Swal.fire({
+            title: 'Error!',
+            text: 'No fue posible encontrar el registro del trabajador',
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            ...this.sweetalert.theme,
+          })
+          this.router.navigate(['sed/home']);
+        }
+       
       }
    })
    }
@@ -139,9 +157,8 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
         {
           
           this.nextStepCount.set(res.data.dimensiones.map(d => (
-            { dimensionId: d.id, dimension: d.nombre, count: d.preguntasCerradas.length } )
-          ));
-          console.log(this.nextStepCount());
+            { dimensionId: d.id, dimension: d.nombre, preguntaId: d.preguntasCerradas.map(p => ({ id: p.id, valor: false }))
+            })));
           this.InstrumentoSignal.set(res);
 
 
@@ -157,6 +174,16 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
         {
           this.InstrumentoAbiertaSignal.set(res);
         }
+        else{
+          Swal.fire({
+            title: 'Error!',
+            html: '<p>No fue posible encontrar la segunda parte del instrumento, por favor contacte con la <strong>Coordinación de Sistemas</strong>.</p>',
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            ...this.sweetalert.theme,
+          })
+          this.router.navigate(['sed/home']);
+        }
       }
     });
    }
@@ -164,9 +191,9 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    count = signal(0);
 
    customNext(stepper: MatStepper, DimensionId: number) {
-    
+    const resultado = this.nextStepCount().find(d => d.dimensionId == DimensionId)?.preguntaId.every(p => p.valor == true);
 
-    if(this.nextStepCount().find(f => f.dimensionId == DimensionId)?.count == this.count()){
+    if(resultado){
       stepper.selected!.completed = true;
       stepper.next();
       this.count.set(0);
@@ -233,10 +260,28 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
 
   dataUpdate = signal<EvaluacionEscala[]>([]);
 
-  handleChange(event: Event, idRespuesta: number, idEscala: number) {
+  handleChange(event: Event, preguntaId: number, idEscala: number, dimensionId: number) {
     const selectElement = event.target as HTMLInputElement;
-    this.dataUpdate.update((current) => [...current, { EvaluacionId: idRespuesta, escalaId: idEscala }]);
-    this.count.update((current) => current + 1);
+    this.nextStepCount.update((current) => {
+      return current.map((d) => {
+        if(d.dimensionId == dimensionId){
+          return {...d, 
+            preguntaId: d.preguntaId.map((p) => {
+              if(p.id == preguntaId){
+                return {...p, valor: true};
+              }
+              else{
+                return p;
+              }
+            })
+          };
+        }
+        else{
+          return d;
+        }
+      })
+   });
+
   }
 
 

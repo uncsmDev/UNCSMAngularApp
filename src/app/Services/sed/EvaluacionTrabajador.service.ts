@@ -46,12 +46,6 @@ export class EvaluacionTrabajadorService {
     return this.http.get<Result<true>>(`${this.apiUrl}/NextStep/${dimensionId}/${evaluacionId}`);
   }
 
-  /* updateEscala(id: number, valor: number){
-    const headers = {'content-type': 'application/json'}
-    const body = JSON.stringify(valor);
-    return this.http.put<Result<Instrumento>>(`${this.apiUrl}/PutEscalaResponse/${id}`, body, {headers});
-  } */
-
     updateEscala(data: EvaluacionEscala[]){
       const headers = {'content-type': 'application/json'}
       const body = JSON.stringify(data);

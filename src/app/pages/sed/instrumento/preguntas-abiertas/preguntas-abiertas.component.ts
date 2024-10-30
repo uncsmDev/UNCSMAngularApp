@@ -46,8 +46,8 @@ export default class PreguntasAbiertasComponent {
   modalDeleteComponent = viewChild.required(ModalDeleteComponent)
 
   ngOnInit() {
+    this.getInstrumento();
     this.getPreguntaAbierta();
-    this.getInstrumento()
   }
 
   onSubmit(){
@@ -63,6 +63,10 @@ export default class PreguntasAbiertasComponent {
                 {
                   debugger
                   const data = a.data!;
+                  if(!Array.isArray(this.preguntas()))
+                  {
+                    this.preguntas.set([{id: data.id, nombre: data.nombre, instrumentoId: data.instrumentoId}]);
+                  }else
                   if(this.preguntas().length > 0)
                   {
                     this.preguntas.update((p) => [...p, {id: data.id, nombre: data.nombre, instrumentoId: data.instrumentoId}]);
@@ -164,7 +168,6 @@ export default class PreguntasAbiertasComponent {
   getInstrumento(){
     this.preguntaService.getInstrumento(this.instrumentoId()).subscribe({
       next: (instrumento) => {
-        console.log(instrumento);
         this.tipoTrabajador.set(instrumento.data!);
       }
     })

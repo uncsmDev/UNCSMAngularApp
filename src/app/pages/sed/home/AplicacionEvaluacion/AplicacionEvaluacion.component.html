@@ -119,7 +119,7 @@
                     @if(p.escalaId == item.id)
                     {
                      
-                        <input id="radio-{{item.id}}-{{p.id}}" type="radio" #radioButton (change)="handleChange($event, p.respuestaCerradaId, item.id)" [name]="'escala'+p.id" checked/>
+                        <input id="radio-{{item.id}}-{{p.id}}" type="radio" #radioButton (change)="handleChange($event, p.id, item.id, dv.id)" [name]="'escala'+p.id" checked/>
                         <label for="radio-{{item.id}}-{{p.id}}"></label>
                         <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
                           <path d="M2 8.36364L6.23077 12L13 2"></path>
@@ -128,7 +128,7 @@
                       
                       
                     }@else {
-                      <input id="radio-{{item.id}}-{{p.id}}" type="radio" #radioButton (change)="handleChange($event, p.respuestaCerradaId, item.id)" [name]="'escala'+p.id" />
+                      <input id="radio-{{item.id}}-{{p.id}}" type="radio" #radioButton (change)="handleChange($event, p.id, item.id, dv.id)" [name]="'escala'+p.id" />
                       <label for="radio-{{item.id}}-{{p.id}}"></label>
                       <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
                         <path d="M2 8.36364L6.23077 12L13 2"></path>

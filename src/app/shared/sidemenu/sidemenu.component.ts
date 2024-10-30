@@ -42,6 +42,7 @@ export class SidemenuComponent {
     if (id !== null && id !== undefined) {
       this.SudModuloService.getSubModulo(parseInt(id)).subscribe({
         next: (resp) => {
+          console.log(resp);
           this.menuItems = resp;
         },
         error: (err) => {
