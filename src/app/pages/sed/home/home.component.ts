@@ -23,7 +23,7 @@ export default class HomeComponent {
   DataToken = signal<TokenData>({} as TokenData);
   auth = inject(AuthService);
 
-  Perfil = signal<PersonaInfoDTO[]>([]);
+  Perfil = signal<PersonaInfoDTO>({} as PersonaInfoDTO);
   Trabajadores = signal<PersonaInfoDTO[]>([]);
 
   ngOnInit(): void {
@@ -31,20 +31,22 @@ export default class HomeComponent {
     this.evaluacionTrabajadorSvc.getById(this.DataToken().personaId).subscribe(
       {
         next: (res) => {
-          this.Perfil.set(res.data);
-          if(this.Perfil().length == 1){
+          if(res.data != null)
+          {
+            this.Perfil.set(res.data);
             this.GetPersonalByIdDependencia(this.Perfil())
+            
           }
+          
         }
       }
     );
   }
   
-  GetPersonalByIdDependencia(Perfil: PersonaInfoDTO[]){
-    this.evaluacionTrabajadorSvc.GetPersonalByIdDependencia(Perfil[0].dependencia.id, Perfil[0].persona.id).subscribe(
+  GetPersonalByIdDependencia(Perfil: PersonaInfoDTO){
+    this.evaluacionTrabajadorSvc.GetPersonalByIdDependencia(Perfil.dependencia.id, Perfil.persona.id).subscribe(
       {
         next: (res) => {
-          console.log(res.data);
           this.Trabajadores.set(res.data);
           this.getImg();
         }

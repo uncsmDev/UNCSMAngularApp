@@ -19,7 +19,7 @@ export class EvaluacionTrabajadorService {
 
  
   getById(id: number){
-    return this.http.get<Result<PersonaInfoDTO[]>>(`${this.apiUrl}/GetById/${id}`);
+    return this.http.get<Result<PersonaInfoDTO>>(`${this.apiUrl}/GetById/${id}`);
   }
 
   GetPersonalByIdDependencia(DependenciaId: number, personaId: number){
