@@ -1,0 +1,171 @@
+<!-- Main modal -->
+<div id="infoP-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-4xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    Informacion Personal
+                </h3>
+                <button (click)="closeModal()" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="infoP-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+           <form [formGroup]="infoPersonalForm" (ngSubmit)="onSubmit()">
+             <!-- Modal body -->
+             <div class="p-4 md:p-5 space-y-4">
+             
+                <div class="grid gap-6 mb-6 md:grid-cols-4 sm:grid-cols-1">
+                    <div class="relative">
+                        <form [formGroup]="infoPersonalForm" class="w-full">
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione un Sexo</label>
+                            <select  name="sexoId" formControlName="sexoId" id="sexoId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                                dark:focus:border-blue-500">
+                                <option value="">--- Sexo ---</option>
+                                @for (item of sexoList(); track item.id) 
+                                {
+                                    <option [value]="item.id">{{item.nombre}}</option>
+                                }
+                            </select>
+                            <div class="p-4 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" [hidden]="infoPersonalForm.controls.sexoId.valid || !infoPersonalForm.controls.sexoId.touched">  <!---!masterFormInput.controls.apellidos.pristine-->
+                                <span class="font-medium">Alerta!</span> El campo Sexo es obligatorio
+                            </div>
+                        </form>
+                    </div>
+              
+                    <div class="relative">
+                        <form [formGroup]="infoPersonalForm" class="w-full">
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione un Estado Civil</label>
+                            <select  name="estadoCivilId" formControlName="estadoCivilId" id="estadoCivilId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                                dark:focus:border-blue-500">
+                                <option value="">--- Estado Civil ---</option>
+                                @for (item of estadoCivils(); track item.id) 
+                                {
+                                    <option [value]="item.id">{{item.nombre}}</option>
+                                }
+                            </select>
+                            <div class="p-4 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" [hidden]="infoPersonalForm.controls.estadoCivilId.valid || !infoPersonalForm.controls.estadoCivilId.touched">  <!---!masterFormInput.controls.apellidos.pristine-->
+                                <span class="font-medium">Alerta!</span> El campo Estado Civil es obligatorio
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="relative">
+                        <label for="telefono1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telefono/Celular 1</label>
+                                <input type="text" formControlName="telefono1" name="telefono1" id="telefono1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                                  dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0000 0000" />
+
+                                  <div class="p-4 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" [hidden]="infoPersonalForm.controls.telefono1.valid || !infoPersonalForm.controls.telefono1.touched">  <!---!masterFormInput.controls.apellidos.pristine-->
+                                    <span class="font-medium">Alerta!</span> Este Numero de Telefono es obligatorio
+                                </div>    
+                    </div>
+                    <div class="relative">
+                        <label for="telefono2"class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telefono/Celular 2</label>
+                                <input type="text" formControlName="telefono2" name="telefono2" id="telefono2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                                  dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0000 0000" />
+                    </div>
+                </div>
+
+                <div class="grid gap-6 mb-6 md:grid-cols-2 sm:grid-cols-1">
+                    <div class="relative">
+
+                        <form [formGroup]="ubicacionForm" class="w-full">
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pais</label>
+                            <select id="paisId" name="paisId" formControlName="paisId"  (change)="onSelectedPais($event)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                                dark:focus:border-blue-500">
+                                <option value="">--- Pais ---</option>
+                                @for (item of paisList(); track item.id) 
+                                {
+                                    <option [value]="item.id">{{item.nombre}}</option>
+                                }
+                            </select>  
+                        </form>
+                                                      
+                    </div>
+                  
+            
+                    <div class="relative">
+                        <form [formGroup]="ubicacionForm" class="w-full">
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Departamento</label>
+                        <select id="departamentoId"  name="departamentoId" formControlName="departamentoId" (change)="onSelectedDepartamento($event)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                            block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                            dark:focus:border-blue-500">
+                            <option value="">--- Departamento ---</option>
+                            @for (item of departamentoList(); track item.id) 
+                            {
+                                <option [value]="item.id">{{item.nombre}}</option>
+                            }
+                        </select>
+                        </form>
+                        
+                  
+                    </div>
+                </div>
+
+                <div class="grid gap-6 mb-6 md:grid-cols-2 sm:grid-cols-1">
+                    <div class="relative">
+                        <form [formGroup]="infoPersonalForm" class="w-full">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Municipio</label>
+                        <select id="municipioId"   name="municipioId" formControlName="municipioId"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                            block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                            dark:focus:border-blue-500">
+                            <option value="">--- Departamento ---</option>
+                            @for (item of municipioList(); track item.id) 
+                            {
+                                <option [value]="item.id">{{item.nombre}}</option>
+                            }
+                        </select>
+
+                        <div class="p-4 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" [hidden]="infoPersonalForm.controls.municipioId.valid || !infoPersonalForm.controls.municipioId.touched">
+                            <span class="font-medium">Alerta!</span> El campo Municipio es obligatorio
+                        </div>
+                        </form>
+                    </div>
+
+                    <div class="relative">
+                        <label for="correoPersonal" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Correo Personal</label>
+                        <input type="email" formControlName="correoPersonal" name="correoPersonal" id="correoPersonal" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                         focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                          dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="anthony.Stark@personal.com" />
+
+                            <div class="p-4 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" [hidden]="infoPersonalForm.controls.correoPersonal.valid || !infoPersonalForm.controls.correoPersonal.touched">  
+                                <span class="font-medium">Alerta!</span> El campo Correo Personal es un correo
+                            </div>
+                    </div>
+                </div>
+        
+                <div class="grid gap-6 mb-4 md:grid-cols-1 sm:grid-cols-1">
+                    <div class="relative">
+                        <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dirección</label>
+                        <textarea  formControlName="direccion" name="direccion" id="direccion"  rows="3"  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300
+                         focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                          dark:focus:ring-blue-500 dark:focus:border-blue-500"  placeholder="Dirección"></textarea>
+                          
+                        <div class="p-4 mt-2 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert" [hidden]="infoPersonalForm.controls.direccion.valid || !infoPersonalForm.controls.direccion.touched">  <!---!masterFormInput.controls.apellidos.pristine-->
+                            <span class="font-medium">Alerta!</span> El campo Dirección es obligatorio
+                        </div>    
+                    </div>
+                  
+                </div>
+         
+                
+            </div>
+            <!-- Modal footer -->
+            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                <button [type]="onSubmit" data-modal-hide="infoP-modal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Guardar</button>
+                <button (click)="closeModal()" data-modal-hide="infoP-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cancelar</button>
+            </div>
+
+           </form>
+        </div>
+    </div>
+</div>

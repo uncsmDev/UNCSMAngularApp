@@ -1,4 +1,4 @@
-import { Component, computed, inject, Signal, signal, viewChild, WritableSignal } from '@angular/core';
+import { Component, computed, inject, Signal, signal, viewChild, WritableSignal, output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -14,16 +14,18 @@ import { TrabajadorService } from '@services/admin/trabajador.service';
 import { SubmoduloService } from '@services/submodulo.service';
 import { TitleComponent } from 'app/shared/title/title.component';
 import { TrabajadorDatosModalComponent } from '../trabajador-datos-modal/trabajador-datos-modal.component';
+import { TrabajadorInfoPersonalModalComponent } from '../trabajador-info-personal-modal/trabajador-info-personal-modal.component';
 import { ModalService } from '@services/modal.service';
-import { DatosPersonalesInput } from '@interfaces/Updates/datosPersonalesInput ';
+import { DatosPersonalesInput, InformacionPersonal } from '@interfaces/Updates/datosPersonalesInput ';
 import { FdropzoneComponent } from 'app/shared/input/fdropzone/fdropzone.component';
+import TrabajadorComponent from "../trabajador.component";
 
 
 
 @Component({
   selector: 'app-trabajador-perfil',
   standalone: true,
-  imports: [TitleComponent,TrabajadorDatosModalComponent,FdropzoneComponent],
+  imports: [TitleComponent, TrabajadorDatosModalComponent,TrabajadorInfoPersonalModalComponent, FdropzoneComponent, TrabajadorComponent],
   templateUrl: './trabajador-perfil.component.html',
   styleUrl: './trabajador-perfil.component.css'
 })
@@ -42,6 +44,7 @@ export default class TrabajadorPerfilComponent {
   subModuloByUserList:Signal<SubModuloXUserView[]>=computed(this.subModulosByUser);
 
   modalDatos = viewChild.required(TrabajadorDatosModalComponent);
+  modalInfoPersonal = viewChild.required(TrabajadorInfoPersonalModalComponent);
   fileRes = signal<SafeUrl | null>(null);
   trabajadorId!: number;
   imageUrl: SafeUrl | undefined;
@@ -62,9 +65,58 @@ export default class TrabajadorPerfilComponent {
   }
 
   actualizarimagen(datosGuardados: DatosPersonalesInput){
-    this.imageUrl = datosGuardados.img!;
+
+    if (datosGuardados.img!= '') 
+      this.imageUrl = datosGuardados.img!;
+    
+    this.trabajadorDto().persona.nombres = datosGuardados.nombres!;
+    this.trabajadorDto().persona.apellidos = datosGuardados.apellidos!;
+    this.trabajadorDto().persona.dni = datosGuardados.dni!;
+    this.trabajadorDto().trabajador.codigo = datosGuardados.ins!;
+  
   }
   
+  actualizarInfo(output:InformacionPersonal)
+{
+  console.log("Objeto completo: ", output);
+  debugger;
+  //this.trabajadorDto().datosGenerales.estadoCivilId = output.estadoCivilId!;
+ // this.trabajadorDto().persona.sexoId = output.sexoId!;
+  /*this.trabajadorDto().datosGenerales.municipioId= output.municipioId!;
+  this.trabajadorDto().datosGenerales.direccion = output.direccion!;
+  this.trabajadorDto().datosGenerales.telefono1 = output.telefono1!;
+  this.trabajadorDto().datosGenerales.telefono2 = output.telefono2!;
+  this.trabajadorDto().datosGenerales.correoPersonal = output.correoPersonal!;*/
+
+
+  try
+  {
+    this.trabajadorDto.update(v=>({...v,persona:{...v.persona,sexoId:output.sexoId!}}));
+    this.trabajadorDto.update(v=>({
+     ...v,datosGenerales:{
+       ...v.datosGenerales,
+       estadoCivilId:output.estadoCivilId!,
+       telefono1:output.telefono1!,
+  
+       direccion:output.direccion!,
+       correoPersonal:output.correoPersonal!,
+       municipioId:output.municipioId!
+     }}));
+
+     if(output.telefono2!="")
+     {
+       this.trabajadorDto.update(v=>({...v,datosGenerales:{...v.datosGenerales,telefono2:output.telefono2!}}));
+     }
+     console.log("No error::::");
+  }
+  catch(error)
+  {
+    console.log("error::::");
+    console.log(error);
+  } 
+
+}
+
   getById()
   {
     this.trabajadorService.getById(this.trabajadorId).subscribe(
@@ -72,7 +124,6 @@ export default class TrabajadorPerfilComponent {
         
         next: (data) => {
           if (data.status == ResultEnum.Success) {
-           // this.trabajadorDto = data.data;
             this.trabajadorDto.set(data.data);
             this.fileDir = this.trabajadorDto().persona?.img;
 
@@ -91,8 +142,6 @@ export default class TrabajadorPerfilComponent {
                 }
               });
             }
-
-           
           }
 
         }
@@ -150,6 +199,9 @@ export default class TrabajadorPerfilComponent {
   }
 
   datosPersonales: DatosPersonalesInput = {} as DatosPersonalesInput;
+  infoPersonal: InformacionPersonal = {} as InformacionPersonal;
+
+
   openModalDatos()
   {
     this.datosPersonales.id = this.trabajadorId;
@@ -157,9 +209,40 @@ export default class TrabajadorPerfilComponent {
     this.datosPersonales.nombres = this.trabajadorDto().persona?.nombres;
     this.datosPersonales.apellidos = this.trabajadorDto().persona?.apellidos;
     this.datosPersonales.ins = this.trabajadorDto().trabajador.codigo;
-    this.PostType = 'add';
+    
+  
+    this.PostType = 'edit';
     this.modalDatos().openModal(this.datosPersonales,this.imageUrl);
   }
+
+  openModalInfo()
+  {
+    this.infoPersonal.id = this.trabajadorId;
+    if(this.trabajadorDto().persona?.sexoId!=null)
+      {
+        this.infoPersonal.sexoId = this.trabajadorDto().persona?.sexoId;
+      }
+      if(this.trabajadorDto().datosGenerales!=null)
+      {
+        this.infoPersonal.estadoCivilId = this.trabajadorDto().datosGenerales.estadoCivilId;
+        this.infoPersonal.telefono1 = this.trabajadorDto().datosGenerales.telefono1;
+        this.infoPersonal.telefono2 = this.trabajadorDto().datosGenerales.telefono2;
+        this.infoPersonal.direccion = this.trabajadorDto().datosGenerales.direccion;
+        this.infoPersonal.correoPersonal = this.trabajadorDto().datosGenerales.correoPersonal;
+        this.infoPersonal.municipioId = this.trabajadorDto().datosGenerales.municipioId;
+        this.infoPersonal.paisId = this.trabajadorDto().paisId;
+        this.infoPersonal.departamentoId = this.trabajadorDto().departamentoId;
+      }
+      else
+      {
+        this.infoPersonal.paisId = 1;
+        this.infoPersonal.departamentoId = 1;
+      }
+     
+    this.PostType = 'edit';
+    this.modalInfoPersonal().openModal(this.infoPersonal);
+  }
+
 
   closeModal()
   {
@@ -167,8 +250,6 @@ export default class TrabajadorPerfilComponent {
     this.modalDatos().closeModal();
   }
 
-
-  
   formatearFecha(fechaString: Date) {
     const fecha = new Date(fechaString);
     const dia = String(fecha.getDate()).padStart(2, '0');

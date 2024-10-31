@@ -33,6 +33,7 @@ import { ArchivoService } from '@services/admin/archivo.service';
 import { TrabajadorInput } from '@interfaces/trabajadorInput';
 import { TrabajadorService } from '@services/admin/trabajador.service';
 import { ResultEnum } from '@interfaces/Result.interface';
+import { SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-trabajador-input',
@@ -87,8 +88,9 @@ export default class TrabajadorInputComponent {
   cargoList:Signal<Cargo[]>=computed(this.cargos);
   cargosOrig:WritableSignal<Cargo[]>=signal([]);
 
-
   cargoIdControl = new FormControl('');
+
+  img = input.required<SafeUrl | null>();
 
   displayFnC(subject:any)
   {

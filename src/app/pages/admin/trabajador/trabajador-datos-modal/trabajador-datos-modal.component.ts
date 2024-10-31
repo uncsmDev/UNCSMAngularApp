@@ -1,15 +1,18 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, computed, inject, input, output, Signal, signal, WritableSignal } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { EmiterResult } from '@interfaces/EmiterResult';
 import { tipoModal, Trabajador } from '@interfaces/trabajador';
 import { ModalService } from '@services/modal.service';
 import { FdropzoneComponent } from 'app/shared/input/fdropzone/fdropzone.component';
 import { ModalInterface } from 'flowbite';
 import { ArchivoService } from '@services/admin/archivo.service';
-import { DatosPersonalesInput } from '@interfaces/Updates/datosPersonalesInput ';
+import { DatosPersonalesInput, InformacionPersonal } from '@interfaces/Updates/datosPersonalesInput ';
 import { SafeUrl } from '@angular/platform-browser';
 import { TrabajadorService } from '@services/admin/trabajador.service';
 import { ResultEnum } from '@interfaces/Result.interface';
+import { SexoService } from '@services/admin/sexo.service';
+import { EstadoCivilService } from '@services/admin/estado.civil.service';
+import { Sexo } from '@interfaces/sexo';
+import { EstadoCivil } from '@interfaces/estado.civil';
 
 @Component({
   selector: 'app-trabajador-datos-modal',
@@ -22,7 +25,14 @@ export class TrabajadorDatosModalComponent {
 
   archivoService=inject(ArchivoService);
   trabajadorService=inject(TrabajadorService);
-  
+  sexoService=inject(SexoService);
+  estadoCivilService=inject(EstadoCivilService);
+
+  sexos:WritableSignal<Sexo[]>=signal([]);
+  sexoList:Signal<Sexo[]>=computed(this.sexos);
+  estadoCivils:WritableSignal<EstadoCivil[]>=signal([]);
+  estadoCivilList:Signal<EstadoCivil[]>=computed(this.estadoCivils);
+
   modalActivo!: ModalInterface;
   fb = inject(FormBuilder);
   modalService = inject(ModalService);
@@ -36,7 +46,6 @@ export class TrabajadorDatosModalComponent {
   imagen: string | ArrayBuffer = '';
 
   imgUrl: SafeUrl | undefined;
- // outputPostType = output<EmiterResult<Trabajador>>();
   datosPersonales: DatosPersonalesInput = {} as DatosPersonalesInput;
 
  personalDataform = this.fb.group
@@ -46,6 +55,8 @@ export class TrabajadorDatosModalComponent {
    nombres: new FormControl('', Validators.required),
    apellidos: new FormControl('', Validators.required),
    ins: new FormControl('0000', Validators.required),
+   estadoCivilId: new FormControl(0, Validators.required),
+   sexoId: new FormControl(0, Validators.required),
  });
 
   openModal(inputData:DatosPersonalesInput, image:SafeUrl | undefined)
@@ -53,6 +64,8 @@ export class TrabajadorDatosModalComponent {
     this.reset()
     //this.datosPersonales = inputData;
 
+    this.GetListEstadoCivil();
+    this.GetListSexo();
     this.personalDataform.patchValue(inputData);
 
     this.text = 'Editar';
@@ -82,6 +95,7 @@ export class TrabajadorDatosModalComponent {
 
 
   actualizarimagen(imagen: string | ArrayBuffer){
+   if(imagen != null)
     this.imagen = imagen;
   }
   onSubmit() 
@@ -100,7 +114,6 @@ export class TrabajadorDatosModalComponent {
             this.datosPersonales.img = this.imagen;
             this.imgEmit.emit(this.datosPersonales);
             this.modalActivo.hide();
-            this.refresh.emit();
           }
           else
           {
@@ -117,4 +130,34 @@ export class TrabajadorDatosModalComponent {
     }
   }
   
+  GetListSexo()
+  {
+    this.sexoService.getList()
+    .subscribe({
+      next:(rd)=>{
+        const listaSex=rd.map(item=>({
+          id:item.id,
+          nombre:item.nombre
+        }));
+    
+        this.sexos.set(listaSex);
+      }
+    });
+  }
+
+  GetListEstadoCivil()
+  {
+    this.estadoCivilService.getList()
+    .subscribe({
+      next:(rd)=>{
+        const listaEst=rd.listModel.map(item=>({
+          id:item.id,
+          nombre:item.nombre
+        }));
+    
+        this.estadoCivils.set(listaEst);
+      }
+    });
+  }
+
 }

@@ -60,4 +60,7 @@ export interface TrabajadorInput {
     contrato: Contrato;
     cargo: Cargo;
     dependencia:Dependencia;
+
+    paisId: number;
+    departamentoId: number;
   }

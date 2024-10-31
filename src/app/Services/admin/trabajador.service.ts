@@ -7,7 +7,7 @@ import { Result } from '@interfaces/Result.interface';
 import { PackPage, Paginacion } from '@interfaces/packPage';
 import { TrabajadorDto, TrabajadorInput } from '@interfaces/trabajadorInput';
 import { Persona } from '@interfaces/persona';
-import { DatosPersonalesInput } from '@interfaces/Updates/datosPersonalesInput ';
+import { DatosPersonalesInput, InformacionPersonal } from '@interfaces/Updates/datosPersonalesInput ';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +51,14 @@ export class TrabajadorService {
     var re=this.http.put<Result<Persona>>(this.apiUrl+'/UpdatePersonalData',formData, {  headers: new HttpHeaders({ 'Accept': '*/*' })});
     return re;
   }
+  UpdateInfoData(Input:InformacionPersonal):Observable<Result<Persona>>
+  {
+    const headers = { 'content-type': 'application/json'}  
+    const body=JSON.stringify(Input);
+    var re=this.http.put<Result<Persona>>(this.apiUrl+'/UpdateInfoData',body, {'headers':headers});
+    return re; 
+  }
+
 
   postFull(data:TrabajadorInput,file?:File|any) : Observable<Result<Persona>>
   {
