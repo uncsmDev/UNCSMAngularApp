@@ -4,7 +4,7 @@ import { Instrumento } from '@interfaces/instrumento';
 import { PreguntaAbierta } from '@interfaces/pregunta_abierta';
 import { PreguntasCerradas } from '@interfaces/pregunta_cerradas';
 import { Result } from '@interfaces/Result.interface';
-import { TipoEntidad } from '@interfaces/tipoEntidad';
+import { TipoEntidad, TipoTrabajador } from '@interfaces/tipoEntidad';
 import { appsettings } from 'app/Settings/appsettings';
 import { Observable } from 'rxjs';
 
@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 export class PreguntaAbiertaService {
   private http = inject(HttpClient);
   private ruta:string = appsettings.apiApp + 'PreguntaAbierta';
-  private rutaInstrumento:string = appsettings.apiApp + 'TipoEntidad';
+  private rutaInstrumento:string = appsettings.apiApp + 'TipoTrabajador';
 
   constructor() { }
 
@@ -22,8 +22,8 @@ export class PreguntaAbiertaService {
     return this.http.get<Result<PreguntaAbierta[]>>(`${this.ruta}/${id}`)
   }
 
-  getInstrumento(id:number): Observable<Result<TipoEntidad>>{
-    return this.http.get<Result<TipoEntidad>>(`${this.rutaInstrumento}/GetTipoEntidad/${id}`)
+  getInstrumento(id:number){
+    return this.http.get<Result<TipoTrabajador>>(`${this.rutaInstrumento}/GetOneXInstrumento2/${id}`)
   }
 
   post(pregunta: PreguntaAbierta): Observable<Result<PreguntaAbierta>>{

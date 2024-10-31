@@ -16,7 +16,7 @@
                     @for (ins of _instrumentos(); track ins.id) {
                     <div class="max-w mb-2 mx-1 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-700 dark:border-gray-700">
 
-                        <div class="flex justify-between mb-3 bg-gray-300 dark:bg-gray-800 p-4 rounded-lg">
+                        <div class="flex justify-between mb-3 bg-gray-300 dark:bg-gray-800 p-4 rounded-t-lg">
                             <div class="grid grid-cols-2 sm:grid-cols-1">
                                 <!-- <input type="text" class="w-full"> -->
                                 <h2 class="text-xl mb-1 text-black dark:text-white font-bold mx-2">{{ins.nombre}}</h2>
@@ -66,6 +66,14 @@
                                         {{ dimensiones.nombre }}
                                     </span>
                                     <span class="flex space-x-2">
+                                        <a [routerLink]="['/sed/pc/', dimensiones.id]"
+                                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+                                            <svg class="w-6 h-6 text-green-500 hover:text-green-400 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                              </svg>
+                                              
+                                        </a>
+
                                         <a (click)="openModalDimensionesEdit(dimensiones)"
                                             class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
                                             <svg class="w-6 h-6 text-yellow-500 hover:text-yellow-400 text-gray-800 dark:text-white"
@@ -104,7 +112,7 @@
                             <div class="flex gap-3">
                                 @if(ins.dimensiones != null && ins.dimensiones!.length)
                                 {
-                                    <a [routerLink]="['/sed/pc/', ins.id]" id="verIntrumento{{ins.id}}"
+                                    <!-- <a [routerLink]="['/sed/pc/', ins.id]" id="verIntrumento{{ins.id}}"
                                     data-popover-target="verIntrumento"
                                     class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">
                                     <svg class="w-6 h-6 text-gray-800 text-white" xmlns="http://www.w3.org/2000/svg"
@@ -114,7 +122,7 @@
                                             d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z" />
                                     </svg>
                                     <p>Preguntas cerradas</p>
-                                </a>
+                                </a> -->
                                 <a [routerLink]="['/sed/pa/', ins.id]" id="verIntrumento{{ins.id}}"
                                     data-popover-target="verIntrumento"
                                     class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-blue-800">

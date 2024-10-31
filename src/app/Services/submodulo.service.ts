@@ -22,7 +22,8 @@ export class SubmoduloService {
     const url = `${this.apiUrl}`;
     const tokenString = sessionStorage.getItem("loggedInUser");
     const token: LoginResult = tokenString ? JSON.parse(tokenString) : null;
-    
+
+    console.log(url + `/Get?id=${id}&userID=${token.token}`);
     return this.http.get<SubModulo[]>(url + `/GetListUser?id=${id}&userID=${token.token}`);
   }
 

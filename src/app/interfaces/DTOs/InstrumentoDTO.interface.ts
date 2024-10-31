@@ -28,3 +28,20 @@ export interface PreguntaCerradaDTO {
     EvaluacionTrabajadorId: number;
     escalaId?: number | null;
 }
+
+
+export interface InstrumentoAbiertoDTO {
+    id: number;
+    nombre?: string;
+    tipoTrabajadorId: number;
+    tipoEvaluacionId: number;
+    preguntasAbiertas: PreguntaAbiertaDTO[];
+}
+
+export interface PreguntaAbiertaDTO {
+    id: number;
+    nombre: string;
+    respuestaAbiertaId: number;
+    evaluacionTrabajadorId: number;
+    respuesta: string;
+}

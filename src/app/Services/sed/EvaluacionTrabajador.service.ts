@@ -1,10 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { InstrumentoDTO } from '@interfaces/DTOs/InstrumentoDTO.interface';
+import { InstrumentoAbiertoDTO, InstrumentoDTO } from '@interfaces/DTOs/InstrumentoDTO.interface';
 import { PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
+import { RespuestaDTO } from '@interfaces/DTOs/respuesta.interface';
 import { Escala } from '@interfaces/escala';
+import { EvaluacionTrabajador } from '@interfaces/EvaluacionTrabajador.interface';
 import { Instrumento } from '@interfaces/instrumento';
 import { Result } from '@interfaces/Result.interface';
+import { EvaluacionEscala } from 'app/pages/sed/home/AplicacionEvaluacion/AplicacionEvaluacion.component';
 import { appsettings } from 'app/Settings/appsettings';
 
 @Injectable({
@@ -16,7 +19,7 @@ export class EvaluacionTrabajadorService {
 
  
   getById(id: number){
-    return this.http.get<Result<PersonaInfoDTO[]>>(`${this.apiUrl}/GetById/${id}`);
+    return this.http.get<Result<PersonaInfoDTO>>(`${this.apiUrl}/GetById/${id}`);
   }
 
   GetPersonalByIdDependencia(DependenciaId: number, personaId: number){
@@ -31,19 +34,50 @@ export class EvaluacionTrabajadorService {
     return this.http.get<Result<InstrumentoDTO>>(`${this.apiUrl}/GetInstrumento/${tipoTrabajadorId}/${tipoEvaluacionId}/${evaluacionId}`);
   }
 
+  GetInstrumentoCualitativo(tipoTrabajadorId: number, tipoEvaluacionId: number, evaluacionId: number){
+    return this.http.get<Result<InstrumentoAbiertoDTO>>(`${this.apiUrl}/GetInstrumentoCualitativo/${tipoTrabajadorId}/${tipoEvaluacionId}/${evaluacionId}`);
+  }
+
+  getTipoEvaluacionHabilitada(evaluacionId: number){
+    return this.http.get<Result<EvaluacionTrabajador>>(`${this.apiUrl}/GetTipoEvaluacionHabilitada/${evaluacionId}`);
+  }
+
   GetNextStep(dimensionId: number, evaluacionId: number){
     return this.http.get<Result<true>>(`${this.apiUrl}/NextStep/${dimensionId}/${evaluacionId}`);
   }
 
-  updateEscala(id: number, valor: number){
+    updateEscala(data: EvaluacionEscala[]){
+      const headers = {'content-type': 'application/json'}
+      const body = JSON.stringify(data);
+      return this.http.put<Result<boolean>>(`${this.apiUrl}/PutEscalaResponse/`, body, {headers});
+    }
+
+  updateRespuestaAbierta(respuesta: RespuestaDTO[]){
     const headers = {'content-type': 'application/json'}
-    const body = JSON.stringify(valor);
-    return this.http.put<Result<Instrumento>>(`${this.apiUrl}/PutEscalaResponse/${id}`, body, {headers});
+    const body = JSON.stringify(respuesta);
+    return this.http.put<Result<boolean>>(`${this.apiUrl}/UpdateInstrumentoCualitativo/`, body, {headers});
   }
 
   updateFinishEvaluacion(id: number){
     const headers = {'content-type': 'application/json'}
     return this.http.put<Result<Instrumento>>(`${this.apiUrl}/PutFinishEvaluacion/${id}`, {}, {headers});
   }
+
+  updateInicioEvaluacion(id: number){
+    const headers = {'content-type': 'application/json'}
+    return this.http.put(`${this.apiUrl}/updateFechaInicioEvaluacion/${id}`, {}, {headers});
+  }
+
+  updateFinishEvaluacionCuantitativa(id: number){
+    const headers = {'content-type': 'application/json'}
+    return this.http.put(`${this.apiUrl}/UpdateFinishEvaluacionCuantitativa/${id}`, {}, {headers});
+  }
+
+  UpdateFinishEvaluacionCualitativa(id: number){
+    const headers = {'content-type': 'application/json'}
+    return this.http.put(`${this.apiUrl}/UpdateFinishEvaluacionCualitativa/${id}`, {}, {headers});
+  }
+
+  
 
 }
