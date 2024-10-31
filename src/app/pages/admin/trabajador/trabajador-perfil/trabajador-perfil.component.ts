@@ -78,42 +78,32 @@ export default class TrabajadorPerfilComponent {
   
   actualizarInfo(output:InformacionPersonal)
 {
-  console.log("Objeto completo: ", output);
-  debugger;
-  //this.trabajadorDto().datosGenerales.estadoCivilId = output.estadoCivilId!;
- // this.trabajadorDto().persona.sexoId = output.sexoId!;
-  /*this.trabajadorDto().datosGenerales.municipioId= output.municipioId!;
-  this.trabajadorDto().datosGenerales.direccion = output.direccion!;
-  this.trabajadorDto().datosGenerales.telefono1 = output.telefono1!;
-  this.trabajadorDto().datosGenerales.telefono2 = output.telefono2!;
-  this.trabajadorDto().datosGenerales.correoPersonal = output.correoPersonal!;*/
-
-
   try
   {
-    this.trabajadorDto.update(v=>({...v,persona:{...v.persona,sexoId:output.sexoId!}}));
-    this.trabajadorDto.update(v=>({
-     ...v,datosGenerales:{
-       ...v.datosGenerales,
-       estadoCivilId:output.estadoCivilId!,
-       telefono1:output.telefono1!,
-  
-       direccion:output.direccion!,
-       correoPersonal:output.correoPersonal!,
-       municipioId:output.municipioId!
-     }}));
-
-     if(output.telefono2!="")
-     {
-       this.trabajadorDto.update(v=>({...v,datosGenerales:{...v.datosGenerales,telefono2:output.telefono2!}}));
-     }
-     console.log("No error::::");
+    this.trabajadorDto.update(v=>
+      ({
+        ...v, 
+        datosGenerales: ({
+          ...v.datosGenerales,
+          id: output.id,
+          estadoCivilId: output.estadoCivilId,
+          sexoId: output.sexoId,
+          municipioId: output.municipioId,
+          direccion: output.direccion,
+          telefono1: output.telefono1,
+          telefono2: output.telefono2,
+          correoPersonal: output.correoPersonal
+          })
+      })
+  );
+    
   }
   catch(error)
   {
     console.log("error::::");
     console.log(error);
   } 
+  console.log(this.trabajadorDto());
 
 }
 

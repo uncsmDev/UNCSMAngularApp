@@ -17,9 +17,8 @@ export interface InformacionPersonal
     municipioId: number;
     direccion: string;
     telefono1: string;
-    telefono2: string;
+    telefono2?: string;
     correoPersonal: string;
-    
     paisId: number;
     departamentoId: number;
 }

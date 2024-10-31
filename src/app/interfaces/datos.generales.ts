@@ -8,7 +8,7 @@ export interface DatosGenerales
     estadoCivilId: number;
     direccion: string;
     telefono1: string;
-    telefono2: string;
+    telefono2?: string;
     correoPersonal: string;
     estadoCivil:EstadoCivil;
 }

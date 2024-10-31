@@ -29,10 +29,10 @@
             
             <div class="flex-1 text-center">
                 <h5 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                    {{trabajadorDto().persona.nombres}} {{trabajadorDto().persona.apellidos}}
+                    {{trabajadorDto()?.persona?.nombres}} {{trabajadorDto()?.persona?.apellidos}}
                 </h5>
-                <p class="text-lg text-gray-500 dark:text-gray-400">Cédula: {{trabajadorDto().persona.dni}}</p>
-                <p class="text-lg text-gray-500 dark:text-gray-400">INS: {{trabajadorDto().trabajador.codigo}}</p>
+                <p class="text-lg text-gray-500 dark:text-gray-400">Cédula: {{trabajadorDto()?.persona?.dni}}</p>
+                <p class="text-lg text-gray-500 dark:text-gray-400">INS: {{trabajadorDto()?.trabajador?.codigo}}</p>
             </div>
           </div>
 
@@ -58,7 +58,7 @@
             {
               <div>
                 <p class="text-lg font-medium text-gray-500 dark:text-gray-400">Sexo</p>
-                <p class="dark:text-white">{{trabajadorDto().sexo.nombre}}</p>
+                <p class="dark:text-white">{{trabajadorDto()?.sexo?.nombre}}</p>
             </div>
             }
             @else{       <h3 class="text-sm font-semibold text-gray-900 dark:text-white">No se ha especificado el tipo de sexo</h3>}
@@ -67,7 +67,7 @@
             {
               <div>
                 <p class="text-lg font-medium text-gray-500 dark:text-gray-400">Estado Civil</p>
-                <p class="dark:text-white">{{trabajadorDto().datosGenerales.estadoCivil.nombre}}</p>
+                <p class="dark:text-white">{{trabajadorDto()?.datosGenerales?.estadoCivil?.nombre}}</p>
             </div>
             }
             @else {       <h3 class="text-sm font-semibold text-gray-900 dark:text-white">No se ha especificado el estado civil</h3>}

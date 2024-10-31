@@ -214,7 +214,6 @@ export class TrabajadorInfoPersonalModalComponent {
           if(rd.status==ResultEnum.Success)
           {
             this.infoEmit.emit(this.InfoPersonal);
-            console.log(rd);
             this.modalActivo.hide();
             this.modalActivo.destroy();
           }
