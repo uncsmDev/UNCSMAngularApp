@@ -143,9 +143,23 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    getEvaluacionTrabajadorSinInstrumento(){
     this.evaluacionTrabajadorSvc.GetByIdEvaluado(this.id()).subscribe({
       next:(res)=>{
-        const data = res.data!;
-        this.EvaluadoSignal.set(data);
-        this.getInstrumentoCualitativo(data);
+        if(res.data != null)
+        {
+          const data = res.data!;
+          this.EvaluadoSignal.set(data);
+          this.getInstrumentoCualitativo(data);
+        }else
+        {
+          Swal.fire({
+            title: 'Error!',
+            html: '<p>No fue posible encontrar un instrumento asociado, por favor contacte con la <strong>Coordinación de Sistemas</strong>.</p>',
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            ...this.sweetalert.theme,
+          })
+          this.router.navigate(['sed/home']);
+        }
+       
       }
    })
    }
@@ -155,13 +169,20 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
       next:(res)=>{
         if(res.data!= null)
         {
-          
           this.nextStepCount.set(res.data.dimensiones.map(d => (
             { dimensionId: d.id, dimension: d.nombre, preguntaId: d.preguntasCerradas.map(p => ({ id: p.id, valor: false }))
             })));
           this.InstrumentoSignal.set(res);
-
-
+        }else
+        {
+          Swal.fire({
+            title: 'Error!',
+            html: '<p>No fue posible encontrar un instrumento asociado, por favor contacte con la <strong>Coordinación de Sistemas</strong>.</p>',
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            ...this.sweetalert.theme,
+          })
+          this.router.navigate(['sed/home']);
         }
       }
     });
