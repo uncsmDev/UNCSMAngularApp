@@ -55,8 +55,6 @@ export class TrabajadorDatosModalComponent {
    nombres: new FormControl('', Validators.required),
    apellidos: new FormControl('', Validators.required),
    ins: new FormControl('0000', Validators.required),
-   estadoCivilId: new FormControl(0, Validators.required),
-   sexoId: new FormControl(0, Validators.required),
  });
 
   openModal(inputData:DatosPersonalesInput, image:SafeUrl | undefined)
@@ -100,12 +98,15 @@ export class TrabajadorDatosModalComponent {
   }
   onSubmit() 
   {
+   
     if(this.personalDataform.invalid)
     {
       this.personalDataform.markAllAsTouched();
+      console.log("OnSubmit::::: Invalid Form");
     }
     else 
     {
+      console.log("OnSubmit::::: Valid Form");
       this.datosPersonales = this.personalDataform.value as unknown as DatosPersonalesInput;
       this.trabajadorService.UpdatePersonalData(this.datosPersonales,this.archivoService.file).subscribe({
         next: (data) => {
