@@ -80,12 +80,14 @@ export default class TrabajadorPerfilComponent {
 {
   try
   {
+    
+    this.trabajadorDto.update(v=>({...v,persona:{...v.persona,sexoId:output.sexoId!}}));
     this.trabajadorDto.update(v=>
       ({
         ...v, 
         datosGenerales: ({
           ...v.datosGenerales,
-          id: output.id,
+          //id: output.id,
           estadoCivilId: output.estadoCivilId,
           sexoId: output.sexoId,
           municipioId: output.municipioId,
@@ -103,7 +105,6 @@ export default class TrabajadorPerfilComponent {
     console.log("error::::");
     console.log(error);
   } 
-  console.log(this.trabajadorDto());
 
 }
 
