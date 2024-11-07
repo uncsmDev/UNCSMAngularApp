@@ -48,6 +48,7 @@ export default class PersonalComponent implements OnInit {
     this.evaluacionTrabajadorSvc.GetPersonalByIdDependencia(Perfil.dependencia.id, Perfil.persona.id).subscribe(
     {
         next: (res) => {
+          debugger;
           this.Trabajadores.set(res.data);
         }
       }

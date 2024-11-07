@@ -8,6 +8,7 @@ import { Persona } from "@interfaces/persona";
 import { TipoContrato } from "@interfaces/tipo_contrato";
 import { TipoTrabajador } from "@interfaces/tipoEntidad";
 import { Trabajador } from "@interfaces/trabajador";
+import { FileDto } from "./FileDto";
 
 export interface PersonaInfoDTO {
     persona: Persona;
@@ -18,6 +19,7 @@ export interface PersonaInfoDTO {
     cargo: Cargo;
     tipoTrabajador: TipoTrabajador;
     tipoContrato: TipoContrato;
-    evaluacionTrabajador: EvaluacionTrabajador
+    evaluacionTrabajador: EvaluacionTrabajador;
     img: SafeUrl;
+    imgDto?: FileDto;
 }
