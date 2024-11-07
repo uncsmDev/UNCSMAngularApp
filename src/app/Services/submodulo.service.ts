@@ -22,8 +22,6 @@ export class SubmoduloService {
     const url = `${this.apiUrl}`;
     const tokenString = sessionStorage.getItem("loggedInUser");
     const token: LoginResult = tokenString ? JSON.parse(tokenString) : null;
-
-    console.log(url + `/Get?id=${id}&userID=${token.token}`);
     return this.http.get<SubModulo[]>(url + `/GetListUser?id=${id}&userID=${token.token}`);
   }
 
@@ -35,16 +33,6 @@ export class SubmoduloService {
     
     return this.http.get<SubModulo[]>(url + `/GetListUserFilter?id=${id}&userID=${token.token}`);
   }
-
-  googleLogin(idToken: string) {
-    return this.http.post<{ token: string }>(
-      this.apiUrl + 'google-login',
-      {
-        idToken: idToken,
-      }
-    );
-  }
-
 
   getListByModulo(id:number,filtro:string) //id: id Modulo.// Obtiene lista de submodulo que contienen un id de modulo
   {

@@ -26,6 +26,7 @@ export default class PersonalComponent implements OnInit {
 
   Perfil = signal<PersonaInfoDTO>({} as PersonaInfoDTO);
   Trabajadores = signal<PersonaInfoDTO[]>([]);
+  TrabajadoresDirectivos = signal<PersonaInfoDTO[]>([]);
 
   ngOnInit(): void {
     this.DataToken.set(this.auth.getDataUser()); 
@@ -36,7 +37,7 @@ export default class PersonalComponent implements OnInit {
           {
             this.Perfil.set(res.data);
             this.GetPersonalByIdDependencia(this.Perfil())
-            
+            this.GetPersonalOtherIdDependencia(this.Perfil())
           }
           
         }
@@ -45,11 +46,21 @@ export default class PersonalComponent implements OnInit {
   }
   
   GetPersonalByIdDependencia(Perfil: PersonaInfoDTO){
+    console.log(Perfil.dependencia.id, Perfil.persona.id);
     this.evaluacionTrabajadorSvc.GetPersonalByIdDependencia(Perfil.dependencia.id, Perfil.persona.id).subscribe(
     {
         next: (res) => {
-          debugger;
           this.Trabajadores.set(res.data);
+        }
+      }
+    );
+  }
+
+  GetPersonalOtherIdDependencia(Perfil: PersonaInfoDTO){
+    this.evaluacionTrabajadorSvc.getPersonalOtherIdDependencia(Perfil.dependencia.id, Perfil.persona.id).subscribe(
+    {
+        next: (res) => {
+          this.TrabajadoresDirectivos.set(res.data);
         }
       }
     );

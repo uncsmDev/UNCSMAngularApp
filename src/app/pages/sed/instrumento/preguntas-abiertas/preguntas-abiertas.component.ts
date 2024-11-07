@@ -61,7 +61,6 @@ export default class PreguntasAbiertasComponent {
             next: a => {
               if(a.data != null)
                 {
-                  debugger
                   const data = a.data!;
                   if(!Array.isArray(this.preguntas()))
                   {
