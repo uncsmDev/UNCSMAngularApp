@@ -31,6 +31,13 @@ export const routes: Routes = [
                     data: { breadcrumb: 'Escalas' },
                     canActivate: [routerPermisseGuard]
                   },
+                  {
+                    path: 'personal',
+                    title: 'Personal',
+                    loadComponent: () => import('./pages/sed/home/personal/personal.component'),
+                    data: { breadcrumb: 'Escalas' },
+                    canActivate: [routerPermisseGuard]
+                  },
                 {
                     
                     path: 'escala',
