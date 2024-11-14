@@ -4,7 +4,7 @@ import { AfterViewInit, Component, ElementRef, HostListener, inject, input, sign
 import { PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
 import { Escala } from '@interfaces/escala';
 import { Instrumento } from '@interfaces/instrumento';
-import { EscalaService } from '@services/sed/escala.service';
+import { EscalaService } from 'app/pages/sed/escala/escala.service';
 import { EvaluacionTrabajadorService } from '@services/sed/EvaluacionTrabajador.service';
 import { TitleComponent } from 'app/shared/title/title.component';
 import Swal from 'sweetalert2'

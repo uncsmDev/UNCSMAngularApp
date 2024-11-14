@@ -1,7 +1,7 @@
 import { Component, ViewChild, WritableSignal, computed, inject, signal } from '@angular/core';
 import { Escala } from '../../../interfaces/escala';
 import { TitleComponent } from '../../../shared/title/title.component';
-import { EscalaService } from '../../../Services/sed/escala.service';
+import { EscalaService } from '../../sed/escala/escala.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModalDeleteComponent } from '../../../components/modal-delete/modal-delete.component';

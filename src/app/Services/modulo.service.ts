@@ -3,6 +3,9 @@ import { Injectable, inject } from '@angular/core';
 import { appsettings } from '../Settings/appsettings';
 import { Modulo, ModuloView } from '../interfaces/modulo';
 import { Observable } from 'rxjs';
+import { jwtDecode } from "jwt-decode";
+import { Usuario } from '@interfaces/usuario';
+import { UsuarioToken } from '@interfaces/usuario.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -14,25 +17,27 @@ export class ModuloService {
 
   constructor() { }
   
-  get(): Observable<Modulo[]> {
+  get(){
  
     const tokenStorage = sessionStorage.getItem("loggedInUser");
   
     if (tokenStorage!== null && tokenStorage!== undefined) {
       try {
+        debugger
+        const decoded: UsuarioToken = jwtDecode(tokenStorage);
         // Intenta convertir la cadena en un objeto JSON
         const tokenJSON = JSON.parse(tokenStorage);
 
         const idUser = tokenJSON.token;
 
         // Construye la URL completa incluyendo el Email del usuario
-        const url = `${this.apiUrl}/GetModuloxUser?id=${idUser}`;
+        const url = `${this.apiUrl}/GetModuloxUser/${decoded.nameid}`;
   
         // Realiza la solicitud GET
         return this.http.get<Modulo[]>(url);
       } catch (error) {
         // Maneja el error en caso de que la cadena no sea un JSON válido
-        console.error("Error al parsear el usuario:", error);
+        console.log("Error al parsear el usuario:", error);
         throw new Error("Error al parsear el usuario"); // Considera lanzar el error para manejarlo en el componente
       }
     } else {

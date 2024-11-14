@@ -2,8 +2,8 @@ import { Injectable, inject } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Escala } from '../../interfaces/escala';
-import { appsettings } from '../../Settings/appsettings';
+import { Escala } from '../../../interfaces/escala';
+import { appsettings } from '../../../Settings/appsettings';
 import { FormGroup } from '@angular/forms';
 
 @Injectable({

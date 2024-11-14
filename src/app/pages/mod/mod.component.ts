@@ -9,6 +9,7 @@ import { TitleComponent } from '../../shared/title/title.component';
 import { HeaderDashboardComponent } from '../../shared/header-dashboard/header-dashboard.component';
 import { NgOptimizedImage } from '@angular/common';
 import { SpinnerGeneralComponent } from 'app/components/spinner/spinner.component';
+import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-mod',
@@ -32,10 +33,18 @@ export default class ModComponent {
   ngOnInit() {
     
     initFlowbite();
-    this.moduloService.get()
-    
+    this.moduloService.get().pipe(
+      catchError((error: any) => {
+        // Handle the error here
+        console.error('An error occurred:', error);
+        // Optionally, re-throw the error or return a default value
+        return throwError('Something went wrong');
+      })
+    )
     .subscribe({
       next: (resp)=> {
+        
+        console.log(resp);
         const mod = resp.map(item => ({
           id: item.id,
           titulo: item.titulo, // Transforma 'nombre' a 'titulo'
@@ -45,6 +54,7 @@ export default class ModComponent {
           imgLocation: item.imgLocation,
           subModulos: null,
         }));
+        console.log(mod);
         this.modulos.set(mod);
       },
       error: (error) =>{
