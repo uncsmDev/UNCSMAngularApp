@@ -148,8 +148,7 @@ export const routes: Routes = [
                 path: 'trabajador',
                 title: 'Trabajadores',
                 loadComponent: () => import('./pages/admin/trabajador/trabajador.component'),
-            }
-            ,
+            },
             {
                 path: 'trabajador/nuevo-trabajador',
                 title: 'Nuevo Trabajador',
@@ -164,10 +163,19 @@ export const routes: Routes = [
                 path: 'trabajador/perfil/:id',
                 title: 'Perfil Trabajador',
                 loadComponent: () => import('./pages/admin/trabajador/trabajador-perfil/trabajador-perfil.component'),
+            },
+            {
+                path: 'contratos',
+                title: 'Contratos',
+                loadComponent: () => import('./pages/admin/contratos/contratos.component'),
+            },
+            {
+                path: 'contratos/contrato/:id',
+                title: 'Contrato Perfil',
+                loadComponent: () => import('./pages/admin/contratos/contrato/contrato.component'),
             }
         ]
     
-       
     },
     {
         path: 'mod',

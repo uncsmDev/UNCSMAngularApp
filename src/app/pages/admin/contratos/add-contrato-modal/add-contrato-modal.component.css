@@ -1,0 +1,7 @@
+@media (prefers-color-scheme: dark) {
+    input[matInput] {
+      color: #000000; /* texto blanco */
+      border-color: #ffffff; /* borde gris oscuro */
+      background-color: #ffffff;
+    }
+  }

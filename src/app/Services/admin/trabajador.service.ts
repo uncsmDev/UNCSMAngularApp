@@ -8,6 +8,7 @@ import { PackPage, Paginacion } from '@interfaces/packPage';
 import { TrabajadorDto, TrabajadorInput } from '@interfaces/trabajadorInput';
 import { Persona } from '@interfaces/persona';
 import { DatosPersonalesInput, InformacionPersonal } from '@interfaces/Updates/datosPersonalesInput ';
+import { TrabajadorDetalle } from '@interfaces/ViewsInterfaces/TrabajadorDetalle';
 
 @Injectable({
   providedIn: 'root'
@@ -84,6 +85,12 @@ export class TrabajadorService {
   getById(id:number): Observable<Result<TrabajadorDto>>   
   {
     var trabajador= this.http.get<Result<TrabajadorDto>>(this.apiUrl+'/GetById?IdTrabajador='+id);
+    return trabajador;
+  }
+
+  getDetalleContratos(idTrabajador:number): Observable<Result<TrabajadorDetalle>>   
+  {
+    var trabajador= this.http.get<Result<any>>(this.apiUrl+'/GetDetalleTrabajadorContratos?Id='+idTrabajador);
     return trabajador;
   }
 }
