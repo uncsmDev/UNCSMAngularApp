@@ -43,8 +43,6 @@ export default class ModComponent {
     )
     .subscribe({
       next: (resp)=> {
-        
-        console.log(resp);
         const mod = resp.map(item => ({
           id: item.id,
           titulo: item.titulo, // Transforma 'nombre' a 'titulo'
@@ -54,7 +52,6 @@ export default class ModComponent {
           imgLocation: item.imgLocation,
           subModulos: null,
         }));
-        console.log(mod);
         this.modulos.set(mod);
       },
       error: (error) =>{

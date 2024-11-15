@@ -23,18 +23,12 @@ export class ModuloService {
   
     if (tokenStorage!== null && tokenStorage!== undefined) {
       try {
-        debugger
         const decoded: UsuarioToken = jwtDecode(tokenStorage);
         // Intenta convertir la cadena en un objeto JSON
         const tokenJSON = JSON.parse(tokenStorage);
-
         const idUser = tokenJSON.token;
-
-        // Construye la URL completa incluyendo el Email del usuario
-        const url = `${this.apiUrl}/GetModuloxUser/${decoded.nameid}`;
-  
         // Realiza la solicitud GET
-        return this.http.get<Modulo[]>(url);
+        return this.http.get<Modulo[]>(`${this.apiUrl}/GetModuloxUser/${decoded.nameid}`);
       } catch (error) {
         // Maneja el error en caso de que la cadena no sea un JSON válido
         console.log("Error al parsear el usuario:", error);

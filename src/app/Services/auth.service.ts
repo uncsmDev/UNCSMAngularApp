@@ -30,7 +30,6 @@ export class AuthService {
 
   login(email: string, password: string)
   {
-    debugger
     return this.http.post<LoginResult>(this.apiUrl+ 'login',{
       "username": email,
       "password": password
