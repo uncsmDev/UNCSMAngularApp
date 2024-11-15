@@ -112,4 +112,8 @@ export default class TrabajadorComponent {
     this.router.navigate(['/admin/trabajador/perfil',Id]);
   }
 
+  irContratosPerfil(Id:number) {
+    //trabajador/perfil/:id
+    this.router.navigate(['/admin/contratos/contrato',Id]);
+  }
 }

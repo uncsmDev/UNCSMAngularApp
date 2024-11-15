@@ -353,10 +353,6 @@ export default class TrabajadorInputComponent {
   onSelectCargo(event:any)
   {
     this.masterFormInput.controls['cargoId'].setValue(event.option.value.id);
-    /*this.SBMxUForm.controls['subModuloId'].setValue(parseInt(event.option.value.id));
-
-    const inputSM=event.option.value;
-*/
   }
 
   displayFn(subject:any)
