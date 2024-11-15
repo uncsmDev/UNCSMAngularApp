@@ -13,12 +13,17 @@ import { TipoContratoService } from '@services/admin/tipoContrato.service';
 import { ModalService } from '@services/modal.service';
 import { initFlowbite, ModalInterface } from 'flowbite';
 import { tipoModal} from '@interfaces/trabajador';
+import { ContratoService } from '@services/admin/contrato.service';
+import { Contrato } from '@interfaces/Contrato.interface';
+import { ResultEnum } from '@interfaces/Result.interface';
+import { SweetalertService } from '@services/sweetalert.service';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-add-contrato-modal',
   standalone: true,
-  imports: [ReactiveFormsModule,MatInputModule,
-    MatSelectModule,MatFormFieldModule,MatAutocompleteModule],
+  imports: [ReactiveFormsModule,MatInputModule,  MatSelectModule,MatFormFieldModule,MatAutocompleteModule],
   templateUrl: './add-contrato-modal.component.html',
   styleUrl: './add-contrato-modal.component.css'
 })
@@ -31,6 +36,8 @@ export class AddContratoModalComponent {
   dependenciaService=inject(DependenciaService);
   cargoService=inject(CargoService);
   tipoContratoService=inject(TipoContratoService);
+  contratoService=inject(ContratoService);
+  sweetalert = inject(SweetalertService);
 
   dependencias:WritableSignal<Dependencia[]>=signal([]);
   dependenciaList:Signal<Dependencia[]>=computed(this.dependencias);
@@ -42,6 +49,8 @@ export class AddContratoModalComponent {
   cargosOrig:WritableSignal<Cargo[]>=signal([]);
 
   cargoIdControl = new FormControl('');
+
+  contratoInput:Contrato={} as Contrato;
 
   ngOnInit(): void 
   {
@@ -152,9 +161,6 @@ export class AddContratoModalComponent {
 
     this.contratoForm.controls['id'].setValue(inputData);
 
-
-   
-
     this.PostType = 'add';
     this.modalActivo = this.modalService.createModal('addcontratoModal');
     this.modalActivo.show();
@@ -162,7 +168,28 @@ export class AddContratoModalComponent {
 
 
   onSubmit()
-  {}
+  {
+    this.contratoInput= this.contratoForm.value as unknown  as Contrato;
+    this.contratoService.Create(this.contratoInput).subscribe({
+      next:(data)=>{
+        if(data.status ==ResultEnum.Success)
+          {
+            
+            this.closeModal();
+          }
+          else
+          {
+            Swal.fire({
+              title: 'Advertencia!',
+              html: '<p>'+data.message+'.</p>',
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              ...this.sweetalert.theme,
+            })
+          }
+      }
+    })
+  }
 
   closeModal()
   {
