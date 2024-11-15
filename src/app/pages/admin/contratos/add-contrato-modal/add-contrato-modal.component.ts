@@ -66,7 +66,7 @@ export class AddContratoModalComponent {
     cargoId: new FormControl('', Validators.required),  //cargo por dependencia
     tipoContratoId: new FormControl('', Validators.required),
     fechaInicio: new FormControl('', Validators.required),
-    fechaFin: new FormControl('', Validators.required),
+    fechaFin: new FormControl(''),
   });
 
 
@@ -174,7 +174,7 @@ export class AddContratoModalComponent {
       next:(data)=>{
         if(data.status ==ResultEnum.Success)
           {
-            
+
             this.closeModal();
           }
           else
