@@ -102,11 +102,9 @@ export class TrabajadorDatosModalComponent {
     if(this.personalDataform.invalid)
     {
       this.personalDataform.markAllAsTouched();
-      console.log("OnSubmit::::: Invalid Form");
     }
     else 
     {
-      console.log("OnSubmit::::: Valid Form");
       this.datosPersonales = this.personalDataform.value as unknown as DatosPersonalesInput;
       this.trabajadorService.UpdatePersonalData(this.datosPersonales,this.archivoService.file).subscribe({
         next: (data) => {

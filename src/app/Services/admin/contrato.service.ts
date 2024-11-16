@@ -22,6 +22,8 @@ export class ContratoService {
   {
     const headers = { 'content-type': 'application/json'}  
     const body=JSON.stringify(input);
+    console.log('JSON:::: '+body);
+    console.log(input);
     return this.http.post<Result<Contrato>>(this.apiUrl+'/Insert', body,{'headers':headers})
   }
 
