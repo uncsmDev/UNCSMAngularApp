@@ -152,10 +152,6 @@ export class AddContratoModalComponent {
 
   openModal(inputData:number)
   {
-    //this.reset();///this.SBMxUForm.controls['subModuloId'].setValue(parseInt(event.option.value.id));
-
-    console.log('inputData:::'+inputData);
-
     this.GetListTipoContrato();
     this.GetListDependencia();
 
@@ -169,6 +165,23 @@ export class AddContratoModalComponent {
 
   onSubmit()
   {
+
+    //2022-01-01 //this.SBMxUForm.controls['subModuloId'].setValue(parseInt(event.option.value.id));
+
+    this.contratoForm.controls['fechaFin'].setValue(this.contratoForm.controls['fechaFin'].value==''?null:this.contratoForm.controls['fechaFin'].value);
+
+    if(this.contratoForm.invalid)
+    {
+      Swal.fire({
+        title: 'Advertencia!',
+        html: '<p>Hay campos que no han sido completados.</p>',
+        icon: 'warning',
+        confirmButtonText: 'Ok',
+        ...this.sweetalert.theme,
+      })
+      this.contratoForm.markAllAsTouched();
+    }
+
     this.contratoInput= this.contratoForm.value as unknown  as Contrato;
     this.contratoService.Create(this.contratoInput).subscribe({
       next:(data)=>{
