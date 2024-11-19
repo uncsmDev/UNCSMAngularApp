@@ -124,6 +124,11 @@ export const routes: Routes = [
                 loadComponent:()=>import('./auth/usuarios/usuarios.component')
             },
             {
+                path:'usuarios/usuario/:id', 
+                title: 'Usuario',
+                loadComponent:()=>import('./auth/usuarios/usuario/usuario.component')
+            },
+            {
                 path:'dependencias', 
                 title: 'Dependencias',
                 loadComponent:()=>import('./pages/admin/dependencias/dependencias.component')
