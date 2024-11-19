@@ -4,11 +4,10 @@ import { RouterLink } from '@angular/router';
 import { TokenData } from '@interfaces/acount';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [RouterLink],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+    selector: 'app-header',
+    imports: [RouterLink],
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.css'
 })
 export class HeaderComponent {
   auth = inject(AuthService);

@@ -23,12 +23,11 @@ import { AsyncPipe } from '@angular/common';
 import { ResultEnum } from '@interfaces/Result.interface';
 
 @Component({
-  selector: 'app-usuarios',
-  standalone: true,
-  imports: [MatTableModule, MatPaginatorModule,ReactiveFormsModule,MatAutocompleteModule,MatFormFieldModule,
-    ModalDeleteComponent,FormsModule,MatInputModule,AsyncPipe],
-  templateUrl: './usuarios.component.html',
-  styleUrl: './usuarios.component.css'
+    selector: 'app-usuarios',
+    imports: [MatTableModule, MatPaginatorModule, ReactiveFormsModule, MatAutocompleteModule, MatFormFieldModule,
+        ModalDeleteComponent, FormsModule, MatInputModule, AsyncPipe],
+    templateUrl: './usuarios.component.html',
+    styleUrl: './usuarios.component.css'
 })
 
 export default class UsuariosComponent {

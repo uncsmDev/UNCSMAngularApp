@@ -21,11 +21,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { SweetalertService } from '@services/sweetalert.service';
 
 @Component({
-  selector: 'app-instrumento',
-  standalone: true,
-  imports: [TitleComponent, ModalDeleteComponent, ReactiveFormsModule, CommonModule, ModalInstrumentoComponent, RouterLink, ModalDimensionesComponent],
-  templateUrl: './instrumento.component.html',
-  styleUrl: './instrumento.component.css'
+    selector: 'app-instrumento',
+    imports: [TitleComponent, ModalDeleteComponent, ReactiveFormsModule, CommonModule, ModalInstrumentoComponent, RouterLink, ModalDimensionesComponent],
+    templateUrl: './instrumento.component.html',
+    styleUrl: './instrumento.component.css'
 })
 export default class InstrumentoComponent {
 

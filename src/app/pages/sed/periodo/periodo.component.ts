@@ -14,14 +14,13 @@ import { InstrumentoAddModalComponent } from './instrumento-add-modal/instrument
 import { PeriodoxinstrumentoService } from '@services/sed/periodoxinstrumento.service';
 
 @Component({
-  selector: 'app-periodo',
-  standalone: true,
-  imports: [
-    CommonModule, TitleComponent, ReactiveFormsModule, ModalDeleteComponent, ListaInstrumentoComponent, InstrumentoAddModalComponent
-  ],
-  templateUrl: './periodo.component.html',
-  styleUrl: './periodo.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-periodo',
+    imports: [
+        CommonModule, TitleComponent, ReactiveFormsModule, ModalDeleteComponent, ListaInstrumentoComponent, InstrumentoAddModalComponent
+    ],
+    templateUrl: './periodo.component.html',
+    styleUrl: './periodo.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class PeriodoComponent {
 

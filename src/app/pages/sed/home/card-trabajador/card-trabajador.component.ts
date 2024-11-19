@@ -6,12 +6,11 @@ import { PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
 import { ArchivoService } from '@services/admin/archivo.service';
 
 @Component({
-  selector: 'app-card-trabajador',
-  standalone: true,
-  imports: [
-    CommonModule, RouterLink
-  ],
-  template: `
+    selector: 'app-card-trabajador',
+    imports: [
+        CommonModule, RouterLink
+    ],
+    template: `
 <div class="container">
   <div class="card-container">
     <a [routerLink]="trabajador().evaluacionTrabajador.evaluacionCuantitativaTerminada == true && trabajador().evaluacionTrabajador.evaluacionCualitativaTerminada == true ? null : ['/sed/evaluacion', trabajador().evaluacionTrabajador.id]">
@@ -58,8 +57,8 @@ import { ArchivoService } from '@services/admin/archivo.service';
     </a>
   </div>
 </div>`,
-  styleUrl: './card-trabajador.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrl: './card-trabajador.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardTrabajadorComponent {
 

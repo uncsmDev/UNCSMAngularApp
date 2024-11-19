@@ -11,13 +11,12 @@ import { PeriodoxinstrumentoService } from '@services/sed/periodoxinstrumento.se
 import { ModalDeleteComponent } from 'app/components/modal-delete/modal-delete.component';
 
 @Component({
-  selector: 'app-lista-instrumento',
-  standalone: true,
-  imports: [
-    CommonModule, ModalDeleteComponent
-  ],
-  templateUrl: './ListaInstrumento.component.html',
-  styleUrl: './ListaInstrumento.component.css',
+    selector: 'app-lista-instrumento',
+    imports: [
+        CommonModule, ModalDeleteComponent
+    ],
+    templateUrl: './ListaInstrumento.component.html',
+    styleUrl: './ListaInstrumento.component.css'
 })
 export class ListaInstrumentoComponent { 
 

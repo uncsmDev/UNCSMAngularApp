@@ -36,12 +36,11 @@ import { ResultEnum } from '@interfaces/Result.interface';
 import { SafeUrl } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-trabajador-input',
-  standalone: true,
-  imports: [TitleComponent, ReactiveFormsModule,MatInputModule,
-    MatSelectModule,MatFormFieldModule,MatAutocompleteModule,FdropzoneComponent],
-  templateUrl: './trabajador-input.component.html',
-  styleUrl: './trabajador-input.component.css'
+    selector: 'app-trabajador-input',
+    imports: [TitleComponent, ReactiveFormsModule, MatInputModule,
+        MatSelectModule, MatFormFieldModule, MatAutocompleteModule, FdropzoneComponent],
+    templateUrl: './trabajador-input.component.html',
+    styleUrl: './trabajador-input.component.css'
 })
 export default class TrabajadorInputComponent {
 

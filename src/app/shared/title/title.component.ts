@@ -3,10 +3,9 @@ import { Location } from '@angular/common';
 import { LoginResult } from '@interfaces/acount';
 
 @Component({
-  selector: 'app-title',
-  standalone: true,
-  imports: [],
-  template:`
+    selector: 'app-title',
+    imports: [],
+    template: `
       <div class="flex justify-between items-center w-full">
         <div>
     <!-- Título a la Izquierda -->

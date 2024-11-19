@@ -10,11 +10,10 @@ import { ModalInterface } from 'flowbite';
 import { JsonPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-escala',
-  standalone: true,
-  imports: [TitleComponent, ReactiveFormsModule, ModalDeleteComponent, JsonPipe],
-  templateUrl: './escala.component.html',
-  styleUrl: './escala.component.css'
+    selector: 'app-escala',
+    imports: [TitleComponent, ReactiveFormsModule, ModalDeleteComponent, JsonPipe],
+    templateUrl: './escala.component.html',
+    styleUrl: './escala.component.css'
 })
 export default class EscalaComponent {
   //Componentes Injectados

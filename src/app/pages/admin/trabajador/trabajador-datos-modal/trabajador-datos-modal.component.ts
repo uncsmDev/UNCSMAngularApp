@@ -15,11 +15,10 @@ import { Sexo } from '@interfaces/sexo';
 import { EstadoCivil } from '@interfaces/estado.civil';
 
 @Component({
-  selector: 'app-trabajador-datos-modal',
-  standalone: true,
-  imports: [ReactiveFormsModule,FdropzoneComponent],
-  templateUrl: './trabajador-datos-modal.component.html',
-  styleUrl: './trabajador-datos-modal.component.css'
+    selector: 'app-trabajador-datos-modal',
+    imports: [ReactiveFormsModule, FdropzoneComponent],
+    templateUrl: './trabajador-datos-modal.component.html',
+    styleUrl: './trabajador-datos-modal.component.css'
 })
 export class TrabajadorDatosModalComponent {
 

@@ -23,11 +23,10 @@ import TrabajadorComponent from "../trabajador.component";
 
 
 @Component({
-  selector: 'app-trabajador-perfil',
-  standalone: true,
-  imports: [TitleComponent, TrabajadorDatosModalComponent,TrabajadorInfoPersonalModalComponent, FdropzoneComponent, TrabajadorComponent],
-  templateUrl: './trabajador-perfil.component.html',
-  styleUrl: './trabajador-perfil.component.css'
+    selector: 'app-trabajador-perfil',
+    imports: [TitleComponent, TrabajadorDatosModalComponent, TrabajadorInfoPersonalModalComponent, FdropzoneComponent, TrabajadorComponent],
+    templateUrl: './trabajador-perfil.component.html',
+    styleUrl: './trabajador-perfil.component.css'
 })
 export default class TrabajadorPerfilComponent {
 

@@ -5,11 +5,10 @@ import { ArchivoService } from '../../../Services/admin/archivo.service';
 import { SafeUrl } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-fdropzone',
-  standalone: true,
-  imports: [FormsModule,CommonModule],
-  templateUrl: './fdropzone.component.html',
-  styleUrl: './fdropzone.component.css'
+    selector: 'app-fdropzone',
+    imports: [FormsModule, CommonModule],
+    templateUrl: './fdropzone.component.html',
+    styleUrl: './fdropzone.component.css'
 })
 export class FdropzoneComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;

@@ -7,11 +7,10 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 
 @Component({
-  selector: 'app-sidemenu',
-  standalone: true,
-  imports: [RouterModule, RouterLink],
-  templateUrl: './sidemenu.component.html',
-  styleUrl: './sidemenu.component.css'
+    selector: 'app-sidemenu',
+    imports: [RouterModule, RouterLink],
+    templateUrl: './sidemenu.component.html',
+    styleUrl: './sidemenu.component.css'
 })
 export class SidemenuComponent {
 

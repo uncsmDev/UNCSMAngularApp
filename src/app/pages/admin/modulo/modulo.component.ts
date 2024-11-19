@@ -18,7 +18,6 @@ import { Archivo } from '../../../interfaces/archivo';
 
 @Component({
     selector: 'app-modulo',
-    standalone: true,
     templateUrl: './modulo.component.html',
     styleUrl: './modulo.component.css',
     imports: [TitleComponent, FormsModule, ReactiveFormsModule, FdropzoneComponent]

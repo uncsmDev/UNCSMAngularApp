@@ -17,11 +17,10 @@ import { FdropzoneComponent } from 'app/shared/input/fdropzone/fdropzone.compone
 import { ModalInterface } from 'flowbite';
 
 @Component({
-  selector: 'app-trabajador-info-personal-modal',
-  standalone: true,
-  imports: [ReactiveFormsModule,FdropzoneComponent],
-  templateUrl: './trabajador-info-personal-modal.component.html',
-  styleUrl: './trabajador-info-personal-modal.component.css'
+    selector: 'app-trabajador-info-personal-modal',
+    imports: [ReactiveFormsModule, FdropzoneComponent],
+    templateUrl: './trabajador-info-personal-modal.component.html',
+    styleUrl: './trabajador-info-personal-modal.component.css'
 })
 export class TrabajadorInfoPersonalModalComponent {
 

@@ -11,11 +11,10 @@ import { EmiterResult } from '@interfaces/EmiterResult';
 import { Dimension } from '@interfaces/dimension';
 
 @Component({
-  selector: 'app-modal-dimensiones',
-  standalone: true,
-  imports: [ReactiveFormsModule],
-  templateUrl: './modal-dimensiones.component.html',
-  styleUrl: './modal-dimensiones.component.css'
+    selector: 'app-modal-dimensiones',
+    imports: [ReactiveFormsModule],
+    templateUrl: './modal-dimensiones.component.html',
+    styleUrl: './modal-dimensiones.component.css'
 })
 export class ModalDimensionesComponent {
   modalActivo!: ModalInterface;

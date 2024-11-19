@@ -5,11 +5,10 @@ import { RouterLink } from '@angular/router';
 import { CardTrabajadorComponent } from './card-trabajador/card-trabajador.component';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [RouterLink, DatePipe, JsonPipe, CardTrabajadorComponent],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+    selector: 'app-home',
+    imports: [RouterLink, DatePipe, JsonPipe, CardTrabajadorComponent],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.css'
 })
 export default class HomeComponent {
   

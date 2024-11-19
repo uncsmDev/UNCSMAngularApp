@@ -33,12 +33,11 @@ const TREE_DATA: FoodNode[] = [
 ];
 
 @Component({
-  selector: 'app-tree-data',
-  standalone: true,
-  imports: [
-    CommonModule, MatTreeModule, MatButtonModule, MatIconModule
-  ],
-  template: `
+    selector: 'app-tree-data',
+    imports: [
+        CommonModule, MatTreeModule, MatButtonModule, MatIconModule
+    ],
+    template: `
   <mat-tree #tree [dataSource]="dataSource" [childrenAccessor]="childrenAccessor">
   <!-- This is the tree node template for leaf nodes -->
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
@@ -108,8 +107,8 @@ const TREE_DATA: FoodNode[] = [
   </mat-tree-node>
 </mat-tree>
 `,
-  styleUrl: './treeData.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrl: './treeData.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TreeDataComponent { 
 

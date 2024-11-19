@@ -7,11 +7,10 @@ import { Router } from '@angular/router';
 import { LoginModel } from '../../models/Login.Model';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [ReactiveFormsModule,FormsModule,MatSnackBarModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+    selector: 'app-login',
+    imports: [ReactiveFormsModule, FormsModule, MatSnackBarModule],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.css'
 })
 export default class LoginComponent implements OnInit{
   

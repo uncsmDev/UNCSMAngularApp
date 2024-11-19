@@ -3,12 +3,11 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { SpinnerService } from '@services/spinner.service';
 
 @Component({
-  selector: 'app-spinner-general',
-  standalone: true,
-  imports: [
-    CommonModule,
-  ],
-  template: `
+    selector: 'app-spinner-general',
+    imports: [
+        CommonModule,
+    ],
+    template: `
   @if(isLoading())
   {
   <div class="overlay">

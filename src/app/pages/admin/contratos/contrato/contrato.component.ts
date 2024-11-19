@@ -17,11 +17,10 @@ import { tipoModal } from '@interfaces/trabajador';
 
 
 @Component({
-  selector: 'app-contrato',
-  standalone: true,
-  imports: [TitleComponent, MatTableModule, MatPaginatorModule, AddContratoModalComponent],
-  templateUrl: './contrato.component.html',
-  styleUrl: './contrato.component.css'
+    selector: 'app-contrato',
+    imports: [TitleComponent, MatTableModule, MatPaginatorModule, AddContratoModalComponent],
+    templateUrl: './contrato.component.html',
+    styleUrl: './contrato.component.css'
 })
 export default class ContratoComponent {
 

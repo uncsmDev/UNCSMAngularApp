@@ -16,11 +16,10 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { ModalDeleteComponent } from 'app/components/modal-delete/modal-delete.component';
 
 @Component({
-  selector: 'app-submodulo',
-  standalone: true,
-  imports: [ TitleComponent, ModalDeleteComponent,ReactiveFormsModule, FormsModule],
-  templateUrl: './submodulo.component.html',
-  styleUrl: './submodulo.component.css'
+    selector: 'app-submodulo',
+    imports: [TitleComponent, ModalDeleteComponent, ReactiveFormsModule, FormsModule],
+    templateUrl: './submodulo.component.html',
+    styleUrl: './submodulo.component.css'
 })
 export default class SubmoduloComponent {
 

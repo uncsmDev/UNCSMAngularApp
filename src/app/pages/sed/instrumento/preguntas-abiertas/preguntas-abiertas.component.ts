@@ -14,11 +14,10 @@ import { ModalDeleteComponent } from 'app/components/modal-delete/modal-delete.c
 import { TitleComponent } from 'app/shared/title/title.component';
 
 @Component({
-  selector: 'app-preguntas-abiertas',
-  standalone: true,
-  imports: [ReactiveFormsModule, JsonPipe, ModalDeleteComponent, LowerCasePipe, TitleComponent],
-  templateUrl: './preguntas-abiertas.component.html',
-  styleUrl: './preguntas-abiertas.component.css'
+    selector: 'app-preguntas-abiertas',
+    imports: [ReactiveFormsModule, JsonPipe, ModalDeleteComponent, LowerCasePipe, TitleComponent],
+    templateUrl: './preguntas-abiertas.component.html',
+    styleUrl: './preguntas-abiertas.component.css'
 })
 export default class PreguntasAbiertasComponent {
   fb = inject(FormBuilder);

@@ -12,11 +12,10 @@ import { SpinnerComponent } from './shared/spinner/spinner.component';
 
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet,MatButtonModule, MatMenuModule,LoginComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+    selector: 'app-root',
+    imports: [RouterOutlet, MatButtonModule, MatMenuModule, LoginComponent],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit{
   title = 'UNCSM App';

@@ -8,13 +8,12 @@ import { TipoEvaluacionesService } from '@services/sed/TipoEvaluaciones.service'
 import { ModalInterface } from 'flowbite';
 
 @Component({
-  selector: 'app-modal-porcentaje',
-  standalone: true,
-  imports: [
-    CommonModule, FormsModule
-  ],
-  templateUrl: './modal-porcentaje.component.html',
-  styleUrl: './modal-porcentaje.component.css',
+    selector: 'app-modal-porcentaje',
+    imports: [
+        CommonModule, FormsModule
+    ],
+    templateUrl: './modal-porcentaje.component.html',
+    styleUrl: './modal-porcentaje.component.css'
 })
 export class ModalPorcentajeComponent { 
 

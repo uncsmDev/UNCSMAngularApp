@@ -41,12 +41,11 @@ import { DependenciaService } from '@services/admin/dependencia.service';
 import { SexoService } from '@services/admin/sexo.service';
 
 @Component({
-  selector: 'app-perfil.entidad',
-  standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, TitleComponent, ReactiveFormsModule,MatAutocompleteModule,
-    MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule,MatChipsModule,MatIconModule],
-  templateUrl: './perfil.entidad.component.html',
-  styleUrl: './perfil.entidad.component.css'
+    selector: 'app-perfil.entidad',
+    imports: [MatTableModule, MatPaginatorModule, TitleComponent, ReactiveFormsModule, MatAutocompleteModule,
+        MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule, MatChipsModule, MatIconModule],
+    templateUrl: './perfil.entidad.component.html',
+    styleUrl: './perfil.entidad.component.css'
 })
 export default class PerfilEntidadComponent {
 

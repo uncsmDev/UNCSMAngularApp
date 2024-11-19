@@ -10,11 +10,10 @@ import { SpinnerGeneralComponent } from 'app/components/spinner/spinner.componen
 import { LoginResult, TokenData } from '@interfaces/acount';
 
 @Component({
-  selector: 'app-sed',
-  standalone: true,
-  imports: [RouterModule, TitleComponent, HeaderComponent, SidemenuComponent, SpinnerGeneralComponent],
-  templateUrl: './sed.component.html',
-  styleUrl: './sed.component.css'
+    selector: 'app-sed',
+    imports: [RouterModule, TitleComponent, HeaderComponent, SidemenuComponent, SpinnerGeneralComponent],
+    templateUrl: './sed.component.html',
+    styleUrl: './sed.component.css'
 })
 export default class SedComponent {
   router = inject(Router);

@@ -9,11 +9,10 @@ import { SubModulo } from '../../interfaces/submodulo';
 import { SpinnerGeneralComponent } from 'app/components/spinner/spinner.component';
 
 @Component({
-  selector: 'app-admin',
-  standalone: true,
-  imports: [RouterModule, TitleComponent, HeaderComponent, SidemenuComponent, SpinnerGeneralComponent],
-  templateUrl: './admin.component.html',
-  styleUrl: './admin.component.css'
+    selector: 'app-admin',
+    imports: [RouterModule, TitleComponent, HeaderComponent, SidemenuComponent, SpinnerGeneralComponent],
+    templateUrl: './admin.component.html',
+    styleUrl: './admin.component.css'
 })
 export default class AdminComponent {
   ngOnInit(){

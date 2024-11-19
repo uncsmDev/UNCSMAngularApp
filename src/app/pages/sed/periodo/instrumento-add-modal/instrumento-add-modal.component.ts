@@ -12,13 +12,12 @@ import { ModalInterface } from 'flowbite';
 import PeriodoComponent from '../periodo.component';
 
 @Component({
-  selector: 'app-instrumento-add-modal',
-  standalone: true,
-  imports: [
-    CommonModule, PeriodoComponent
-  ],
-  templateUrl: './instrumento-add-modal.component.html',
-  styleUrl: './instrumento-add-modal.component.css',
+    selector: 'app-instrumento-add-modal',
+    imports: [
+        CommonModule, PeriodoComponent
+    ],
+    templateUrl: './instrumento-add-modal.component.html',
+    styleUrl: './instrumento-add-modal.component.css'
 })
 export class InstrumentoAddModalComponent {
 

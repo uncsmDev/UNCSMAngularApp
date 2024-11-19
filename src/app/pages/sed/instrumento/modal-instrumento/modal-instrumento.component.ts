@@ -11,11 +11,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { TipoEvaluacionesService } from '@services/sed/TipoEvaluaciones.service';
 
 @Component({
-  selector: 'app-modal-instrumento',
-  standalone: true,
-  imports: [ReactiveFormsModule],
-  templateUrl: './modal-instrumento.component.html',
-  styleUrl: './modal-instrumento.component.css'
+    selector: 'app-modal-instrumento',
+    imports: [ReactiveFormsModule],
+    templateUrl: './modal-instrumento.component.html',
+    styleUrl: './modal-instrumento.component.css'
 })
 export class ModalInstrumentoComponent {
   modalActivo!: ModalInterface;

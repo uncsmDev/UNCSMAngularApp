@@ -21,11 +21,10 @@ import Swal from 'sweetalert2';
 
 
 @Component({
-  selector: 'app-add-contrato-modal',
-  standalone: true,
-  imports: [ReactiveFormsModule,MatInputModule,  MatSelectModule,MatFormFieldModule,MatAutocompleteModule],
-  templateUrl: './add-contrato-modal.component.html',
-  styleUrl: './add-contrato-modal.component.css'
+    selector: 'app-add-contrato-modal',
+    imports: [ReactiveFormsModule, MatInputModule, MatSelectModule, MatFormFieldModule, MatAutocompleteModule],
+    templateUrl: './add-contrato-modal.component.html',
+    styleUrl: './add-contrato-modal.component.css'
 })
 export class AddContratoModalComponent {
 

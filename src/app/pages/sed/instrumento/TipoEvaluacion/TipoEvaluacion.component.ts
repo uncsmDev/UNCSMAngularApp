@@ -8,13 +8,12 @@ import { ModalPorcentajeComponent } from './modal-porcentaje/modal-porcentaje.co
 import { TipoEvaluacion } from '@interfaces/tipo_evaluacion';
 
 @Component({
-  selector: 'app-tipo-evaluacion',
-  standalone: true,
-  imports: [
-    CommonModule, TitleComponent, RouterLink, ModalPorcentajeComponent
-  ],
-  templateUrl: './TipoEvaluacion.component.html',
-  styleUrl: './TipoEvaluacion.component.css',
+    selector: 'app-tipo-evaluacion',
+    imports: [
+        CommonModule, TitleComponent, RouterLink, ModalPorcentajeComponent
+    ],
+    templateUrl: './TipoEvaluacion.component.html',
+    styleUrl: './TipoEvaluacion.component.css'
 })
 export default class TipoEvaluacionComponent {
 

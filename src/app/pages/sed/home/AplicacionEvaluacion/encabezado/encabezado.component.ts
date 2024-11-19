@@ -2,12 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
 
 @Component({
-  selector: 'app-encabezado',
-  standalone: true,
-  imports: [
-    CommonModule,
-  ],
-  template: `<div class="flex flex-col space-y-1">
+    selector: 'app-encabezado',
+    imports: [
+        CommonModule,
+    ],
+    template: `<div class="flex flex-col space-y-1">
   <span class="text-sm font-medium text-gray-500 dark:text-gray-400">
   {{titulo()}}  
   </span>
@@ -15,11 +14,11 @@ import { Component, input } from '@angular/core';
     {{valor()}}
   </span>
 </div>`,
-  styles: `
+    styles: `
     :host {
       display: block;
     }
-  `,
+  `
 })
 export class EncabezadoComponent { 
   titulo = input.required<string>();

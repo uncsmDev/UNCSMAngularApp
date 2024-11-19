@@ -3,11 +3,10 @@ import { Component, EventEmitter, Input, Output, output, signal } from '@angular
 import { InstanceOptions, Modal, ModalInterface, ModalOptions } from 'flowbite';
 
 @Component({
-  selector: 'app-modal-delete',
-  standalone: true,
-  imports: [],
-  templateUrl: './modal-delete.component.html',
-  styles: ``
+    selector: 'app-modal-delete',
+    imports: [],
+    templateUrl: './modal-delete.component.html',
+    styles: ``
 })
 export class ModalDeleteComponent {
   modalActivo!: ModalInterface;

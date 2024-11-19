@@ -15,11 +15,10 @@ import { ModalDeleteComponent } from 'app/components/modal-delete/modal-delete.c
 import { TitleComponent } from 'app/shared/title/title.component';
 
 @Component({
-  selector: 'app-form-pregunta',
-  standalone: true,
-  imports: [ReactiveFormsModule, JsonPipe, ModalDeleteComponent, LowerCasePipe, TitleComponent],
-  templateUrl: './preguntas.component.html',
-  styleUrl: './preguntas.component.css'
+    selector: 'app-form-pregunta',
+    imports: [ReactiveFormsModule, JsonPipe, ModalDeleteComponent, LowerCasePipe, TitleComponent],
+    templateUrl: './preguntas.component.html',
+    styleUrl: './preguntas.component.css'
 })
 export default class FormPreguntaComponent {
   fb = inject(FormBuilder);

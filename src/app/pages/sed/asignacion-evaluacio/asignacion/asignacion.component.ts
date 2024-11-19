@@ -19,13 +19,12 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { EvaluacionCargo } from '@interfaces/evaluacion-cargo';
 
 @Component({
-  selector: 'app-asignacion',
-  standalone: true,
-  imports: [
-    CommonModule, CdkDropList, CdkDrag, TitleComponent, CantidadAddModalComponent
-  ],
-  templateUrl: './asignacion.component.html',
-  styleUrl: './asignacion.component.css',
+    selector: 'app-asignacion',
+    imports: [
+        CommonModule, CdkDropList, CdkDrag, TitleComponent, CantidadAddModalComponent
+    ],
+    templateUrl: './asignacion.component.html',
+    styleUrl: './asignacion.component.css'
 })
 export default class AsignacionComponent implements OnInit {
 

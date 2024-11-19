@@ -3,11 +3,10 @@ import { AuthService } from '../../Services/auth.service';
 import { TokenData } from '@interfaces/acount';
 
 @Component({
-  selector: 'app-header-dashboard',
-  standalone: true,
-  imports: [],
-  templateUrl: './header-dashboard.component.html',
-  styleUrl: './header-dashboard.component.css'
+    selector: 'app-header-dashboard',
+    imports: [],
+    templateUrl: './header-dashboard.component.html',
+    styleUrl: './header-dashboard.component.css'
 })
 export class HeaderDashboardComponent {
   auth = inject(AuthService);

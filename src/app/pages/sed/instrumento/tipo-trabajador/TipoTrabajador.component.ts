@@ -7,13 +7,12 @@ import { FlowbitSharedService } from '@services/flowbit-shared.service';
 import { TitleComponent } from 'app/shared/title/title.component';
 
 @Component({
-  selector: 'app-instrumentos',
-  standalone: true,
-  imports: [
-    CommonModule, TitleComponent, RouterLink
-  ],
-  templateUrl: './TipoTrabajador.component.html',
-  styleUrl: './TipoTrabajador.component.css',
+    selector: 'app-instrumentos',
+    imports: [
+        CommonModule, TitleComponent, RouterLink
+    ],
+    templateUrl: './TipoTrabajador.component.html',
+    styleUrl: './TipoTrabajador.component.css'
 })
 export default class InstrumentosComponent implements OnInit {
 

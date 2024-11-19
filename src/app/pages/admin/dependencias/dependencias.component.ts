@@ -11,11 +11,10 @@ import { JsonPipe } from '@angular/common';
 import { TreeDataComponent } from './treeData/treeData.component';
 
 @Component({
-  selector: 'app-escala',
-  standalone: true,
-  imports: [TitleComponent, ReactiveFormsModule, ModalDeleteComponent, JsonPipe, TreeDataComponent],
-  templateUrl: './dependencias.component.html',
-  styleUrl: './dependencias.component.css'
+    selector: 'app-escala',
+    imports: [TitleComponent, ReactiveFormsModule, ModalDeleteComponent, JsonPipe, TreeDataComponent],
+    templateUrl: './dependencias.component.html',
+    styleUrl: './dependencias.component.css'
 })
 export default class DependenciaComponent {
   //Componentes Injectados

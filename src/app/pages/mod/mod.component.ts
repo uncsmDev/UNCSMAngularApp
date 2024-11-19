@@ -12,11 +12,10 @@ import { SpinnerGeneralComponent } from 'app/components/spinner/spinner.componen
 import { catchError, throwError } from 'rxjs';
 
 @Component({
-  selector: 'app-mod',
-  standalone: true,
-  imports: [HeaderDashboardComponent, FooterComponent, SpinnerComponent, RouterLink, TitleComponent, NgOptimizedImage, SpinnerGeneralComponent],
-  templateUrl: './mod.component.html',
-  styleUrl: './mod.component.css'
+    selector: 'app-mod',
+    imports: [HeaderDashboardComponent, FooterComponent, SpinnerComponent, RouterLink, TitleComponent, NgOptimizedImage, SpinnerGeneralComponent],
+    templateUrl: './mod.component.html',
+    styleUrl: './mod.component.css'
 })
 export default class ModComponent {
 

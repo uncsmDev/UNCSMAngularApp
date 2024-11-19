@@ -10,14 +10,13 @@ import { AuthService } from '@services/auth.service';
 import { PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
 
 @Component({
-  selector: 'app-personal',
-  standalone: true,
-  imports: [
-    CommonModule, TitleComponent, CardTrabajadorComponent
-  ],
-  templateUrl: './personal.component.html',
-  styleUrl: './personal.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-personal',
+    imports: [
+        CommonModule, TitleComponent, CardTrabajadorComponent
+    ],
+    templateUrl: './personal.component.html',
+    styleUrl: './personal.component.css',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class PersonalComponent implements OnInit {
   evaluacionTrabajadorSvc = inject(EvaluacionTrabajadorService);

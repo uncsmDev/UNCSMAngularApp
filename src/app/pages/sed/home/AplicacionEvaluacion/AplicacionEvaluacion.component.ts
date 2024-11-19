@@ -40,20 +40,19 @@ interface preguntaValor {
 }
 
 @Component({
-  selector: 'app-aplicacion-evaluacion',
-  standalone: true,
-  imports: [
-    CommonModule, TitleComponent, MatButtonModule,
-    MatStepperModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    EncabezadoComponent,
-    MatTabsModule
-  ],
-  templateUrl: './AplicacionEvaluacion.component.html',
-  styleUrl: './AplicacionEvaluacion.component.css',
+    selector: 'app-aplicacion-evaluacion',
+    imports: [
+        CommonModule, TitleComponent, MatButtonModule,
+        MatStepperModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        EncabezadoComponent,
+        MatTabsModule
+    ],
+    templateUrl: './AplicacionEvaluacion.component.html',
+    styleUrl: './AplicacionEvaluacion.component.css'
 })
 export default class AplicacionEvaluacionComponent implements AfterViewInit {
   evaluacionTrabajadorSvc = inject(EvaluacionTrabajadorService);

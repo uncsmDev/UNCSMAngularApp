@@ -8,13 +8,12 @@ import { EvaluacionCargoService } from '@services/sed/evaluacion-cargo.service';
 import { ModalInterface } from 'flowbite';
 
 @Component({
-  selector: 'app-cantidad-add-modal',
-  standalone: true,
-  imports: [
-    CommonModule, ReactiveFormsModule
-  ],
-  templateUrl: './cantidad-add-modal.component.html',
-  styleUrl: './cantidad-add-modal.component.css',
+    selector: 'app-cantidad-add-modal',
+    imports: [
+        CommonModule, ReactiveFormsModule
+    ],
+    templateUrl: './cantidad-add-modal.component.html',
+    styleUrl: './cantidad-add-modal.component.css'
 })
 export class CantidadAddModalComponent {
   modalActivo!: ModalInterface;
