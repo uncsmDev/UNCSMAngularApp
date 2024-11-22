@@ -1,6 +1,5 @@
-import { Component, Input, booleanAttribute, signal } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { Location } from '@angular/common';
-import { LoginResult } from '@interfaces/acount';
 
 @Component({
     selector: 'app-title',
@@ -16,11 +15,8 @@ import { LoginResult } from '@interfaces/acount';
     <!-- Botón a la Derecha -->
     <button (click)="goBack()" 
             type="button" 
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
-      <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-      </svg>
-      Atrás
+            class="text-gray-300 hover:text-gray-100 focus:ring-4 focus:ring-blue-300 font-medium text-lg px-5 pt-1 text-center mr-2 mb-2">
+            <i class='bx bx-arrow-back bx-sm'></i>
     </button>
 </div>
   `

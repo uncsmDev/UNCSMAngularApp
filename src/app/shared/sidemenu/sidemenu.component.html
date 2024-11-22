@@ -1,15 +1,32 @@
-<aside id="logo-sidebar" class="fixed top-6 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
+<aside id="logo-sidebar" #logoSidebar class="menu menu-open fixed top-0 left-0 z-40 w-64 h-screen pt-3 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700 w-16" >
+   <div class="flex px-3 items-left mb-8">
+      <a href="/mod" class="flex items-center">
+        @defer () {
+          <picture >
+            <!-- Imagen para modo oscuro -->
+            <source srcset="assets/img/logo.svg" media="(prefers-color-scheme: dark)">
+            <!-- Imagen para modo claro -->
+            <img src="assets/img/logo-color.png" class="h-10 me-3" alt="FlowBite Logo">
+          </picture>
+        }
+        
+      </a>
+      <span #titulo class="font-['Poppins'] titulo font-bold text-2xl text-gray-900 dark:text-white">SIU UNCSM</span>
+      <input type="checkbox" (change)="toggleMenu($event)" id="toggle-menu" class="hidden">
+<label for="toggle-menu" 
+  class="absolute left-56 top-4 px-2 pt-1 text-gray-600 rounded bg-white cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 hidden sm:block"
+>
+  <i class="bx bx-arrow-back"></i>
+</label>
+    </div>
      <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
         <ul class="space-y-2 font-medium">
             @for (menuItem of menuItems; track menuItem.id) {
                @if(menuItem.visible === true){
            <li>
               <a routerLink="{{menuItem.path}}" routerLinkActive="dark:bg-blue-800 bg-blue-800 text-gray-800"class="flex items-center p-2 text-gray-900 dark:hover:text-white-900 rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 group">
-               <svg routerLinkActive="text-white dark:text-white" class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="menuItem.icon" />
-                </svg>
-                
-                 <span class="ms-3">{{menuItem.titulo}}</span>
+                <i class="{{menuItem.icon}} bx-sm mr-2" ></i>
+                 <span #titulos class="titulos ms-3">{{menuItem.titulo}}</span>
               </a>
            </li>
          }
@@ -68,4 +85,5 @@
         </ul>
      </div>
   </aside>
+  
   
