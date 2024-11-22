@@ -1,0 +1,50 @@
+aside {
+    transition: all 0.4s ease, background-color 0.2s ease;
+}
+
+aside label {
+    transition: all 0.4s ease, background-color 0.2s ease;
+}
+
+/* Posición inicial */
+#toggle-menu:not(:checked) + label {
+    left: 15rem; /* 56 x 0.25rem */
+}
+
+/* Posición cuando está marcado */
+#toggle-menu:checked + label {
+    left: 4.3rem; /* 14 x 0.25rem */
+}
+
+.menu-open {
+    width: 16rem; /* w-64 */
+}
+
+.menu-closed {
+    width: 4rem; /* w-16 */
+}
+
+.menu-closed .titulo, .menu-closed .titulos {
+    opacity: 0;
+    visibility: hidden;
+    font-size: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease; 
+    pointer-events: none;
+}
+
+.menu-open .titulo, .menu-open .titulos {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.6s ease, visibility 0s linear 0.4s, font-size 0.4s ease; 
+}
+
+/* Estado inicial (no marcado) */
+#toggle-menu:not(:checked) + label i {
+    transition: all 0.4s ease;
+    transform: rotate(0deg); /* Rotación inicial */
+}
+
+/* Estado marcado */
+#toggle-menu:checked + label i {
+    transform: rotate(180deg); /* Rotación a 180 grados */
+}
