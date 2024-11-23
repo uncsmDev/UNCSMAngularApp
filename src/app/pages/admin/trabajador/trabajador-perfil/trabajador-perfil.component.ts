@@ -19,6 +19,8 @@ import { ModalService } from '@services/modal.service';
 import { DatosPersonalesInput, InformacionPersonal } from '@interfaces/Updates/datosPersonalesInput ';
 import { FdropzoneComponent } from 'app/shared/input/fdropzone/fdropzone.component';
 import TrabajadorComponent from "../trabajador.component";
+import { SweetalertService } from '@services/sweetalert.service';
+import Swal from 'sweetalert2';
 
 
 
@@ -34,6 +36,7 @@ export default class TrabajadorPerfilComponent {
   trabajadorService=inject(TrabajadorService);
   _archivoService=inject(ArchivoService);
   modalService = inject(ModalService);
+  sweetalert = inject(SweetalertService);
 
   matSnackBar=inject(MatSnackBar);
 
@@ -128,7 +131,17 @@ export default class TrabajadorPerfilComponent {
                   }
                 },
                 error: (er) => {
-                  this.matSnackBar.open("No se pudo cargar la Imagen", 'Cerrar', { duration: 5000, horizontalPosition: 'center' });
+                  
+
+                  Swal.fire({
+                    title: 'Advertencia!',
+                    html: '<p>'+er+'.</p>',
+                    icon: 'warning',
+                    confirmButtonText: 'Ok',
+                    ...this.sweetalert.theme,
+                  })
+
+
                 }
               });
             }
