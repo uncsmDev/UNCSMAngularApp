@@ -1,6 +1,6 @@
 <aside id="logo-sidebar" #logoSidebar class="menu menu-open fixed top-0 left-0 z-40 w-64 h-screen pt-3 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700 w-16" >
-   <div class="flex px-3 items-left mb-8">
-      <a href="/mod" class="flex items-center">
+   <div class="relative top-1 flex px-3 items-left mb-2">
+      <a href="/mod" class="absolute flex">
         @defer () {
           <picture >
             <!-- Imagen para modo oscuro -->
@@ -9,17 +9,25 @@
             <img src="assets/img/logo-color.png" class="h-10 me-3" alt="FlowBite Logo">
           </picture>
         }
-        
+       
+         <span #titulo 
+               class="absolute pt-1 left-14 top-[0.20rem] font-['Poppins'] titulo font-bold text-2xl text-gray-900 dark:text-white">
+           SIU 
+         </span>
+         <span #titulo 
+               class="absolute pt-1 left-[6.5rem] top-[0.20rem] font-['Poppins'] titulo font-bold text-2xl text-gray-900 dark:text-white">
+           UNCSM
+         </span>
       </a>
-      <span #titulo class="font-['Poppins'] titulo font-bold text-2xl text-gray-900 dark:text-white">SIU UNCSM</span>
+      
       <input type="checkbox" (change)="toggleMenu($event)" id="toggle-menu" class="hidden">
 <label for="toggle-menu" 
-  class="absolute left-56 top-4 px-2 pt-1 text-gray-600 rounded bg-white cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 hidden sm:block"
+  class="absolute left-56 top-[0.40rem] px-2 pt-1 text-gray-600 rounded bg-white cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 hidden sm:block"
 >
   <i class="bx bx-arrow-back"></i>
 </label>
     </div>
-     <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+     <div class="h-full px-3 pb-4 pt-12 overflow-y-auto bg-white dark:bg-gray-800">
         <ul class="space-y-2 font-medium">
             @for (menuItem of menuItems; track menuItem.id) {
                @if(menuItem.visible === true){
