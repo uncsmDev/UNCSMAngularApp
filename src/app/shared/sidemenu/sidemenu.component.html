@@ -32,7 +32,7 @@
             @for (menuItem of menuItems; track menuItem.id) {
                @if(menuItem.visible === true){
            <li>
-              <a routerLink="{{menuItem.path}}" routerLinkActive="dark:bg-blue-800 bg-blue-800 text-gray-800"class="flex items-center p-2 text-gray-900 dark:hover:text-white-900 rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 group">
+              <a routerLink="{{menuItem.path}}" routerLinkActive="dark:bg-blue-800 bg-blue-400 text-gray-800"class="flex items-center p-2 text-gray-900 dark:hover:text-white-900 rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 group">
                 <i class="{{menuItem.icon}} bx-sm mr-2" ></i>
                  <span #titulos class="titulos ms-3">{{menuItem.titulo}}</span>
               </a>

@@ -2,6 +2,7 @@
     position: relative;
     overflow: hidden;
   }
+
   .bg-blur::before {
     content: '';
     position: absolute;
@@ -9,9 +10,15 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('http://localhost:4200/assets/img/fondo1.jpg');
+    background-image: url('http://localhost:4200/assets/img/background-light.png'); /* Por defecto para modo claro */
     background-size: cover;
     background-position: center;
-    filter: blur(5px);
     z-index: -1;
   }
+
+  /* Media query para modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .bg-blur::before {
+    background-image: url('http://localhost:4200/assets/img/background-dark.png'); /* Imagen para modo oscuro */
+  }
+}

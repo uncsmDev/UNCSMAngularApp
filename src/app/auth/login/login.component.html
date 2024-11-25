@@ -1,30 +1,35 @@
 <div class="bg-blur min-h-screen flex items-center justify-center">
   <section class="flex flex-col z-10">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 z-10">
-      <div class="w-full rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700">
+      <div class="w-full rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-gray-100 border-gray-300 dark:bg-gray-800 dark:border-gray-700">
         <div class="p-6 space-y-4 md:space-y-6 sm:py-6 sm:px-12">
           <a href="#" class="flex flex-col items-center mb-2 text-2xl font-semibold text-gray-900 text-white">
-            <img class="h-20 mr-2" src="assets/img/logo-white.png" alt="logo">
+            <picture>
+              <!-- Imagen para modo oscuro -->
+              <source srcset="assets/img/logo-white.png" media="(prefers-color-scheme: dark)">
+              <!-- Imagen para modo claro -->
+              <img src="assets/img/logo-claro.png" class="h-16 me-3" alt="FlowBite Logo">
+            </picture>
           </a>
-          <h1 class="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl text-white">
+          <h1 class="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
             Ingresa los datos de acceso
           </h1>
           <form class="space-y-4 md:space-y-6" action="#" (submit)="onLogin()">
             <div>
-              <label for="email" class="block mb-2 text-sm font-medium text-gray-900 text-white">Correo</label>
-              <input type="email" name="email" [(ngModel)]="logMin.username" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="nombre@uncsm.edu.ni" required="">
+              <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Correo</label>
+              <input type="email" name="email" [(ngModel)]="logMin.username" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 placeholder-gray-400 dark:text-white focus:ring-blue-500 focus:border-blue-500" placeholder="nombre@uncsm.edu.ni" required="">
             </div>
             <div>
-              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 text-white">Contraseña</label>
-              <input type="password" name="password" [(ngModel)]="logMin.password" id="password" placeholder="••••••••" autocomplete="on" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" required="">
+              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contraseña</label>
+              <input type="password" name="password" [(ngModel)]="logMin.password" id="password" placeholder="••••••••" autocomplete="on" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 placeholder-gray-400 dark:text-white focus:ring-blue-500 focus:border-blue-500" required="">
             </div>
             <div class="flex items-center justify-between">
               <div class="flex items-start">
                 <div class="flex items-center h-5">
-                  <input id="remember" aria-describedby="remember" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 bg-gray-700 border-gray-600 focus:ring-primary-600 ring-offset-gray-800" required="">
+                  <input id="remember" aria-describedby="remember" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 focus:ring-primary-600 ring-offset-gray-800" required="">
                 </div>
                 <div class="ml-3 text-sm">
-                  <label for="remember" class="text-gray-300">Recuerdame</label>
+                  <label for="remember" class="text-gray-900 dark:text-white">Recuerdame</label>
                 </div>
               </div>
             </div>
@@ -32,7 +37,7 @@
             <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-500 focus:ring-primary-800">Login</button>
               <div id="google-btn"></div>
 
-            <p class="text-sm font-light text-gray-300 ">
+            <p class="text-sm font-light dark:text-gray-300 ">
               Olvidó su contraseña? <a href="#" class="font-medium text-primary-300 hover:underline hover:text-white">Haga clic aquí</a>
             </p>
           </form>
