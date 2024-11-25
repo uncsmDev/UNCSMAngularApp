@@ -1,19 +1,20 @@
+<app-title title="Opciones de Usuario"/>
 
 <div class="flex flex-col sm:flex-row">
     <!-- Contenedor Izquierdo: Perfil -->
-    <div class="w-full sm:w-2/5 sm:mb-0">
-      <div class="w-full max-w p-4" >
-        <div class="relative flex flex-col items-center justify-center p-6 space-y-4">
-      
+    <div class="w-full  sm:mb-0">
+      <div class="w-full max-w p-4">
+        <div class="relative flex items-center space-x-4">
           @if(imageUrl != null)
           {
-            <img [src]="imageUrl" alt="Imagen de Perfil" class="w-52 h-52 sm:w-52 sm:h-52 rounded-full" />
+            <img [src]="imageUrl" alt="Imagen de Perfil" class="w-32 h-32 sm:w-40 sm:h-40 rounded-md" />
           }
           @else
           {
             <img class="w-12 h-12 rounded-full" src="/assets/img/avatar.svg" alt="user photo">
           }
-          <div class="flex-1 text-center">
+    
+          <div class="flex-1">
             <h5 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
               {{trabajadorUser().nombres}} {{trabajadorUser().apellidos}}
             </h5>
@@ -23,24 +24,10 @@
         </div>
       </div>
     </div>
+    
   
     <!-- Contenedor Derecho: Información Personal e Información de Contacto -->
-    <div class="flex flex-col w-full sm:w-3/5">
-      <!-- Información Usuario -->
-      <!--div class="w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mb-4">
-        <section>
-            <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        
- 
-        
-                 
-         
-           
-          
-            </div>
-        </section>
-      </div-->
-  
+    <div class="flex flex-col w-full sm:w-2/3">
       <div class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
  
             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Opciones de Usuario</h5>
@@ -53,28 +40,32 @@
             
 
         
-            <button type="button" title="Cambiar Contraseña" class=" inline-flex items-center text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">
+            <button type="button" title="Cambiar Contraseña" class=" mt-3 inline-flex items-center text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">
               
-                  <svg class="w-6 h-6 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"  width="24" height="24" viewBox="0 0 64 64">
+                  <svg class="w-6 h-6 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg"  fill="currentColor"  width="24" height="24" viewBox="0 0 64 64">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"  d="M 32 6 C 23.716 6 17 12.716 17 21 C 17 27.143736 20.698333 32.417464 25.986328 34.736328 L 25.986328 52.087891 C 25.986328 52.926891 26.336125 
                     53.727875 26.953125 54.296875 L 30.205078 57.296875 C 31.199078 58.213875 32.745734 58.161641 33.677734 57.181641 L 39.427734 51.132812 C 39.911734 
                     50.684813 40.05425 49.976 39.78125 49.375 L 38.007812 45.46875 L 38.007812 45.373047 L 40.417969 42.386719 C 41.142969 41.487719 41.178812 40.215391 
                     40.507812 39.275391 L 38.007812 35.777344 L 38.007812 34.738281 C 43.298813 32.420697 47 27.145915 47 21 C 47 12.716 40.284 6 32 6 z M 32 12 C 34.209 
                     12 36 13.791 36 16 C 36 18.209 34.209 20 32 20 C 29.791 20 28 18.209 28 16 C 28 13.791 29.791 12 32 12 z"></path>
                     </svg>
-                
             </button>
             
-            <button type="button" title="Eliminar Usuario" class="inline-flex items-center text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">
-                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 64 64">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M 32 6 C 23.716 6 17 12.716 17 21 C 17 27.143736 20.698333 
-                    32.417464 25.986328 34.736328 L 25.986328 52.087891 C 25.986328 52.926891 26.336125 53.727875 26.953125 54.296875 L 30.205078 57.296875 C 31.199078 
-                    58.213875 32.745734 58.161641 33.677734 57.181641 L 39.427734 51.132812 C 39.911734 50.684813 40.05425 49.976 39.78125 49.375 L 38.007812 45.46875 L 
-                    38.007812 45.373047 L 40.417969 42.386719 C 41.142969 41.487719 41.178812 40.215391 40.507812 39.275391 L 38.007812 35.777344 L 38.007812 34.738281 C
-                     43.298813 32.420697 47 27.145915 47 21 C 47 12.716 40.284 6 32 6 z M 32 12 C 34.209 12 36 13.791 36 16 C 36 18.209 34.209 20 32 20 C 29.791 20 28 18.209 
-                     28 16 C 28 13.791 29.791 12 32 12 z"/>
-                </svg>
+            
+            <button type="button" title="Cambiar dirección de Correo" class=" mt-3 inline-flex items-center text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">
+              
+              <svg class="w-6 h-6 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M5 8a4 4 0 1 1 7.796 1.263l-2.533 2.534A4 4 0 0 1 5 8Zm4.06 5H7a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h2.172a2.999 2.999 0 0 1-.114-1.588l.674-3.372a3 3 0 0 1 .82-1.533L9.06 13Zm9.032-5a2.907 2.907 0 0 0-2.056.852L9.967 14.92a1 1 0 0 0-.273.51l-.675 3.373a1 1 0 0 0 1.177 1.177l3.372-.675a1 1 0 0 0 .511-.273l6.07-6.07a2.91 2.91 0 0 0-.944-4.742A2.907 2.907 0 0 0 18.092 8Z" clip-rule="evenodd"/>
+              </svg>
+              
             </button>
+           
+
+            <button type="button" title="Eliminar Usuario" class="mt-3  text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">  <svg class="w-6 h-6 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" d="M5 8a4 4 0 1 1 8 0 4 4 0 0 1-8 0Zm-2 9a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1Zm13-6a1 1 0 1 0 0 2h4a1 1 0 1 0 0-2h-4Z" clip-rule="evenodd"/>
+            </svg>
+          </button>
+
          
             }
             @else

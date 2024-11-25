@@ -123,11 +123,7 @@ export const routes: Routes = [
                 title: 'Usuarios',
                 loadComponent:()=>import('./auth/usuarios/usuarios.component')
             },
-            {
-                path:'usuarios/usuario/:id', 
-                title: 'Usuario',
-                loadComponent:()=>import('./auth/usuarios/usuario/usuario.component')
-            },
+         
             {
                 path:'dependencias', 
                 title: 'Dependencias',
@@ -158,6 +154,11 @@ export const routes: Routes = [
                 path: 'trabajador/nuevo-trabajador',
                 title: 'Nuevo Trabajador',
                 loadComponent: () => import('./pages/admin/trabajador/trabajador-input/trabajador-input.component'),
+            },
+            {
+                path:'trabajador/usuario/:id', 
+                title: 'Usuario',
+                loadComponent:()=>import('./auth/usuarios/usuario/usuario.component')
             },
             {
                 path: 'perfilEntidad/:id',

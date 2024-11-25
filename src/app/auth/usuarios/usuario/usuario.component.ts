@@ -8,11 +8,12 @@ import { TrabajadorService } from '@services/admin/trabajador.service';
 import { SweetalertService } from '@services/sweetalert.service';
 import { firstValueFrom } from 'rxjs';
 import Swal from 'sweetalert2';
+import { TitleComponent } from 'app/shared/title/title.component';
 
 
 @Component({
     selector: 'app-usuario',
-    imports: [],
+    imports: [TitleComponent],
     templateUrl: './usuario.component.html',
     styleUrl: './usuario.component.css'
 })
