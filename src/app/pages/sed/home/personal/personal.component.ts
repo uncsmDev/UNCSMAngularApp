@@ -1,22 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal, type OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, signal, viewChild, type OnInit } from '@angular/core';
 import { TitleComponent } from 'app/shared/title/title.component';
 import { CardTrabajadorComponent } from '../card-trabajador/card-trabajador.component';
 import { EvaluacionTrabajadorService } from '@services/sed/EvaluacionTrabajador.service';
-import { ArchivoService } from '@services/admin/archivo.service';
-import { DomSanitizer } from '@angular/platform-browser';
 import { TokenData } from '@interfaces/acount';
 import { AuthService } from '@services/auth.service';
 import { PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
+import { AlertDialogComponent } from 'app/components/alertDialog/alertDialog.component';
 
 @Component({
     selector: 'app-personal',
     imports: [
-        CommonModule, TitleComponent, CardTrabajadorComponent
+        CommonModule, TitleComponent, CardTrabajadorComponent, AlertDialogComponent
     ],
     templateUrl: './personal.component.html',
     styleUrl: './personal.component.css',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class PersonalComponent implements OnInit {
   evaluacionTrabajadorSvc = inject(EvaluacionTrabajadorService);
@@ -26,6 +25,9 @@ export default class PersonalComponent implements OnInit {
   Perfil = signal<PersonaInfoDTO>({} as PersonaInfoDTO);
   Trabajadores = signal<PersonaInfoDTO[]>([]);
   TrabajadoresDirectivos = signal<PersonaInfoDTO[]>([]);
+
+
+  constructor() { }
 
   ngOnInit(): void {
     this.DataToken.set(this.auth.getDataUser()); 
@@ -42,6 +44,9 @@ export default class PersonalComponent implements OnInit {
         }
       }
     );
+
+
+
   }
   
   GetPersonalByIdDependencia(Perfil: PersonaInfoDTO){
@@ -64,5 +69,7 @@ export default class PersonalComponent implements OnInit {
       }
     );
   }
+
+  
 
 }
