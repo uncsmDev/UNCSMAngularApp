@@ -7,7 +7,7 @@
         <div class="relative flex items-center space-x-4">
           @if(imageUrl != null)
           {
-            <img [src]="imageUrl" alt="Imagen de Perfil" class="w-32 h-32 sm:w-40 sm:h-40 rounded-md" />
+            <img [src]="imageUrl" alt="Imagen de Perfil" class="w-32 h-32 sm:w-40 sm:h-40 rounded-full" />
           }
           @else
           {
@@ -19,7 +19,7 @@
               {{trabajadorUser().nombres}} {{trabajadorUser().apellidos}}
             </h5>
             <p class="text-lg text-gray-500 dark:text-gray-400">Cédula: {{trabajadorUser().dni}}</p>
-            <p class="text-lg text-gray-500 dark:text-gray-400">INS: {{trabajadorUser().codigo}}</p>
+            <p class="text-lg text-gray-500 dark:text-gray-400">INSS: {{trabajadorUser().codigo}}</p>
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@
             
 
         
-            <button type="button" title="Cambiar Contraseña" class=" mt-3 inline-flex items-center text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">
+            <button type="button" title="Cambiar Contraseña" class=" mt-3 inline-flex items-center text-yellow-300 hover:text-white border border-yellow-600 hover:bg-yellow-300 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">
               
                   <svg class="w-6 h-6 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg"  fill="currentColor"  width="24" height="24" viewBox="0 0 64 64">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"  d="M 32 6 C 23.716 6 17 12.716 17 21 C 17 27.143736 20.698333 32.417464 25.986328 34.736328 L 25.986328 52.087891 C 25.986328 52.926891 26.336125 
@@ -52,7 +52,7 @@
             </button>
             
             
-            <button type="button" title="Cambiar dirección de Correo" class=" mt-3 inline-flex items-center text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">
+            <button type="button" title="Cambiar dirección de Correo" class=" mt-3 inline-flex items-center text-yellow-300 hover:text-white border border-yellow-600 hover:bg-yellow-300 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">
               
               <svg class="w-6 h-6 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd" d="M5 8a4 4 0 1 1 7.796 1.263l-2.533 2.534A4 4 0 0 1 5 8Zm4.06 5H7a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h2.172a2.999 2.999 0 0 1-.114-1.588l.674-3.372a3 3 0 0 1 .82-1.533L9.06 13Zm9.032-5a2.907 2.907 0 0 0-2.056.852L9.967 14.92a1 1 0 0 0-.273.51l-.675 3.373a1 1 0 0 0 1.177 1.177l3.372-.675a1 1 0 0 0 .511-.273l6.07-6.07a2.91 2.91 0 0 0-.944-4.742A2.907 2.907 0 0 0 18.092 8Z" clip-rule="evenodd"/>
@@ -88,39 +88,114 @@
     </div>
   </div>
 
+  @if(trabajUser().userId!==null)
+  {
+    <div class="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
 
-
-<!--div  class="w-full flex flex-col mb-2 items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row  dark:border-gray-700 dark:bg-gray-800">
-   
-    @if(imageUrl!=null)
-    {
-        <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" [src]="imageUrl" alt="">
-    }
-    @else {
-        <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="https://img.freepik.com/vector-premium/gato-blanco-bigotes-esta-parado-sobre-fondo-azul-patron-huellas-patas_217205-110.jpg" alt="">
-   
-    }
-
-   
-   <div class="w-full flex flex-col items-center justify-between p-4 leading-normal">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{trabajadorUser().nombres}} {{trabajadorUser().apellidos}}</h5>
-        <p class=" font-normal text-gray-700 dark:text-gray-400">Cédula: <strong>{{trabajadorUser().dni}}</strong> </p>
-        <p class=" font-normal text-gray-700 dark:text-gray-400">INS: <strong>  {{trabajadorUser().codigo}}</strong></p>
-        <p class="font-normal text-gray-700 dark:text-gray-400">Sexo:  <strong> {{trabajadorUser().sexo}} </strong></p>
-    </div>
-
-</div>
-
-<div class="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-
-          <button  class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28" />
-              </svg>
-              Editar
-            </button>
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div>
+          <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione un Modulo</label>
+          <select id="moduloId" formControlName="moduloId" (change)="onSelectedModulo($event)" name="moduloId"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <option value="">--- Seleccione ---</option>
+            @for (item of moduloList(); track item.id) {
+              <option [value]="item.id">{{item.titulo}}</option>
+            }
+          </select>
+        </div>
+      
+        <div class="pt-3">
+          <mat-form-field class="w-full">
+            <mat-label>Seleccione un SubModulo</mat-label>
+            <input (input)="filterSubModulos($event)" type="text" matInput aria-label="Titulo" required [matAutocomplete]="auto" #inputRef>
+            <mat-autocomplete [displayWith]="displayFn" #auto="matAutocomplete" id="subModuloId" formControlName="subModuloId"
+              name="subModuloId" (optionSelected)="onSelectSubModulo($event)">
+              @for (item of filteredSubModulos; track item.id) {
+                <mat-option [value]="item">
+                  <span>{{item.titulo}}</span>
+                </mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </div>
     
+      <div class="relative overflow-x-auto mt-3">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+         
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" class="px-4 py-3">SubModulo</th>
+              <th scope="col" class="px-4 py-3">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (itemI of ModulosInSubMod(); track $index) {
+              <h3 class="text-sm mt-2 font-semibold text-gray-900 dark:text-white mb-2">
+                {{ itemI.titulo }}<span class="text-xs font-mono">(Módulo)</span>
+              </h3>
+            @for (item of subModuloByUserList(); track item.id) {
+            @if(item.subModulo.moduloId==itemI.id) {
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                {{item.subModulo.titulo}}
+              </td>
+              <td class="px-4 py-4">
+                <a (click)="deleteSubModuloXUsuario(item)" title="Eliminar"
+                  class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+                  <svg class="w-6 h-6 text-gray-800 dark:text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                  </svg>
+                </a>
+              </td>
+            </tr>
+            }
+            }}
+          </tbody>
+          
+        </table>
+      </div>
+    
+      <nav class="flex flex-col items-center justify-center space-y-2 mt-4 md:flex-row md:justify-between md:space-y-0" aria-label="Table navigation modal">
+        <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Mostrando <span class="font-semibold text-gray-900 dark:text-white">{{subModuloByUserList().length}}</span> de <span class="font-semibold text-gray-900 dark:text-white">{{pagSM.contadorTotal}}</span></span>
+         
+        <ul class="inline-flex flex-wrap -space-x-px rtl:space-x-reverse text-sm h-8">
+          <li>
+            <button (click)="previousPage()">
+              <a class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg 
+                hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                <span class="sr-only">Previous</span>
+                <svg class="w-2.5 h-2.5 rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+                </svg>
+              </a>
+            </button>
+          </li> 
+          <li>
+            <button (click)="nextPage()">
+              <a class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg 
+                hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                <span class="sr-only">Next</span>
+                <svg class="w-2.5 h-2.5 rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                </svg>
+              </a>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  }
+  @else
+  {
+    <div class="w-full mt-2 p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+
+        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Este trabajador no tiene una cuenta de usuario. Para crear una cuenta de usuario haga click en el boton "Crear Cuenta de Usuario"</p>
+              
+    </div>
+  }
 
 
-</div-->
-
+  
