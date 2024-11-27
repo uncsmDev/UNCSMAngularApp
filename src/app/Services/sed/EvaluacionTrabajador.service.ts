@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { InstrumentoAbiertoDTO, InstrumentoDTO } from '@interfaces/DTOs/InstrumentoDTO.interface';
-import { PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
+import { PersonaDirectivoInfoProcedureDTO, PersonaDTO, PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
 import { RespuestaDTO } from '@interfaces/DTOs/respuesta.interface';
 import { Escala } from '@interfaces/escala';
 import { EvaluacionTrabajador } from '@interfaces/EvaluacionTrabajador.interface';
@@ -19,7 +19,7 @@ export class EvaluacionTrabajadorService {
 
  
   getById(id: number){
-    return this.http.get<Result<PersonaInfoDTO>>(`${this.apiUrl}/GetById/${id}`);
+    return this.http.get<Result<PersonaDTO>>(`${this.apiUrl}/GetById/${id}`);
   }
 
   GetPersonalByIdDependencia(DependenciaId: number, personaId: number){
@@ -27,7 +27,7 @@ export class EvaluacionTrabajadorService {
   }
 
   getPersonalOtherIdDependencia(DependenciaId: number, personaId: number){
-    return this.http.get<Result<PersonaInfoDTO[]>>(`${this.apiUrl}/GetPersonalOtherIdDependencia/${DependenciaId}/${personaId}`);
+    return this.http.get<Result<PersonaDirectivoInfoProcedureDTO[]>>(`${this.apiUrl}/GetPersonalOtherIdDependencia/${DependenciaId}/${personaId}`);
   }
 
   GetByIdEvaluado(id: number){

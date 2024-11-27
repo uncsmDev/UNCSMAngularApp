@@ -22,3 +22,59 @@ export interface PersonaInfoDTO {
     evaluacionTrabajador: EvaluacionTrabajador;
     imgFile?: FileDto;
 }
+
+export interface PersonaDTO {
+    personaId: number;
+    personaNombres: string;
+    personaApellidos: string;
+    personaDNI: string;
+    personaFechaNace: string | null;
+    personaSexoId: number;
+    personaImg: string;
+    trabajadorId: number;
+    trabajadorCodigo: string;
+    trabajadorFechaIngreso: string;
+    contratoId: number;
+    contratoFechaInicio: string;
+    contratoFechaFin: string;
+    contratoActivo: boolean;
+    dependenciaId: number;
+    dependenciaNombre: string;
+    cargoId: number;
+    cargoNombre: string;
+    tipoTrabajadorId: number;
+    tipoTrabajadorNombre: string;
+  }
+
+  export interface PersonaDirectivoInfoProcedureDTO {
+    personaId: number;
+    personaNombres: string;
+    personaApellidos: string;
+    personaDNI: string;
+    personaFechaNace?: Date; // Nullable
+    personaSexoId: number;
+    personaImg: string;
+    trabajadorId: number;
+    trabajadorCodigo: string;
+    trabajadorFechaIngreso: Date;
+    contratoId: number;
+    contratoFechaInicio: Date;
+    contratoFechaFin?: Date; // Nullable
+    contratoActivo: boolean;
+    dependenciaId: number;
+    dependenciaNombre: string;
+    cargoId: number;
+    cargoNombre: string;
+    tipoTrabajadorId: number;
+    tipoTrabajadorNombre: string;
+    tipoContratoId: number;
+    tipoContratoNombre: string;
+    evaluacionId: number;
+    evaluacionTerminada: boolean;
+    evaluacionCualitativaTerminada: boolean;
+    evaluacionCuantitativaTerminada: boolean;
+    evaluadoId: number;
+    evaluadorId: number;
+    evaluadonContratoId: number;
+    imgFile?: FileDto; // Nullable
+}
