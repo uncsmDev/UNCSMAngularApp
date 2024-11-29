@@ -19,10 +19,15 @@ export interface UsuarioView{
 }
 
 export interface InsertUsuario {
-  entidadId: number,
+  personaId: number,
   email: string,
   password: string,
   confirmPassword:string,
-
   telefono:string,
+}
+
+export interface UserDto{
+  Email: string,
+  Password: string,
+  ConfirmPassword:string
 }

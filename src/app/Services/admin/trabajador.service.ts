@@ -99,4 +99,10 @@ export class TrabajadorService {
     var trabajador= this.http.get<Result<any>>(this.apiUrl+'/GetDetalleTrabajadorUser?Id='+idTrabajador);
     return trabajador;
   }
+
+  buscarRestaurarUsuario(input:number):Observable<Result<any>>
+  {
+    var userStatus= this.http.get<Result<any>>(this.apiUrl+'/BuscarRestaurarUser?IdTrabajador='+input);
+    return userStatus;
+  }
 }

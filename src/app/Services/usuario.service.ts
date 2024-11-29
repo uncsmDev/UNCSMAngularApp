@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { appsettings } from '../Settings/appsettings';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { InsertUsuario, UsuarioView, UsuarioViewModel } from '../interfaces/usuario';
+import { InsertUsuario, UserDto, UsuarioView, UsuarioViewModel } from '../interfaces/usuario';
 import { PackPage } from '../interfaces/packPage';
 import { Result } from '@interfaces/Result.interface';
 
@@ -48,4 +48,25 @@ export class UsuarioService {
       }
     );
   }
+
+  ResetPassword(input: UserDto):Observable<Result<UserDto>>
+  {
+    const headers = { 'content-type': 'application/json'}  
+    const body=JSON.stringify(input);
+    return this.http.post<Result<UserDto>>(this.api+'ResetPassword', body,{'headers':headers});
+  }
+
+  ChangeEmail(email: string,emailInput:string):Observable<Result<string>>
+  {
+    const headers = { 'content-type': 'application/json'}  
+    const body=JSON.stringify({email:email,emailInput:emailInput});
+    return this.http.post<Result<string>>(this.api+'ChangeEmail', body,{'headers':headers});
+  }
+
+  DeleteUser(input: string):Observable<Result<string>>
+  {
+    return this.http.delete<Result<string>>(this.api+'DeleteUser?email='+input);
+    
+  }
+ 
 }
