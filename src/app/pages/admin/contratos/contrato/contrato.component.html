@@ -88,45 +88,48 @@
                 {
                     @for (item of ListContratosActivos(); track $index) 
                     {
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{item.cargo}}
-                            </th>
-                            <td class="px-6 py-4">
-                                {{item.dependencia}}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{item.fechaInicio}}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{item.fechaFin}}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{item.tipoContrato}}
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                
-                                <a title="Finalizar Contrato" type="button" class="font-medium text-black dark:text-white dark:hover:text-yellow-300 hover:text-yellow-500 cursor-pointer    focus:ring-4 focus:outline-none focus:ring-blue-300">
-                                    <svg class="w-6 h-6 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                      </svg>
-                                      
-                                </a>
-
-                                <!--a (click)="openCreateUser(item,'createUser-modal')" title="Crear una Cuenta de Usuario" data-modal-target="createUser-modal" data-modal-toggle="createUser-modal" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer    focus:ring-4 focus:outline-none focus:ring-blue-300">
-                                    <svg class="w-6 h-6 text-gray-800 dark:text-white"   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                        <path fill-rule="evenodd" d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
-                                      </svg>
-                                </a-->
-
-                                <!--button title="Cancelar Contrato" type="button" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
-                                    <svg class="w-6 h-6 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m6 6 12 12m3-6a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                                      </svg>
-                                      
-                                </button-->
-                            </td>
-                        </tr>
+                        @if(item.eliminado==false)
+                        {
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {{item.cargo}}
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{item.dependencia}}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{item.fechaInicio}}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{item.fechaFin}}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{item.tipoContrato}}
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    
+                                    <a (click)="openFinalizaContrato(item.id)" title="Finalizar Contrato" type="button" class="font-medium text-black dark:text-white dark:hover:text-yellow-300 hover:text-yellow-500 cursor-pointer    focus:ring-4 focus:outline-none focus:ring-blue-300">
+                                        <svg class="w-6 h-6 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                          </svg>
+                                          
+                                    </a>
+    
+                                    <!--a (click)="openCreateUser(item,'createUser-modal')" title="Crear una Cuenta de Usuario" data-modal-target="createUser-modal" data-modal-toggle="createUser-modal" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer    focus:ring-4 focus:outline-none focus:ring-blue-300">
+                                        <svg class="w-6 h-6 text-gray-800 dark:text-white"   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                            <path fill-rule="evenodd" d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
+                                          </svg>
+                                    </a-->
+    
+                                    <!--button title="Cancelar Contrato" type="button" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
+                                        <svg class="w-6 h-6 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m6 6 12 12m3-6a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                          </svg>
+                                          
+                                    </button-->
+                                </td>
+                            </tr>
+                        }
                     }
                 }
              
@@ -147,7 +150,6 @@
             <table mat-table [dataSource]="dataSource">
                 <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
                     Contratos Administrativos
-                    <!--p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Browse a list of Flowbite products designed to help you work and play, stay organized, get answers, keep in touch, grow your business, and more.</p-->
                 </caption>
 
                 <ng-container matColumnDef="cargo">
@@ -232,4 +234,5 @@
 
 
 
-<app-add-contrato-modal PostType="add"></app-add-contrato-modal>
+<app-add-contrato-modal (valOutput)="actualizarPagina($event)" ></app-add-contrato-modal> 
+<app-finaliza-contrato (EstadoC)="actualizarPagina($event)" ></app-finaliza-contrato>

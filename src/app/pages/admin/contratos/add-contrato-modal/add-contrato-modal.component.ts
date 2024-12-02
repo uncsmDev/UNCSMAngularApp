@@ -1,4 +1,4 @@
-import { Component, computed, inject, Signal, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, output, Signal, signal, WritableSignal } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -49,6 +49,7 @@ export class AddContratoModalComponent {
 
   cargoIdControl = new FormControl('');
 
+  valOutput= output<boolean>();
   contratoInput:Contrato={} as Contrato;
 
   ngOnInit(): void 
@@ -200,7 +201,9 @@ export class AddContratoModalComponent {
             })
           }
       }
-    })
+    });
+
+    this.valOutput.emit(true);
   }
 
   closeModal()

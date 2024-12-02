@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, input } from '@angular/core';
 import { appsettings } from '../../Settings/appsettings';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -27,4 +27,9 @@ export class ContratoService {
     return this.http.post<Result<Contrato>>(this.apiUrl+'/Insert', body,{'headers':headers})
   }
 
+  FinalizaContrato(input:number): Observable<Result<Contrato>>
+  {
+   return this.http.delete<Result<Contrato>>(this.apiUrl+'/FinalizaContrato?id='+input);
+    //return this.http.post<Result<Contrato>>(this.apiUrl+'/FinalizaContrato', body,{'headers':headers})
+  }
 }

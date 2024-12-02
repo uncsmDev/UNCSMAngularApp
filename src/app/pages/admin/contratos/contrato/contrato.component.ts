@@ -14,11 +14,12 @@ import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { AddContratoModalComponent } from '../add-contrato-modal/add-contrato-modal.component';
 import { tipoModal } from '@interfaces/trabajador';
+import { FinalizaContratoComponent } from '../finaliza-contrato/finaliza-contrato.component';
 
 
 @Component({
     selector: 'app-contrato',
-    imports: [TitleComponent, MatTableModule, MatPaginatorModule, AddContratoModalComponent],
+    imports: [TitleComponent, MatTableModule, MatPaginatorModule, AddContratoModalComponent, FinalizaContratoComponent],
     templateUrl: './contrato.component.html',
     styleUrl: './contrato.component.css'
 })
@@ -43,6 +44,7 @@ export default class ContratoComponent {
   cDo:ContratoDetalle[]=[];
 
   trabajadorId!: number;
+  actualizar:boolean=false;
 
   displayedColumns: string[] = ['cargo', 'dependencia', 'fechaInicio', 'fechaFin'];
   dataSource = new MatTableDataSource<ContratoDetalle>(this.cAd);
@@ -54,7 +56,8 @@ export default class ContratoComponent {
   @ViewChild(MatPaginator) paginatorDoc!: MatPaginator;
 
   
-  modalDatos = viewChild.required(AddContratoModalComponent);
+  modalDatos = viewChild.required(AddContratoModalComponent);//
+  modalFin=viewChild.required(FinalizaContratoComponent);
 
   constructor(private route: ActivatedRoute,  private sanitizer: DomSanitizer) { }
   
@@ -111,12 +114,23 @@ export default class ContratoComponent {
     
   }
 
-  PostType:tipoModal = 'add';
 
   openModalDatos()
   {
-    this.PostType = 'edit';
     this.modalDatos().openModal(this.trabajadorId);
+  }
+
+  openFinalizaContrato(contratoId:number)
+  {
+    this.modalFin().openFinModal(contratoId);
+  }
+
+  actualizarPagina(input:boolean)
+  {
+    this.actualizar=input;
+    
+    this.getDetalleContratos();
+    location.reload();
   }
 
 }
