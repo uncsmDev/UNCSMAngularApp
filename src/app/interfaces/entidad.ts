@@ -3,7 +3,7 @@ import { Cargo } from './cargo';
 import { TipoEntidad } from './tipoEntidad';
 import { Dependencia } from './dependencia';
 import { Archivo } from './archivo';
-import { InsertUsuario } from './usuario';
+
 import { SubModuloViewerTable, SubModuloXUser } from './submodulo';
 
 export interface Entidad {
