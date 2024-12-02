@@ -5,7 +5,7 @@ import { CardTrabajadorComponent } from '../card-trabajador/card-trabajador.comp
 import { EvaluacionTrabajadorService } from '@services/sed/EvaluacionTrabajador.service';
 import { TokenData } from '@interfaces/acount';
 import { AuthService } from '@services/auth.service';
-import { PersonaDirectivoInfoProcedureDTO, PersonaDTO, PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
+import {PersonaDTO, PersonalPorDependenciaDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
 import { AlertDialogComponent } from 'app/components/alertDialog/alertDialog.component';
 
 @Component({
@@ -23,8 +23,7 @@ export default class PersonalComponent implements OnInit {
   auth = inject(AuthService);
 
   Perfil = signal<PersonaDTO>({} as PersonaDTO);
-  Trabajadores = signal<PersonaInfoDTO[]>([]);
-  TrabajadoresDirectivos = signal<PersonaDirectivoInfoProcedureDTO[]>([]);
+  Trabajadores = signal<PersonalPorDependenciaDTO[]>([]);
   mensaje = signal(false);
 
   constructor() { }
@@ -37,8 +36,7 @@ export default class PersonalComponent implements OnInit {
           if(res.data != null)
           {
             this.Perfil.set(res.data);
-            this.GetPersonalByIdDependencia(this.Perfil())
-            this.GetPersonalOtherIdDependencia(this.Perfil())
+            this.GetPersonalDependencia(this.Perfil())
           }
           else{
             this.mensaje.set(true);
@@ -46,35 +44,12 @@ export default class PersonalComponent implements OnInit {
         }
       }
     );
-
-
-
   }
-  
-  GetPersonalByIdDependencia(Perfil: PersonaDTO){
-    this.evaluacionTrabajadorSvc.GetPersonalByIdDependencia(Perfil.dependenciaId, Perfil.personaId).subscribe(
+  GetPersonalDependencia(Perfil: PersonaDTO){
+    this.evaluacionTrabajadorSvc.getPersonalDependencia(Perfil.dependenciaId , Perfil.personaId).subscribe(
     {
         next: (res) => {
-          if(res.data != null)
-          {
-            this.Trabajadores.set(res.data);
-            console.log(this.Trabajadores());
-          }
-          else{
-            this.mensaje.set(true);
-            console.log(this.mensaje());
-          }
-          
-        }
-      }
-    );
-  }
-
-  GetPersonalOtherIdDependencia(Perfil: PersonaDTO){
-    this.evaluacionTrabajadorSvc.getPersonalOtherIdDependencia(Perfil.dependenciaId , Perfil.personaId).subscribe(
-    {
-        next: (res) => {
-          this.TrabajadoresDirectivos.set(res.data);
+          this.Trabajadores.set(res.data);
         }
       }
     );

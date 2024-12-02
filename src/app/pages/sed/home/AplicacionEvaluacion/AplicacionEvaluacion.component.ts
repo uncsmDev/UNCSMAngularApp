@@ -1,7 +1,7 @@
 import { Result } from '@interfaces/Result.interface';
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, HostListener, inject, input, signal, Signal } from '@angular/core';
-import { PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
+import { IEvaluadoDataProcedureDTO, PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
 import { Escala } from '@interfaces/escala';
 import { Instrumento } from '@interfaces/instrumento';
 import { EscalaService } from 'app/pages/sed/escala/escala.service';
@@ -57,8 +57,11 @@ interface preguntaValor {
 export default class AplicacionEvaluacionComponent implements AfterViewInit {
   evaluacionTrabajadorSvc = inject(EvaluacionTrabajadorService);
   escalaServiceSvc = inject(EscalaService);
-  id = input<number>(0, {alias: 'id'});
-  EvaluadoSignal = signal({} as PersonaInfoDTO)
+
+  evaluadoId = input<number>(0, {alias: 'evaluacionId'});
+  contratoId = input<number>(0, {alias: 'contratoId'});
+
+  EvaluadoSignal = signal({} as IEvaluadoDataProcedureDTO)
   evaluacionSignal = signal({} as EvaluacionTrabajador)
   InstrumentoSignal = signal({} as Result<InstrumentoDTO>)
   InstrumentoAbiertaSignal = signal({} as Result<InstrumentoAbiertoDTO>)
@@ -82,7 +85,7 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    }
 
    iniciarEvaluacion(){
-    this.evaluacionTrabajadorSvc.getTipoEvaluacionHabilitada(this.id()).subscribe({
+    this.evaluacionTrabajadorSvc.getTipoEvaluacionHabilitada(this.evaluadoId()).subscribe({
       next:(res)=>{
         if(res.data!= null){
 
@@ -114,14 +117,14 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    }
   
    getEvaluacionTrabajador(){
-    this.evaluacionTrabajadorSvc.GetByIdEvaluado(this.id()).subscribe({
+    this.evaluacionTrabajadorSvc.GetByIdEvaluado(this.evaluadoId(), this.contratoId()).subscribe({
       next:(res)=>{
         if(res.data != null)
         {
           const data = res.data!;
         
           this.EvaluadoSignal.set(data);
-          this.evaluacionTrabajadorSvc.updateInicioEvaluacion(this.id()).subscribe();
+          this.evaluacionTrabajadorSvc.updateInicioEvaluacion(this.evaluadoId()).subscribe();
           this.getInstrumento(data);
         }
         else{
@@ -140,7 +143,7 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    }
 
    getEvaluacionTrabajadorSinInstrumento(){
-    this.evaluacionTrabajadorSvc.GetByIdEvaluado(this.id()).subscribe({
+    this.evaluacionTrabajadorSvc.GetByIdEvaluado(this.evaluadoId(), this.contratoId()).subscribe({
       next:(res)=>{
         if(res.data != null)
         {
@@ -163,8 +166,8 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    })
    }
 
-   getInstrumento(data: PersonaInfoDTO){
-    this.evaluacionTrabajadorSvc.GetInstrumento(data.tipoTrabajador.id, 1, this.id()).subscribe({
+   getInstrumento(data: IEvaluadoDataProcedureDTO){
+    this.evaluacionTrabajadorSvc.GetInstrumento(data.tipoTrabajadorId, 1, this.evaluadoId()).subscribe({
       next:(res)=>{
         if(res.data!= null)
         {
@@ -187,8 +190,8 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
     });
    }
 
-   getInstrumentoCualitativo(data: PersonaInfoDTO){
-    this.evaluacionTrabajadorSvc.GetInstrumentoCualitativo(data.tipoTrabajador.id, 1, this.id()).subscribe({
+   getInstrumentoCualitativo(data: IEvaluadoDataProcedureDTO){
+    this.evaluacionTrabajadorSvc.GetInstrumentoCualitativo(data.tipoTrabajadorId, 1, this.evaluadoId()).subscribe({
       next:(res)=>{
         if(res.data!= null)
         {
@@ -246,7 +249,7 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
     this.evaluacionTrabajadorSvc.updateEscala(this.dataUpdate()).subscribe({
       next :(res)=>{
         if(res.data != null && res.data == true){
-          this.evaluacionTrabajadorSvc.updateFinishEvaluacionCuantitativa(this.id()).subscribe({
+          this.evaluacionTrabajadorSvc.updateFinishEvaluacionCuantitativa(this.evaluadoId()).subscribe({
             next:(res)=>{
               this.iniciarEvaluacion();
             }
@@ -267,7 +270,7 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
   }
 
   finishEvaluacionCualitativa(){
-    this.evaluacionTrabajadorSvc.UpdateFinishEvaluacionCualitativa(this.id()).subscribe({
+    this.evaluacionTrabajadorSvc.UpdateFinishEvaluacionCualitativa(this.evaluadoId()).subscribe({
       next:(res)=>{
         this.evaluacionSignal.update((datos) => {
           return {...datos, evaluacionCualitativaTerminada:true };

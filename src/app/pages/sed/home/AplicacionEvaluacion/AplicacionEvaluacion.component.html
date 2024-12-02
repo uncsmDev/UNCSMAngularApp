@@ -8,19 +8,19 @@
     </h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
       <div class="space-y-4">
-        <app-encabezado titulo="Nombres y Apellidos:" [valor]="EvaluadoSignal().persona?.nombres + ' ' + EvaluadoSignal().persona?.apellidos" />
+        <app-encabezado titulo="Nombres y Apellidos:" [valor]="EvaluadoSignal().personaNombres + ' ' + EvaluadoSignal().personaApellidos" />
 
-        <app-encabezado titulo="Fecha de Ingreso:" [valor]="(EvaluadoSignal().trabajador?.fechaIngreso | date: 'd \'de\' MMMM \'de\' yyyy')
+        <app-encabezado titulo="Fecha de Ingreso:" [valor]="(EvaluadoSignal().trabajadorFechaIngreso | date: 'd \'de\' MMMM \'de\' yyyy')
         " />
       </div>
       <div class="space-y-4">
-        <app-encabezado titulo="Categoría:" [valor]="EvaluadoSignal().tipoTrabajador?.nombre" />
-        <app-encabezado titulo="Puesto que ocupa:" [valor]="EvaluadoSignal().cargo?.nombre" />
+        <app-encabezado titulo="Categoría:" [valor]="EvaluadoSignal().tipoTrabajadorNombre" />
+        <app-encabezado titulo="Puesto que ocupa:" [valor]="EvaluadoSignal().cargoNombre" />
        
       </div>
       <div class="space-y-4">
         <app-encabezado titulo="Período a Evaluar:" [valor]="" />
-        <app-encabezado titulo="Fecha de Evaluación:" [valor]="(EvaluadoSignal().evaluacionTrabajador?.fechaInicioEvaluacion | date: 'd \'de\' MMMM \'de\' yyyy')" />
+        <app-encabezado titulo="Fecha de Evaluación:" [valor]="(EvaluadoSignal().fechaInicioEvaluacion | date: 'd \'de\' MMMM \'de\' yyyy')" />
         
       </div>
     </div>

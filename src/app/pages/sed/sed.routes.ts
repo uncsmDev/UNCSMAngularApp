@@ -15,7 +15,7 @@ export default [
         canActivate: [routerPermisseGuard]
     },
       {
-        path: 'evaluacion/:id',
+        path: 'evaluacion/:evaluacionId',
         title: 'Aplicación de la Evaluación',
         loadComponent: () => import('.//home/AplicacionEvaluacion/AplicacionEvaluacion.component'),
         data: { breadcrumb: 'Escalas' },

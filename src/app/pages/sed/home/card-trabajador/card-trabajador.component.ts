@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
-import { PersonaDirectivoInfoProcedureDTO, PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
+import { PersonalPorDependenciaDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
 import { ArchivoService } from '@services/admin/archivo.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { ArchivoService } from '@services/admin/archivo.service';
     template: `
 <div class="container">
   <div class="card-container">
-    <a [routerLink]="trabajador().evaluacionCuantitativaTerminada == true && trabajador().evaluacionCualitativaTerminada == true ? null : ['/sed/evaluacion', trabajador().evaluacionId]">
+    <a [routerLink]="trabajador().evaluacionCuantitativaTerminada == true && trabajador().evaluacionCualitativaTerminada == true ? null : ['/sed/evaluacion', trabajador().evaluacionTrabajadorId]">
       <div class="rounded-lg"> 
       
         <div class="w-[280px] h-[380px] relative dark:bg-gray-800 bg-gray-200">
@@ -35,14 +35,14 @@ import { ArchivoService } from '@services/admin/archivo.service';
           }
           <div class="absolute top-[60%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col w-full">
             <p class="text-xl font-bold dark:text-white text-center text-gray-800">
-              {{trabajador().personaNombres}} {{trabajador().personaApellidos}}
+              {{trabajador().nombres}} {{trabajador().apellidos}}
             </p>
             <p class="text-sm font-medium dark:text-white text-center text-gray-800">
               {{trabajador().cargoNombre}}
             </p>
 
             <span class="text-sm text-gray-500 dark:text-gray-400 text-center pt-2">
-            <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{trabajador().contratoFechaInicio | date}} </span>  <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">{{trabajador().contratoFechaFin | date}}</span></span>
+            <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{trabajador().fechaInicio | date}} </span>  <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">{{trabajador().fechaFin | date}}</span></span>
             
             
           </div>
@@ -62,7 +62,7 @@ import { ArchivoService } from '@services/admin/archivo.service';
 })
 export class CardTrabajadorComponent {
 
-  trabajador = input.required<PersonaDirectivoInfoProcedureDTO>();
+  trabajador = input.required<PersonalPorDependenciaDTO>();
   archivoSvc = inject(ArchivoService);
   sanitizer = inject(DomSanitizer);
 

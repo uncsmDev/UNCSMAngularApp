@@ -45,36 +45,52 @@ export interface PersonaDTO {
     tipoTrabajadorId: number;
     tipoTrabajadorNombre: string;
   }
+  
+  export interface PersonalPorDependenciaDTO {
+    nombres: string; // Nombre de la persona
+    apellidos: string; // Apellido de la persona
+    img: string; // Imagen o URL de la imagen de la persona
+    evaluacionTrabajadorId: number; // ID de la evaluación del trabajador
+    cargoNombre: string; // Nombre del cargo del trabajador
+    fechaInicio: Date; // Fecha de inicio del contrato
+    fechaFin?: Date; // Fecha de fin del contrato (opcional)
+    evaluacionCualitativaTerminada?: boolean; // Indicador de evaluación cualitativa terminada (opcional)
+    evaluacionCuantitativaTerminada?: boolean; // Indicador de evaluación cuantitativa terminada (opcional)
+    evaluacionTerminada?: boolean; // Indicador de evaluación completada (opcional)
+    imgFile?: FileDto; // Archivo asociado a la imagen (opcional)
+  }
+  
 
-  export interface PersonaDirectivoInfoProcedureDTO {
-    personaId: number;
-    personaNombres: string;
-    personaApellidos: string;
-    personaDNI: string;
-    personaFechaNace?: Date; // Nullable
-    personaSexoId: number;
-    personaImg: string;
-    trabajadorId: number;
-    trabajadorCodigo: string;
-    trabajadorFechaIngreso: Date;
-    contratoId: number;
-    contratoFechaInicio: Date;
-    contratoFechaFin?: Date; // Nullable
-    contratoActivo: boolean;
-    dependenciaId: number;
-    dependenciaNombre: string;
-    cargoId: number;
-    cargoNombre: string;
-    tipoTrabajadorId: number;
-    tipoTrabajadorNombre: string;
-    tipoContratoId: number;
-    tipoContratoNombre: string;
-    evaluacionId: number;
-    evaluacionTerminada: boolean;
-    evaluacionCualitativaTerminada: boolean;
-    evaluacionCuantitativaTerminada: boolean;
-    evaluadoId: number;
-    evaluadorId: number;
-    evaluadonContratoId: number;
-    imgFile?: FileDto; // Nullable
+
+export interface IEvaluadoDataProcedureDTO {
+  personaId: number;
+  personaNombres: string;
+  personaApellidos: string;
+  personaDNI: string;
+  personaFechaNace?: Date; // Puede ser null, por eso se usa el operador "?"
+  personaSexoId: number;
+  personaImg: string;
+  trabajadorId: number;
+  trabajadorCodigo: string;
+  trabajadorFechaIngreso: Date;
+  contratoId: number;
+  contratoFechaInicio: Date;
+  contratoFechaFin?: Date; // Puede ser null
+  contratoActivo: boolean;
+  dependenciaId: number;
+  dependenciaNombre: string;
+  cargoId: number;
+  cargoNombre: string;
+  tipoTrabajadorId: number;
+  tipoTrabajadorNombre: string;
+  evaluacionId: number;
+  fechaInicioEvaluacion?: Date; // Puede ser null
+  fechaFinEvaluacion?: Date; // Puede ser null
+  evaluacionTerminada?: boolean; // Puede ser null
+  evaluacionCualitativaTerminada?: boolean; // Puede ser null
+  evaluacionCuantitativaTerminada?: boolean; // Puede ser null
+  revisionEvaluacion?: boolean; // Puede ser null
+  evaluadoId: number;
+  evaluadorId: number;
+  periodoId?: number; // Puede ser null
 }

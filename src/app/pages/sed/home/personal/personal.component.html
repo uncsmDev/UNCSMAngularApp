@@ -2,12 +2,9 @@
 
 <div class="flex flex-col items-center pb-10 lg:grid lg:grid-cols-3 gap-3 lg:gap-6">
 @for (item of Trabajadores(); track $index) {
-  <!-- <app-card-trabajador [trabajador]="item" /> -->
-   <!-- Falta implementar -->
+  <app-card-trabajador [trabajador]="item" /> 
 }
-@for (item of TrabajadoresDirectivos(); track $index) {
-  <app-card-trabajador [trabajador]="item" />
-}
+
 
 @if (mensaje()) {
   <app-alert-dialog tittle="Alerta!" message="No hay evaluaciones registradas"></app-alert-dialog>
