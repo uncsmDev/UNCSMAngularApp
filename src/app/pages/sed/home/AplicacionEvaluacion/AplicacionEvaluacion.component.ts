@@ -59,7 +59,6 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
   escalaServiceSvc = inject(EscalaService);
 
   evaluadoId = input<number>(0, {alias: 'evaluacionId'});
-  contratoId = input<number>(0, {alias: 'contratoId'});
 
   EvaluadoSignal = signal({} as IEvaluadoDataProcedureDTO)
   evaluacionSignal = signal({} as EvaluacionTrabajador)
@@ -117,7 +116,7 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    }
   
    getEvaluacionTrabajador(){
-    this.evaluacionTrabajadorSvc.GetByIdEvaluado(this.evaluadoId(), this.contratoId()).subscribe({
+    this.evaluacionTrabajadorSvc.GetByIdEvaluado(this.evaluadoId()).subscribe({
       next:(res)=>{
         if(res.data != null)
         {
@@ -143,7 +142,7 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    }
 
    getEvaluacionTrabajadorSinInstrumento(){
-    this.evaluacionTrabajadorSvc.GetByIdEvaluado(this.evaluadoId(), this.contratoId()).subscribe({
+    this.evaluacionTrabajadorSvc.GetByIdEvaluado(this.evaluadoId()).subscribe({
       next:(res)=>{
         if(res.data != null)
         {
@@ -167,13 +166,14 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    }
 
    getInstrumento(data: IEvaluadoDataProcedureDTO){
-    this.evaluacionTrabajadorSvc.GetInstrumento(data.tipoTrabajadorId, 1, this.evaluadoId()).subscribe({
+    this.evaluacionTrabajadorSvc.GetInstrumento(this.evaluadoId()).subscribe({
       next:(res)=>{
         if(res.data!= null)
         {
           this.nextStepCount.set(res.data.dimensiones.map(d => (
             { dimensionId: d.id, dimension: d.nombre, preguntaId: d.preguntasCerradas.map(p => ({ id: p.id, valor: false }))
             })));
+            console.log(res);
           this.InstrumentoSignal.set(res);
         }else
         {
@@ -327,7 +327,7 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
       next:(res)=>{
         if(res.data){
           Swal.fire({
-            title: 'Instrumento guardado con éxito',
+            title: 'Evaluación guardada con éxito',
             icon: 'success',
             confirmButtonText: 'Ok',
             ...this.sweetalert.theme,

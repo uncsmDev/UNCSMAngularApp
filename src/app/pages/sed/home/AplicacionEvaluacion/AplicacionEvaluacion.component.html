@@ -20,7 +20,7 @@
       </div>
       <div class="space-y-4">
         <app-encabezado titulo="Período a Evaluar:" [valor]="" />
-        <app-encabezado titulo="Fecha de Evaluación:" [valor]="(EvaluadoSignal().fechaInicioEvaluacion | date: 'd \'de\' MMMM \'de\' yyyy')" />
+        <app-encabezado titulo="Fecha de Evaluación:" [valor]="(EvaluadoSignal().fechaInicioEvaluacion | date: 'd \'de\' MMMM \'de\' yyyy') != null ? (EvaluadoSignal().fechaInicioEvaluacion | date: 'd \'de\' MMMM \'de\' yyyy') : dateNow() | date: 'd \'de\' MMMM \'de\' yyyy'" />
         
       </div>
     </div>

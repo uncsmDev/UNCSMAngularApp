@@ -25,12 +25,12 @@ export class EvaluacionTrabajadorService {
     return this.http.get<Result<PersonalPorDependenciaDTO[]>>(`${this.apiUrl}/GetPersonalDependencia/${DependenciaId}`);
   }
 
-  GetByIdEvaluado(evaluacionId: number, contratoId: number){
-    return this.http.get<Result<IEvaluadoDataProcedureDTO>>(`${this.apiUrl}/GetEvaluacionTrabajador/${evaluacionId}/${contratoId}`);
+  GetByIdEvaluado(evaluacionId: number){
+    return this.http.get<Result<IEvaluadoDataProcedureDTO>>(`${this.apiUrl}/GetEvaluacionTrabajador/${evaluacionId}`);
   }
 
-  GetInstrumento(tipoTrabajadorId: number, tipoEvaluacionId: number, evaluacionId: number){
-    return this.http.get<Result<InstrumentoDTO>>(`${this.apiUrl}/GetInstrumento/${tipoTrabajadorId}/${tipoEvaluacionId}/${evaluacionId}`);
+  GetInstrumento(evaluacionId: number){
+    return this.http.get<Result<InstrumentoDTO>>(`${this.apiUrl}/GetInstrumento/${evaluacionId}`);
   }
 
   GetInstrumentoCualitativo(tipoTrabajadorId: number, tipoEvaluacionId: number, evaluacionId: number){
