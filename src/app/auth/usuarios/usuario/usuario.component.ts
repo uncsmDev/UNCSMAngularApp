@@ -87,8 +87,6 @@ export default class UsuarioComponent {
     this.route.params.subscribe(params => {
       this.trabajadorId = params['id'];
     }); 
-  
-    this.GetListModulos();
     this.getById();
   }
 
@@ -131,6 +129,8 @@ export default class UsuarioComponent {
         })
       }
 
+      
+    this.GetListModulos();
       if(rp.data.userId != null)
       {
         this.GetListSubModuloByUserId(rp.data.userId,1);
