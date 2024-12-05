@@ -26,7 +26,7 @@
     </div>
   </div>
 </div>  
-@if(InstrumentoSignal().data!= null && evaluacionSignal().evaluacionCuantitativaTerminada == null && evaluacionSignal().evaluacionCuantitativaTerminada != true){
+@if(InstrumentoSignal().data!= null && EvaluadoSignal().evaluacionCuantitativaTerminada == null && EvaluadoSignal().evaluacionCuantitativaTerminada != true){
 <div class="w-12/12 md:w-11/12 mx-auto mt-6 bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
 <mat-tab-group>
   <mat-tab label="Indicaciones Generales para el llenado" > 
@@ -191,7 +191,7 @@
     </div>
 }
 
-@if(InstrumentoAbiertaSignal().data!=null && (evaluacionSignal(). evaluacionCualitativaTerminada == null || evaluacionSignal(). evaluacionCualitativaTerminada == false))
+@if(InstrumentoAbiertaSignal().data!=null && (EvaluadoSignal(). evaluacionCualitativaTerminada == null || EvaluadoSignal(). evaluacionCualitativaTerminada == false))
 {
   <div class="w-full  mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden mt-6">
     <div class="qanda-card">
@@ -221,6 +221,6 @@
   </div>
   </div>
 }
-@else if (evaluacionSignal(). evaluacionCualitativaTerminada == true && evaluacionSignal(). evaluacionCuantitativaTerminada == true) {
+@else if (EvaluadoSignal().evaluacionCualitativaTerminada == true && EvaluadoSignal(). evaluacionCuantitativaTerminada == true) {
   ejecutar retorno
 }

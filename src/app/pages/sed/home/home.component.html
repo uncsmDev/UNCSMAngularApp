@@ -10,17 +10,31 @@
 
 </div>
 <div class="flex flex-col items-center pb-10 md:grid md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
-<div class="container">
-  <div class="card-container">
-    <a [routerLink]="['/sed/personal/']">
-      <div class="rounded-lg"> 
-        <div class="w-[220px] h-[350px] relative">
-          <img src="/assets/img/fondo-dark.png" alt="gameCard" class="w-full h-full object-cover object-bottom [object-position:right_bottom]">
-          <span class="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-3/4 text-3xl text-[#CBAC7B] font-bold text-center italic font-serif ">Evaluación</span>
-        </div>
+  @if(countPersonal()){
+    <div class="container">
+      <div class="card-container">
+        <a [routerLink]="['/sed/personal/']">
+          <div class="rounded-lg"> 
+            <div class="w-[220px] h-[350px] relative">
+              <img src="/assets/img/fondo-dark.png" alt="gameCard" class="w-full h-full object-cover object-bottom [object-position:right_bottom]">
+              <span class="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-3/4 text-2xl text-[#CBAC7B] font-bold text-center italic font-serif ">Evaluaciones al Personal</span>
+            </div>
+          </div>
+        </a>
       </div>
-    </a>
+    </div>
+  }
+  <div class="container">
+    <div class="card-container">
+      <a [routerLink]="['/sed/personal/']">
+        <div class="rounded-lg"> 
+          <div class="w-[220px] h-[350px] relative">
+            <img src="/assets/img/fondo-dark.png" alt="gameCard" class="w-full h-full object-cover object-bottom [object-position:right_bottom]">
+            <span class="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-3/4 text-2xl text-[#CBAC7B] font-bold text-center italic font-serif ">Resultados de la Evaluación</span>
+          </div>
+        </div>
+      </a>
+    </div>
   </div>
-</div>
 </div>
 

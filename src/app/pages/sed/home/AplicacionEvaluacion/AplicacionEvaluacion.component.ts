@@ -1,6 +1,6 @@
 import { Result } from '@interfaces/Result.interface';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, HostListener, inject, input, signal, Signal } from '@angular/core';
+import { AfterViewInit, Component, HostListener, inject, input, signal, Signal } from '@angular/core';
 import { IEvaluadoDataProcedureDTO, PersonaInfoDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
 import { Escala } from '@interfaces/escala';
 import { Instrumento } from '@interfaces/instrumento';
@@ -18,9 +18,10 @@ import { InstrumentoAbiertoDTO, InstrumentoDTO } from '@interfaces/DTOs/Instrume
 import { EncabezadoComponent } from './encabezado/encabezado.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SweetalertService } from '@services/sweetalert.service';
-import { EvaluacionTrabajador } from '@interfaces/EvaluacionTrabajador.interface';
 import { RespuestaDTO } from '@interfaces/DTOs/respuesta.interface';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
+import { TokenData } from '@interfaces/acount';
 
 
 export interface EvaluacionEscala{
@@ -61,7 +62,6 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
   evaluadoId = input<number>(0, {alias: 'evaluacionId'});
 
   EvaluadoSignal = signal({} as IEvaluadoDataProcedureDTO)
-  evaluacionSignal = signal({} as EvaluacionTrabajador)
   InstrumentoSignal = signal({} as Result<InstrumentoDTO>)
   InstrumentoAbiertaSignal = signal({} as Result<InstrumentoAbiertoDTO>)
   EscalasSignal = signal<Escala[]>([])
@@ -84,31 +84,9 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    }
 
    iniciarEvaluacion(){
-    this.evaluacionTrabajadorSvc.getTipoEvaluacionHabilitada(this.evaluadoId()).subscribe({
-      next:(res)=>{
-        if(res.data!= null){
 
-          this.evaluacionSignal.set(res.data);
-
-          if(res.data.evaluacionCuantitativaTerminada != null && res.data.evaluacionCuantitativaTerminada == true && res.data.evaluacionCualitativaTerminada != null && res.data.evaluacionCualitativaTerminada == true)  
-          {
-            this.router.navigate(['sed/home']);
-          }
-          if(res.data.evaluacionCuantitativaTerminada != null && res.data.evaluacionCuantitativaTerminada == true){
-            this.getEvaluacionTrabajadorSinInstrumento();
-            this.InstrumentoSignal.set({} as Result<InstrumentoDTO>);
-          }else{
-            this.getEvaluacionTrabajador()
-            this.getEscala()
-          }
-        }else{
-          this.getEvaluacionTrabajador()
-          this.getEscala()
-         
-          
-        }
-      }
-    })
+    this.getEvaluacionTrabajador()
+    this.getEscala()
    }
  
    ngOnInit(): void {
@@ -116,15 +94,29 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    }
   
    getEvaluacionTrabajador(){
-    this.evaluacionTrabajadorSvc.GetByIdEvaluado(this.evaluadoId()).subscribe({
+    const res = JSON.parse(sessionStorage.getItem('loggedInUser')!);
+    const decodedToken:TokenData = jwtDecode(res.token);
+    this.evaluacionTrabajadorSvc.GetByIdEvaluado(this.evaluadoId(), decodedToken.nameid).subscribe({
       next:(res)=>{
         if(res.data != null)
         {
           const data = res.data!;
+          if(res.data.evaluacionCuantitativaTerminada != null && res.data.evaluacionCuantitativaTerminada == true && res.data.evaluacionCualitativaTerminada != null && res.data.evaluacionCualitativaTerminada == true)  
+          {
+            this.router.navigate(['sed/home']);
+          }
         
           this.EvaluadoSignal.set(data);
           this.evaluacionTrabajadorSvc.updateInicioEvaluacion(this.evaluadoId()).subscribe();
-          this.getInstrumento(data);
+
+          if(res.data.evaluacionCuantitativaTerminada != null && res.data.evaluacionCuantitativaTerminada == true){
+            this.getEvaluacionTrabajadorCualitativo()
+            this.InstrumentoSignal.set({} as Result<InstrumentoDTO>);
+          }
+          else{
+            this.getInstrumento(data);
+          }
+          
         }
         else{
           Swal.fire({
@@ -141,8 +133,10 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    })
    }
 
-   getEvaluacionTrabajadorSinInstrumento(){
-    this.evaluacionTrabajadorSvc.GetByIdEvaluado(this.evaluadoId()).subscribe({
+   getEvaluacionTrabajadorCualitativo(){
+    const res = JSON.parse(sessionStorage.getItem('loggedInUser')!);
+    const decodedToken:TokenData = jwtDecode(res.token);
+    this.evaluacionTrabajadorSvc.GetByIdEvaluado(this.evaluadoId(), decodedToken.nameid).subscribe({
       next:(res)=>{
         if(res.data != null)
         {
@@ -251,6 +245,7 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
         if(res.data != null && res.data == true){
           this.evaluacionTrabajadorSvc.updateFinishEvaluacionCuantitativa(this.evaluadoId()).subscribe({
             next:(res)=>{
+              
               this.iniciarEvaluacion();
             }
           })
@@ -272,9 +267,6 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
   finishEvaluacionCualitativa(){
     this.evaluacionTrabajadorSvc.UpdateFinishEvaluacionCualitativa(this.evaluadoId()).subscribe({
       next:(res)=>{
-        this.evaluacionSignal.update((datos) => {
-          return {...datos, evaluacionCualitativaTerminada:true };
-        });          
         this.respuestaAbiertaSignal.set([]);
         this.router.navigate(['sed/home']);
       }
@@ -320,7 +312,16 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    guardarRespuesta(){
     const textAreas = document.getElementsByClassName('textareasresponse') as HTMLCollectionOf<HTMLTextAreaElement>;
     Array.from(textAreas).forEach(textArea => {
-      this.respuestaAbiertaSignal().push({id: Number(textArea.id), respuesta: textArea.value});
+      if(this.respuestaAbiertaSignal().length > 0)
+      {
+        if(this.respuestaAbiertaSignal().find((dato) => {
+          return dato.id == Number(textArea.id);
+        }) == undefined){
+          this.respuestaAbiertaSignal().push({id: Number(textArea.id), respuesta: textArea.value});
+        }
+      }else{
+        this.respuestaAbiertaSignal().push({id: Number(textArea.id), respuesta: textArea.value});
+      }
     });
 
     this.evaluacionTrabajadorSvc.updateRespuestaAbierta(this.respuestaAbiertaSignal()).subscribe({
