@@ -37,7 +37,7 @@ export interface PersonaDTO {
     contratoId: number;
     contratoFechaInicio: string;
     contratoFechaFin: string;
-    contratoActivo: boolean;
+    contratoFinalizado: boolean;
     dependenciaId: number;
     dependenciaNombre: string;
     cargoId: number;
@@ -76,7 +76,7 @@ export interface IEvaluadoDataProcedureDTO {
   contratoId: number;
   contratoFechaInicio: Date;
   contratoFechaFin?: Date; // Puede ser null
-  contratoActivo: boolean;
+  contratoFinalizado: boolean;
   dependenciaId: number;
   dependenciaNombre: string;
   cargoId: number;
