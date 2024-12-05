@@ -18,6 +18,7 @@ export default [
         title: 'Dependencias',
         loadComponent:()=>import('./dependencias/dependencias.component')
     },
+   
     {
         path: 'home',
         title: 'Home',
@@ -69,4 +70,5 @@ export default [
         title: 'Contrato Perfil',
         loadComponent: () => import('./contratos/contrato/contrato.component'),
     }
+    
 ] as Routes;

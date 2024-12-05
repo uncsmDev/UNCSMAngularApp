@@ -1,4 +1,4 @@
-import { Component, ViewChild, WritableSignal, computed, inject, signal } from '@angular/core';
+import { Component, Inject, Signal, ViewChild, WritableSignal, computed, inject, signal } from '@angular/core';
 import { Escala } from '../../../interfaces/escala';
 import { TitleComponent } from '../../../shared/title/title.component';
 import { EscalaService } from '../../sed/escala/escala.service';
@@ -9,6 +9,9 @@ import { ModalService } from '../../../Services/modal.service';
 import { ModalInterface } from 'flowbite';
 import { JsonPipe } from '@angular/common';
 import { TreeDataComponent } from './treeData/treeData.component';
+import { DependenciaService } from '@services/admin/dependencia.service';
+import { Dependencia } from '@interfaces/dependencia';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-escala',
@@ -22,6 +25,12 @@ export default class DependenciaComponent {
   modalService = inject(ModalService);
   matSnackBar=inject(MatSnackBar);
   fb = inject(FormBuilder);
+
+  dependenciaService=inject(DependenciaService);
+
+
+  dependencias:WritableSignal<Dependencia[]>=signal([]);
+  dependenciaList:Signal<Dependencia[]>=computed(this.dependencias);
 
   //Escalas
   escalas: WritableSignal<Escala[]> = signal([]);
@@ -55,7 +64,23 @@ export default class DependenciaComponent {
   }
 
   ngOnInit() {
-    this.getDatos();
+
+    this.GetListDependencia();
+    //this.getDatos();
+  }
+
+
+  async GetListDependencia()
+  {
+    const out= await firstValueFrom(this.dependenciaService.getList());
+
+    this.dependencias.set(out.sort((a, b) => a.id - b.id));
+
+   
+
+    out.forEach(element => {
+      console.log(element);
+    });
   }
 
   getDatos()

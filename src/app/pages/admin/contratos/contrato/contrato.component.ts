@@ -81,9 +81,9 @@ export default class ContratoComponent {
 
           res.data.contratos.forEach((contrato)=>
           {
-            if(contrato.activo==true)
+            if(contrato.finalizado==false)
               this.cA.push(contrato);
-            else if(contrato.activo==false)
+            else 
             {
               if(contrato.idTipoTrabajador==2)
                 this.cDo.push(contrato);

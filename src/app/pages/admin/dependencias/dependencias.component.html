@@ -7,7 +7,25 @@
         </div>
     </div>
     
-    <app-tree-data></app-tree-data>
+    @for (item of dependenciaList(); track $index) 
+    {
+        <div>
+            <ul>
+                @if(item.dependenciaId==null)
+                {
+                    <li>{{item.nombre}}</li>
+                }
+                @else if (item.dependenciaId==item.id)
+                {
+                    <ul>
+                        <li>{{item.nombre}}</li>
+                    </ul>
+                }
+            </ul>
+        </div>     
+    }
+
+    <!--app-tree-data></app-tree-data--->
     
 </div>
 
