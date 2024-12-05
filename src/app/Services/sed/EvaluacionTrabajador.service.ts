@@ -17,6 +17,10 @@ export class EvaluacionTrabajadorService {
   private apiUrl:string = appsettings.apiApp + "EvaluacionTrabajador";
 
  
+  getCountPersonal(userId: string){
+    return this.http.get<Result<boolean>>(`${this.apiUrl}/GetCountEvaluaciones/${userId}`);
+  }
+
   getById(id: number){
     return this.http.get<Result<PersonaDTO>>(`${this.apiUrl}/GetById/${id}`);
   }
@@ -25,8 +29,10 @@ export class EvaluacionTrabajadorService {
     return this.http.get<Result<PersonalPorDependenciaDTO[]>>(`${this.apiUrl}/GetPersonalDependencia/${DependenciaId}`);
   }
 
-  GetByIdEvaluado(evaluacionId: number){
-    return this.http.get<Result<IEvaluadoDataProcedureDTO>>(`${this.apiUrl}/GetEvaluacionTrabajador/${evaluacionId}`);
+  GetByIdEvaluado(evaluacionId: number, evaluadorId: string){
+    const headers = {'content-type': 'application/json'}
+    const body = JSON.stringify(evaluadorId);
+    return this.http.post<Result<IEvaluadoDataProcedureDTO>>(`${this.apiUrl}/GetEvaluacionTrabajador/${evaluacionId}`, body, {headers});
   }
 
   GetInstrumento(evaluacionId: number){
@@ -36,11 +42,6 @@ export class EvaluacionTrabajadorService {
   GetInstrumentoCualitativo(tipoTrabajadorId: number, tipoEvaluacionId: number, evaluacionId: number){
     return this.http.get<Result<InstrumentoAbiertoDTO>>(`${this.apiUrl}/GetInstrumentoCualitativo/${tipoTrabajadorId}/${tipoEvaluacionId}/${evaluacionId}`);
   }
-
-  getTipoEvaluacionHabilitada(evaluacionId: number){
-    return this.http.get<Result<EvaluacionTrabajador>>(`${this.apiUrl}/GetTipoEvaluacionHabilitada/${evaluacionId}`);
-  }
-
   GetNextStep(dimensionId: number, evaluacionId: number){
     return this.http.get<Result<true>>(`${this.apiUrl}/NextStep/${dimensionId}/${evaluacionId}`);
   }
