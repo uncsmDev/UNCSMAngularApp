@@ -21,6 +21,7 @@ import { FdropzoneComponent } from 'app/shared/input/fdropzone/fdropzone.compone
 import TrabajadorComponent from "../trabajador.component";
 import { SweetalertService } from '@services/sweetalert.service';
 import Swal from 'sweetalert2';
+import { firstValueFrom } from 'rxjs';
 
 
 
@@ -110,9 +111,43 @@ export default class TrabajadorPerfilComponent {
 
 }
 
-  getById()
+  async getById()
   {
-    this.trabajadorService.getById(this.trabajadorId).subscribe(
+    const res = await firstValueFrom(this.trabajadorService.getById(this.trabajadorId));
+
+  
+      if (res.status == ResultEnum.Success) 
+      {
+        this.trabajadorDto.set(res.data);
+        this.fileDir = this.trabajadorDto().persona?.img;
+
+        this.GetListSubModuloByUserId(this.trabajadorDto().usuarioId,0);
+
+        if (this.fileDir != null) {
+
+          const fileRes = await firstValueFrom(this._archivoService.getByAddress(this.fileDir));
+
+
+          if (fileRes.size > 0) 
+          {
+            const objectUrl = URL.createObjectURL(fileRes);
+            this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(objectUrl);
+            this.fileRes.set(this.sanitizer.bypassSecurityTrustUrl(objectUrl));
+          }
+          else
+          {
+            Swal.fire({
+              title: 'Advertencia!',
+              html: '<p>No se encontro la imagen.</p>',
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+              ...this.sweetalert.theme,
+            })
+          }
+        }
+      }
+
+    /*this.trabajadorService.getById(this.trabajadorId).subscribe(
       {
         
         next: (data) => {
@@ -149,7 +184,7 @@ export default class TrabajadorPerfilComponent {
 
         }
       }
-    );  
+    ); */ 
   }
 
   GetListSubModuloByUserId(idUser:string,PagSubM:number)
