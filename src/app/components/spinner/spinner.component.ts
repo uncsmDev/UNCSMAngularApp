@@ -11,7 +11,7 @@ import { SpinnerService } from '@services/spinner.service';
   @if(isLoading())
   {
   <div class="overlay">
-    <div class="absolute inset-0 bg-black bg-opacity-90 flex justify-center items-center min-h-screen" style="z-index: 999;">
+    <div class="absolute inset-0 bg-black bg-opacity-90 flex justify-center items-center h-full" style="z-index: 999;">
       <div class="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-blue-500"></div>
     </div>
   </div>
