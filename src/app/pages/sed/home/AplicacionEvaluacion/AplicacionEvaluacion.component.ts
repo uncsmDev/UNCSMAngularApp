@@ -14,7 +14,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatStepper, MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
-import { InstrumentoAbiertoDTO, InstrumentoDTO } from '@interfaces/DTOs/InstrumentoDTO.interface';
+import { EvaluacionTrabajadorDTO, InstrumentoAbiertoDTO } from '@interfaces/DTOs/InstrumentoDTO.interface';
 import { EncabezadoComponent } from './encabezado/encabezado.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SweetalertService } from '@services/sweetalert.service';
@@ -22,6 +22,7 @@ import { RespuestaDTO } from '@interfaces/DTOs/respuesta.interface';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { TokenData } from '@interfaces/acount';
+import { EvaluacionTrabajador } from '@interfaces/EvaluacionTrabajador.interface';
 
 
 export interface EvaluacionEscala{
@@ -62,7 +63,7 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
   evaluadoId = input<number>(0, {alias: 'evaluacionId'});
 
   EvaluadoSignal = signal({} as IEvaluadoDataProcedureDTO)
-  InstrumentoSignal = signal({} as Result<InstrumentoDTO>)
+  InstrumentoSignal = signal({} as Result<EvaluacionTrabajadorDTO[]>)
   InstrumentoAbiertaSignal = signal({} as Result<InstrumentoAbiertoDTO>)
   EscalasSignal = signal<Escala[]>([])
   dateNow = signal(new Date());
@@ -75,16 +76,16 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
   disableRipple = true;
   variable = true;
   router = inject(Router);
-
+  dataUpdate = signal<EvaluacionEscala[]>([]);
 
   nextStepCount = signal<DimensionesCount[]>([]);
-  
+  dimensiones = signal<{dimensionId: number, dimension: string}[]>([]);
+
    ngAfterViewInit(){
     this.iniciarEvaluacion();
    }
 
    iniciarEvaluacion(){
-
     this.getEvaluacionTrabajador()
     this.getEscala()
    }
@@ -103,20 +104,18 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
           const data = res.data!;
           if(res.data.evaluacionCuantitativaTerminada != null && res.data.evaluacionCuantitativaTerminada == true && res.data.evaluacionCualitativaTerminada != null && res.data.evaluacionCualitativaTerminada == true)  
           {
-            this.router.navigate(['sed/home']);
+            this.router.navigate(['sed/personal']);
           }
         
           this.EvaluadoSignal.set(data);
           this.evaluacionTrabajadorSvc.updateInicioEvaluacion(this.evaluadoId()).subscribe();
 
           if(res.data.evaluacionCuantitativaTerminada != null && res.data.evaluacionCuantitativaTerminada == true){
-            this.getEvaluacionTrabajadorCualitativo()
-            this.InstrumentoSignal.set({} as Result<InstrumentoDTO>);
+            this.getEvaluacionTrabajadorCualitativo();
           }
           else{
             this.getInstrumento(data);
           }
-          
         }
         else{
           Swal.fire({
@@ -162,12 +161,33 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    getInstrumento(data: IEvaluadoDataProcedureDTO){
     this.evaluacionTrabajadorSvc.GetInstrumento(this.evaluadoId()).subscribe({
       next:(res)=>{
+        
         if(res.data!= null)
         {
-          this.nextStepCount.set(res.data.dimensiones.map(d => (
-            { dimensionId: d.id, dimension: d.nombre, preguntaId: d.preguntasCerradas.map(p => ({ id: p.id, valor: false }))
-            })));
-            console.log(res);
+          this.nextStepCount.set(
+            res.data.map(
+              d => (
+                { 
+                  dimensionId: d.dimensionId,
+                  dimension: d.dimensionNombre, 
+                  preguntaId: res.data
+                  .filter(p => p.dimensionId === d.dimensionId) // Filtrar correctamente
+                  .map(p => ({
+                      id: p.preguntaCerradaId,
+                      valor: false,
+                  }))
+                }
+          )));
+          res.data.filter(d => {
+            if(this.dimensiones().length == 0){
+              this.dimensiones.set([{dimensionId: d.dimensionId, dimension: d.dimensionNombre}]);
+            }
+            else{
+              if(this.dimensiones().findIndex(f => f.dimensionId == d.dimensionId) == -1){
+                this.dimensiones.update(z => [...z, {dimensionId: d.dimensionId, dimension: d.dimensionNombre}]);
+              }
+            }
+          });
           this.InstrumentoSignal.set(res);
         }else
         {
@@ -240,12 +260,13 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
   }
 
   finishEvaluacionCuantitativa(){
+
     this.evaluacionTrabajadorSvc.updateEscala(this.dataUpdate()).subscribe({
       next :(res)=>{
         if(res.data != null && res.data == true){
           this.evaluacionTrabajadorSvc.updateFinishEvaluacionCuantitativa(this.evaluadoId()).subscribe({
             next:(res)=>{
-              
+              this.EvaluadoSignal.update(p => ({...p, evaluacionCuantitativaTerminada: true}));
               this.iniciarEvaluacion();
             }
           })
@@ -267,16 +288,42 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
   finishEvaluacionCualitativa(){
     this.evaluacionTrabajadorSvc.UpdateFinishEvaluacionCualitativa(this.evaluadoId()).subscribe({
       next:(res)=>{
-        this.respuestaAbiertaSignal.set([]);
         this.router.navigate(['sed/home']);
       }
     });
   }
 
-  dataUpdate = signal<EvaluacionEscala[]>([]);
+  
 
-  handleChange(event: Event, preguntaId: number, idEscala: number, dimensionId: number) {
+  handleChange(event: Event, preguntaId: number, idEscala: number, dimensionId: number, respuestaCerradaId: number) {
     const selectElement = event.target as HTMLInputElement;
+    
+    this.dataUpdate().length == 0 
+    ? 
+    
+    this.dataUpdate.set([{
+      escalaId: idEscala,
+      EvaluacionId: respuestaCerradaId
+    }]):this.dataUpdate.update((current) => {
+      const dataSearch = this.dataUpdate().some(d => d.EvaluacionId == respuestaCerradaId) 
+      ? 
+      current.map((d) => {
+        if(d.EvaluacionId == respuestaCerradaId){
+          return {...d, 
+            escalaId: idEscala
+            }
+          }else{
+            return d;
+          }
+        })
+      : 
+      [...current, {
+        escalaId: idEscala,
+        EvaluacionId: respuestaCerradaId
+      }]
+      return dataSearch;
+    })
+
     this.nextStepCount.update((current) => {
       return current.map((d) => {
         if(d.dimensionId == dimensionId){

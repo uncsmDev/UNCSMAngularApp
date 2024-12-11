@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { InstrumentoAbiertoDTO, InstrumentoDTO } from '@interfaces/DTOs/InstrumentoDTO.interface';
-import { IEvaluadoDataProcedureDTO, PersonaDTO, PersonaInfoDTO, PersonalPorDependenciaDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
+import { EvaluacionTrabajadorDTO, InstrumentoAbiertoDTO } from '@interfaces/DTOs/InstrumentoDTO.interface';
+import { IEvaluadoDataProcedureDTO, PersonaDTO, PersonaInfoDTO, PersonalPorDependenciaDTO, TrabajadorEvaluacionDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
 import { RespuestaDTO } from '@interfaces/DTOs/respuesta.interface';
 import { EvaluacionTrabajador } from '@interfaces/EvaluacionTrabajador.interface';
 import { Instrumento } from '@interfaces/instrumento';
@@ -25,6 +25,12 @@ export class EvaluacionTrabajadorService {
     return this.http.get<Result<PersonaDTO>>(`${this.apiUrl}/GetById/${id}`);
   }
 
+  getResultByUserId(userId: string){
+    const headers = {'content-type': 'application/json'}
+    const body = JSON.stringify(userId);
+    return this.http.post<Result<TrabajadorEvaluacionDTO[]>>(`${this.apiUrl}/GetResultados/`, body, {headers: headers});
+  }
+
   getPersonalDependencia(DependenciaId: number, personaId: number){
     return this.http.get<Result<PersonalPorDependenciaDTO[]>>(`${this.apiUrl}/GetPersonalDependencia/${DependenciaId}`);
   }
@@ -36,7 +42,7 @@ export class EvaluacionTrabajadorService {
   }
 
   GetInstrumento(evaluacionId: number){
-    return this.http.get<Result<InstrumentoDTO>>(`${this.apiUrl}/GetInstrumento/${evaluacionId}`);
+    return this.http.get<Result<EvaluacionTrabajadorDTO[]>>(`${this.apiUrl}/GetInstrumento/${evaluacionId}`);
   }
 
   GetInstrumentoCualitativo(tipoTrabajadorId: number, tipoEvaluacionId: number, evaluacionId: number){

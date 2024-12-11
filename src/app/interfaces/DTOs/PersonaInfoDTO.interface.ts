@@ -94,3 +94,19 @@ export interface IEvaluadoDataProcedureDTO {
   evaluadorId: number;
   periodoId?: number; // Puede ser null
 }
+
+export interface TrabajadorEvaluacionDTO {
+  trabajadorID: number; // ID del trabajador
+  evaluadorId: number; // ID del evaluador
+  dependenciaId: number; // ID de la dependencia
+  evaluacionId: number; // ID de la evaluación
+  personaCargoDTO?: PersonaCargoDTO; // Detalles de la persona y cargo
+}
+
+export interface PersonaCargoDTO {
+  nombres: string; // Nombre de la persona
+  apellidos: string; // Apellido de la persona
+  dependencia: string; // Nombre de la dependencia
+  cargo: string; // Nombre del cargo
+}
+

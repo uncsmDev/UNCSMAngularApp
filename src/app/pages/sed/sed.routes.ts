@@ -85,5 +85,13 @@ export default [
         loadComponent: () => import('./asignacion-evaluacio/asignacion/asignacion.component'),
         data: { breadcrumb: 'Asignación para la Evaluación' },
         canActivate: [routerPermisseGuard]
-    }
+    },
+    {
+        
+        path: 'resultados',
+        title: 'Resultados',
+        loadComponent: () => import('./home/resultados/resultados.component'),
+        data: { breadcrumb: 'Resultados' },
+        canActivate: [routerPermisseGuard]
+    },
 ] as Routes;

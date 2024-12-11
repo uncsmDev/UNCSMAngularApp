@@ -35,6 +35,7 @@ export default class PersonalComponent implements OnInit {
         next: (res) => {
           if(res.data != null)
           {
+            console.log(res);
             this.Perfil.set(res.data);
             this.GetPersonalDependencia(this.Perfil())
           }
@@ -49,6 +50,7 @@ export default class PersonalComponent implements OnInit {
     this.evaluacionTrabajadorSvc.getPersonalDependencia(Perfil.dependenciaId , Perfil.personaId).subscribe(
     {
         next: (res) => {
+          console.log(res);
           this.Trabajadores.set(res.data);
         }
       }
