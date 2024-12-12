@@ -5,7 +5,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModalDeleteComponent } from '../../../components/modal-delete/modal-delete.component';
 import { ModalService } from '../../../Services/modal.service';
 import { ModalInterface } from 'flowbite';
-import { TreeDataComponent } from './treeData/treeData.component';
 import { DependenciaService } from '@services/admin/dependencia.service';
 import {  TreeDependencia } from '@interfaces/dependencia';
 import { firstValueFrom } from 'rxjs';
@@ -17,7 +16,7 @@ import { DependenciasTreeComponent } from './dependencias-tree/dependencias-tree
 
 @Component({
     selector: 'app-escala',
-    imports: [TitleComponent, ReactiveFormsModule, ModalDeleteComponent, TreeDataComponent,DependenciasTreeComponent],
+    imports: [TitleComponent, ReactiveFormsModule, ModalDeleteComponent,DependenciasTreeComponent],
     templateUrl: './dependencias.component.html',
     styleUrl: './dependencias.component.css'
 })

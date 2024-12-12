@@ -26,4 +26,24 @@ export class DependenciasTreeComponent {
 
   @Input() tree: TreeDependencia[] = [];
 
+  mostrarContenido(id: number) {
+    const element = document.getElementById('display-' + id);
+    const flecha = document.getElementById('flecha-' + id);
+
+    const value = element?.classList.contains('mostrar-contenido');
+    if (element) {
+      if(value){
+        element?.classList.remove('mostrar-contenido');
+        element?.classList.add('ocultar-contenido');
+        flecha?.classList.add('rotate-0');
+        flecha?.classList.remove('rotate-180');
+        
+      }else{
+        element?.classList.add('mostrar-contenido');
+        element?.classList.remove('ocultar-contenido');
+        flecha?.classList.add('rotate-180');
+        flecha?.classList.remove('rotate-0');
+      }
+    }
+  }
 }

@@ -1,0 +1,24 @@
+.contenido {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition: opacity 0.5s ease, height 0.5s ease;
+}
+
+.mostrar-contenido {
+    opacity: 1;
+    height: auto; /* Usar height dinámico */
+}
+
+.ocultar-contenido {
+    opacity: 0;
+    height: 0;
+}
+
+.rotate-180 {
+    transform: rotate(90deg);
+}
+
+.rotate-0{
+    transform: rotate(0deg);
+}
