@@ -108,5 +108,7 @@ export interface PersonaCargoDTO {
   apellidos: string; // Apellido de la persona
   dependencia: string; // Nombre de la dependencia
   cargo: string; // Nombre del cargo
+  img: string; // Imagen o URL de la imagen de la persona
+  imgFile?: FileDto;
 }
 

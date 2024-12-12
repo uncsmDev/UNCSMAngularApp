@@ -2,7 +2,7 @@
 
 <div class="flex flex-col items-center pb-10 lg:grid lg:grid-cols-3 gap-3 lg:gap-6">
 @for (item of Trabajadores(); track $index) {
-  <app-card-trabajador [trabajador]="item" /> 
+  <app-card-trabajador [trabajador]="item" [url]="'/sed/evaluacion'" /> 
 }
 
 

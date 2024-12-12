@@ -1,6 +1,4 @@
 <app-title title="Aplicación de la Evaluación" />
-
-  
 <div class="w-full  mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
   <div class="p-6">
     <h2 class="text-2xl font-bold text-lefttext-gray-800 dark:text-white mb-6">
@@ -81,9 +79,8 @@
             </tbody>
         </table>
     </div>
-    
-    
-    </div> </mat-tab>
+    </div> 
+  </mat-tab>
 </mat-tab-group>
 </div>
 
@@ -98,36 +95,20 @@
     <div class="flex flex-col items-center relative sm:rounded-lg md:overflow-x-hidden overflow-x-auto overflow-y-hidden">
       <section id="advertisers" class="advertisers-service-sec ">
         <div class="container">
-      @for (p of InstrumentoSignal().data; track p; let indexp = $index) {
-        @if(p.dimensionId == dv.dimensionId){
-
+      @for (p of dv.preguntas; track p; let indexp = $index) {
         <div class="row mt-5 mt-md-4 row-cols-1 row-cols-sm-1 row-cols-md-3 justify-content-center">
           <div class="col">
             <div class="service-card ">
-            <h3 class="mb-4">{{ p.preguntaCerradaNombre }}</h3>
+            <h3 class="mb-4">{{ p.nombre }}</h3>
             <div class="flex md:items-center items-left justify-start md:justify-center gap-5 flex-col md:flex-row">
               @for (item of EscalasSignal(); track item) {
                 <div class="checkbox-wrapper-12 flex items-center gap-3 ">
                   <div class="cbx">
-                    @if(p.escalaId == item.id)
-                    {
-                     
-                        <input id="radio-{{item.id}}-{{p.preguntaCerradaId}}" type="radio" #radioButton (change)="handleChange($event, p.preguntaCerradaId, item.id, dv.dimensionId, p.respuestaCerradaId)" [name]="'escala'+p.preguntaCerradaId" checked/>
-                        <label for="radio-{{item.id}}-{{p.preguntaCerradaId}}"></label>
-                        <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
-                          <path d="M2 8.36364L6.23077 12L13 2"></path>
-                        </svg>
-                     
-                      
-                      
-                    }@else {
-                      <input id="radio-{{item.id}}-{{p.preguntaCerradaId}}" type="radio" #radioButton (change)="handleChange($event, p.preguntaCerradaId, item.id, dv.dimensionId, p.respuestaCerradaId)" [name]="'escala'+p.preguntaCerradaId" />
-                      <label for="radio-{{item.id}}-{{p.preguntaCerradaId}}"></label>
+                      <input id="radio-{{item.id}}-{{p.id}}" type="radio" #radioButton (change)="handleChange($event, p.id, item.id, dv.dimensionId, p.respuestaId)" [name]="'escala'+p.id" />
+                      <label for="radio-{{item.id}}-{{p.id}}"></label>
                       <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
                         <path d="M2 8.36364L6.23077 12L13 2"></path>
                       </svg>
-                    }
-                    
                   </div>
                   <!-- Gooey-->
                   <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
@@ -151,8 +132,6 @@
       </div>
       
     </div>
-              
-  }
     } 
   </div>
 </section>
@@ -174,11 +153,7 @@
             }
           </div>
       </mat-step>
-     
     }
-    
-    
-    
     </mat-stepper>
     
     </div>
@@ -202,9 +177,6 @@
               rows="4"
             >{{ item.respuesta }}</textarea>
           </div>
-          
-        
-      
     </div>
     }
     <div class="flex justify-end mb-4 mr-4"> 

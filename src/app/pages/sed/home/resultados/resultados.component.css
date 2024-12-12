@@ -1,3 +1,69 @@
-:host {
-  display: block;
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card-container {
+  padding: 10px;
+}
+.card-container > a > div {
+  position: relative;
+  overflow: hidden;
+  transition: all .3s ease;
+}
+.card-container > a > div > div::before {
+  content: "";
+  width: 500px;
+  height: 250px;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 10%, rgba(0,0,0,1) 100%);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translate(-70%, 60%) rotate(20deg);
+  opacity: 0.1;
+  transition: all .3s ease;
+}
+.card-container > a > div > div::after {
+  content: "";
+  width: 500px;
+  height: 250px;
+  background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 10%, rgba(255,255,255,0.2) 20%, rgba(255,255,255,1) 100%);
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: .5;
+  transform: translate(50%, -50%) rotate(30deg);
+  transition: all .3s ease;
+}
+.card-container img {
+  z-index: 1;
+}
+.card-container a {
+  filter: drop-shadow(0 0 .75rem black);
+  transition: all .3s ease;
+}
+.card-container:hover a > div > div::after {
+  background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 10%, rgba(255,255,255,0.2) 20%, rgba(255,255,255,1) 100%);
+  transform: translate(30%, -30%) rotate(30deg);
+  opacity: 0.7;
+}
+.card-container:hover a > div > div::before {
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 20%, rgba(0,0,0,1) 100%);
+  transform: translate(-40%,40%) rotate(30deg);
+  opacity: 1;
+}
+.card-container:hover a {
+  filter: drop-shadow(0 5px 1rem black);
+}
+.card-container:hover a > div {
+  transform: rotateX(11deg) scaleY(1.01);
+}
+
+
+/* Credits */
+h2 {
+  font-family: 'Bahnschrift';
+  color: white;
+  margin-left: 100px;
 }

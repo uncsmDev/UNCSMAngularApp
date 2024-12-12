@@ -4,10 +4,13 @@ import { TrabajadorEvaluacionDTO } from '@interfaces/DTOs/PersonaInfoDTO.interfa
 import { EvaluacionTrabajadorService } from '@services/sed/EvaluacionTrabajador.service';
 import { TokenData } from '@interfaces/acount';
 import { jwtDecode } from 'jwt-decode';
+import { TitleComponent } from 'app/shared/title/title.component';
+import { CardTrabajadorComponent } from '../card-trabajador/card-trabajador.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-resultados',
-  imports: [],
+  imports: [TitleComponent, CardTrabajadorComponent, RouterLink],
   templateUrl: './resultados.component.html',
   styleUrl: './resultados.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -41,6 +41,26 @@ interface preguntaValor {
   valor: boolean
 }
 
+interface DimensionData 
+{
+  dimensionId: number, 
+  dimension: string,
+  preguntas: Pregunta[]
+}
+
+interface DimensionData1
+{
+  dimensionId: number, 
+  dimension: string,
+}
+
+interface Pregunta{
+  id: number,
+  nombre: string,
+  respuestaId: number;
+  escalaId: number;
+}
+
 @Component({
     selector: 'app-aplicacion-evaluacion',
     imports: [
@@ -79,7 +99,7 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
   dataUpdate = signal<EvaluacionEscala[]>([]);
 
   nextStepCount = signal<DimensionesCount[]>([]);
-  dimensiones = signal<{dimensionId: number, dimension: string}[]>([]);
+  dimensiones = signal<DimensionData[]>([]);
 
    ngAfterViewInit(){
     this.iniciarEvaluacion();
@@ -161,7 +181,6 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
    getInstrumento(data: IEvaluadoDataProcedureDTO){
     this.evaluacionTrabajadorSvc.GetInstrumento(this.evaluadoId()).subscribe({
       next:(res)=>{
-        
         if(res.data!= null)
         {
           this.nextStepCount.set(
@@ -178,16 +197,28 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
                   }))
                 }
           )));
-          res.data.filter(d => {
-            if(this.dimensiones().length == 0){
-              this.dimensiones.set([{dimensionId: d.dimensionId, dimension: d.dimensionNombre}]);
-            }
-            else{
-              if(this.dimensiones().findIndex(f => f.dimensionId == d.dimensionId) == -1){
-                this.dimensiones.update(z => [...z, {dimensionId: d.dimensionId, dimension: d.dimensionNombre}]);
-              }
-            }
-          });
+
+          this.dimensiones.set(res.data.reduce((obj: DimensionData[], dimension) => {
+            let existingDimension = obj.find(d => d.dimensionId === dimension.dimensionId);
+            if (!existingDimension) {
+              existingDimension = { 
+                dimensionId: dimension.dimensionId, 
+                dimension: dimension.dimensionNombre, 
+                preguntas: [] 
+              };
+              obj.push(existingDimension);
+            };
+            
+
+            existingDimension.preguntas.push({
+              id: dimension.preguntaCerradaId,
+              nombre: dimension.preguntaCerradaNombre,
+              respuestaId: dimension.respuestaCerradaId,
+              escalaId: dimension.escalaId
+            });
+        
+            return obj;
+          }, [] as DimensionData[]));  
           this.InstrumentoSignal.set(res);
         }else
         {
@@ -260,7 +291,6 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
   }
 
   finishEvaluacionCuantitativa(){
-
     this.evaluacionTrabajadorSvc.updateEscala(this.dataUpdate()).subscribe({
       next :(res)=>{
         if(res.data != null && res.data == true){
@@ -297,7 +327,19 @@ export default class AplicacionEvaluacionComponent implements AfterViewInit {
 
   handleChange(event: Event, preguntaId: number, idEscala: number, dimensionId: number, respuestaCerradaId: number) {
     const selectElement = event.target as HTMLInputElement;
-    
+
+    if (selectElement.type !== 'radio') {
+      Swal.fire({
+            title: 'Error!',
+            text: 'Elemento de entrada no valido',
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            ...this.sweetalert.theme,
+          })
+      selectElement.checked = false;
+      return; // Evita realizar la acción
+    }
+
     this.dataUpdate().length == 0 
     ? 
     

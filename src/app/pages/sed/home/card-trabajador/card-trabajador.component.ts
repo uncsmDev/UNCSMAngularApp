@@ -13,7 +13,7 @@ import { ArchivoService } from '@services/admin/archivo.service';
     template: `
 <div class="container">
   <div class="card-container">
-    <a [routerLink]="trabajador().evaluacionCuantitativaTerminada == true && trabajador().evaluacionCualitativaTerminada == true ? null : ['/sed/evaluacion', trabajador().evaluacionTrabajadorId]">
+    <a [routerLink]="trabajador().evaluacionCuantitativaTerminada == true && trabajador().evaluacionCualitativaTerminada == true ? null : [url(), trabajador().evaluacionTrabajadorId]">
       <div class="rounded-lg"> 
       
         <div class="w-[280px] h-[380px] relative dark:bg-gray-800 bg-gray-200">
@@ -65,5 +65,6 @@ export class CardTrabajadorComponent {
   trabajador = input.required<PersonalPorDependenciaDTO>();
   archivoSvc = inject(ArchivoService);
   sanitizer = inject(DomSanitizer);
+  url = input.required<string>();
 
  }
