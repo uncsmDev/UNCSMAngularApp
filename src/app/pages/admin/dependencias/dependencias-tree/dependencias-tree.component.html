@@ -1,0 +1,92 @@
+<!---ul class="space-y-2">
+    @for (item of tree; track $index) 
+    {
+        <li class="pl-4 border-l-2 border-gray-300">
+            <div class="relative flex items-center gap-2">
+                <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                <span class="text-gray-800 font-medium">{{ item.nombre }}</span> 
+                <span class="flex justify-end">
+                    <div class="flex items-center">
+                        <a class=" text-green-500 hover:text-green-400 border:text-gray-800 dark:text-white cursor-pointer" title="Opciones de Cargos"  stroke="currentColor">
+                            <i class='bx bxs-plus-circle text-xl'></i>
+                        </a>
+                        <a class=" text-green-500 hover:text-green-400 border:text-gray-800 dark:text-white cursor-pointer" title="Opciones de Cargos"  stroke="currentColor">
+                            <i class='bx bxs-cog text-xl'></i>
+                        </a>
+                            <a class=" text-yellow-500 hover:text-yellow-400 border:text-gray-800 dark:text-white cursor-pointer" aria-hidden="true" title="Modificar Dependencia"  fill="none">
+                                <i class='bx bxs-edit text-xl'></i>
+                            </a>
+                   @if(item.dependenciaId!=null)
+                   {
+                    <a class=" text-red-500 hover:text-red-400 border:text-gray-800 dark:text-white cursor-pointer" title="Eliminar Dependencia">
+                        <i class='bx bxs-trash text-xl'></i>
+                    </a>
+                  
+                   }
+                 
+                 
+                  
+                  </div>
+                </span>
+            </div>
+            @if(item.dependencias.length>0)
+            {
+               <app-dependencias-tree [tree]="item.dependencias"></app-dependencias-tree>
+            }
+        </li>
+    }
+   
+</ul--->
+
+
+
+<ul class="space-y-2">
+    @for (item of tree; track $index) 
+    {
+        <li class="pl-2 md:pl-4 border-l-2 border-gray-300 dark:border-gray-600">
+            <div class="relative flex items-center justify-between gap-2 hover:bg-blue-200 rounded-md">
+            
+                <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+
+                <span class="text-gray-800 dark:text-gray-200 font-medium flex-1">{{ item.nombre }}</span> 
+
+                <div class="flex items-center">
+                    <!-- Botón Añadir -->
+                        <button type="button" class="text-green-500  hover:bg-green-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm  text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500" title="Añadir Cargo">
+                            <i class="bx bxs-plus-circle text-lg sm:text-xl md:text-2xl group-hover:border group-hover:border-white group-hover:rounded-full p-1 transition-all"></i>
+                        </button>
+                   
+                    
+                    <!-- Botón Configurar -->
+                    <button type="button" class="text-blue-500  hover:bg-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm  text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500" title="Configurar">
+                        <i class="bx bxs-cog text-lg sm:text-xl md:text-2xl group-hover:border group-hover:border-white group-hover:rounded-full p-1 transition-all"></i>
+                    </button> 
+
+                 
+                    
+                    <!-- Botón Modificar -->
+                    <button type="button" class="text-yellow-500  hover:bg-yellow-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm  text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500" title="Modificar Dependencia">
+                        <i class="bx bxs-edit text-lg sm:text-xl md:text-2xl group-hover:border group-hover:border-white group-hover:rounded-full p-1 transition-all"></i>
+                    </button> 
+
+                    
+                    <!-- Botón Eliminar (Condicional) -->
+                    @if(item.dependenciaId != null)
+                    {
+                        <button type="button" class="text-red-500  hover:bg-red-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm  text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500" title="Eliminar Dependencia">
+                            <i class="bx bxs-trash  text-lg sm:text-xl md:text-2xl group-hover:border group-hover:border-white group-hover:rounded-full p-1 transition-all"></i>
+                        </button> 
+                    }
+                </div>
+            </div>
+
+            @if(item.dependencias.length > 0)
+            {
+               <app-dependencias-tree [tree]="item.dependencias"></app-dependencias-tree>
+            }
+        </li>
+    }
+</ul>
+
+
+

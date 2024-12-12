@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { appsettings } from '../../Settings/appsettings';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Dependencia, DependenciaPagination } from '../../interfaces/dependencia';
+import { Dependencia, DependenciaPagination, TreeDependencia } from '../../interfaces/dependencia';
 
 
 @Injectable({
@@ -23,6 +23,11 @@ export class DependenciaService {
 
   getPagination(no_pagina: number, filtro: string): Observable<DependenciaPagination> {
     var list= this.http.get<DependenciaPagination>(`${this.apiUrl}/GetPagination/${no_pagina}/${filtro}`);
+    return list;
+  }
+
+  GetRaiz(): Observable<Result<TreeDependencia[]>> {
+    var list= this.http.get<Result<TreeDependencia[]>>(`${this.apiUrl}/GetRaiz`);
     return list;
   }
 }

@@ -37,3 +37,10 @@ export interface DependenciaList {
     dependencias?:      DependenciaList[];
 }
 
+
+export interface TreeDependencia {
+    id: number;
+    nombre: string;
+    dependenciaId?: number;
+    dependencias: TreeDependencia[];
+  }
