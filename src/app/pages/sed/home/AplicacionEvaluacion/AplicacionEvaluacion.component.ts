@@ -48,12 +48,6 @@ interface DimensionData
   preguntas: Pregunta[]
 }
 
-interface DimensionData1
-{
-  dimensionId: number, 
-  dimension: string,
-}
-
 interface Pregunta{
   id: number,
   nombre: string,

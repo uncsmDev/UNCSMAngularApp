@@ -24,3 +24,8 @@ export interface EvaluacionTrabajadorDTO {
     respuestaCerradaId: number;
     escalaId: number;
 }
+
+export interface EvaluacionTrabajadorResultadoDTO extends EvaluacionTrabajadorDTO{
+    escalaNombre: string;
+    escalaValoracion: number;
+}

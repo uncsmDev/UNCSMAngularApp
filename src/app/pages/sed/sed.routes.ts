@@ -94,4 +94,12 @@ export default [
         data: { breadcrumb: 'Resultados' },
         canActivate: [routerPermisseGuard]
     },
+    {
+        
+        path: 'resultados/resultado-instrumento/:evaluacionId',
+        title: 'Instrumento',
+        loadComponent: () => import('./home/resultados/resultados-instrumento/resultados-instrumento.component'),
+        data: { breadcrumb: 'Resultados' },
+        canActivate: [routerPermisseGuard]
+    },
 ] as Routes;
