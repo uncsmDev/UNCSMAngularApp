@@ -51,6 +51,7 @@ export class DependenciasTreeComponent {
   OpenModalCargos(id: number) {
   }
   
+
   OpenAddModal(id:number)
   {
     const Dep: DepOut= {id: id, dependencia: '', type: 'add'}
@@ -62,6 +63,11 @@ export class DependenciasTreeComponent {
 
     this.DepEmit.emit(Dep);
   }
+
+  OpenAddModalTree(input: DepOut) {
+    this.DepEmit.emit(input);
+  }
+
   OpenModalDeleteDependencia(id: number) {
   }
 }

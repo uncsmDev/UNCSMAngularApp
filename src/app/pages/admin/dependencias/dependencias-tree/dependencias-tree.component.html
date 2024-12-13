@@ -4,7 +4,7 @@
     {
         <li class="pl-2 md:pl-4 border-l-2 border-gray-300 dark:border-gray-600">
             <div class="relative flex items-center justify-between gap-2 hover:bg-blue-200 dark:hover:bg-gray-500 rounded-md">
-            <i class='bx bxs-right-arrow text-blue-500 dark:hover:text-blue-700' (click)="mostrarContenido(item.id)" [id]="'flecha-'+item.id"></i>
+            <i class='bx bxs-right-arrow text-blue-500 dark:hover:text-blue-700 cursor-pointer' (click)="mostrarContenido(item.id)" [id]="'flecha-'+item.id"></i>
 
                 <span class="text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 font-medium flex-1">{{ item.nombre }}</span> 
                 <div class="flex items-center">
@@ -36,7 +36,7 @@
             <section id="display-{{item.id}}" class="contenido ocultar-contenido" >
             @if(item.dependencias.length > 0)
             {
-               <app-dependencias-tree [tree]="item.dependencias"></app-dependencias-tree>
+               <app-dependencias-tree [tree]="item.dependencias" (DepEmit)="OpenAddModalTree($event)" ></app-dependencias-tree>
             }
         </section>
         </li>
