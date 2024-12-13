@@ -1,19 +1,28 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DepOut } from '@interfaces/dependencia';
+import { ResultEnum } from '@interfaces/Result.interface';
 import { tipoModal } from '@interfaces/trabajador';
+import { DependenciaService } from '@services/admin/dependencia.service';
 import { ModalService } from '@services/modal.service';
 import { SweetalertService } from '@services/sweetalert.service';
 import { ModalInterface } from 'flowbite';
+import { firstValueFrom } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-edit-modal',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './add-edit-modal.component.html',
   styleUrl: './add-edit-modal.component.css'
 })
+
 export class AddEditModalComponent {
 
+  typeInput:string = 'add';
+
    sweetalert = inject(SweetalertService);
+   dependenciaService=inject(DependenciaService);
 
   modalActivo!: ModalInterface;
   fb = inject(FormBuilder);
@@ -21,21 +30,98 @@ export class AddEditModalComponent {
 
   dependenciaForm = this.fb.group({
     dependenciaId: [0],
-    nombre: ['']
+    nombre: ['', Validators.required]
   });
 
-  openModal(input:number) 
+  openModal(input:DepOut) 
   {
-    this.dependenciaForm.controls['dependenciaId'].setValue(input);
 
-    this.modalActivo = this.modalService.createModal('add-edit-modal');
-    this.modalActivo.show();
+    if(this.typeInput == input.type)
+    {
+      this.dependenciaForm.controls['dependenciaId'].setValue(input.id);
+
+      this.modalActivo = this.modalService.createModal('add-edit-modal');
+      this.modalActivo.show();
+    }
+    else
+    {
+      this.typeInput = input.type;
+      this.dependenciaForm.controls['dependenciaId'].setValue(input.id);
+      this.dependenciaForm.controls['nombre'].setValue(input.dependencia);
+
+      this.modalActivo = this.modalService.createModal('add-edit-modal');
+      this.modalActivo.show();
+    }
   }
 
   closeModal()
   {
+    this.typeInput = 'add';
+    this.dependenciaForm.reset();
     this.modalActivo.hide();
     this.modalActivo.destroy();
+
+    location.reload();
   }
 
+ async onSubmit()
+  {
+    console.log(this.typeInput);
+    if(this.typeInput == 'add')
+    {
+      const res= await firstValueFrom(this.dependenciaService.saveByDependenciaId(this.dependenciaForm.value as DepOut));
+       
+      if(res.status == ResultEnum.Success)
+      {
+        this.closeModal();
+
+         Swal.fire({
+                      title: 'Advertencia!',
+                      html: '<p>Se guardo correctamente.</p>',
+                      icon: 'success',
+                      confirmButtonText: 'Ok',
+                      ...this.sweetalert.theme,
+                    });
+      }
+
+      else
+      {
+         Swal.fire({
+                      title: 'Advertencia!',
+                      html: '<p>'+res.message+'.</p>',
+                      icon: 'warning',
+                      confirmButtonText: 'Ok',
+                      ...this.sweetalert.theme,
+                    });
+      }
+    }
+
+    else
+    {
+      const resUp= await firstValueFrom(this.dependenciaService.updateName(this.dependenciaForm.value as DepOut));
+       
+      if(resUp.status == ResultEnum.Success)
+      {
+      
+        this.closeModal();
+        Swal.fire({
+          title: 'Advertencia!',
+          html: '<p>Se guardo correctamente.</p>',
+          icon: 'success',
+          confirmButtonText: 'Ok',
+          ...this.sweetalert.theme,
+        });
+      }
+      else
+      {
+        Swal.fire({
+          title: 'Advertencia!',
+          html: '<p>'+resUp.message+'.</p>',
+          icon: 'warning',
+          confirmButtonText: 'Ok',
+          ...this.sweetalert.theme,
+        });
+      }
+  }
+  }
 }

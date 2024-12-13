@@ -80,8 +80,7 @@ export default class DependenciaComponent {
 
 
   OpenAddModal(input: DepOut) {
-    this.modalDatos().openModal(input.id);
-  }
-  
+    this.modalDatos().openModal(input);
+  }  
 }
 
