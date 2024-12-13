@@ -1,4 +1,4 @@
-import { Component,  inject} from '@angular/core';
+import { Component,  inject, viewChild} from '@angular/core';
 import { TitleComponent } from '../../../shared/title/title.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -6,23 +6,26 @@ import { ModalDeleteComponent } from '../../../components/modal-delete/modal-del
 import { ModalService } from '../../../Services/modal.service';
 import { ModalInterface } from 'flowbite';
 import { DependenciaService } from '@services/admin/dependencia.service';
-import {  TreeDependencia } from '@interfaces/dependencia';
+import {  DepOut, TreeDependencia } from '@interfaces/dependencia';
 import { firstValueFrom } from 'rxjs';
 import { ResultEnum } from '@interfaces/Result.interface';
 import Swal from 'sweetalert2';
 import { SweetalertService } from '@services/sweetalert.service';
 import { DependenciasTreeComponent } from './dependencias-tree/dependencias-tree.component';
+import { AddEditModalComponent } from './add-edit-modal/add-edit-modal.component';
 
 
 @Component({
     selector: 'app-escala',
-    imports: [TitleComponent, ReactiveFormsModule, ModalDeleteComponent,DependenciasTreeComponent],
+    imports: [TitleComponent, ReactiveFormsModule, ModalDeleteComponent,DependenciasTreeComponent,AddEditModalComponent],
     templateUrl: './dependencias.component.html',
     styleUrl: './dependencias.component.css'
 })
 export default class DependenciaComponent {
   //Componentes Injectados
 
+  //Instancia del Modal
+  modalActivo!: ModalInterface;
   modalService = inject(ModalService);
   matSnackBar=inject(MatSnackBar);
   fb = inject(FormBuilder);
@@ -30,14 +33,14 @@ export default class DependenciaComponent {
   dependenciaService=inject(DependenciaService);
   sweetalert = inject(SweetalertService);
 
-  //Instancia del Modal
-  modalActivo!: ModalInterface;
-
+  modalDatos = viewChild.required(AddEditModalComponent);//
 
   tree: TreeDependencia[] = [];
   
   ngOnInit() {
+ 
     this.getRaiz();
+  
   }
 
   async getRaiz()
@@ -66,7 +69,6 @@ export default class DependenciaComponent {
 
   getDatos()
   {
-  
   }
   
   onSubmit(){
@@ -76,16 +78,9 @@ export default class DependenciaComponent {
     
   }
 
-  openModal()
-  {
-    /*this.escalaForm.reset();
 
-    this.modalActivo = this.modalService.createModal('static-modal');
-    this.modalActivo.show();*/
-  }
-
-  closeModal(){
-    this.modalActivo.hide();
+  OpenAddModal(input: DepOut) {
+    this.modalDatos().openModal(input.id);
   }
   
 }

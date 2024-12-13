@@ -1,8 +1,7 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, output, viewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TreeDependencia } from '@interfaces/dependencia';
-import { ResultEnum } from '@interfaces/Result.interface';
+import {  DepOut, TreeDependencia } from '@interfaces/dependencia';
 import { DependenciaService } from '@services/admin/dependencia.service';
 import { ModalService } from '@services/modal.service';
 import { SweetalertService } from '@services/sweetalert.service';
@@ -11,9 +10,9 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dependencias-tree',
-  imports: [],
   templateUrl: './dependencias-tree.component.html',
-  styleUrl: './dependencias-tree.component.css'
+  styleUrl: './dependencias-tree.component.css',
+  imports: []
 })
 export class DependenciasTreeComponent {
 
@@ -25,6 +24,8 @@ export class DependenciasTreeComponent {
   sweetalert = inject(SweetalertService);
 
   @Input() tree: TreeDependencia[] = [];
+
+  DepEmit= output<DepOut>();
 
   mostrarContenido(id: number) {
     const element = document.getElementById('display-' + id);
@@ -46,4 +47,22 @@ export class DependenciasTreeComponent {
       }
     }
   }
+
+  OpenModalCargos(id: number) {
+  }
+  
+  OpenAddModal(id:number)
+  {
+    const Dep: DepOut= {id: id, dependencia: '', type: 'add'}
+
+    this.DepEmit.emit(Dep);
+  }
+  OpenEditModal(input: TreeDependencia) {
+    const Dep: DepOut= {id: input.id, dependencia: input.nombre, type: 'edit'}
+
+    this.DepEmit.emit(Dep);
+  }
+  OpenModalDeleteDependencia(id: number) {
+  }
 }
+
