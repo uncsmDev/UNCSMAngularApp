@@ -1,12 +1,12 @@
 import { firstValueFrom } from 'rxjs';
 import { ChangeDetectionStrategy, Component, inject, signal, type OnInit } from '@angular/core';
-import { TrabajadorEvaluacionDTO } from '@interfaces/DTOs/PersonaInfoDTO.interface';
 import { EvaluacionTrabajadorService } from '@services/sed/EvaluacionTrabajador.service';
 import { TokenData } from '@interfaces/acount';
 import { jwtDecode } from 'jwt-decode';
 import { TitleComponent } from 'app/shared/title/title.component';
 import { CardTrabajadorComponent } from '../card-trabajador/card-trabajador.component';
 import { RouterLink } from '@angular/router';
+import { ResultadosEvaluacionJefe } from '@interfaces/DTOs/PersonaInfoDTO.interface';
 
 @Component({
   selector: 'app-resultados',
@@ -17,7 +17,7 @@ import { RouterLink } from '@angular/router';
 })
 export default class ResultadosComponent implements OnInit {
   evaluacionesSvc = inject(EvaluacionTrabajadorService);
-  resultados = signal<TrabajadorEvaluacionDTO[]>([]);
+  resultados = signal<ResultadosEvaluacionJefe[]>([]);
   ngOnInit(): void { 
     this.getResultados();
   }
@@ -26,7 +26,10 @@ export default class ResultadosComponent implements OnInit {
     const res = JSON.parse(sessionStorage.getItem('loggedInUser')!);
     const decodedToken:TokenData = jwtDecode(res.token);
     
+    console.log(decodedToken.nameid);
     const resultados = await firstValueFrom(this.evaluacionesSvc.getResultByUserId(decodedToken.nameid));
+
+
 
     console.log(resultados);
 

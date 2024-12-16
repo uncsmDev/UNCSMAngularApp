@@ -17,7 +17,8 @@ interface Pregunta{
   id: number,
   nombre: string,
   respuestaId: number;
-  escalaId: number;
+  escala: string;
+  valoracion: number;
 }
 
 @Component({
@@ -42,6 +43,7 @@ export default class ResultadosInstrumentoComponent implements OnInit {
 
     if(data.data != null)
     {
+      console.log(data.data)
       const dimensiones = data.data.reduce((obj: DimensionData[], pregunta) => {
         let existingDimension = obj.find(d => d.dimensionId === pregunta.dimensionId);
   
@@ -58,7 +60,8 @@ export default class ResultadosInstrumentoComponent implements OnInit {
           id: pregunta.preguntaCerradaId,
           nombre: pregunta.preguntaCerradaNombre,
           respuestaId: pregunta.respuestaCerradaId,
-          escalaId: pregunta.escalaId
+          escala: pregunta.escalaNombre,
+          valoracion: pregunta.escalaValoracion
         });
   
         return obj;

@@ -11,9 +11,54 @@
     @for (item of resultadoInstrumentoSignal(); track $index) {
     <mat-expansion-panel>
       <mat-expansion-panel-header>
-        <mat-panel-title> Dimensión </mat-panel-title>
+        <mat-panel-title> {{item.dimension}} </mat-panel-title>
       </mat-expansion-panel-header>
-      <p>This is the primary content of the panel.</p>
+      
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+  <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+              <th scope="col" class="px-6 py-3">
+                  Pregunta
+              </th>
+              <th scope="col" class="px-6 py-3">
+                  Escala
+              </th>
+              <th scope="col" class="px-6 py-3">
+                  Valoración
+              </th>
+          </tr>
+      </thead>
+      <tbody>
+        @for (preguntas of item.preguntas; track preguntas.respuestaId; let index = $index) {
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  {{ preguntas.nombre }}
+              </th>
+              <td class="px-6 py-4">
+                {{ preguntas.escala }}
+              </td>
+              <td class="px-6 py-4">
+                {{ preguntas.valoracion }}
+              </td>
+          </tr>
+        }
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+        <th scope="col" class="px-6 py-3">
+            Total
+        </th>
+        <td class="px-6 py-4">
+          
+        </td>
+        <td class="px-6 py-4">
+          
+        </td>
+        </tr>
+      </tbody>
+  </table>
+</div>
+
     </mat-expansion-panel>
 }
   </mat-accordion>

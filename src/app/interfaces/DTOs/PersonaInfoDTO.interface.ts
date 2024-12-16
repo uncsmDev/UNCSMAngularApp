@@ -95,7 +95,7 @@ export interface IEvaluadoDataProcedureDTO {
   periodoId?: number; // Puede ser null
 }
 
-export interface TrabajadorEvaluacionDTO {
+/*export interface TrabajadorEvaluacionDTO {
   trabajadorID: number; // ID del trabajador
   evaluadorId: number; // ID del evaluador
   dependenciaId: number; // ID de la dependencia
@@ -110,5 +110,22 @@ export interface PersonaCargoDTO {
   cargo: string; // Nombre del cargo
   img: string; // Imagen o URL de la imagen de la persona
   imgFile?: FileDto;
-}
+}*/
 
+export interface ResultadosEvaluacionJefe {
+  // Información del trabajador evaluado
+  trabajadorID: number;
+  evaluadorId: number;
+  dependenciaId: number;
+  dependenciaSuperiorID?: number;
+  evaluacionId: number;
+
+  // Información del jefe evaluador
+  idJefe?: number;
+  nombres?: string;
+  apellidos?: string;
+  dependencia?: string;
+  cargo?: string;
+  img?: string;
+  imgFile?: FileDto;
+}

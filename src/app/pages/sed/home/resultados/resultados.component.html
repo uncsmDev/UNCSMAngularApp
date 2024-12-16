@@ -13,18 +13,18 @@
                     <div class="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-2/4 rounded-full border-blue-700 w-[135px] h-[135px] bg-blue-800">
                     
                   </div>
-                    @if (item.personaCargoDTO?.imgFile?.fileBase64 != null) {
-                      <img class="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-2/4 rounded-full border-blue-700 w-32 h-32 object-cover" [src]="'data:image/jpeg;base64,'+item.personaCargoDTO?.imgFile?.fileBase64"  alt="">
+                    @if (item.imgFile?.fileBase64 != null) {
+                      <img class="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-2/4 rounded-full border-blue-700 w-32 h-32 object-cover" [src]="'data:image/jpeg;base64,'+item.imgFile?.fileBase64"  alt="">
                     }
                     @else {
                       <img class="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-2/4 rounded-full border-blue-700 w-32 h-32 object-cover" src="/assets/img/avatar.svg" alt="user photo">
                     }
                     <div class="absolute top-[60%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col w-full">
                       <p class="text-xl font-bold dark:text-white text-center text-gray-800">
-                        {{item.personaCargoDTO?.nombres}} {{item.personaCargoDTO?.apellidos}}
+                        {{item.nombres}} {{item.apellidos}}
                       </p>
                       <p class="text-sm font-medium dark:text-white text-center text-gray-800">
-                        {{item.personaCargoDTO?.cargo}}
+                        {{item.cargo}}
                       </p>    
                     </div>
                     <picture class="absolute bottom-0 left-1 transform -translate-x-2/2 m-6">
