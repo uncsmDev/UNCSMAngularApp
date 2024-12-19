@@ -15,7 +15,7 @@ export default [
  
     {
         path:'dependencias', 
-        title: 'Dependencias',
+        title: 'Unidades',
         loadComponent:()=>import('./dependencias/dependencias.component')
     },
    
