@@ -105,4 +105,11 @@ export class TrabajadorService {
     var userStatus= this.http.get<Result<any>>(this.apiUrl+'/BuscarRestaurarUser?IdTrabajador='+input);
     return userStatus;
   }
+
+  GetIdTrabajadorByUserId(userId: string){
+      const headers = {'content-type': 'application/json'}
+      const body = JSON.stringify(userId);
+      return this.http.post<Result<Trabajador>>(`${this.apiUrl}/GetIdTrabajadorByUserId/`, body, {headers});
+    }
+
 }

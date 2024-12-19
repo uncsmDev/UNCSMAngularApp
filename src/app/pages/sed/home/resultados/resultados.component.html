@@ -4,7 +4,7 @@
     @for (item of resultados(); track $index) {
         <div class="container">
             <div class="card-container">
-              <a [routerLink]="['resultado-instrumento', item.evaluacionId]">
+              <a (click)="link(item.evaluacionId)" class="cursor-pointer">
                 <div class="rounded-lg"> 
                 
                   <div class="w-[280px] h-[380px] relative dark:bg-gray-800 bg-gray-200">

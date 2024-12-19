@@ -21,12 +21,17 @@ export class EvaluacionTrabajadorService {
     return this.http.get<Result<boolean>>(`${this.apiUrl}/GetCountEvaluaciones/${userId}`);
   }
 
-  getResultadoEvaluacion(evaluacionId: number){
-    return this.http.get<Result<EvaluacionTrabajadorResultadoDTO[]>>(`${this.apiUrl}/GetResultadoEvaluacion/${evaluacionId}`);
+  getResultadoEvaluacion(evaluacionId: number, evaluadorId: number){
+    const headers = {'content-type': 'application/json'}
+    const body = JSON.stringify(evaluadorId);
+    
+    return this.http.post<Result<EvaluacionTrabajadorResultadoDTO[]>>(`${this.apiUrl}/GetResultadoEvaluacion/${evaluacionId}`, body, {headers: headers});
   }
 
-  GetResultadoEvaluacionCualitativa(evaluacionId: number){
-    return this.http.get<Result<RespuestaAbiertaDTO[]>>(`${this.apiUrl}/GetResultadoEvaluacionCualitativa/${evaluacionId}`);
+  GetResultadoEvaluacionCualitativa(evaluacionId: number, evaluadorId: number){
+    const headers = {'content-type': 'application/json'}
+    const body = JSON.stringify(evaluadorId);
+    return this.http.post<Result<RespuestaAbiertaDTO[]>>(`${this.apiUrl}/GetResultadoEvaluacionCualitativa/${evaluacionId}`, body, {headers});
   }
 
   getById(id: number){
@@ -36,7 +41,7 @@ export class EvaluacionTrabajadorService {
   getResultByUserId(userId: string){
     const headers = {'content-type': 'application/json'}
     const body = JSON.stringify(userId);
-    return this.http.post<Result<ResultadosEvaluacionJefe[]>>(`${this.apiUrl}/GetResultados/`, body, {headers: headers});
+    return this.http.post<Result<ResultadosEvaluacionJefe[]>>(`${this.apiUrl}/GetResultados/`, body, {headers});
   }
 
   getPersonalDependencia(DependenciaId: number, personaId: number){

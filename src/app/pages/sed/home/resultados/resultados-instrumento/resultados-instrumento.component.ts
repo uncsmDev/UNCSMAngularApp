@@ -2,8 +2,13 @@ import {ChangeDetectionStrategy, Component, inject, input, signal, viewChild, ty
 import {MatAccordion, MatExpansionModule} from '@angular/material/expansion';
 import { EvaluacionTrabajadorService } from '@services/sed/EvaluacionTrabajador.service';
 import { TitleComponent } from 'app/shared/title/title.component';
-import { first, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { RespuestaAbiertaDTO } from '@interfaces/DTOs/respuesta.interface';
+import { NativeDialogComponent } from 'app/components/nativeDialog/nativeDialog.component';
+import { TokenData } from '@interfaces/acount';
+import { jwtDecode } from 'jwt-decode';
+import { TrabajadorService } from '@services/admin/trabajador.service';
+import { Trabajador } from '@interfaces/trabajador';
 
 interface DimensionData 
 {
@@ -23,7 +28,7 @@ interface Pregunta{
 
 @Component({
   selector: 'app-resultados-instrumento',
-  imports: [MatExpansionModule, TitleComponent],
+  imports: [MatExpansionModule, TitleComponent, NativeDialogComponent],
   templateUrl: './resultados-instrumento.component.html',
   styleUrl: './resultados-instrumento.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,17 +36,20 @@ interface Pregunta{
 export default class ResultadosInstrumentoComponent implements OnInit {
   accordion = viewChild.required(MatAccordion);
   evaluacionSvc = inject(EvaluacionTrabajadorService);
+  trabajadorSvc = inject(TrabajadorService);
   evaluacionId = input<number>(0, {alias: 'evaluacionId'})
   resultadoInstrumentoSignal = signal<DimensionData[]>([]);
   resultadoInstrumentoAbiertaSignal = signal<RespuestaAbiertaDTO[]>([]);
 
   ngOnInit(): void { 
-    this.getInstrumentoResultado();
-    this.getInstrumentoResultadoCualitativo();
+    const evaluador = this.getResultados();
+    this.getInstrumentoResultado(evaluador);
+    this.getInstrumentoResultadoCualitativo(evaluador);
   }
 
-  async getInstrumentoResultado(){
-    const data = await firstValueFrom(this.evaluacionSvc.getResultadoEvaluacion(this.evaluacionId()));
+  async getInstrumentoResultado(evaluador: Promise<Trabajador>){
+    const trabajadorId = (await evaluador).id;
+    const data = await firstValueFrom(this.evaluacionSvc.getResultadoEvaluacion(this.evaluacionId(), trabajadorId));
 
     if(data.data != null)
     {
@@ -79,12 +87,24 @@ export default class ResultadosInstrumentoComponent implements OnInit {
     }
     }
 
-    async getInstrumentoResultadoCualitativo(){
-      const data = await firstValueFrom(this.evaluacionSvc.GetResultadoEvaluacionCualitativa(this.evaluacionId()));
+    async getInstrumentoResultadoCualitativo(evaluador: Promise<Trabajador>){
+      const trabajadorId = (await evaluador).id;
+      const data = await firstValueFrom(this.evaluacionSvc.GetResultadoEvaluacionCualitativa(this.evaluacionId(), trabajadorId));
       if(data.data != null)
       {
         const datos = data.data;
         this.resultadoInstrumentoAbiertaSignal.set(datos);
       }
       }
+
+      aceptarResultados(){
+        console.log("Funciona")
+      }
+
+      async getResultados(){
+          const res = JSON.parse(sessionStorage.getItem('loggedInUser')!);
+          const decodedToken:TokenData = jwtDecode(res.token);
+          const result= await firstValueFrom(this.trabajadorSvc.GetIdTrabajadorByUserId(decodedToken.nameid));
+          return result.data;
+        }
 }

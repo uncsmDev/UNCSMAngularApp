@@ -7,7 +7,7 @@ export interface Trabajador
     fechaIngreso: Date,
     personaId:number,
     persona:Persona,
-    contratos: number
+    contratos?: number
 }
 
 export type tipoModal =  'add' | 'edit'

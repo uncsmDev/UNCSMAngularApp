@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+
+dialog[open] {
+  scale: 1;
+  transition: scale .3s ease-in-out;
+  @starting-style {
+    scale: 0;
+  }
+}

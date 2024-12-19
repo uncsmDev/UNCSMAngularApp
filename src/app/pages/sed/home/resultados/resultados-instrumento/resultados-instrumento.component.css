@@ -19,3 +19,7 @@
   }
 
 }
+
+#alert-dialog::backdrop {
+  background: linear-gradient(#000d, #000a);
+}

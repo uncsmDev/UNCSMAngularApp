@@ -5,7 +5,7 @@ import { TokenData } from '@interfaces/acount';
 import { jwtDecode } from 'jwt-decode';
 import { TitleComponent } from 'app/shared/title/title.component';
 import { CardTrabajadorComponent } from '../card-trabajador/card-trabajador.component';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ResultadosEvaluacionJefe } from '@interfaces/DTOs/PersonaInfoDTO.interface';
 
 @Component({
@@ -18,6 +18,7 @@ import { ResultadosEvaluacionJefe } from '@interfaces/DTOs/PersonaInfoDTO.interf
 export default class ResultadosComponent implements OnInit {
   evaluacionesSvc = inject(EvaluacionTrabajadorService);
   resultados = signal<ResultadosEvaluacionJefe[]>([]);
+  router = inject(Router);
   ngOnInit(): void { 
     this.getResultados();
   }
@@ -25,15 +26,12 @@ export default class ResultadosComponent implements OnInit {
   async getResultados(){
     const res = JSON.parse(sessionStorage.getItem('loggedInUser')!);
     const decodedToken:TokenData = jwtDecode(res.token);
-    
-    console.log(decodedToken.nameid);
     const resultados = await firstValueFrom(this.evaluacionesSvc.getResultByUserId(decodedToken.nameid));
-
-
-
-    console.log(resultados);
-
     this.resultados.set(resultados.data);
+  }
+
+  link(id: number){
+    this.router.navigate(["/sed/resultados/resultado-instrumento", id])
   }
 
 }
