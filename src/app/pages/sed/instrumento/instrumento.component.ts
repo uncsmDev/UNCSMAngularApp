@@ -39,7 +39,7 @@ export default class InstrumentoComponent {
   dimensionService = inject(DimensionService);
   modalService = inject(ModalService);
   flowbitSharedService = inject(FlowbitSharedService);
-  location = inject(Location)
+  location = inject(Location);
   sweetalert = inject(SweetalertService);
   poperData = {
     titulo: '',
@@ -293,6 +293,5 @@ else{
     back(){
       this.location.back()
     }
-  
 }
 

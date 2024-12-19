@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { EvaluacionTrabajadorDTO, EvaluacionTrabajadorResultadoDTO, InstrumentoAbiertoDTO } from '@interfaces/DTOs/InstrumentoDTO.interface';
 import { IEvaluadoDataProcedureDTO, PersonaDTO, PersonaInfoDTO, PersonalPorDependenciaDTO, ResultadosEvaluacionJefe } from '@interfaces/DTOs/PersonaInfoDTO.interface';
-import { RespuestaDTO } from '@interfaces/DTOs/respuesta.interface';
+import { RespuestaAbiertaDTO, RespuestaDTO } from '@interfaces/DTOs/respuesta.interface';
 import { EvaluacionTrabajador } from '@interfaces/EvaluacionTrabajador.interface';
 import { Instrumento } from '@interfaces/instrumento';
 import { Result } from '@interfaces/Result.interface';
@@ -23,6 +23,10 @@ export class EvaluacionTrabajadorService {
 
   getResultadoEvaluacion(evaluacionId: number){
     return this.http.get<Result<EvaluacionTrabajadorResultadoDTO[]>>(`${this.apiUrl}/GetResultadoEvaluacion/${evaluacionId}`);
+  }
+
+  GetResultadoEvaluacionCualitativa(evaluacionId: number){
+    return this.http.get<Result<RespuestaAbiertaDTO[]>>(`${this.apiUrl}/GetResultadoEvaluacionCualitativa/${evaluacionId}`);
   }
 
   getById(id: number){

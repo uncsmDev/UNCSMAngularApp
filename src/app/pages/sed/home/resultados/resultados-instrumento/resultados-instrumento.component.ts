@@ -1,16 +1,16 @@
-import { Dimension } from '@interfaces/dimension';
 import {ChangeDetectionStrategy, Component, inject, input, signal, viewChild, type OnInit} from '@angular/core';
 import {MatAccordion, MatExpansionModule} from '@angular/material/expansion';
-import { EvaluacionTrabajadorResultadoDTO } from '@interfaces/DTOs/InstrumentoDTO.interface';
 import { EvaluacionTrabajadorService } from '@services/sed/EvaluacionTrabajador.service';
 import { TitleComponent } from 'app/shared/title/title.component';
 import { first, firstValueFrom } from 'rxjs';
+import { RespuestaAbiertaDTO } from '@interfaces/DTOs/respuesta.interface';
 
 interface DimensionData 
 {
   dimensionId: number, 
   dimension: string,
   preguntas: Pregunta[]
+  total?: number;
 }
 
 interface Pregunta{
@@ -33,9 +33,11 @@ export default class ResultadosInstrumentoComponent implements OnInit {
   evaluacionSvc = inject(EvaluacionTrabajadorService);
   evaluacionId = input<number>(0, {alias: 'evaluacionId'})
   resultadoInstrumentoSignal = signal<DimensionData[]>([]);
+  resultadoInstrumentoAbiertaSignal = signal<RespuestaAbiertaDTO[]>([]);
 
   ngOnInit(): void { 
     this.getInstrumentoResultado();
+    this.getInstrumentoResultadoCualitativo();
   }
 
   async getInstrumentoResultado(){
@@ -43,7 +45,6 @@ export default class ResultadosInstrumentoComponent implements OnInit {
 
     if(data.data != null)
     {
-      console.log(data.data)
       const dimensiones = data.data.reduce((obj: DimensionData[], pregunta) => {
         let existingDimension = obj.find(d => d.dimensionId === pregunta.dimensionId);
   
@@ -51,7 +52,8 @@ export default class ResultadosInstrumentoComponent implements OnInit {
           existingDimension = {
             dimensionId: pregunta.dimensionId,
             dimension: pregunta.dimensionNombre,
-            preguntas: []
+            preguntas: [],
+            total: 0
           }
           obj.push(existingDimension);
         }
@@ -68,6 +70,21 @@ export default class ResultadosInstrumentoComponent implements OnInit {
       }, [] as DimensionData[]);
   
       this.resultadoInstrumentoSignal.set(dimensiones);
+
+      this.resultadoInstrumentoSignal().forEach(dimension => {
+        dimension.preguntas.forEach(pregunta => {
+          dimension.total! += pregunta.valoracion;
+        })
+      })
     }
     }
+
+    async getInstrumentoResultadoCualitativo(){
+      const data = await firstValueFrom(this.evaluacionSvc.GetResultadoEvaluacionCualitativa(this.evaluacionId()));
+      if(data.data != null)
+      {
+        const datos = data.data;
+        this.resultadoInstrumentoAbiertaSignal.set(datos);
+      }
+      }
 }

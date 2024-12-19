@@ -1,5 +1,6 @@
-<app-title title="Instrumento" />
-<div class="example-action-buttons">
+<app-title title="Evaluación" />
+<div class="flex justify-between">
+  <div class="example-action-buttons">
     <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800" mat-button (click)="accordion().openAll()"><span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
         Expandir todas
         </span></button>
@@ -7,6 +8,15 @@
         Colapsar todas
         </span></button>
   </div>
+  <div>
+    <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+      <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+        Comentario
+      </span>
+      </button>
+  </div>
+</div>
+
   <mat-accordion multi>
     @for (item of resultadoInstrumentoSignal(); track $index) {
     <mat-expansion-panel>
@@ -52,7 +62,7 @@
           
         </td>
         <td class="px-6 py-4">
-          
+          {{ item.total }}
         </td>
         </tr>
       </tbody>
@@ -62,3 +72,14 @@
     </mat-expansion-panel>
 }
   </mat-accordion>
+
+  @for (item of resultadoInstrumentoAbiertaSignal(); track $index) {
+    
+
+<div class="w-full mt-5 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+
+      <h5 class="mb-2 text-xl font-medium tracking-tight text-gray-900 dark:text-white">{{ item.preguntaAbiertaNombre }}</h5>
+
+  <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ item.respuesta }}</p>
+</div>
+  }
