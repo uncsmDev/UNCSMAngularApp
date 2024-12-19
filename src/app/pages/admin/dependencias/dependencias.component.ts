@@ -66,6 +66,84 @@ export default class DependenciaComponent {
     }
   }
 
+  searchTree(tree: any[], searchTerm: string, key: string = 'nombre'): TreeDependencia[] {
+    const result: any[] = [];
+  
+    const search = (nodes: any[]) => {
+      for (const node of nodes) {
+        if (node[key] && node[key].toString().toLowerCase().includes(searchTerm.toLowerCase())) {
+          result.push(node);
+        }
+        if (node.dependencias?.length) {
+          search(node.dependencias);
+        }
+      }
+    };
+  
+    search(tree);
+  
+    return result;
+  }
+
+
+
+  searchTreeDependenciaId(tree: any[],id: number): TreeDependencia[] {
+    const result: any[] = [];
+  
+    const search = (nodes: TreeDependencia[]) => {
+      for (const node of nodes) {
+     
+       if(node.dependenciaId==id)
+        {
+          result.push(node);
+        }
+        if (node.dependencias?.length) {
+          search(node.dependencias);
+        }
+      }
+    };
+  
+    search(tree);
+  
+    return result;
+  }
+  
+  
+
+  updateTree(inputModal:TreeDependencia)
+  {
+    //const find= this.tree.find(x=>x.id==inputModal.id);
+    const findE = this.searchTree(this.tree, inputModal.id.toString(), 'id');
+    
+    if(findE.length>0)
+    {
+      findE[0].nombre=inputModal.nombre;
+    }
+    else
+    {
+      const parent=this.searchTree(this.tree, inputModal.dependenciaId!.toString(), 'id');
+
+      if(parent.length!=0)
+      {
+        if(parent[0].dependencias.length==0)
+        {
+          parent[0].dependencias= [];
+        }
+        
+        const insertDep: TreeDependencia ={
+          id:inputModal.id, 
+          nombre: inputModal.nombre, 
+          dependenciaId: inputModal.dependenciaId, 
+          dependencias: []};
+        parent[0].dependencias.push(insertDep);
+      }
+      
+    }
+
+
+    ///this.tree = [];
+    //this.getRaiz();
+  }
 
   getDatos()
   {

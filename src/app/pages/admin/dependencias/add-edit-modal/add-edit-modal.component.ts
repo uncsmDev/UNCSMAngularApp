@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DepOut } from '@interfaces/dependencia';
+import { DepOut, TreeDependencia } from '@interfaces/dependencia';
 import { ResultEnum } from '@interfaces/Result.interface';
 import { tipoModal } from '@interfaces/trabajador';
 import { DependenciaService } from '@services/admin/dependencia.service';
@@ -33,6 +33,8 @@ export class AddEditModalComponent {
     nombre: ['', Validators.required]
   });
 
+  outModal= output<TreeDependencia>();
+
   openModal(input:DepOut) 
   {
 
@@ -61,7 +63,7 @@ export class AddEditModalComponent {
     this.modalActivo.hide();
     this.modalActivo.destroy();
 
-    location.reload();
+    //location.reload();
   }
 
  async onSubmit()
@@ -73,6 +75,10 @@ export class AddEditModalComponent {
        
       if(res.status == ResultEnum.Success)
       {
+        const dep= res.data as TreeDependencia;
+        
+        this.outModal.emit(dep);
+
         this.closeModal();
 
          Swal.fire({
@@ -103,6 +109,11 @@ export class AddEditModalComponent {
       if(resUp.status == ResultEnum.Success)
       {
       
+        const dep= resUp.data as TreeDependencia;
+        
+        this.outModal.emit(dep);
+
+
         this.closeModal();
         Swal.fire({
           title: 'Advertencia!',
