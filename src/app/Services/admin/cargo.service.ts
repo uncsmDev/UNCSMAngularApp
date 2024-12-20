@@ -45,7 +45,6 @@ export class CargoService {
     else
       var list= this.http.get<PackPage<Cargo>>(`${this.apiUrl}/GetListByDependenciaIWhithFilter?Pagina=${pagina}&DependenciaId=${dependeciaId}`);
       
-    
     return list;
   }
 

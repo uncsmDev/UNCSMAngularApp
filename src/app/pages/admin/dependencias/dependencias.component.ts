@@ -13,11 +13,12 @@ import Swal from 'sweetalert2';
 import { SweetalertService } from '@services/sweetalert.service';
 import { DependenciasTreeComponent } from './dependencias-tree/dependencias-tree.component';
 import { AddEditModalComponent } from './add-edit-modal/add-edit-modal.component';
+import { CargosXDependenciaComponent } from '../cargos/cargos-xdependencia/cargos-xdependencia.component';
 
 
 @Component({
     selector: 'app-escala',
-    imports: [TitleComponent, ReactiveFormsModule, ModalDeleteComponent,DependenciasTreeComponent,AddEditModalComponent],
+    imports: [TitleComponent, ReactiveFormsModule, ModalDeleteComponent,DependenciasTreeComponent,AddEditModalComponent,CargosXDependenciaComponent],
     templateUrl: './dependencias.component.html',
     styleUrl: './dependencias.component.css'
 })
@@ -34,6 +35,7 @@ export default class DependenciaComponent {
   sweetalert = inject(SweetalertService);
 
   modalDatos = viewChild.required(AddEditModalComponent);//
+  modalCargos=viewChild.required(CargosXDependenciaComponent);
 
   tree: TreeDependencia[] = [];
   
@@ -160,5 +162,9 @@ export default class DependenciaComponent {
   OpenAddModal(input: DepOut) {
     this.modalDatos().openModal(input);
   }  
+
+  OpenAddModalCargos(id: number) {
+    this.modalCargos().openModal(id);
+  }
 }
 

@@ -1,1 +1,82 @@
-<p>cargos works!</p>
+<div class="relative w-64">
+    <label for="search-select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Seleccione una opción</label>
+    <div class="relative">
+      <!-- Input para la búsqueda -->
+      <input
+        type="text"
+        id="search-select"
+        class="block w-full p-2 pl-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white focus:ring-blue-500 focus:border-blue-500"
+        placeholder="Buscar..."
+        oninput="filterOptions(this.value)"
+      />
+      <!-- Opciones del Select -->
+      <ul
+        id="dropdown"
+        class="absolute z-10 w-full bg-white border border-gray-300 rounded-lg shadow-md dark:bg-gray-700 dark:border-gray-600 mt-1 max-h-40 overflow-auto hidden"
+      >
+        <li>
+          <button
+            type="button"
+            class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 dark:hover:bg-gray-600 dark:text-gray-200"
+            data-value="opcion1"
+            onclick="selectOption(this)"
+          >
+            Opción 1
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 dark:hover:bg-gray-600 dark:text-gray-200"
+            data-value="opcion2"
+            onclick="selectOption(this)"
+          >
+            Opción 2
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 dark:hover:bg-gray-600 dark:text-gray-200"
+            data-value="opcion3"
+            onclick="selectOption(this)"
+          >
+            Opción 3
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+  <!-- Script -->
+  <script>
+    const dropdown = document.getElementById('dropdown');
+  
+    function filterOptions(searchTerm) {
+      const options = dropdown.querySelectorAll('button');
+      const term = searchTerm.toLowerCase();
+  
+      dropdown.classList.remove('hidden'); // Mostrar la lista
+      options.forEach(option => {
+        const text = option.textContent.toLowerCase();
+        if (text.includes(term)) {
+          option.classList.remove('hidden');
+        } else {
+          option.classList.add('hidden');
+        }
+      });
+    }
+  
+    function selectOption(option) {
+      const input = document.getElementById('search-select');
+      input.value = option.textContent; // Mostrar la selección en el input
+      dropdown.classList.add('hidden'); // Ocultar la lista
+    }
+  
+    document.addEventListener('click', (e) => {
+      if (!dropdown.contains(e.target) && e.target.id !== 'search-select') {
+        dropdown.classList.add('hidden'); // Ocultar si se hace clic fuera
+      }
+    });
+  </script>
+  
